@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestPipePowerPoint", "GestPipePowerPonit\GestPipePowerPoint.csproj", "{14E2F89A-D74D-424F-B78F-12F052AE46AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14E2F89A-D74D-424F-B78F-12F052AE46AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14E2F89A-D74D-424F-B78F-12F052AE46AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14E2F89A-D74D-424F-B78F-12F052AE46AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14E2F89A-D74D-424F-B78F-12F052AE46AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CCC4CF6B-3DDC-4484-83D0-0F1840A86D7C}
+	EndGlobalSection
+EndGlobal
