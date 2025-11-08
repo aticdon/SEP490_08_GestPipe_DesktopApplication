@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestPipePowerPoint", "GestPipePowerPonit\GestPipePowerPoint.csproj", "{14E2F89A-D74D-424F-B78F-12F052AE46AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestPipe.Backend", "GestPipe.Backend\GestPipe.Backend.csproj", "{07138F54-ABB4-4AA1-8A53-006ADFAE9088}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{14E2F89A-D74D-424F-B78F-12F052AE46AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14E2F89A-D74D-424F-B78F-12F052AE46AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14E2F89A-D74D-424F-B78F-12F052AE46AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07138F54-ABB4-4AA1-8A53-006ADFAE9088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07138F54-ABB4-4AA1-8A53-006ADFAE9088}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07138F54-ABB4-4AA1-8A53-006ADFAE9088}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07138F54-ABB4-4AA1-8A53-006ADFAE9088}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
