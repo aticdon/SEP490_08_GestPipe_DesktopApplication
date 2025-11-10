@@ -1,0 +1,302 @@
+@startuml Login Feature Class Diagram
+
+!define CONTROLLER_COLOR #E8F5E9
+!define SERVICE_COLOR #E3F2FD
+!define INTERFACE_COLOR #FFF9C4
+!define DTO_COLOR #FCE4EC
+!define MODEL_COLOR #F3E5F5
+!define SETTINGS_COLOR #E0F2F1
+
+skinparam packageStyle rectangle
+skinparam backgroundColor #FAFAFA
+skinparam classAttributeIconSize 0
+
+title Class Diagram - Login Feature\n(Auth Module)
+
+package "Controllers" <<Rectangle>> {
+    class AuthController <<Controller>> CONTROLLER_COLOR {
+        - _authService : IAuthService
+        - _otpService : IOtpService
+        - _emailService : IEmailService
+        - _logger : ILogger<AuthController>
+        + AuthController(IAuthService, IOtpService, IEmailService, ILogger)
+        + Login(LoginDto) : Task<IActionResult>
+        + GoogleLogin(GoogleLoginDto) : Task<IActionResult>
+    }
+}
+
+package "Services.Interfaces" <<Rectangle>> {
+    interface IAuthService <<Interface>> INTERFACE_COLOR {
+        + RegisterAsync(RegisterDto) : Task<AuthResponseDto>
+        + LoginAsync(LoginDto, string, string) : Task<AuthResponseDto>
+        + GoogleLoginAsync(string, string, string) : Task<AuthResponseDto>
+        + VerifyOtpAsync(VerifyOtpDto) : Task<AuthResponseDto>
+        + GetUserByEmailAsync(string) : Task<User>
+        + GetUserByIdAsync(string) : Task<User>
+        + IsEmailUniqueAsync(string) : Task<bool>
+        + ForgotPasswordAsync(string) : Task<AuthResponseDto>
+        + ResetPasswordAsync(ResetPasswordDto) : Task<AuthResponseDto>
+        + LogoutAsync(string) : Task<AuthResponseDto>
+    }
+    
+    interface IOtpService <<Interface>> INTERFACE_COLOR {
+        + GenerateOtpAsync(string, string, string) : Task<string>
+        + ValidateOtpAsync(string, string, string) : Task<bool>
+        + IsOtpLimitExceededAsync(string) : Task<bool>
+        + MarkOtpAsUsedAsync(string, string) : Task<bool>
+        + MarkOtpAsVerifiedAsync(string, string) : Task<bool>
+    }
+    
+    interface IEmailService <<Interface>> INTERFACE_COLOR {
+        + SendVerificationEmailAsync(string, string) : Task
+        + SendWelcomeEmailAsync(string, string?) : Task
+        + SendPasswordResetEmailAsync(string, string) : Task
+        + SendPasswordResetConfirmationEmailAsync(string) : Task
+    }
+    
+    interface IUserService <<Interface>> INTERFACE_COLOR {
+        + GetAll() : List<User>
+        + GetById(string) : User
+        + Create(User) : void
+        + SetLanguage(string, string) : bool
+    }
+}
+
+package "Services.Implementation" <<Rectangle>> {
+    class AuthService <<Service>> SERVICE_COLOR {
+        - _usersCollection : IMongoCollection<User>
+        - _profilesCollection : IMongoCollection<UserProfile>
+        - _emailService : IEmailService
+        - _otpService : IOtpService
+        - _jwtSettings : JwtSettings
+        - _googleSettings : GoogleSettings
+        - _mapper : IMapper
+        + AuthService(IMongoClient, IOptions, IOptions, IOptions, IEmailService, IOtpService, IMapper)
+        + RegisterAsync(RegisterDto) : Task<AuthResponseDto>
+        + LoginAsync(LoginDto, string, string) : Task<AuthResponseDto>
+        + GoogleLoginAsync(string, string, string) : Task<AuthResponseDto>
+        + VerifyOtpAsync(VerifyOtpDto) : Task<AuthResponseDto>
+        + GetUserByEmailAsync(string) : Task<User>
+        + GetUserByIdAsync(string) : Task<User>
+        + IsEmailUniqueAsync(string) : Task<bool>
+        + ForgotPasswordAsync(string) : Task<AuthResponseDto>
+        + ResetPasswordAsync(ResetPasswordDto) : Task<AuthResponseDto>
+        + LogoutAsync(string) : Task<AuthResponseDto>
+        - GenerateJwtToken(User) : string
+    }
+    
+    class OtpService <<Service>> SERVICE_COLOR {
+        - _otpCollection : IMongoCollection<Otp>
+        + OtpService(IMongoClient, IOptions)
+        + GenerateOtpAsync(string, string, string) : Task<string>
+        + ValidateOtpAsync(string, string, string) : Task<bool>
+        + IsOtpLimitExceededAsync(string) : Task<bool>
+        + MarkOtpAsUsedAsync(string, string) : Task<bool>
+        + MarkOtpAsVerifiedAsync(string, string) : Task<bool>
+    }
+    
+    class EmailService <<Service>> SERVICE_COLOR {
+        - _smtpSettings : SmtpSettings
+        + EmailService(IOptions)
+        + SendVerificationEmailAsync(string, string) : Task
+        + SendWelcomeEmailAsync(string, string?) : Task
+        + SendPasswordResetEmailAsync(string, string) : Task
+        + SendPasswordResetConfirmationEmailAsync(string) : Task
+    }
+    
+    class UserService <<Service>> SERVICE_COLOR {
+        - _users : IMongoCollection<User>
+        - _i18nConfig : I18nConfig
+        + UserService(IOptions, IOptions)
+        + GetAll() : List<User>
+        + GetById(string) : User
+        + Create(User) : void
+        + SetLanguage(string, string) : bool
+    }
+}
+
+package "Models.DTOs" <<Rectangle>> {
+    class LoginDto <<DTO>> DTO_COLOR {
+        + Email : string
+        + Password : string
+    }
+    
+    class GoogleLoginDto <<DTO>> DTO_COLOR {
+        + IdToken : string
+    }
+    
+    class AuthResponseDto <<DTO>> DTO_COLOR {
+        + Success : bool
+        + Message : string
+        + Token : string
+        + UserId : string
+        + Email : string
+        + RequiresVerification : bool
+        + Data : dynamic
+    }
+    
+    class UserDto <<DTO>> DTO_COLOR {
+        + Id : string
+        + Email : string
+        + Status : string
+    }
+}
+
+package "Models" <<Rectangle>> {
+    class User <<Entity>> MODEL_COLOR {
+        + Id : string
+        + Email : string
+        + PasswordHash : string
+        + Status : string
+        + StatusGesture : string
+        + Model : string
+        + RequestCount : int
+        + CreatedAt : DateTime
+        + LastLogin : DateTime
+        + CurrentVer : string
+        + Language : string
+        + EmailVerified : bool
+        + AuthProvider : string
+        + ProviderId : string
+        + AccountStatus : string
+    }
+    
+    class UserProfile <<Entity>> MODEL_COLOR {
+        + Id : string
+        + UserId : string
+        + FullName : string
+        + Phone : string
+        + DateOfBirth : DateTime?
+        + Gender : string
+        + Address : string
+        + AvatarUrl : string
+        + CreatedAt : DateTime
+        + UpdatedAt : DateTime
+    }
+    
+    class Otp <<Entity>> MODEL_COLOR {
+        + Id : string
+        + UserId : string
+        + Email : string
+        + OtpCode : string
+        + Purpose : string
+        + IsUsed : bool
+        + IsVerified : bool
+        + CreatedAt : DateTime
+        + ExpiresAt : DateTime
+    }
+}
+
+package "Models.Settings" <<Rectangle>> {
+    class JwtSettings <<Configuration>> SETTINGS_COLOR {
+        + SecretKey : string
+        + Issuer : string
+        + Audience : string
+        + ExpirationMinutes : int
+    }
+    
+    class GoogleSettings <<Configuration>> SETTINGS_COLOR {
+        + ClientId : string
+        + ClientSecret : string
+    }
+    
+    class MongoDbSettings <<Configuration>> SETTINGS_COLOR {
+        + ConnectionString : string
+        + DatabaseName : string
+    }
+    
+    class SmtpSettings <<Configuration>> SETTINGS_COLOR {
+        + Host : string
+        + Port : int
+        + Username : string
+        + Password : string
+        + FromEmail : string
+        + FromName : string
+    }
+}
+
+' Relationships - Controller to Services
+AuthController ..> IAuthService : uses
+AuthController ..> IOtpService : uses
+AuthController ..> IEmailService : uses
+
+' Relationships - Service Implementations
+AuthService ..|> IAuthService : implements
+OtpService ..|> IOtpService : implements
+EmailService ..|> IEmailService : implements
+UserService ..|> IUserService : implements
+
+' Relationships - AuthService Dependencies
+AuthService ..> IOtpService : uses
+AuthService ..> IEmailService : uses
+AuthService ..> JwtSettings : uses
+AuthService ..> GoogleSettings : uses
+AuthService ..> MongoDbSettings : uses
+
+' Relationships - Other Services Dependencies
+OtpService ..> MongoDbSettings : uses
+EmailService ..> SmtpSettings : uses
+UserService ..> MongoDbSettings : uses
+
+' Relationships - DTOs
+AuthController ..> LoginDto : receives
+AuthController ..> GoogleLoginDto : receives
+AuthController ..> AuthResponseDto : returns
+
+AuthService ..> LoginDto : receives
+AuthService ..> GoogleLoginDto : receives
+AuthService ..> AuthResponseDto : returns
+AuthService ..> UserDto : uses
+
+' Relationships - Models
+AuthService --> User : manages
+AuthService --> UserProfile : manages
+OtpService --> Otp : manages
+UserService --> User : manages
+
+' MongoDB Collections (shown as associations)
+AuthService ..> "IMongoCollection<User>" : uses
+AuthService ..> "IMongoCollection<UserProfile>" : uses
+OtpService ..> "IMongoCollection<Otp>" : uses
+UserService ..> "IMongoCollection<User>" : uses
+
+note right of AuthController
+  **Controller Layer**
+  - Handles HTTP requests for login
+  - Validates input
+  - Returns HTTP responses
+  - Manages authentication flow
+end note
+
+note right of IAuthService
+  **Service Layer (Interface)**
+  - Defines authentication contracts
+  - Login operations (normal & Google)
+  - User verification
+  - Password management
+end note
+
+note right of AuthService
+  **Service Layer (Implementation)**
+  - Business logic for authentication
+  - JWT token generation
+  - Google OAuth integration
+  - Password hashing with BCrypt
+  - MongoDB data access
+end note
+
+note bottom of LoginDto
+  **Login DTOs**
+  - LoginDto: Email/Password login
+  - GoogleLoginDto: OAuth login
+  - AuthResponseDto: Response data
+end note
+
+note bottom of User
+  **Domain Models**
+  - User: Main user entity
+  - UserProfile: User details
+  - Otp: Verification codes
+end note
+
+@enduml
