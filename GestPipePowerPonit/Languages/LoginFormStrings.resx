@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<!-- ===== LoginForm ===== -->
+	<data name="LoginForm_BtnLogin_EN" xml:space="preserve">
+    <value>Login</value>
+  </data>
+	<data name="LoginForm_BtnLogin_VI" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+	<data name="LoginForm_ForgotPassword_EN" xml:space="preserve">
+    <value>Forgot Password?</value>
+  </data>
+	<data name="LoginForm_ForgotPassword_VI" xml:space="preserve">
+    <value>Quên mật khẩu?</value>
+  </data>
+	<data name="LoginForm_GoogleBtn_EN" xml:space="preserve">
+    <value>Continue with Google</value>
+  </data>
+	<data name="LoginForm_GoogleBtn_VI" xml:space="preserve">
+    <value>Tiếp tục với Google</value>
+  </data>
+	<data name="LoginForm_NoAccount_EN" xml:space="preserve">
+    <value>No Account?</value>
+  </data>
+	<data name="LoginForm_NoAccount_VI" xml:space="preserve">
+    <value>Không có tài khoản?</value>
+  </data>
+	<data name="LoginForm_Or_EN" xml:space="preserve">
+    <value>Or</value>
+  </data>
+	<data name="LoginForm_Or_VI" xml:space="preserve">
+    <value>Hoặc</value>
+  </data>
+	<data name="LoginForm_Register_EN" xml:space="preserve">
+    <value>Register</value>
+  </data>
+	<data name="LoginForm_Register_VI" xml:space="preserve">
+    <value>Đăng ký</value>
+  </data>
+	<data name="LoginForm_SigningIn_EN" xml:space="preserve">
+    <value>Signing in...</value>
+  </data>
+	<data name="LoginForm_SigningIn_VI" xml:space="preserve">
+    <value>Đang đăng nhập...</value>
+  </data>
+	<data name="LoginForm_Title_EN" xml:space="preserve">
+    <value>Login</value>
+  </data>
+	<data name="LoginForm_Title_VI" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+
+	<!-- ===== ForgotPasswordForm ===== -->
+	<data name="ForgotPasswordForm_Title_EN" xml:space="preserve">
+    <value>Forgot Password</value>
+  </data>
+	<data name="ForgotPasswordForm_Title_VI" xml:space="preserve">
+    <value>Quên Mật Khẩu</value>
+  </data>
+	<data name="ForgotPasswordForm_SendOtp_EN" xml:space="preserve">
+    <value>Send OTP</value>
+  </data>
+	<data name="ForgotPasswordForm_SendOtp_VI" xml:space="preserve">
+    <value>Gửi OTP</value>
+  </data>
+	<data name="ForgotPasswordForm_Sending_EN" xml:space="preserve">
+    <value>Sending OTP...</value>
+  </data>
+	<data name="ForgotPasswordForm_Sending_VI" xml:space="preserve">
+    <value>Đang gửi OTP...</value>
+  </data>
+	<data name="ForgotPasswordForm_EmailPlaceholder_EN" xml:space="preserve">
+    <value>Gmail</value>
+  </data>
+	<data name="ForgotPasswordForm_EmailPlaceholder_VI" xml:space="preserve">
+    <value>Gmail</value>
+  </data>
+	<data name="ForgotPasswordForm_Login_EN" xml:space="preserve">
+    <value>Back to Login</value>
+  </data>
+	<data name="ForgotPasswordForm_Login_VI" xml:space="preserve">
+    <value>Quay lại Đăng nhập</value>
+  </data>
+
+	<!-- ===== Messages ===== -->
+	<data name="Message_GoogleConfigMissing_EN" xml:space="preserve">
+    <value>⚠️ Google ClientId/Secret is missing in App.config.</value>
+  </data>
+	<data name="Message_GoogleConfigMissing_VI" xml:space="preserve">
+    <value>⚠️ Google ClientId/Secret chưa cấu hình trong App.config</value>
+  </data>
+	<data name="Message_GoogleSuccess_EN" xml:space="preserve">
+    <value>Google sign-in successful!</value>
+  </data>
+	<data name="Message_GoogleSuccess_VI" xml:space="preserve">
+    <value>Đăng nhập Google thành công!</value>
+  </data>
+	<data name="Message_LoginFailed_EN" xml:space="preserve">
+    <value>Login failed!</value>
+  </data>
+	<data name="Message_LoginFailed_VI" xml:space="preserve">
+    <value>Đăng nhập thất bại!</value>
+  </data>
+	<data name="Message_LoginSuccess_EN" xml:space="preserve">
+    <value>Login successful!</value>
+  </data>
+	<data name="Message_LoginSuccess_VI" xml:space="preserve">
+    <value>Đăng nhập thành công!</value>
+  </data>
+	<data name="Message_OtpSendFailed_EN" xml:space="preserve">
+    <value>Failed to send OTP!</value>
+  </data>
+	<data name="Message_OtpSendFailed_VI" xml:space="preserve">
+    <value>Gửi OTP thất bại!</value>
+  </data>
+	<data name="Message_OtpSendSuccess_EN" xml:space="preserve">
+    <value>OTP sent successfully!</value>
+  </data>
+	<data name="Message_OtpSendSuccess_VI" xml:space="preserve">
+    <value>Gửi OTP thành công!</value>
+  </data>
+
+	<!-- ===== Titles ===== -->
+	<data name="Title_Error_EN" xml:space="preserve">
+    <value>Error</value>
+  </data>
+	<data name="Title_Error_VI" xml:space="preserve">
+    <value>Lỗi</value>
+  </data>
+	<data name="Title_Success_EN" xml:space="preserve">
+    <value>Success</value>
+  </data>
+	<data name="Title_Success_VI" xml:space="preserve">
+    <value>Thành Công</value>
+  </data>
+	<data name="Title_Notification_EN" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+	<data name="Title_Notification_VI" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+	<data name="Title_ValidationError_EN" xml:space="preserve">
+    <value>Validation Error</value>
+  </data>
+	<data name="Title_ValidationError_VI" xml:space="preserve">
+    <value>Lỗi Kiểm Tra</value>
+  </data>
+	<data name="Title_VerificationRequired_EN" xml:space="preserve">
+    <value>Verification Required</value>
+  </data>
+	<data name="Title_VerificationRequired_VI" xml:space="preserve">
+    <value>Cần xác thực</value>
+  </data>
+	<data name="Title_ConnectionError_EN" xml:space="preserve">
+    <value>Connection Error</value>
+  </data>
+	<data name="Title_ConnectionError_VI" xml:space="preserve">
+    <value>Lỗi Kết Nối</value>
+  </data>
+
+	<!-- ===== Validation ===== -->
+	<data name="Validation_EmptyEmail_EN" xml:space="preserve">
+    <value>Please enter Email.</value>
+  </data>
+	<data name="Validation_EmptyEmail_VI" xml:space="preserve">
+    <value>Vui lòng nhập Email.</value>
+  </data>
+	<data name="Validation_EmptyPassword_EN" xml:space="preserve">
+    <value>Please enter Password.</value>
+  </data>
+	<data name="Validation_EmptyPassword_VI" xml:space="preserve">
+    <value>Vui lòng nhập Mật khẩu.</value>
+  </data>
+	<data name="Validation_InvalidEmail_EN" xml:space="preserve">
+    <value>Invalid email format.</value>
+  </data>
+	<data name="Validation_InvalidEmail_VI" xml:space="preserve">
+    <value>Định dạng email không hợp lệ.</value>
+  </data>
+	<data name="Validation_PasswordTooShort_EN" xml:space="preserve">
+    <value>Password must be at least 6 characters.</value>
+  </data>
+	<data name="Validation_PasswordTooShort_VI" xml:space="preserve">
+    <value>Mật khẩu tối thiểu 6 ký tự.</value>
+  </data>
+	<data name="Validation_WrongCredentials_EN" xml:space="preserve">
+    <value>Incorrect credentials. Please try again.</value>
+  </data>
+	<data name="Validation_WrongCredentials_VI" xml:space="preserve">
+    <value>Sai thông tin đăng nhập. Vui lòng thử lại.</value>
+  </data>
+
+	<!-- ===== ResetPasswordForm ===== -->
+	<data name="ResetPasswordForm_Title_EN" xml:space="preserve">
+  <value>Reset Password</value>
+</data>
+	<data name="ResetPasswordForm_Title_VI" xml:space="preserve">
+  <value>Đặt Lại Mật Khẩu</value>
+</data>
+	<data name="ResetPasswordForm_NewPassword_EN" xml:space="preserve">
+  <value>New Password</value>
+</data>
+	<data name="ResetPasswordForm_NewPassword_VI" xml:space="preserve">
+  <value>Mật khẩu mới</value>
+</data>
+	<data name="ResetPasswordForm_ConfirmPassword_EN" xml:space="preserve">
+  <value>Confirm Password</value>
+</data>
+	<data name="ResetPasswordForm_ConfirmPassword_VI" xml:space="preserve">
+  <value>Xác nhận mật khẩu</value>
+</data>
+	<data name="ResetPasswordForm_Reset_EN" xml:space="preserve">
+  <value>Reset Password</value>
+</data>
+	<data name="ResetPasswordForm_Reset_VI" xml:space="preserve">
+  <value>Đặt lại mật khẩu</value>
+</data>
+	<data name="ResetPasswordForm_Resetting_EN" xml:space="preserve">
+  <value>Resetting...</value>
+</data>
+	<data name="ResetPasswordForm_Resetting_VI" xml:space="preserve">
+  <value>Đang đặt lại...</value>
+</data>
+	<data name="ResetPasswordForm_Login_EN" xml:space="preserve">
+  <value>Back to Login</value>
+</data>
+	<data name="ResetPasswordForm_Login_VI" xml:space="preserve">
+  <value>Quay lại Đăng nhập</value>
+</data>
+
+	<!-- ===== Validation ===== -->
+	<data name="Validation_EmptyConfirmPassword_EN" xml:space="preserve">
+  <value>Please confirm your password.</value>
+</data>
+	<data name="Validation_EmptyConfirmPassword_VI" xml:space="preserve">
+  <value>Vui lòng xác nhận mật khẩu.</value>
+</data>
+	<data name="Validation_PasswordMismatch_EN" xml:space="preserve">
+  <value>Passwords do not match.</value>
+</data>
+	<data name="Validation_PasswordMismatch_VI" xml:space="preserve">
+  <value>Mật khẩu không khớp.</value>
+</data>
+
+	<!-- ===== Messages ===== -->
+	<data name="Message_ResetPasswordSuccess_EN" xml:space="preserve">
+  <value>Password reset successfully!</value>
+</data>
+	<data name="Message_ResetPasswordSuccess_VI" xml:space="preserve">
+  <value>Đặt lại mật khẩu thành công!</value>
+</data>
+	<data name="Message_ResetPasswordFailed_EN" xml:space="preserve">
+  <value>Failed to reset password!</value>
+</data>
+	<data name="Message_ResetPasswordFailed_VI" xml:space="preserve">
+  <value>Đặt lại mật khẩu thất bại!</value>
+</data>
+	<!-- ===== VerifyOtpForm ===== -->
+	<data name="VerifyOtpForm_Title_EN" xml:space="preserve">
+  <value>Verify OTP</value>
+</data>
+	<data name="VerifyOtpForm_Title_VI" xml:space="preserve">
+  <value>Xác Thực OTP</value>
+</data>
+	<data name="VerifyOtpForm_OtpPlaceholder_EN" xml:space="preserve">
+  <value>Enter 6-digit OTP</value>
+</data>
+	<data name="VerifyOtpForm_OtpPlaceholder_VI" xml:space="preserve">
+  <value>Nhập mã OTP 6 số</value>
+</data>
+	<data name="VerifyOtpForm_Verify_EN" xml:space="preserve">
+  <value>Verify</value>
+</data>
+	<data name="VerifyOtpForm_Verify_VI" xml:space="preserve">
+  <value>Xác thực</value>
+</data>
+	<data name="VerifyOtpForm_Verifying_EN" xml:space="preserve">
+  <value>Verifying...</value>
+</data>
+	<data name="VerifyOtpForm_Verifying_VI" xml:space="preserve">
+  <value>Đang xác thực...</value>
+</data>
+	<data name="VerifyOtpForm_Resend_EN" xml:space="preserve">
+  <value>Resend OTP</value>
+</data>
+	<data name="VerifyOtpForm_Resend_VI" xml:space="preserve">
+  <value>Gửi lại OTP</value>
+</data>
+	<data name="VerifyOtpForm_Sending_EN" xml:space="preserve">
+  <value>Sending...</value>
+</data>
+	<data name="VerifyOtpForm_Sending_VI" xml:space="preserve">
+  <value>Đang gửi...</value>
+</data>
+
+	<!-- ===== Validation ===== -->
+	<data name="Validation_EmptyOtp_EN" xml:space="preserve">
+  <value>Please enter OTP code.</value>
+</data>
+	<data name="Validation_EmptyOtp_VI" xml:space="preserve">
+  <value>Vui lòng nhập mã OTP.</value>
+</data>
+	<data name="Validation_InvalidOtpLength_EN" xml:space="preserve">
+  <value>OTP must be 6 digits.</value>
+</data>
+	<data name="Validation_InvalidOtpLength_VI" xml:space="preserve">
+  <value>Mã OTP phải có 6 số.</value>
+</data>
+	<data name="Validation_InvalidOtp_EN" xml:space="preserve">
+  <value>Invalid or expired OTP.</value>
+</data>
+	<data name="Validation_InvalidOtp_VI" xml:space="preserve">
+  <value>Mã OTP không hợp lệ hoặc đã hết hạn.</value>
+</data>
+
+	<!-- ===== Messages ===== -->
+	<data name="Message_RegistrationSuccess_EN" xml:space="preserve">
+  <value>Registration completed successfully!</value>
+</data>
+	<data name="Message_RegistrationSuccess_VI" xml:space="preserve">
+  <value>Đăng ký thành công!</value>
+</data>
+	<data name="Message_NoResetToken_EN" xml:space="preserve">
+  <value>No reset token received from server.</value>
+</data>
+	<data name="Message_NoResetToken_VI" xml:space="preserve">
+  <value>Không nhận được reset token từ máy chủ.</value>
+</data>
+	<data name="Message_OtpVerified_EN" xml:space="preserve">
+  <value>OTP verified successfully!</value>
+</data>
+	<data name="Message_OtpVerified_VI" xml:space="preserve">
+  <value>Xác thực OTP thành công!</value>
+</data>
+	<data name="Message_OtpVerifyFailed_EN" xml:space="preserve">
+  <value>Failed to verify OTP!</value>
+</data>
+	<data name="Message_OtpVerifyFailed_VI" xml:space="preserve">
+  <value>Xác thực OTP thất bại!</value>
+</data>
+	<data name="Message_OtpResent_EN" xml:space="preserve">
+  <value>OTP has been resent to your email.</value>
+</data>
+	<data name="Message_OtpResent_VI" xml:space="preserve">
+  <value>Đã gửi lại OTP vào email của bạn.</value>
+</data>
+	<data name="Message_OtpResendFailed_EN" xml:space="preserve">
+  <value>Failed to resend OTP!</value>
+</data>
+	<data name="Message_OtpResendFailed_VI" xml:space="preserve">
+  <value>Gửi lại OTP thất bại!</value>
+</data>
+</root>

@@ -1,0 +1,13 @@
+.vs/
+bin/
+obj/
+packages/
+*.user
+*.suo
+*.db
+*.log
+*.pma
+*.vsidxbin/
+obj/
+*.user
+.vs/
