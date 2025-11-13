@@ -49,7 +49,11 @@ namespace GestPipe.Backend.Services.Implementation
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
         {
-            if (!await IsEmailUniqueAsync(registerDto.Email))
+            // ✅ Chuẩn hóa email
+            var normalizedEmail = registerDto.Email.Trim().ToLower();
+            
+            // ✅ Sử dụng normalizedEmail để kiểm tra
+            if (!await IsEmailUniqueAsync(normalizedEmail))
             {
                 return new AuthResponseDto
                 {
@@ -60,6 +64,7 @@ namespace GestPipe.Backend.Services.Implementation
 
             // ✅ Sử dụng AutoMapper để map RegisterDto → User
             var user = _mapper.Map<User>(registerDto);
+            user.Email = normalizedEmail; // ✅ Đảm bảo email đã chuẩn hóa
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password);
 
             await _usersCollection.InsertOneAsync(user);
@@ -98,7 +103,11 @@ namespace GestPipe.Backend.Services.Implementation
 
         public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto, string ipAddress, string userAgent)
         {
-            var user = await GetUserByEmailAsync(loginDto.Email);
+            // ✅ Chuẩn hóa email
+            var normalizedEmail = loginDto.Email.Trim().ToLower();
+            
+            // ✅ Sử dụng normalizedEmail để tìm user
+            var user = await GetUserByEmailAsync(normalizedEmail);
             if (user == null)
             {
                 return new AuthResponseDto { Success = false, Message = "Invalid email or password." };
@@ -154,13 +163,18 @@ namespace GestPipe.Backend.Services.Implementation
 
         public async Task<AuthResponseDto> VerifyOtpAsync(VerifyOtpDto verifyOtpDto)
         {
-            var isValid = await _otpService.ValidateOtpAsync(verifyOtpDto.Email, verifyOtpDto.OtpCode, "registration");
+            // ✅ Chuẩn hóa email
+            var normalizedEmail = verifyOtpDto.Email.Trim().ToLower();
+            
+            // ✅ Sử dụng normalizedEmail để validate OTP
+            var isValid = await _otpService.ValidateOtpAsync(normalizedEmail, verifyOtpDto.OtpCode, "registration");
             if (!isValid)
             {
                 return new AuthResponseDto { Success = false, Message = "Invalid or expired OTP code." };
             }
 
-            var user = await GetUserByEmailAsync(verifyOtpDto.Email);
+            // ✅ Sử dụng normalizedEmail để tìm user
+            var user = await GetUserByEmailAsync(normalizedEmail);
             if (user == null)
             {
                 return new AuthResponseDto { Success = false, Message = "User not found." };
@@ -172,7 +186,7 @@ namespace GestPipe.Backend.Services.Implementation
 
             await _usersCollection.UpdateOneAsync(u => u.Id == user.Id, update);
 
-            await _otpServiceMarkUsedSafe(verifyOtpDto.Email, verifyOtpDto.OtpCode);
+            await _otpServiceMarkUsedSafe(normalizedEmail, verifyOtpDto.OtpCode);
 
             try
             {
@@ -205,13 +219,19 @@ namespace GestPipe.Backend.Services.Implementation
                 };
 
                 var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
-
-                var user = await _usersCollection.Find(u => u.Email == payload.Email).FirstOrDefaultAsync();
+                
+                // ✅ Chuẩn hóa email từ Google
+                var normalizedEmail = payload.Email.Trim().ToLower();
+                
+                // ✅ Sử dụng normalizedEmail để tìm user
+                var user = await _usersCollection.Find(u => u.Email == normalizedEmail).FirstOrDefaultAsync();
 
                 if (user == null)
                 {
                     // ✅ Sử dụng AutoMapper để map Google Payload → User
                     user = _mapper.Map<User>(payload);
+                    // AutoMapper đã chuẩn hóa email rồi, nhưng đảm bảo lại
+                    user.Email = normalizedEmail;
 
                     await _usersCollection.InsertOneAsync(user);
 
@@ -270,13 +290,18 @@ namespace GestPipe.Backend.Services.Implementation
 
         public async Task<AuthResponseDto> ForgotPasswordAsync(string email)
         {
-            var user = await GetUserByEmailAsync(email);
+            // ✅ Chuẩn hóa email
+            var normalizedEmail = email.Trim().ToLower();
+            
+            // ✅ Sử dụng normalizedEmail để tìm user
+            var user = await GetUserByEmailAsync(normalizedEmail);
             if (user == null)
             {
                 return new AuthResponseDto { Success = false, Message = "No account found with this email." };
             }
 
-            if (await _otpService.IsOtpLimitExceededAsync(email))
+            // ✅ Sử dụng normalizedEmail để kiểm tra limit
+            if (await _otpService.IsOtpLimitExceededAsync(normalizedEmail))
             {
                 return new AuthResponseDto
                 {
@@ -311,7 +336,11 @@ namespace GestPipe.Backend.Services.Implementation
 
         public async Task<AuthResponseDto> ResetPasswordAsync(ResetPasswordDto resetDto)
         {
-            var user = await GetUserByEmailAsync(resetDto.Email);
+            // ✅ Chuẩn hóa email
+            var normalizedEmail = resetDto.Email.Trim().ToLower();
+            
+            // ✅ Sử dụng normalizedEmail để tìm user
+            var user = await GetUserByEmailAsync(normalizedEmail);
             if (user == null)
             {
                 return new AuthResponseDto { Success = false, Message = "User does not exist." };
@@ -356,13 +385,21 @@ namespace GestPipe.Backend.Services.Implementation
 
         public async Task<bool> IsEmailUniqueAsync(string email)
         {
-            var existingUser = await _usersCollection.Find(u => u.Email == email).FirstOrDefaultAsync();
+            // ✅ Chuẩn hóa email
+            var normalizedEmail = email.Trim().ToLower();
+            
+            // ✅ Sử dụng normalizedEmail để query
+            var existingUser = await _usersCollection.Find(u => u.Email == normalizedEmail).FirstOrDefaultAsync();
             return existingUser == null;
         }
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
-            return await _usersCollection.Find(u => u.Email == email).FirstOrDefaultAsync();
+            // ✅ Chuẩn hóa email
+            var normalizedEmail = email.Trim().ToLower();
+            
+            // ✅ Sử dụng normalizedEmail để query
+            return await _usersCollection.Find(u => u.Email == normalizedEmail).FirstOrDefaultAsync();
         }
 
         public async Task<User> GetUserByIdAsync(string userId)

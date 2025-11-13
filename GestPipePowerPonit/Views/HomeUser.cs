@@ -1,4 +1,6 @@
 ﻿using GestPipePowerPonit.I18n;
+using GestPipePowerPonit.Services;
+using GestPipePowerPonit.Views.Auth;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -11,8 +13,10 @@ namespace GestPipePowerPonit
         private const int BUTTON_SPACING = 40;
         private int buttonBottomMargin;
         private readonly ApiClient _apiClient;
+        private readonly AuthService _authService;
         private readonly string _currentUserId;
         private string _currentCultureCode = "en-US";
+
         public HomeUser(string currentUserId)
         {
             InitializeComponent();
@@ -20,22 +24,27 @@ namespace GestPipePowerPonit
             buttonBottomMargin = pnlMain.Height - btnTraining.Bottom;
             this.pnlMain.Resize += new System.EventHandler(this.guna2Panel2_Resize);
             CenterButtons();
+
             // Event handlers
             btnPresent.Click += BtnPresent_Click;
             btnTraining.Click += BtnTraining_Click;
             btnGestureControl.Click += BtnGestureControl_Click;
+
             _currentUserId = currentUserId;
             _apiClient = new ApiClient("https://localhost:7219");
+            _authService = new AuthService();
 
             this.Load += HomeUser_Load;
             btnLanguageEN.Click += async (s, e) => await ChangeLanguageAsync("en-US");
             btnLanguageVN.Click += async (s, e) => await ChangeLanguageAsync("vi-VN");
+
             CultureManager.CultureChanged += (s, e) =>
             {
                 ResourceHelper.SetCulture(CultureManager.CurrentCultureCode, this);
                 ApplyResourceToControls();
             };
         }
+
         private async void HomeUser_Load(object sender, EventArgs e)
         {
             await LoadUserAndApplyLanguageAsync();
@@ -43,37 +52,24 @@ namespace GestPipePowerPonit
 
         private void CenterButtons()
         {
-            // Lấy chiều rộng và chiều cao hiện tại của Panel chứa
             int panelWidth = pnlMain.ClientSize.Width;
             int panelHeight = pnlMain.ClientSize.Height;
-
-            // Tính tổng chiều rộng của 2 nút và khoảng cách
             int totalWidth = btnTraining.Width + btnPresent.Width + BUTTON_SPACING;
-
-            // Tính vị trí X của nút đầu tiên (căn giữa)
             int startX = (panelWidth - totalWidth) / 2;
-
-            // Tính vị trí Y (giữ nguyên khoảng cách so với đáy panel)
             int buttonY = panelHeight - btnTraining.Height - buttonBottomMargin;
 
-            // Đặt lại vị trí cho nút Training
             btnTraining.Location = new Point(startX, buttonY);
-
-            // Đặt lại vị trí cho nút Present
             btnPresent.Location = new Point(startX + btnTraining.Width + BUTTON_SPACING, buttonY);
         }
 
         private void guna2Panel2_Resize(object sender, EventArgs e)
         {
-            // Gọi phương thức căn giữa mỗi khi kích thước Panel thay đổi
             CenterButtons();
         }
 
         private void BtnPresent_Click(object sender, EventArgs e)
         {
-            // Mở Form1 để present
             Form1 form1 = new Form1(this);
-            //form1.ApplyLanguage(_currentCultureCode); // Gọi hàm đổi ngôn ngữ cho Form1
             form1.Show();
             this.Hide();
         }
@@ -88,7 +84,6 @@ namespace GestPipePowerPonit
 
         private void BtnGestureControl_Click(object sender, EventArgs e)
         {
-            // Mở FormCustomGesture
             FormDefaultGesture defaultGesture = new FormDefaultGesture(this);
             defaultGesture.Show();
             this.Hide();
@@ -115,7 +110,7 @@ namespace GestPipePowerPonit
             try
             {
                 await _apiClient.SetUserLanguageAsync(_currentUserId, cultureCode);
-                _currentCultureCode = cultureCode; // Cập nhật biến khi đổi
+                _currentCultureCode = cultureCode;
                 CultureManager.CurrentCultureCode = _currentCultureCode;
                 ResourceHelper.SetCulture(_currentCultureCode, this);
                 ApplyResourceToControls();
@@ -125,6 +120,7 @@ namespace GestPipePowerPonit
                 MessageBox.Show("Không thể đổi ngôn ngữ: " + ex.Message + "\n" + ex.StackTrace);
             }
         }
+
         private void ApplyResourceToControls()
         {
             btnHome.Text = Properties.Resources.Btn_Home;
@@ -137,12 +133,10 @@ namespace GestPipePowerPonit
             lblWelcome.Text = Properties.Resources.Home_Welcome;
             lblSubtitle.Text = Properties.Resources.LblSubtitle;
             btnPresentation.Text = Properties.Resources.Btn_Present;
-            // ... thêm các label/button khác nếu có
         }
 
         private void btnCustomGesture_Click(object sender, EventArgs e)
         {
-            //FormUserGesture usergestureForm = new FormUserGesture(this, _currentUserId);
             FormUserGesture usergestureForm = new FormUserGesture(this);
             usergestureForm.Show();
             this.Hide();
@@ -151,7 +145,6 @@ namespace GestPipePowerPonit
         private void btnPresentation_Click(object sender, EventArgs e)
         {
             Form1 form1 = new Form1(this);
-            //form1.ApplyLanguage(_currentCultureCode); // Gọi hàm đổi ngôn ngữ cho Form1
             form1.Show();
             this.Hide();
         }
@@ -159,6 +152,106 @@ namespace GestPipePowerPonit
         private void guna2ControlBoxClose_Click(object sender, EventArgs e)
         {
             AppSettings.ExitAll();
+        }
+
+        // ✅ LOGOUT BUTTON IMPLEMENTATION
+        private async void btnLogout_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // ✅ Hiển thị confirm dialog
+                var confirmMessage = (_currentCultureCode == "vi-VN")
+                    ? "Bạn có chắc chắn muốn đăng xuất?"
+                    : "Are you sure you want to logout?";
+
+                var confirmTitle = (_currentCultureCode == "vi-VN")
+                    ? "Xác nhận"
+                    : "Confirmation";
+
+                var result = MessageBox.Show(
+                    confirmMessage,
+                    confirmTitle,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                // ✅ Disable button để tránh click nhiều lần
+                btnLogout.Enabled = false;
+
+                // ✅ Gọi API logout
+                var response = await _authService.LogoutAsync();
+
+                if (response?.Success == true)
+                {
+                    // ✅ Hiển thị thông báo thành công
+                    var successMessage = (_currentCultureCode == "vi-VN")
+                        ? "Đăng xuất thành công!"
+                        : "Logged out successfully!";
+
+                    var successTitle = (_currentCultureCode == "vi-VN")
+                        ? "Thành công"
+                        : "Success";
+
+                    MessageBox.Show(
+                        successMessage,
+                        successTitle,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+
+                    // ✅ Đóng tất cả forms và mở LoginForm
+                    this.Hide();
+
+                    var loginForm = new LoginForm();
+                    loginForm.FormClosed += (s, args) => Application.Exit();
+                    loginForm.Show();
+
+                    // ✅ Dispose HomeUser form
+                    this.Dispose();
+                }
+                else
+                {
+                    // ✅ Hiển thị lỗi từ backend
+                    var errorMessage = response?.Message ??
+                        ((_currentCultureCode == "vi-VN") ? "Đăng xuất thất bại." : "Failed to logout.");
+
+                    var errorTitle = (_currentCultureCode == "vi-VN") ? "Lỗi" : "Error";
+
+                    MessageBox.Show(
+                        errorMessage,
+                        errorTitle,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+
+                    btnLogout.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // ✅ Hiển thị lỗi kết nối
+                var errorMessage = (_currentCultureCode == "vi-VN")
+                    ? $"Lỗi khi đăng xuất: {ex.Message}"
+                    : $"Error during logout: {ex.Message}";
+
+                var errorTitle = (_currentCultureCode == "vi-VN")
+                    ? "Lỗi Kết Nối"
+                    : "Connection Error";
+
+                MessageBox.Show(
+                    errorMessage,
+                    errorTitle,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                btnLogout.Enabled = true;
+            }
         }
     }
 }

@@ -107,6 +107,8 @@ namespace GestPipePowerPonit
             btnZoomInSlide.Visible = false;
             btnZoomOutSlide.Visible = false;
 
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+
             this.KeyPreview = true;
             this.KeyDown += Form1_KeyDown;
             autoSlideTimer = new System.Windows.Forms.Timer();

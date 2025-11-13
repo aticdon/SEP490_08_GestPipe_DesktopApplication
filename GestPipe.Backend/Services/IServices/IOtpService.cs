@@ -9,5 +9,6 @@ namespace GestPipe.Backend.Services.Interfaces
         Task<bool> IsOtpLimitExceededAsync(string email);
         Task<bool> MarkOtpAsUsedAsync(string email, string otpCode);
         Task<bool> MarkOtpAsVerifiedAsync(string email, string otpCode);
+        Task<bool> DeleteOtpAsync(string email); // Method mới để xóa OTP
     }
 }
