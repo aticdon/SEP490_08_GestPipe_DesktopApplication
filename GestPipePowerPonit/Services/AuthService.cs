@@ -271,6 +271,7 @@ namespace GestPipePowerPonit.Services
                     Properties.Settings.Default.UserEmail = response.Email;
                 }
 
+                // ✅ SỬA: Lưu giá trị rememberMe thật sự
                 Properties.Settings.Default.RememberMe = rememberMe;
                 Properties.Settings.Default.Save();
 
@@ -283,7 +284,10 @@ namespace GestPipePowerPonit.Services
             Properties.Settings.Default.AuthToken = string.Empty;
             Properties.Settings.Default.UserId = string.Empty;
             Properties.Settings.Default.UserEmail = string.Empty;
-            Properties.Settings.Default.RememberMe = false;
+
+            // ✅ KHÔNG XÓA SavedEmail và RememberMe khi logout
+            // Chỉ xóa khi user uncheck "Remember Me" trong LoginForm
+
             Properties.Settings.Default.Save();
 
             _apiService.ClearAuthToken();
