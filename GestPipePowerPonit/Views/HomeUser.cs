@@ -22,7 +22,7 @@ namespace GestPipePowerPonit
             CenterButtons();
             // Event handlers
             btnPresent.Click += BtnPresent_Click;
-            btnTraining.Click += BtnTraining_Click;
+            //btnTraining.Click += BtnTraining_Click;
             btnGestureControl.Click += BtnGestureControl_Click;
             _currentUserId = currentUserId;
             _apiClient = new ApiClient("https://localhost:7219");
@@ -78,13 +78,13 @@ namespace GestPipePowerPonit
             this.Hide();
         }
 
-        private void BtnTraining_Click(object sender, EventArgs e)
-        {
-            FormCustomGesture customForm = new FormCustomGesture(this);
-            customForm.Show();
-            this.Hide();
-            MessageBox.Show("Training feature coming soon!");
-        }
+        //private void BtnTraining_Click(object sender, EventArgs e)
+        //{
+        //    FormCustomGesture customForm = new FormCustomGesture(this);
+        //    customForm.Show();
+        //    this.Hide();
+        //    MessageBox.Show("Training feature coming soon!");
+        //}
 
         private void BtnGestureControl_Click(object sender, EventArgs e)
         {

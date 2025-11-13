@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-
-namespace GestPipePowerPonit
+﻿namespace GestPipePowerPonit
 {
     partial class FormCustomGesture
     {
@@ -31,103 +28,78 @@ namespace GestPipePowerPonit
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCustomGesture));
-            this.txtGestureName = new System.Windows.Forms.TextBox();
-            this.btnStart = new System.Windows.Forms.Button();
-            this.panelImage = new System.Windows.Forms.Panel();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.pictureBoxCustom = new System.Windows.Forms.PictureBox();
-            this.lblState = new System.Windows.Forms.Label();
-            this.lblPose = new System.Windows.Forms.Label();
-            this.lblSaved = new System.Windows.Forms.Label();
-            this.panelImage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCustom)).BeginInit();
+            this.lblCustomInfo = new System.Windows.Forms.Label();
+            this.lblCustomCount = new System.Windows.Forms.Label();
+            this.lblCustomStatus = new System.Windows.Forms.Label();
+            this.pictureBoxCustomCamera = new System.Windows.Forms.PictureBox();
+            this.btnHome = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCustomCamera)).BeginInit();
             this.SuspendLayout();
             // 
-            // txtGestureName
+            // lblCustomInfo
             // 
-            this.txtGestureName.Location = new System.Drawing.Point(12, 12);
-            this.txtGestureName.Name = "txtGestureName";
-            this.txtGestureName.Size = new System.Drawing.Size(699, 22);
-            this.txtGestureName.TabIndex = 0;
+            this.lblCustomInfo.AutoSize = true;
+            this.lblCustomInfo.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblCustomInfo.Location = new System.Drawing.Point(30, 20);
+            this.lblCustomInfo.Name = "lblCustomInfo";
+            this.lblCustomInfo.Size = new System.Drawing.Size(106, 20);
+            this.lblCustomInfo.TabIndex = 0;
+            this.lblCustomInfo.Text = "User/Pose info";
             // 
-            // btnStart
+            // lblCustomCount
             // 
-            this.btnStart.Location = new System.Drawing.Point(737, 12);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 1;
-            this.btnStart.Text = "Start";
+            this.lblCustomCount.AutoSize = true;
+            this.lblCustomCount.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblCustomCount.Location = new System.Drawing.Point(30, 50);
+            this.lblCustomCount.Name = "lblCustomCount";
+            this.lblCustomCount.Size = new System.Drawing.Size(111, 20);
+            this.lblCustomCount.TabIndex = 1;
+            this.lblCustomCount.Text = "Đã ghi: 0/5 (mẫu)";
             // 
-            // panelImage
+            // lblCustomStatus
             // 
-            this.panelImage.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panelImage.Controls.Add(this.btnClose);
-            this.panelImage.Controls.Add(this.pictureBoxCustom);
-            this.panelImage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelImage.Location = new System.Drawing.Point(0, 0);
-            this.panelImage.Name = "panelImage";
-            this.panelImage.Size = new System.Drawing.Size(1280, 1000);
-            this.panelImage.TabIndex = 5;
+            this.lblCustomStatus.AutoSize = true;
+            this.lblCustomStatus.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lblCustomStatus.Location = new System.Drawing.Point(30, 80);
+            this.lblCustomStatus.Name = "lblCustomStatus";
+            this.lblCustomStatus.Size = new System.Drawing.Size(97, 20);
+            this.lblCustomStatus.TabIndex = 2;
+            this.lblCustomStatus.Text = "Trạng thái: ...";
             // 
-            // btnClose
+            // pictureBoxCustomCamera
             // 
-            this.btnClose.Location = new System.Drawing.Point(818, 11);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 24);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.pictureBoxCustomCamera.BackColor = System.Drawing.Color.Silver;
+            this.pictureBoxCustomCamera.Location = new System.Drawing.Point(30, 120);
+            this.pictureBoxCustomCamera.Name = "pictureBoxCustomCamera";
+            this.pictureBoxCustomCamera.Size = new System.Drawing.Size(640, 480);
+            this.pictureBoxCustomCamera.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxCustomCamera.TabIndex = 3;
+            this.pictureBoxCustomCamera.TabStop = false;
             // 
-            // pictureBoxCustom
+            // btnHome
             // 
-            this.pictureBoxCustom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBoxCustom.Location = new System.Drawing.Point(0, 0);
-            this.pictureBoxCustom.Name = "pictureBoxCustom";
-            this.pictureBoxCustom.Size = new System.Drawing.Size(1280, 1000);
-            this.pictureBoxCustom.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxCustom.TabIndex = 0;
-            this.pictureBoxCustom.TabStop = false;
-            // 
-            // lblState
-            // 
-            this.lblState.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.lblState.Location = new System.Drawing.Point(12, 50);
-            this.lblState.Name = "lblState";
-            this.lblState.Size = new System.Drawing.Size(400, 30);
-            this.lblState.TabIndex = 2;
-            // 
-            // lblPose
-            // 
-            this.lblPose.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.lblPose.Location = new System.Drawing.Point(12, 85);
-            this.lblPose.Name = "lblPose";
-            this.lblPose.Size = new System.Drawing.Size(400, 30);
-            this.lblPose.TabIndex = 3;
-            // 
-            // lblSaved
-            // 
-            this.lblSaved.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.lblSaved.Location = new System.Drawing.Point(12, 120);
-            this.lblSaved.Name = "lblSaved";
-            this.lblSaved.Size = new System.Drawing.Size(400, 30);
-            this.lblSaved.TabIndex = 4;
+            this.btnHome.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnHome.Location = new System.Drawing.Point(570, 30);
+            this.btnHome.Name = "btnHome";
+            this.btnHome.Size = new System.Drawing.Size(100, 40);
+            this.btnHome.TabIndex = 4;
+            this.btnHome.Text = "Về trang chủ";
+            this.btnHome.UseVisualStyleBackColor = true;
+            this.btnHome.Click += new System.EventHandler(this.btnHome_Click);
             // 
             // FormCustomGesture
             // 
-            this.ClientSize = new System.Drawing.Size(1280, 1000);
-            this.Controls.Add(this.txtGestureName);
-            this.Controls.Add(this.btnStart);
-            this.Controls.Add(this.lblState);
-            this.Controls.Add(this.lblPose);
-            this.Controls.Add(this.lblSaved);
-            this.Controls.Add(this.panelImage);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(720, 640);
+            this.Controls.Add(this.btnHome);
+            this.Controls.Add(this.pictureBoxCustomCamera);
+            this.Controls.Add(this.lblCustomStatus);
+            this.Controls.Add(this.lblCustomCount);
+            this.Controls.Add(this.lblCustomInfo);
             this.Name = "FormCustomGesture";
-            this.Text = "FormCustomGesture";
-            this.panelImage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCustom)).EndInit();
+            this.Text = "Custom Gesture Collector";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCustomCamera)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -135,13 +107,10 @@ namespace GestPipePowerPonit
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtGestureName;
-        private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.PictureBox pictureBoxCustom;
-        private System.Windows.Forms.Panel panelImage;
-        private Label lblState;
-        private Label lblPose;
-        private Label lblSaved;
-        private Button btnClose;
+        private System.Windows.Forms.Label lblCustomInfo;
+        private System.Windows.Forms.Label lblCustomCount;
+        private System.Windows.Forms.Label lblCustomStatus;
+        private System.Windows.Forms.PictureBox pictureBoxCustomCamera;
+        private System.Windows.Forms.Button btnHome;
     }
 }
