@@ -397,7 +397,9 @@
     <Compile Include="Views\FormTrainingGesture.Designer.cs">
       <DependentUpon>FormTrainingGesture.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Languages\LoginFormStrings.resx" />
+    <EmbeddedResource Include="Languages\LoginFormStrings.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Languages\RegisterFormStrings.resx" />
     <EmbeddedResource Include="Views\Auth\ForgotPasswordForm.resx">
       <DependentUpon>ForgotPasswordForm.cs</DependentUpon>

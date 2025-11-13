@@ -71,9 +71,9 @@
             this.pnlSidebar.Controls.Add(this.pictureBoxLogo);
             this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
-            this.pnlSidebar.Margin = new System.Windows.Forms.Padding(4);
+            this.pnlSidebar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pnlSidebar.Name = "pnlSidebar";
-            this.pnlSidebar.Size = new System.Drawing.Size(267, 768);
+            this.pnlSidebar.Size = new System.Drawing.Size(300, 960);
             this.pnlSidebar.TabIndex = 0;
             // 
             // btnPresentation
@@ -89,10 +89,10 @@
             this.btnPresentation.Image = global::GestPipePowerPonit.Properties.Resources.icon_search;
             this.btnPresentation.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnPresentation.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnPresentation.Location = new System.Drawing.Point(16, 493);
-            this.btnPresentation.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPresentation.Location = new System.Drawing.Point(18, 616);
+            this.btnPresentation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPresentation.Name = "btnPresentation";
-            this.btnPresentation.Size = new System.Drawing.Size(233, 55);
+            this.btnPresentation.Size = new System.Drawing.Size(262, 69);
             this.btnPresentation.TabIndex = 10;
             this.btnPresentation.Text = "Presentation";
             this.btnPresentation.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -111,10 +111,10 @@
             this.btnCustomeGesture.Image = global::GestPipePowerPonit.Properties.Resources.icon_add;
             this.btnCustomeGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnCustomeGesture.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnCustomeGesture.Location = new System.Drawing.Point(16, 419);
-            this.btnCustomeGesture.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCustomeGesture.Location = new System.Drawing.Point(18, 524);
+            this.btnCustomeGesture.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCustomeGesture.Name = "btnCustomeGesture";
-            this.btnCustomeGesture.Size = new System.Drawing.Size(233, 55);
+            this.btnCustomeGesture.Size = new System.Drawing.Size(262, 69);
             this.btnCustomeGesture.TabIndex = 6;
             this.btnCustomeGesture.Text = "CustomGesture";
             this.btnCustomeGesture.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -125,10 +125,10 @@
             this.pnlFooter.Controls.Add(this.btnLanguageEN);
             this.pnlFooter.Controls.Add(this.btnLanguageVN);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlFooter.Location = new System.Drawing.Point(0, 706);
-            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4);
+            this.pnlFooter.Location = new System.Drawing.Point(0, 882);
+            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pnlFooter.Name = "pnlFooter";
-            this.pnlFooter.Size = new System.Drawing.Size(267, 62);
+            this.pnlFooter.Size = new System.Drawing.Size(300, 78);
             this.pnlFooter.TabIndex = 5;
             // 
             // btnLanguageEN
@@ -143,10 +143,10 @@
             this.btnLanguageEN.ForeColor = System.Drawing.Color.White;
             this.btnLanguageEN.Image = global::GestPipePowerPonit.Properties.Resources.English;
             this.btnLanguageEN.ImageSize = new System.Drawing.Size(24, 16);
-            this.btnLanguageEN.Location = new System.Drawing.Point(71, 12);
-            this.btnLanguageEN.Margin = new System.Windows.Forms.Padding(4);
+            this.btnLanguageEN.Location = new System.Drawing.Point(80, 15);
+            this.btnLanguageEN.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLanguageEN.Name = "btnLanguageEN";
-            this.btnLanguageEN.Size = new System.Drawing.Size(47, 37);
+            this.btnLanguageEN.Size = new System.Drawing.Size(53, 46);
             this.btnLanguageEN.TabIndex = 1;
             // 
             // btnLanguageVN
@@ -161,10 +161,10 @@
             this.btnLanguageVN.ForeColor = System.Drawing.Color.White;
             this.btnLanguageVN.Image = global::GestPipePowerPonit.Properties.Resources.Vietnamese;
             this.btnLanguageVN.ImageSize = new System.Drawing.Size(24, 16);
-            this.btnLanguageVN.Location = new System.Drawing.Point(16, 12);
-            this.btnLanguageVN.Margin = new System.Windows.Forms.Padding(4);
+            this.btnLanguageVN.Location = new System.Drawing.Point(18, 15);
+            this.btnLanguageVN.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLanguageVN.Name = "btnLanguageVN";
-            this.btnLanguageVN.Size = new System.Drawing.Size(47, 37);
+            this.btnLanguageVN.Size = new System.Drawing.Size(53, 46);
             this.btnLanguageVN.TabIndex = 0;
             // 
             // btnInstruction
@@ -180,10 +180,10 @@
             this.btnInstruction.Image = global::GestPipePowerPonit.Properties.Resources.icon_instruction;
             this.btnInstruction.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnInstruction.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnInstruction.Location = new System.Drawing.Point(16, 345);
-            this.btnInstruction.Margin = new System.Windows.Forms.Padding(4);
+            this.btnInstruction.Location = new System.Drawing.Point(18, 431);
+            this.btnInstruction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnInstruction.Name = "btnInstruction";
-            this.btnInstruction.Size = new System.Drawing.Size(233, 55);
+            this.btnInstruction.Size = new System.Drawing.Size(262, 69);
             this.btnInstruction.TabIndex = 4;
             this.btnInstruction.Text = "Instruction";
             this.btnInstruction.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -201,10 +201,10 @@
             this.btnVersion.Image = global::GestPipePowerPonit.Properties.Resources.icon_version;
             this.btnVersion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnVersion.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnVersion.Location = new System.Drawing.Point(16, 271);
-            this.btnVersion.Margin = new System.Windows.Forms.Padding(4);
+            this.btnVersion.Location = new System.Drawing.Point(18, 339);
+            this.btnVersion.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnVersion.Name = "btnVersion";
-            this.btnVersion.Size = new System.Drawing.Size(233, 55);
+            this.btnVersion.Size = new System.Drawing.Size(262, 69);
             this.btnVersion.TabIndex = 3;
             this.btnVersion.Text = "Version";
             this.btnVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -222,10 +222,10 @@
             this.btnGestureControl.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
             this.btnGestureControl.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnGestureControl.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnGestureControl.Location = new System.Drawing.Point(16, 197);
-            this.btnGestureControl.Margin = new System.Windows.Forms.Padding(4);
+            this.btnGestureControl.Location = new System.Drawing.Point(18, 246);
+            this.btnGestureControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnGestureControl.Name = "btnGestureControl";
-            this.btnGestureControl.Size = new System.Drawing.Size(233, 55);
+            this.btnGestureControl.Size = new System.Drawing.Size(262, 69);
             this.btnGestureControl.TabIndex = 2;
             this.btnGestureControl.Text = "Gesture Control";
             this.btnGestureControl.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -243,10 +243,10 @@
             this.btnHome.Image = global::GestPipePowerPonit.Properties.Resources.icon_home;
             this.btnHome.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnHome.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnHome.Location = new System.Drawing.Point(16, 123);
-            this.btnHome.Margin = new System.Windows.Forms.Padding(4);
+            this.btnHome.Location = new System.Drawing.Point(18, 154);
+            this.btnHome.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnHome.Name = "btnHome";
-            this.btnHome.Size = new System.Drawing.Size(233, 55);
+            this.btnHome.Size = new System.Drawing.Size(262, 69);
             this.btnHome.TabIndex = 1;
             this.btnHome.Text = "Home";
             this.btnHome.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -254,10 +254,10 @@
             // pictureBoxLogo
             // 
             this.pictureBoxLogo.Image = global::GestPipePowerPonit.Properties.Resources.Logo;
-            this.pictureBoxLogo.Location = new System.Drawing.Point(16, 15);
-            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBoxLogo.Location = new System.Drawing.Point(18, 19);
+            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
-            this.pictureBoxLogo.Size = new System.Drawing.Size(233, 74);
+            this.pictureBoxLogo.Size = new System.Drawing.Size(262, 92);
             this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxLogo.TabIndex = 0;
             this.pictureBoxLogo.TabStop = false;
@@ -272,9 +272,10 @@
             this.pnlHeader.Controls.Add(this.guna2ControlBoxMinimize);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.FillColor = System.Drawing.Color.Black;
-            this.pnlHeader.Location = new System.Drawing.Point(267, 0);
+            this.pnlHeader.Location = new System.Drawing.Point(300, 0);
+            this.pnlHeader.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1099, 120);
+            this.pnlHeader.Size = new System.Drawing.Size(1237, 150);
             this.pnlHeader.TabIndex = 2;
             // 
             // lblWelcome
@@ -282,10 +283,10 @@
             this.lblWelcome.AutoSize = true;
             this.lblWelcome.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblWelcome.ForeColor = System.Drawing.Color.White;
-            this.lblWelcome.Location = new System.Drawing.Point(40, 37);
+            this.lblWelcome.Location = new System.Drawing.Point(45, 46);
             this.lblWelcome.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(144, 37);
+            this.lblWelcome.Size = new System.Drawing.Size(167, 45);
             this.lblWelcome.TabIndex = 0;
             this.lblWelcome.Text = "Wellcome";
             // 
@@ -294,10 +295,10 @@
             this.lblSubtitle.AutoSize = true;
             this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(40, 80);
+            this.lblSubtitle.Location = new System.Drawing.Point(45, 100);
             this.lblSubtitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSubtitle.Name = "lblSubtitle";
-            this.lblSubtitle.Size = new System.Drawing.Size(268, 28);
+            this.lblSubtitle.Size = new System.Drawing.Size(329, 32);
             this.lblSubtitle.TabIndex = 1;
             this.lblSubtitle.Text = "Do you want to present now?";
             // 
@@ -307,14 +308,15 @@
             this.btnLogout.FillColor = System.Drawing.Color.Transparent;
             this.btnLogout.Image = global::GestPipePowerPonit.Properties.Resources.icon_logout;
             this.btnLogout.ImageRotate = 0F;
-            this.btnLogout.Location = new System.Drawing.Point(1028, 48);
-            this.btnLogout.Margin = new System.Windows.Forms.Padding(4);
+            this.btnLogout.Location = new System.Drawing.Point(1157, 60);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.btnLogout.Size = new System.Drawing.Size(47, 43);
+            this.btnLogout.Size = new System.Drawing.Size(53, 54);
             this.btnLogout.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLogout.TabIndex = 5;
             this.btnLogout.TabStop = false;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // btnProfile
             // 
@@ -322,11 +324,11 @@
             this.btnProfile.FillColor = System.Drawing.Color.Transparent;
             this.btnProfile.Image = global::GestPipePowerPonit.Properties.Resources.icon_user;
             this.btnProfile.ImageRotate = 0F;
-            this.btnProfile.Location = new System.Drawing.Point(978, 48);
-            this.btnProfile.Margin = new System.Windows.Forms.Padding(4);
+            this.btnProfile.Location = new System.Drawing.Point(1101, 60);
+            this.btnProfile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnProfile.Name = "btnProfile";
             this.btnProfile.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.btnProfile.Size = new System.Drawing.Size(47, 43);
+            this.btnProfile.Size = new System.Drawing.Size(53, 54);
             this.btnProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnProfile.TabIndex = 6;
             this.btnProfile.TabStop = false;
@@ -337,9 +339,10 @@
             this.guna2ControlBoxClose.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBoxClose.HoverState.FillColor = System.Drawing.Color.Red;
             this.guna2ControlBoxClose.IconColor = System.Drawing.Color.White;
-            this.guna2ControlBoxClose.Location = new System.Drawing.Point(1037, 12);
+            this.guna2ControlBoxClose.Location = new System.Drawing.Point(1168, 15);
+            this.guna2ControlBoxClose.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.guna2ControlBoxClose.Name = "guna2ControlBoxClose";
-            this.guna2ControlBoxClose.Size = new System.Drawing.Size(50, 29);
+            this.guna2ControlBoxClose.Size = new System.Drawing.Size(56, 36);
             this.guna2ControlBoxClose.TabIndex = 6;
             this.guna2ControlBoxClose.Click += new System.EventHandler(this.guna2ControlBoxClose_Click);
             // 
@@ -349,9 +352,10 @@
             this.guna2ControlBoxMinimize.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
             this.guna2ControlBoxMinimize.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBoxMinimize.IconColor = System.Drawing.Color.White;
-            this.guna2ControlBoxMinimize.Location = new System.Drawing.Point(981, 12);
+            this.guna2ControlBoxMinimize.Location = new System.Drawing.Point(1105, 15);
+            this.guna2ControlBoxMinimize.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.guna2ControlBoxMinimize.Name = "guna2ControlBoxMinimize";
-            this.guna2ControlBoxMinimize.Size = new System.Drawing.Size(50, 29);
+            this.guna2ControlBoxMinimize.Size = new System.Drawing.Size(56, 36);
             this.guna2ControlBoxMinimize.TabIndex = 8;
             // 
             // pnlMain
@@ -364,9 +368,10 @@
             this.pnlMain.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
             this.pnlMain.FillColor2 = System.Drawing.Color.Black;
             this.pnlMain.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            this.pnlMain.Location = new System.Drawing.Point(267, 120);
+            this.pnlMain.Location = new System.Drawing.Point(300, 150);
+            this.pnlMain.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(1099, 648);
+            this.pnlMain.Size = new System.Drawing.Size(1237, 810);
             this.pnlMain.TabIndex = 1;
             // 
             // btnPresent
@@ -385,10 +390,10 @@
             this.btnPresent.ForeColor = System.Drawing.Color.White;
             this.btnPresent.Image = global::GestPipePowerPonit.Properties.Resources.icon_present;
             this.btnPresent.ImageSize = new System.Drawing.Size(40, 40);
-            this.btnPresent.Location = new System.Drawing.Point(582, 482);
-            this.btnPresent.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPresent.Location = new System.Drawing.Point(655, 602);
+            this.btnPresent.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPresent.Name = "btnPresent";
-            this.btnPresent.Size = new System.Drawing.Size(240, 111);
+            this.btnPresent.Size = new System.Drawing.Size(271, 139);
             this.btnPresent.TabIndex = 4;
             this.btnPresent.Text = "Present";
             // 
@@ -409,10 +414,10 @@
             this.btnTraining.ForeColor = System.Drawing.Color.White;
             this.btnTraining.Image = ((System.Drawing.Image)(resources.GetObject("btnTraining.Image")));
             this.btnTraining.ImageSize = new System.Drawing.Size(40, 40);
-            this.btnTraining.Location = new System.Drawing.Point(252, 482);
-            this.btnTraining.Margin = new System.Windows.Forms.Padding(4);
+            this.btnTraining.Location = new System.Drawing.Point(284, 602);
+            this.btnTraining.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnTraining.Name = "btnTraining";
-            this.btnTraining.Size = new System.Drawing.Size(240, 111);
+            this.btnTraining.Size = new System.Drawing.Size(271, 139);
             this.btnTraining.TabIndex = 3;
             this.btnTraining.Text = "Training";
             // 
@@ -426,10 +431,10 @@
             this.pictureBoxBanner.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(40)))), ((int)(((byte)(80)))));
             this.pictureBoxBanner.Image = global::GestPipePowerPonit.Properties.Resources.Banner;
             this.pictureBoxBanner.ImageRotate = 0F;
-            this.pictureBoxBanner.Location = new System.Drawing.Point(70, 63);
-            this.pictureBoxBanner.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBoxBanner.Location = new System.Drawing.Point(79, 79);
+            this.pictureBoxBanner.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pictureBoxBanner.Name = "pictureBoxBanner";
-            this.pictureBoxBanner.Size = new System.Drawing.Size(960, 345);
+            this.pictureBoxBanner.Size = new System.Drawing.Size(1081, 431);
             this.pictureBoxBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxBanner.TabIndex = 2;
             this.pictureBoxBanner.TabStop = false;
@@ -442,16 +447,16 @@
             // 
             // HomeUser
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(1366, 768);
+            this.ClientSize = new System.Drawing.Size(1537, 960);
             this.Controls.Add(this.pnlMain);
             this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.pnlSidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "HomeUser";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GestPipe - Home";

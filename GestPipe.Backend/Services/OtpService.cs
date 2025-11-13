@@ -1,7 +1,7 @@
-﻿using GestPipe.Backend.Services.Interfaces;
+﻿using GestPipe.Backend.Models;
+using GestPipe.Backend.Services.Interfaces;
+using MongoDB.Driver;
 using System;
-using System.Collections.Concurrent;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -9,25 +9,20 @@ namespace GestPipe.Backend.Services.Implementation
 {
     public class OtpService : IOtpService
     {
-        private class OtpEntry
-        {
-            public string UserId { get; set; }
-            public string Email { get; set; }
-            public string OtpCode { get; set; }
-            public string Purpose { get; set; }
-            public DateTime ExpiresAt { get; set; }
-            public bool IsUsed { get; set; } = false;
-            public int AttemptsCount { get; set; } = 0;
-            public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-            public DateTime? VerifiedAt { get; set; } = null;
-        }
-
-        // Bộ nhớ tạm lưu OTP trong RAM
-        private static readonly ConcurrentDictionary<string, OtpEntry> _otpStorage = new();
-
+        private readonly IMongoCollection<Otp> _otpCollection;
         private readonly int _otpLength = 6;
         private readonly int _otpExpiryMinutes = 5;
-        private readonly int _maxOtpPerHour = 3;
+
+        public OtpService(IMongoDatabase database)
+        {
+            _otpCollection = database.GetCollection<Otp>("Otp");
+
+            // Tạo TTL Index để tự động xóa OTP hết hạn
+            var indexKeysDefinition = Builders<Otp>.IndexKeys.Ascending(x => x.ExpiresAt);
+            var indexOptions = new CreateIndexOptions { ExpireAfter = TimeSpan.Zero };
+            var indexModel = new CreateIndexModel<Otp>(indexKeysDefinition, indexOptions);
+            _otpCollection.Indexes.CreateOneAsync(indexModel);
+        }
 
         public async Task<string> GenerateOtpAsync(string userId, string email, string purpose)
         {
@@ -35,76 +30,101 @@ namespace GestPipe.Backend.Services.Implementation
             if (await IsOtpLimitExceededAsync(email))
                 throw new Exception("OTP request limit exceeded. Please try again later.");
 
-            // Xóa OTP cũ cho cùng email/purpose
-            var existing = _otpStorage.Values
-                .Where(o => o.Email == email && o.Purpose == purpose && !o.IsUsed)
-                .ToList();
-            foreach (var item in existing)
-            {
-                _otpStorage.TryRemove(GetKey(item.Email, item.OtpCode), out _);
-            }
-
             // Tạo mã OTP mới
             var otpCode = GenerateRandomOtp();
 
-            var otp = new OtpEntry
+            // Tìm OTP cũ theo email
+            var existingOtp = await _otpCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
+
+            var newOtp = new Otp
             {
-                UserId = userId,
                 Email = email,
                 OtpCode = otpCode,
                 Purpose = purpose,
                 CreatedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(_otpExpiryMinutes)
+                ExpiresAt = DateTime.UtcNow.AddMinutes(_otpExpiryMinutes),
+                AttemptsCount = 0
             };
 
-            _otpStorage[GetKey(email, otpCode)] = otp;
+            if (existingOtp != null)
+            {
+                // Cập nhật OTP cũ (Replace toàn bộ document)
+                await _otpCollection.ReplaceOneAsync(x => x.Email == email, newOtp);
+            }
+            else
+            {
+                // Insert OTP mới
+                await _otpCollection.InsertOneAsync(newOtp);
+            }
 
-            return await Task.FromResult(otpCode);
+            return otpCode;
         }
 
         public async Task<bool> ValidateOtpAsync(string email, string otpCode, string purpose)
         {
-            _otpStorage.TryGetValue(GetKey(email, otpCode), out var otp);
+            var otp = await _otpCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
 
-            if (otp == null || otp.IsUsed || otp.Purpose != purpose || otp.ExpiresAt < DateTime.UtcNow)
-                return await Task.FromResult(false);
+            if (otp == null ||
+                otp.OtpCode != otpCode ||
+                otp.Purpose != purpose ||
+                otp.IsExpired())
+            {
+                return false;
+            }
 
-            otp.AttemptsCount++;
-            return await Task.FromResult(true);
+            // Tăng số lần thử
+            var update = Builders<Otp>.Update.Inc(x => x.AttemptsCount, 1);
+            await _otpCollection.UpdateOneAsync(x => x.Email == email, update);
+
+            return true;
         }
 
         public async Task<bool> IsOtpLimitExceededAsync(string email)
         {
-            var oneHourAgo = DateTime.UtcNow.AddHours(-1);
-            var count = _otpStorage.Values.Count(o =>
-                o.Email == email &&
-                o.CreatedAt > oneHourAgo);
+            var otp = await _otpCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
 
-            return await Task.FromResult(count >= _maxOtpPerHour);
+            if (otp == null)
+                return false;
+
+            // Nếu OTP hiện tại được tạo trong vòng 1 phút gần đây => có thể đang spam
+            var timeSinceCreation = DateTime.UtcNow - otp.CreatedAt;
+            if (timeSinceCreation.TotalSeconds < 60)
+                return true;
+
+            return false;
         }
 
         public async Task<bool> MarkOtpAsUsedAsync(string email, string otpCode)
         {
-            if (_otpStorage.TryGetValue(GetKey(email, otpCode), out var otp))
-            {
-                otp.IsUsed = true;
-                return await Task.FromResult(true);
-            }
-            return await Task.FromResult(false);
+            var otp = await _otpCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
+
+            if (otp == null || otp.OtpCode != otpCode)
+                return false;
+
+            // Xóa OTP sau khi sử dụng
+            var result = await _otpCollection.DeleteOneAsync(x => x.Email == email);
+            return result.DeletedCount > 0;
         }
 
         public async Task<bool> MarkOtpAsVerifiedAsync(string email, string otpCode)
         {
-            if (_otpStorage.TryGetValue(GetKey(email, otpCode), out var otp))
-            {
-                otp.VerifiedAt = DateTime.UtcNow;
-                otp.AttemptsCount++;
-                return await Task.FromResult(true);
-            }
-            return await Task.FromResult(false);
+            var otp = await _otpCollection.Find(x => x.Email == email).FirstOrDefaultAsync();
+
+            if (otp == null || otp.OtpCode != otpCode)
+                return false;
+
+            // Tăng attempt count
+            var update = Builders<Otp>.Update.Inc(x => x.AttemptsCount, 1);
+            var result = await _otpCollection.UpdateOneAsync(x => x.Email == email, update);
+
+            return result.ModifiedCount > 0;
         }
 
-        private string GetKey(string email, string otp) => $"{email}:{otp}";
+        public async Task<bool> DeleteOtpAsync(string email)
+        {
+            var result = await _otpCollection.DeleteOneAsync(x => x.Email == email);
+            return result.DeletedCount > 0;
+        }
 
         private string GenerateRandomOtp()
         {

@@ -21,6 +21,7 @@ namespace GestPipePowerPonit.Views.Auth
         {
             InitializeComponent();
             this.DoubleBuffered = true;
+            
             _authService = new AuthService();
             this.Size = new Size(1366, 786);
             this.MinimumSize = new Size(1366, 786);

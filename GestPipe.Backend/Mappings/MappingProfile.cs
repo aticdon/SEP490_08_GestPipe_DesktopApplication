@@ -18,8 +18,9 @@ namespace GestPipe.Backend.Mappings
 
             CreateMap<UserProfile, UserProfileDto>();
 
-            // ✅ RegisterDto → User
+            // ✅ RegisterDto → User (với email normalization)
             CreateMap<RegisterDto, User>()
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.Trim().ToLower())) // ✅ Chuẩn hóa email
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
                 .ForMember(dest => dest.AccountStatus, opt => opt.MapFrom(src => "pending"))
                 .ForMember(dest => dest.EmailVerified, opt => opt.MapFrom(src => false))
@@ -45,9 +46,9 @@ namespace GestPipe.Backend.Mappings
                 .ForMember(dest => dest.UserId, opt => opt.Ignore())
                 .ForMember(dest => dest.ProfileImage, opt => opt.Ignore());
 
-            // ✅ Google Payload → User
+            // ✅ Google Payload → User (với email normalization)
             CreateMap<GoogleJsonWebSignature.Payload, User>()
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.Trim().ToLower())) // ✅ Chuẩn hóa email
                 .ForMember(dest => dest.EmailVerified, opt => opt.MapFrom(src => true))
                 .ForMember(dest => dest.AccountStatus, opt => opt.MapFrom(src => "activeonline"))
                 .ForMember(dest => dest.AuthProvider, opt => opt.MapFrom(src => "Google"))

@@ -12,6 +12,7 @@ namespace GestPipePowerPonit
         static void Main()
         {
             AppSettings.SetLanguage("EN");
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -43,9 +44,7 @@ namespace GestPipePowerPonit
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(lang);
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(lang);
 
-            // Tạo form sau khi đã set culture
-            //Application.Run(new HomeUser(currentUserId));
-            //Application.Run(new TrainingGesture());
+            // Chạy form chính
             var loginForm = new LoginForm();
             Application.Run(loginForm);
         }
