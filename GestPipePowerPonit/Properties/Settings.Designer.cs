@@ -12,7 +12,7 @@ namespace GestPipePowerPonit.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.14.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -64,7 +64,6 @@ namespace GestPipePowerPonit.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool RememberMe {
             get {
-                //return ((string)(this["RememberMe"]));
                 return ((bool)(this["RememberMe"]));
             }
             set {
@@ -81,6 +80,18 @@ namespace GestPipePowerPonit.Properties {
             }
             set {
                 this["TermsAccepted"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SavedEmail {
+            get {
+                return ((string)(this["SavedEmail"]));
+            }
+            set {
+                this["SavedEmail"] = value;
             }
         }
     }

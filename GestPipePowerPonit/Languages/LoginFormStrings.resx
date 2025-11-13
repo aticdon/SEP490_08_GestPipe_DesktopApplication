@@ -422,4 +422,11 @@
 	<data name="Title_ConnectionError_VI" xml:space="preserve">
 		<value>Lỗi Kết Nối</value>
 	</data>
+	<!-- ====================== LoginForm - Remember Me ====================== -->
+	<data name="LoginForm_RememberMe_EN" xml:space="preserve">
+  <value>Remember Me</value>
+</data>
+	<data name="LoginForm_RememberMe_VI" xml:space="preserve">
+  <value>Ghi nhớ đăng nhập</value>
+</data>
 </root>

@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using Guna.UI2.WinForms;
 using GestPipePowerPonit.Models.DTOs;
 using GestPipePowerPonit.Services;
-using GestPipePowerPonit;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -21,13 +18,12 @@ namespace GestPipePowerPonit.Views.Auth
         {
             InitializeComponent();
             this.DoubleBuffered = true;
-            
+
             _authService = new AuthService();
             this.Size = new Size(1366, 786);
             this.MinimumSize = new Size(1366, 786);
             this.MaximumSize = new Size(1366, 786);
             this.StartPosition = FormStartPosition.CenterScreen;
-            // Login form luôn dùng tiếng Anh (EN)
 
             AppSettings.CurrentLanguage = "EN";
             AppSettings.SetLanguage("EN");
@@ -40,11 +36,9 @@ namespace GestPipePowerPonit.Views.Auth
                 this.BackgroundImage = Properties.Resources.background;
                 this.BackgroundImageLayout = ImageLayout.Stretch;
                 this.picLogo.Image = Properties.Resources.Logo;
-
             }
             catch { this.BackColor = Color.Black; }
 
-            // Tất cả text = tiếng Anh
             lblTitle.Text = AppSettings.GetText("LoginForm_Title");
             btnLogin.Text = AppSettings.GetText("LoginForm_BtnLogin");
             lblForgotPassword.Text = AppSettings.GetText("LoginForm_ForgotPassword");
@@ -53,8 +47,64 @@ namespace GestPipePowerPonit.Views.Auth
             lblRegister.LinkBehavior = LinkBehavior.NeverUnderline;
             lblForgotPassword.LinkBehavior = LinkBehavior.NeverUnderline;
             btnGoogleLogin.Text = AppSettings.GetText("LoginForm_GoogleBtn");
+            chkRememberMe.Text = AppSettings.GetText("LoginForm_RememberMe") ?? "Remember Me";
+
+            // ✅ LOAD SAVED EMAIL NẾU CÓ
+            LoadRememberedEmail();
 
             CenterControls();
+        }
+
+        // ✅ NEW METHOD: Load email đã lưu
+        private void LoadRememberedEmail()
+        {
+            try
+            {
+                bool rememberMe = Properties.Settings.Default.RememberMe;
+
+                if (rememberMe)
+                {
+                    string savedEmail = Properties.Settings.Default.SavedEmail ?? "";
+
+                    if (!string.IsNullOrEmpty(savedEmail))
+                    {
+                        txtUserName.Text = savedEmail;
+                        chkRememberMe.Checked = true;
+
+                        // ✅ Focus vào password field để user chỉ cần nhập password
+                        txtPassword.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[LoadRememberedEmail] Error: {ex.Message}");
+            }
+        }
+
+        // ✅ NEW METHOD: Lưu email khi Remember Me được check
+        private void SaveEmailIfNeeded(string email)
+        {
+            try
+            {
+                if (chkRememberMe.Checked)
+                {
+                    Properties.Settings.Default.SavedEmail = email;
+                    Properties.Settings.Default.RememberMe = true;
+                }
+                else
+                {
+                    // Clear saved email
+                    Properties.Settings.Default.SavedEmail = "";
+                    Properties.Settings.Default.RememberMe = false;
+                }
+
+                Properties.Settings.Default.Save();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[SaveEmailIfNeeded] Error: {ex.Message}");
+            }
         }
 
         private void LoginForm_Resize(object sender, EventArgs e) => CenterControls();
@@ -75,7 +125,6 @@ namespace GestPipePowerPonit.Views.Auth
             txtPassword.PasswordChar = txtPassword.PasswordChar == '\0' ? '●' : '\0';
         }
 
-        // ===== Validation =====
         private void ClearErrors()
         {
             lblUserError.Visible = false;
@@ -89,21 +138,18 @@ namespace GestPipePowerPonit.Views.Auth
             errors = new List<string>();
             ClearErrors();
 
-            // Tạo DTO từ input
             var loginDto = new LoginDto
             {
                 Email = txtUserName.Text.Trim(),
                 Password = txtPassword.Text
             };
 
-            // ✅ Validate theo Data Annotations
             var context = new ValidationContext(loginDto);
             var validationResults = new List<ValidationResult>();
             bool isValid = Validator.TryValidateObject(loginDto, context, validationResults, true);
 
             System.Diagnostics.Debug.WriteLine($"[Validation] Valid={isValid}, Errors={validationResults.Count}");
 
-            // ✅ Map error từ .resx file thay vì từ DTO
             var emailErrors = new List<string>();
             var passwordErrors = new List<string>();
 
@@ -111,7 +157,6 @@ namespace GestPipePowerPonit.Views.Auth
             {
                 System.Diagnostics.Debug.WriteLine($"  └─ Member: {string.Join(", ", result.MemberNames)}");
 
-                // Kiểm tra lỗi Email
                 if (result.MemberNames.Contains(nameof(LoginDto.Email)))
                 {
                     if (string.IsNullOrWhiteSpace(txtUserName.Text))
@@ -124,7 +169,6 @@ namespace GestPipePowerPonit.Views.Auth
                     }
                 }
 
-                // Kiểm tra lỗi Password
                 if (result.MemberNames.Contains(nameof(LoginDto.Password)))
                 {
                     if (string.IsNullOrWhiteSpace(txtPassword.Text))
@@ -138,7 +182,6 @@ namespace GestPipePowerPonit.Views.Auth
                 }
             }
 
-            // ✅ Hiển thị lỗi email nếu có
             if (emailErrors.Any())
             {
                 lblUserError.Text = string.Join("\n", emailErrors);
@@ -149,7 +192,6 @@ namespace GestPipePowerPonit.Views.Auth
                 System.Diagnostics.Debug.WriteLine($"  └─ Email Error: {lblUserError.Text}");
             }
 
-            // ✅ Hiển thị lỗi password nếu có
             if (passwordErrors.Any())
             {
                 lblPwdError.Text = string.Join("\n", passwordErrors);
@@ -165,10 +207,8 @@ namespace GestPipePowerPonit.Views.Auth
 
         private async void btnLogin_Click(object sender, EventArgs e)
         {
-            // ✅ Validate trước khi gửi API
             if (!ValidateInputs(out var validationErrors))
             {
-                // Chỉ hiển thị lỗi trong form
                 return;
             }
 
@@ -177,41 +217,44 @@ namespace GestPipePowerPonit.Views.Auth
 
             try
             {
-                var res = await _authService.LoginAsync(txtUserName.Text.Trim(), txtPassword.Text);
+                string email = txtUserName.Text.Trim();
+                string password = txtPassword.Text;
+
+                var res = await _authService.LoginAsync(email, password);
 
                 if (res?.Success == true)
                 {
-                    _authService.SaveUserSession(res, false);
+                    // ✅ SỬA: Truyền chkRememberMe.Checked thay vì hard-coded false
+                    _authService.SaveUserSession(res, chkRememberMe.Checked);
 
-                    // ✅ Tải ngôn ngữ người dùng khi login thành công
+                    // ✅ LƯU EMAIL NẾU REMEMBER ME (KHÔNG LƯU PASSWORD)
+                    SaveEmailIfNeeded(email);
+
                     AppSettings.LoadLanguageSettings();
 
-                    // ✅ NEW: Custom MessageBox Success
                     CustomMessageBox.ShowSuccess(
                         AppSettings.GetText("Message_LoginSuccess"),
                         AppSettings.GetText("Title_Success") ?? "Success"
                     );
+
                     HomeUser homeForm = new HomeUser(res.UserId);
                     this.Hide();
                     homeForm.Show();
                 }
                 else if (res?.RequiresVerification == true)
                 {
-                    // ✅ NEW: Custom MessageBox Info
                     CustomMessageBox.ShowInfo(
                         res.Message,
                         AppSettings.GetText("Title_VerificationRequired") ?? "Verification Required"
                     );
 
-                    // ✅ SỬA: Truyền this (LoginForm) vào VerifyOtpForm
-                    var verifyForm = new VerifyOtpForm(this, txtUserName.Text.Trim(), isRegistration: false);
+                    var verifyForm = new VerifyOtpForm(this, email, isRegistration: false);
                     verifyForm.Owner = this;
                     this.Hide();
                     verifyForm.ShowDialog();
                 }
                 else
                 {
-                    // ✅ NEW: Custom MessageBox Error
                     CustomMessageBox.ShowError(
                         string.IsNullOrWhiteSpace(res?.Message)
                             ? AppSettings.GetText("Message_LoginFailed")
@@ -226,7 +269,6 @@ namespace GestPipePowerPonit.Views.Auth
             }
             catch (Exception ex)
             {
-                // ✅ NEW: Custom MessageBox Error for Exception
                 CustomMessageBox.ShowError(
                     $"Error: {ex.Message}",
                     AppSettings.GetText("Title_Error") ?? "Error"
@@ -241,7 +283,6 @@ namespace GestPipePowerPonit.Views.Auth
 
         private void lblForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            // ✅ SỬA: Hide LoginForm rồi Show ForgotPasswordForm
             var forgotForm = new ForgotPasswordForm(this);
             this.Hide();
             forgotForm.Show();
@@ -249,7 +290,6 @@ namespace GestPipePowerPonit.Views.Auth
 
         private void lblRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            // ✅ SỬA: Hide LoginForm rồi Show RegisterForm
             var registerForm = new RegisterForm(this);
             this.Hide();
             registerForm.Show();
@@ -268,7 +308,6 @@ namespace GestPipePowerPonit.Views.Auth
                 if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret)
                     || clientId.Contains("YOUR_GOOGLE"))
                 {
-                    // ✅ NEW: Custom MessageBox Warning
                     CustomMessageBox.ShowWarning(
                         AppSettings.GetText("Message_GoogleConfigMissing"),
                         AppSettings.GetText("Title_Notification") ?? "Notice"
@@ -282,32 +321,16 @@ namespace GestPipePowerPonit.Views.Auth
                 {
                     _authService.SaveUserSession(response, false);
 
-                    // ✅ Tải ngôn ngữ khi Google login thành công
                     AppSettings.LoadLanguageSettings();
 
-                    // ✅ NEW: Kiểm tra xem có cần complete profile không
                     if (response.RequiresProfileCompletion)
                     {
-                        // ✅ NEW: Custom MessageBox Info
                         CustomMessageBox.ShowInfo(
                             AppSettings.GetText("Message_CompleteProfileRequired") ??
                             "Please complete your profile to continue.",
                             AppSettings.GetText("Title_Notification") ?? "Notice"
                         );
 
-                        // ✅ Mở EditProfileForm (first-time setup after Google Register)
-                        // TODO: Uncomment khi đã tạo EditProfileForm
-                        /*
-                        var editProfileForm = new EditProfileForm(
-                            response.Email,
-                            isFirstTimeSetup: true,
-                            previousForm: this
-                        );
-                        editProfileForm.Show();
-                        this.Hide();
-                        */
-
-                        // ✅ TẠM THỜI: Show message with Custom MessageBox
                         CustomMessageBox.ShowInfo(
                             "🚧 EditProfileForm chưa được tạo.\n\n" +
                             "Bạn sẽ được chuyển đến form này để điền thông tin còn thiếu:\n" +
@@ -324,23 +347,14 @@ namespace GestPipePowerPonit.Views.Auth
                     }
                     else
                     {
-                        // ✅ NEW: Custom MessageBox Success
                         CustomMessageBox.ShowSuccess(
                             AppSettings.GetText("Message_GoogleSuccess"),
                             AppSettings.GetText("Title_Success") ?? "Success"
                         );
-
-                        // TODO: Mở MainForm
-                        /*
-                        var mainForm = new MainForm();
-                        mainForm.Show();
-                        this.Hide();
-                        */
                     }
                 }
                 else
                 {
-                    // ✅ NEW: Custom MessageBox Error
                     CustomMessageBox.ShowError(
                         response?.Message ?? AppSettings.GetText("Message_LoginFailed"),
                         AppSettings.GetText("Title_Error") ?? "Error"
@@ -349,7 +363,6 @@ namespace GestPipePowerPonit.Views.Auth
             }
             catch (Exception ex)
             {
-                // ✅ NEW: Custom MessageBox Error for Exception
                 CustomMessageBox.ShowError(
                     $"Error: {ex.Message}",
                     AppSettings.GetText("Title_Error") ?? "Error"

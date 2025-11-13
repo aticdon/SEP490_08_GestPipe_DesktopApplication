@@ -1,5 +1,6 @@
 ﻿using GestPipePowerPonit.I18n;
 using GestPipePowerPonit.Services;
+using GestPipePowerPonit.Views;
 using GestPipePowerPonit.Views.Auth;
 using System;
 using System.Drawing;
@@ -154,101 +155,80 @@ namespace GestPipePowerPonit
             AppSettings.ExitAll();
         }
 
-        // ✅ LOGOUT BUTTON IMPLEMENTATION
+        // ✅ LOGOUT BUTTON IMPLEMENTATION - SỬA LẠI
         private async void btnLogout_Click(object sender, EventArgs e)
         {
             try
             {
-                // ✅ Hiển thị confirm dialog
-                var confirmMessage = (_currentCultureCode == "vi-VN")
+                // ✅ Lấy language suffix dựa vào _currentCultureCode
+                string languageSuffix = _currentCultureCode == "vi-VN" ? "_VI" : "_EN";
+
+                // ✅ Lấy text từ Resources với suffix
+                string confirmMessage = _currentCultureCode == "vi-VN"
                     ? "Bạn có chắc chắn muốn đăng xuất?"
                     : "Are you sure you want to logout?";
 
-                var confirmTitle = (_currentCultureCode == "vi-VN")
+                string confirmTitle = _currentCultureCode == "vi-VN"
                     ? "Xác nhận"
                     : "Confirmation";
 
-                var result = MessageBox.Show(
-                    confirmMessage,
-                    confirmTitle,
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question
-                );
+                var result = CustomMessageBox.ShowQuestion(confirmMessage, confirmTitle);
 
                 if (result != DialogResult.Yes)
                 {
                     return;
                 }
 
-                // ✅ Disable button để tránh click nhiều lần
                 btnLogout.Enabled = false;
 
-                // ✅ Gọi API logout
                 var response = await _authService.LogoutAsync();
 
                 if (response?.Success == true)
                 {
-                    // ✅ Hiển thị thông báo thành công
-                    var successMessage = (_currentCultureCode == "vi-VN")
+                    string successMessage = _currentCultureCode == "vi-VN"
                         ? "Đăng xuất thành công!"
                         : "Logged out successfully!";
 
-                    var successTitle = (_currentCultureCode == "vi-VN")
+                    string successTitle = _currentCultureCode == "vi-VN"
                         ? "Thành công"
                         : "Success";
 
-                    MessageBox.Show(
-                        successMessage,
-                        successTitle,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
+                    CustomMessageBox.ShowSuccess(successMessage, successTitle);
 
-                    // ✅ Đóng tất cả forms và mở LoginForm
                     this.Hide();
 
                     var loginForm = new LoginForm();
                     loginForm.FormClosed += (s, args) => Application.Exit();
                     loginForm.Show();
 
-                    // ✅ Dispose HomeUser form
                     this.Dispose();
                 }
                 else
                 {
-                    // ✅ Hiển thị lỗi từ backend
-                    var errorMessage = response?.Message ??
-                        ((_currentCultureCode == "vi-VN") ? "Đăng xuất thất bại." : "Failed to logout.");
+                    string errorMessage = response?.Message ?? (_currentCultureCode == "vi-VN"
+                        ? "Đăng xuất thất bại."
+                        : "Failed to logout.");
 
-                    var errorTitle = (_currentCultureCode == "vi-VN") ? "Lỗi" : "Error";
+                    string errorTitle = _currentCultureCode == "vi-VN"
+                        ? "Lỗi"
+                        : "Error";
 
-                    MessageBox.Show(
-                        errorMessage,
-                        errorTitle,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
+                    CustomMessageBox.ShowError(errorMessage, errorTitle);
 
                     btnLogout.Enabled = true;
                 }
             }
             catch (Exception ex)
             {
-                // ✅ Hiển thị lỗi kết nối
-                var errorMessage = (_currentCultureCode == "vi-VN")
-                    ? $"Lỗi khi đăng xuất: {ex.Message}"
-                    : $"Error during logout: {ex.Message}";
+                string errorPrefix = _currentCultureCode == "vi-VN"
+                    ? "Lỗi khi đăng xuất"
+                    : "Error during logout";
 
-                var errorTitle = (_currentCultureCode == "vi-VN")
+                string errorTitle = _currentCultureCode == "vi-VN"
                     ? "Lỗi Kết Nối"
                     : "Connection Error";
 
-                MessageBox.Show(
-                    errorMessage,
-                    errorTitle,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                CustomMessageBox.ShowError($"{errorPrefix}: {ex.Message}", errorTitle);
 
                 btnLogout.Enabled = true;
             }
