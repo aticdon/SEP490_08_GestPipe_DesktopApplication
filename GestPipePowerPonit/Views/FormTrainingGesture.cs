@@ -148,12 +148,6 @@ namespace GestPipePowerPonit
                             {
                                 this.Invoke(new Action(() =>
                                 {
-                                    //lblResult.Text = "✅ Last Result: " + parts[0];
-                                    //lblPose.Text = "🎯 Pose Target: " + parts[1];
-                                    //lblCorrect.Text = "✅ Correct: " + parts[2];
-                                    //lblWrong.Text = "❌ Wrong: " + parts[3];
-                                    //lblAccuracy.Text = "📊 Accuracy: " + parts[4] + "%";
-                                    //lblReason.Text = "Reason: " + parts[5];
                                     lblResult.Text = "✅ " + Properties.Resources.Lbl_LastResult + ": " + TranslateResult(parts[0]);
                                     lblPose.Text = "🎯 " + Properties.Resources.Lbl_PoseTarget + ": " + parts[1];
                                     lblCorrect.Text = "✅ " + Properties.Resources.Lbl_Result_Correct + ": " + parts[2];
@@ -271,8 +265,6 @@ namespace GestPipePowerPonit
                 VectorData = vectorData,
                 CreateAt = DateTime.Now
             };
-            //await trainingGestureService.SaveTrainingGestureAsync(result);
-            //MessageBox.Show(System.Text.Json.JsonSerializer.Serialize(result));
             try
             {
                 bool ok = await trainingGestureService.SaveTrainingGestureAsync(result);

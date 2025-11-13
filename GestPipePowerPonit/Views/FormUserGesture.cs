@@ -98,12 +98,12 @@ namespace GestPipePowerPonit
             }
             else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnCustom"].Index && e.RowIndex >= 0)
             {
-                // Lấy thông tin gesture nếu cần
                 var basic = gestures[e.RowIndex];
-                // Mở FormCustomGesture, truyền HomeUser (hoặc truyền gì bạn cần)
-                var customForm = new FormCustomGesture(_homeForm);
+                var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
+                string poseLabel = detail.PoseLabel; // hoặc basic.Name hay basic.ActionName, tuỳ mô hình dữ liệu
+                string userName = Properties.Settings.Default.UserId; // hoặc biến userId
+                var customForm = new FormCustomGesture(_homeForm, userName, poseLabel);
                 customForm.Show();
-                // Nếu muốn, có thể hide form hiện tại: this.Hide();
                 this.Hide();
             }
             else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnTraining"].Index && e.RowIndex >= 0)

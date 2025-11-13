@@ -15,271 +15,312 @@ namespace GestPipePowerPonit
         private TcpClient cameraClient;
         private NetworkStream cameraStream;
         private Thread cameraThread;
-        private bool receiving = false;
+
         private TcpClient statusClient;
         private NetworkStream statusStream;
         private Thread statusThread;
         private Process pythonProcess;
-
-
-        private StringBuilder pythonErrorBuffer = new StringBuilder();
         private HomeUser _homeForm;
-        public FormCustomGesture(HomeUser homeForm)
+
+        private string userName;
+        private string poseLabel;
+
+        private int savedCount = 0;
+        private const int CUSTOM_MAX = 5;
+
+        public FormCustomGesture(HomeUser homeForm, string userName, string poseLabel)
         {
             InitializeComponent();
-            StartPythonProcess();
-            pictureBoxCustom.SizeMode = PictureBoxSizeMode.Zoom; // Đảm bảo ảnh không bị crop
-            btnStart.Click += btnStart_Click;
             _homeForm = homeForm;
+            this.userName = userName;
+            this.poseLabel = poseLabel;
+
+            this.Load += FormCustomGesture_Load;
         }
 
-        private void btnStart_Click(object sender, EventArgs e)
-        {
-            string gestureName = txtGestureName.Text.Trim();
-            if (string.IsNullOrEmpty(gestureName))
-            {
-                MessageBox.Show("Nhập tên gesture trước khi bắt đầu.");
-                return;
-            }
-            Thread.Sleep(2000);
-            SendGestureNameToPython(gestureName);
-            StartReceivingCameraFrames(6001);
-            StartReceivingStatus(6002);
-        }
-
-        private void SendGestureNameToPython(string gestureName)
+        private void FormCustomGesture_Load(object sender, EventArgs e)
         {
             try
             {
-                using (var client = new TcpClient("127.0.0.1", 7000))
-                using (var stream = client.GetStream())
-                {
-                    byte[] data = Encoding.UTF8.GetBytes(gestureName);
-                    stream.Write(data, 0, data.Length);
-                    byte[] resp = new byte[32];
-                    int len = stream.Read(resp, 0, resp.Length);
-                }
+                Debug.WriteLine($"[CustomGesture] Form loaded. User: {userName}, Pose: {poseLabel}");
+                StartPythonProcess();
+
+                SendUserAndPoseToPython(userName, poseLabel);
+
+                StartReceivingCameraFrames(6001);
+                StartReceivingCustomStatus(6002);
+
+                lblCustomInfo.Text = $"User: {userName}\r\nPose: {poseLabel}";
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Lỗi gửi tên gesture: " + ex.ToString());
+                MessageBox.Show("Lỗi khi khởi tạo CustomGesture: " + ex.Message);
             }
         }
-        private void StartReceivingStatus(int port)
+
+        private void SendUserAndPoseToPython(string user, string pose)
         {
+            int retry = 0;
+            while (retry < 10)
+            {
+                try
+                {
+                    using (var client = new TcpClient())
+                    {
+                        client.Connect("127.0.0.1", 7000);
+                        using (var stream = client.GetStream())
+                        {
+                            string data = $"{user}|{pose}";
+                            byte[] bytes = Encoding.UTF8.GetBytes(data);
+                            stream.Write(bytes, 0, bytes.Length);
+                            byte[] resp = new byte[8];
+                            int len = stream.Read(resp, 0, resp.Length);
+                            Debug.WriteLine($"[CustomGesture] Received socket response: {Encoding.UTF8.GetString(resp, 0, len)}");
+                        }
+                        return;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine($"[CustomGesture] Error sending socket at retry {retry}: {e.Message}");
+                    Thread.Sleep(500);
+                    retry++;
+                }
+            }
+            MessageBox.Show("Không thể gửi username/pose sang Python server sau 10 lần thử.");
+        }
+        private void StartPythonProcess()
+        {
+            try
+            {
+                string pythonExePath = @"C:\Users\Admin\AppData\Local\Programs\Python\Python311\python.exe";
+                string scriptFile = @"D:\Semester9\codepython\hybrid_realtime_pipeline\code\collect_data_update.py";
+
+                if (!File.Exists(scriptFile))
+                {
+                    MessageBox.Show("Không tìm thấy file Python script: " + scriptFile);
+                    return;
+                }
+
+                if (pythonProcess != null && !pythonProcess.HasExited) return;
+
+                pythonProcess = new Process();
+                pythonProcess.StartInfo.FileName = pythonExePath;
+                pythonProcess.StartInfo.Arguments = $"\"{scriptFile}\"";
+
+                // ✅ ĐẢM BẢO WORKING DIRECTORY ĐÚNG
+                string scriptDirectory = Path.GetDirectoryName(scriptFile);
+                pythonProcess.StartInfo.WorkingDirectory = scriptDirectory;
+
+                pythonProcess.StartInfo.UseShellExecute = false;
+                pythonProcess.StartInfo.RedirectStandardOutput = true;
+                pythonProcess.StartInfo.RedirectStandardError = true;
+                pythonProcess.StartInfo.CreateNoWindow = true;
+                pythonProcess.EnableRaisingEvents = true;
+
+                // ✅ LOG ĐỂ DEBUG
+                Debug.WriteLine($"[CustomGesture] Python Working Directory: {scriptDirectory}");
+                Debug.WriteLine($"[CustomGesture] Script Path: {scriptFile}");
+
+                pythonProcess.OutputDataReceived += (s, e) =>
+                {
+                    if (!string.IsNullOrEmpty(e.Data))
+                        Debug.WriteLine("[PYTHON STDOUT] " + e.Data);
+                };
+                pythonProcess.ErrorDataReceived += (s, e) =>
+                {
+                    if (!string.IsNullOrEmpty(e.Data))
+                        Debug.WriteLine("[PYTHON STDERR] " + e.Data);
+                };
+
+                pythonProcess.Start();
+                pythonProcess.BeginOutputReadLine();
+                pythonProcess.BeginErrorReadLine();
+
+                Debug.WriteLine("[CustomGesture] Started Python process: " + scriptFile);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi mở Python script: " + ex.Message);
+            }
+        }
+
+        private void StartReceivingCameraFrames(int port)
+        {
+            if (cameraThread != null && cameraThread.IsAlive) return;
+            cameraThread = new Thread(() =>
+            {
+                try
+                {
+                    Debug.WriteLine("[CustomGesture] Connecting camera socket...");
+                    cameraClient = new TcpClient("127.0.0.1", port);
+                    cameraStream = cameraClient.GetStream();
+                    Debug.WriteLine("[CustomGesture] Camera socket connected.");
+                    while (true)
+                    {
+                        byte[] lenBuf = new byte[4];
+                        int read = 0;
+                        while (read < 4)
+                        {
+                            int r = cameraStream.Read(lenBuf, read, 4 - read);
+                            if (r <= 0)
+                            {
+                                Debug.WriteLine("[CustomGesture] Socket closed while reading length.");
+                                return;
+                            }
+                            read += r;
+                        }
+                        int length = BitConverter.ToInt32(lenBuf.Reverse().ToArray(), 0);
+                        if (length < 1000 || length > 1000000)
+                        {
+                            Debug.WriteLine("[CustomGesture] Skip frame (invalid length " + length + ").");
+                            continue;
+                        }
+                        byte[] imgBuf = new byte[length];
+                        read = 0;
+                        while (read < length)
+                        {
+                            int r = cameraStream.Read(imgBuf, read, length - read);
+                            if (r <= 0)
+                            {
+                                Debug.WriteLine("[CustomGesture] Socket closed while reading image.");
+                                return;
+                            }
+                            read += r;
+                        }
+                        try
+                        {
+                            using (var ms = new MemoryStream(imgBuf))
+                            {
+                                var img = Image.FromStream(ms);
+                                this.Invoke(new Action(() => { pictureBoxCustomCamera.Image = img; }));
+                                Debug.WriteLine("[CustomGesture] Frame displayed OK.");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("[CustomGesture] Error decode/display image: " + ex.Message);
+                            this.Invoke(new Action(() => { pictureBoxCustomCamera.BackColor = Color.Red; }));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[CustomGesture] Error in camera thread: " + e.Message);
+                }
+            });
+            cameraThread.IsBackground = true;
+            cameraThread.Start();
+        }
+
+        private void StartReceivingCustomStatus(int port)
+        {
+            if (statusThread != null && statusThread.IsAlive) return;
             statusThread = new Thread(() =>
             {
                 try
                 {
+                    Debug.WriteLine("[CustomGesture] Connecting status socket...");
                     statusClient = new TcpClient("127.0.0.1", port);
                     statusStream = statusClient.GetStream();
-                    byte[] buffer = new byte[128];
+                    Debug.WriteLine("[CustomGesture] Status socket connected.");
+                    byte[] buffer = new byte[256];
                     while (true)
                     {
                         int received = statusStream.Read(buffer, 0, buffer.Length);
                         if (received > 0)
                         {
                             string text = Encoding.UTF8.GetString(buffer, 0, received);
+                            Debug.WriteLine("[CustomGesture] Status received: " + text);
                             var parts = text.Split('|');
-                            if (parts.Length == 3)
+                            // Event|Pose|SavedCount|Conflict|Reason
+                            if (parts.Length >= 5)
                             {
-                                this.Invoke(new Action(() => {
-                                    lblState.Text = "State: " + parts[0];
-                                    lblPose.Text = "Pose: " + parts[1];
-                                    lblSaved.Text = "Saved: " + parts[2];
+                                string eventName = parts[0];
+                                string poseName = parts[1];
+                                int parsedSavedCount;
+                                bool okCount = int.TryParse(parts[2], out parsedSavedCount);
+                                bool isConflict = parts[3] == "True";
+                                string statusReason = parts[4];
+                                this.Invoke(new Action(() =>
+                                {
+                                    lblCustomStatus.Text = statusReason;
+                                    savedCount = okCount ? parsedSavedCount : savedCount;
+                                    lblCustomCount.Text = $"Đã ghi: {savedCount}/5";
+                                    // Optionally: Show event type, show conflict warning, etc.
+                                    if (eventName == "CONFLICT" || isConflict)
+                                        lblCustomStatus.ForeColor = Color.Red;
+                                    else if (eventName == "ERROR")
+                                        lblCustomStatus.ForeColor = Color.OrangeRed;
+                                    else
+                                        lblCustomStatus.ForeColor = Color.DarkGreen;
+
+                                    if (eventName == "FINISH")
+                                    {
+                                        MessageBox.Show($"Hoàn thành lưu file!\n{statusReason}", "Hoàn thành", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        this.Close();
+                                    }
+                                    else if (savedCount >= CUSTOM_MAX)
+                                    {
+                                        
+                                    }
                                 }));
                             }
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    //MessageBox.Show("Lỗi nhận status: " + ex.Message);
-                    Console.WriteLine("Lỗi nhận status " + ex.Message);
+                    Debug.WriteLine("[CustomGesture] Error in status thread: " + e.Message);
                 }
             });
             statusThread.IsBackground = true;
             statusThread.Start();
         }
-        private void StartReceivingCameraFrames(int port)
-        {
-            receiving = true;
-            cameraThread = new Thread(() =>
-            {
-                try
-                {
-                    cameraClient = new TcpClient("127.0.0.1", port);
-                    cameraStream = cameraClient.GetStream();
-                    Console.WriteLine("[C#] Đã kết nối tới Python camera server...");
-                    while (receiving)
-                    {
-                        // Đọc độ dài frame
-                        byte[] lengthBytes = new byte[4];
-                        int read = 0;
-                        while (read < 4)
-                        {
-                            int r = cameraStream.Read(lengthBytes, read, 4 - read);
-                            if (r <= 0)
-                            {
-                                Console.WriteLine("[C#] Không đọc được độ dài frame!");
-                                return;
-                            }
-                            read += r;
-                        }
-                        int length = BitConverter.ToInt32(lengthBytes.Reverse().ToArray(), 0);
-                        Console.WriteLine($"[C#] Độ dài frame nhận: {length} bytes");
-                        if (length < 1000 || length > 1000000)
-                        {
-                            Console.WriteLine("[C#] Cảnh báo: Độ dài frame bất thường!");
-                        }
-
-                        // Đọc dữ liệu ảnh
-                        byte[] imageBytes = new byte[length];
-                        read = 0;
-                        while (read < length)
-                        {
-                            int r = cameraStream.Read(imageBytes, read, length - read);
-                            if (r <= 0)
-                            {
-                                Console.WriteLine("[C#] Không đọc đủ dữ liệu ảnh!");
-                                return;
-                            }
-                            read += r;
-                        }
-                        Console.WriteLine($"[C#] Số byte ảnh nhận đủ: {read} bytes");
-
-                        // Decode ảnh
-                        try
-                        {
-                            using (var ms = new System.IO.MemoryStream(imageBytes))
-                            {
-                                var img = Image.FromStream(ms);
-                                Console.WriteLine("[C#] Decode ảnh thành công!");
-                                this.Invoke(new Action(() =>
-                                {
-                                    //// Đảm bảo PictureBox vừa với ảnh
-                                    //pictureBoxCustom.Width = img.Width;
-                                    //pictureBoxCustom.Height = img.Height;
-                                    //// Đảm bảo Form đủ lớn để chứa ảnh và controls phía trên
-                                    //this.ClientSize = new Size(
-                                    //    Math.Max(pictureBoxCustom.Width + 24, this.ClientSize.Width),
-                                    //    pictureBoxCustom.Height + pictureBoxCustom.Top + 48 // cộng thêm chiều cao control trên
-                                    //);
-                                    pictureBoxCustom.Image = img;
-                                }));
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("[C#] Lỗi decode ảnh: " + ex.Message);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("[C#] Lỗi kết nối camera: " + ex.Message);
-                }
-            });
-            cameraThread.IsBackground = true;
-            cameraThread.Start();
-        }
-        private void StartPythonProcess()
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
             try
             {
-                //string pythonExePath = "python"; // hoặc @"C:\Users\THUCLTCE171961\AppData\Local\Programs\Python\Python39\python.exe"
-                string pythonExePath = @"C:\Users\Admin\AppData\Local\Programs\Python\Python311\python.exe";
-                string scriptFile = @"D:\Semester9\codepython\hybrid_realtime_pipeline\collect_data_hybrid.py";
+                // ✅ ĐÓNG CONNECTIONS TRƯỚC ĐỂ PYTHON BIẾT VÀ THOÁT GRACEFULLY
+                Debug.WriteLine("[CustomGesture] Closing connections to signal Python to exit...");
 
-                //Debug.WriteLine("Python exe path: " + pythonExePath);
-                //Debug.WriteLine("Python script path: " + scriptFile);
+                cameraThread?.Abort();
+                cameraStream?.Close();
+                cameraClient?.Close();
 
-                if (!File.Exists(scriptFile))
-                {
-                    //MessageBox.Show("Không tìm thấy file script python: " + scriptFile, "Python Script Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //Debug.WriteLine("Không tìm thấy script python: " + scriptFile);
-                    return;
-                }
+                statusThread?.Abort();
+                statusStream?.Close();
+                statusClient?.Close();
 
+                // ✅ CHỜ PYTHON TỰ THOÁT VÀ LƯU FILE (QUAN TRỌNG!)
                 if (pythonProcess != null && !pythonProcess.HasExited)
                 {
-                    //Debug.WriteLine("Python process đã chạy rồi.");
-                    return;
+                    Debug.WriteLine("[CustomGesture] Waiting for Python to save files and exit gracefully...");
+
+                    // Chờ Python tự thoát khi detect connection lost
+                    bool exitedGracefully = pythonProcess.WaitForExit(10000); // 10 giây
+
+                    if (exitedGracefully)
+                    {
+                        Debug.WriteLine("[CustomGesture] Python exited gracefully - files should be saved!");
+                    }
+                    else
+                    {
+                        Debug.WriteLine("[CustomGesture] Python didn't exit in time, forcing kill...");
+                        pythonProcess.Kill();
+                        pythonProcess.WaitForExit();
+                    }
                 }
 
-                pythonProcess = new Process();
-                pythonProcess.StartInfo.FileName = pythonExePath;
-                pythonProcess.StartInfo.Arguments = $"\"{scriptFile}\"";
-                pythonProcess.StartInfo.WorkingDirectory = Path.GetDirectoryName(scriptFile);
-                pythonProcess.StartInfo.UseShellExecute = false;
-                pythonProcess.StartInfo.RedirectStandardOutput = true;
-                pythonProcess.StartInfo.RedirectStandardError = true;
-                pythonProcess.StartInfo.CreateNoWindow = true;
-
-                pythonProcess.OutputDataReceived += (s, e) =>
-                {
-                    if (!string.IsNullOrEmpty(e.Data))
-                        File.AppendAllText("python_stdout.log", e.Data + Environment.NewLine);
-                };
-                pythonProcess.ErrorDataReceived += (s, e) =>
-                {
-                    if (!string.IsNullOrEmpty(e.Data))
-                    {
-                        pythonErrorBuffer.AppendLine(e.Data);
-                        File.AppendAllText("python_stderr.log", e.Data + Environment.NewLine);
-                    }
-                };
-
-                pythonProcess.EnableRaisingEvents = true;
-                //pythonProcess.Exited += (s, e) =>
-                //{
-                //    if (pythonErrorBuffer.Length > 0)
-                //    {
-                //        this.Invoke(new Action(() =>
-                //        {
-                //            MessageBox.Show(pythonErrorBuffer.ToString(), "PYTHON ERROR");
-                //        }));
-                //    }
-                //};
-                //Debug.WriteLine("Check python exe: " + File.Exists(pythonExePath));
-                //Debug.WriteLine("Check script file: " + File.Exists(scriptFile));
-                //Debug.WriteLine("WorkingDir: " + pythonProcess.StartInfo.WorkingDirectory);
-                bool started = pythonProcess.Start();
-                pythonProcess.BeginOutputReadLine();
-                pythonProcess.BeginErrorReadLine();
-                //Debug.WriteLine(File.Exists(pythonExePath) ? "Python.exe FOUND" : "Python.exe NOT FOUND");
-                //Debug.WriteLine(File.Exists(scriptFile) ? "Script FOUND" : "Script NOT FOUND");
-                //Debug.WriteLine(started
-                //    ? $"Started Python process: {pythonExePath} {pythonProcess.StartInfo.Arguments}"
-                //    : "Failed to start Python process.");
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("Lỗi chạy Python: " + ex.Message, "Python Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Debug.WriteLine("Lỗi chạy Python: " + ex.ToString());
+                Debug.WriteLine("[CustomGesture] OnClose error: " + ex.Message);
             }
-        }
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            receiving = false;
-            cameraThread?.Abort();
-            cameraStream?.Close();
-            cameraClient?.Close();
-            statusThread?.Abort();
-            statusStream?.Close();
-            statusClient?.Close();
-            try
-            {
-                if (pythonProcess != null && !pythonProcess.HasExited)
-                {
-                    pythonProcess.Kill();
-                }
-            }
-            catch { }
             base.OnFormClosing(e);
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void btnHome_Click(object sender, EventArgs e)
         {
             _homeForm.Show();
             this.Close();
