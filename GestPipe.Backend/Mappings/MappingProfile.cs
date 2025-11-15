@@ -2,7 +2,7 @@
 using GestPipe.Backend.Models;
 using GestPipe.Backend.Models.DTOs;
 using GestPipe.Backend.Models.DTOs.Auth;
-using GestPipe.Backend.Models.DTOs.Profile;
+using GestPipe.Backend.Models.DTOs.ProfileUser;
 using Google.Apis.Auth;
 using System;
 
@@ -13,14 +13,15 @@ namespace GestPipe.Backend.Mappings
         public MappingProfile()
         {
             // ===== AUTH MAPPINGS =====
-            CreateMap<User, UserDto>()
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<User, UserResponseDto>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.AvatarUrl)); // ✅ Map AvatarUrl
 
             CreateMap<UserProfile, UserProfileDto>();
 
-            // ✅ RegisterDto → User (với email normalization)
+            // ✅ RegisterDto → User
             CreateMap<RegisterDto, User>()
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.Trim().ToLower())) // ✅ Chuẩn hóa email
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.Trim().ToLower()))
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
                 .ForMember(dest => dest.AccountStatus, opt => opt.MapFrom(src => "pending"))
                 .ForMember(dest => dest.EmailVerified, opt => opt.MapFrom(src => false))
@@ -29,7 +30,7 @@ namespace GestPipe.Backend.Mappings
                 .ForMember(dest => dest.LastLogin, opt => opt.Ignore())
                 .ForMember(dest => dest.AuthProvider, opt => opt.Ignore())
                 .ForMember(dest => dest.ProviderId, opt => opt.Ignore())
-                .ForMember(dest => dest.AvatarUrl, opt => opt.Ignore());
+                .ForMember(dest => dest.AvatarUrl, opt => opt.Ignore()); // Set in service
 
             // ✅ RegisterDto → UserProfile
             CreateMap<RegisterDto, UserProfile>()
@@ -43,17 +44,16 @@ namespace GestPipe.Backend.Mappings
                 .ForMember(dest => dest.Occupation, opt => opt.MapFrom(src => src.Occupation))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.UserId, opt => opt.Ignore())
-                .ForMember(dest => dest.ProfileImage, opt => opt.Ignore());
+                .ForMember(dest => dest.UserId, opt => opt.Ignore());
 
-            // ✅ Google Payload → User (với email normalization)
+            // ✅ Google Payload → User
             CreateMap<GoogleJsonWebSignature.Payload, User>()
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.Trim().ToLower())) // ✅ Chuẩn hóa email
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.Trim().ToLower()))
                 .ForMember(dest => dest.EmailVerified, opt => opt.MapFrom(src => true))
                 .ForMember(dest => dest.AccountStatus, opt => opt.MapFrom(src => "activeonline"))
                 .ForMember(dest => dest.AuthProvider, opt => opt.MapFrom(src => "Google"))
                 .ForMember(dest => dest.ProviderId, opt => opt.MapFrom(src => src.Subject))
-                .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.Picture))
+                .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.Picture)) // ✅ Google avatar
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.LastLogin, opt => opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -62,7 +62,6 @@ namespace GestPipe.Backend.Mappings
             // ✅ Google Payload → UserProfile
             CreateMap<GoogleJsonWebSignature.Payload, UserProfile>()
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.ProfileImage, opt => opt.MapFrom(src => src.Picture))
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.UserId, opt => opt.Ignore())
@@ -86,8 +85,7 @@ namespace GestPipe.Backend.Mappings
                 .ForMember(dest => dest.Occupation, opt => opt.MapFrom(src => src.Occupation))
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.UserId, opt => opt.Ignore())
-                .ForMember(dest => dest.ProfileImage, opt => opt.Ignore())
-                .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
+                .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());      
         }
     }
 }

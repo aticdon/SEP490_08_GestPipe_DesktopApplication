@@ -717,7 +717,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(1366, 786);
+            this.ClientSize = new System.Drawing.Size(1366, 768);
             this.Controls.Add(this.guna2ControlBoxClose);
             this.Controls.Add(this.guna2ControlBoxMinimize);
             this.Controls.Add(this.pnlCard);

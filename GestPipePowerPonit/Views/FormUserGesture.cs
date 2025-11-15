@@ -1,6 +1,8 @@
 ﻿using GestPipePowerPonit.I18n;
 using GestPipePowerPonit.Models;
 using GestPipePowerPonit.Services;
+using GestPipePowerPonit.Views.Profile;
+using GestPipePowerPonit.Views;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,6 +19,7 @@ namespace GestPipePowerPonit
         private List<UserGestureConfigDto> gestures;
         private string userId = Properties.Settings.Default.UserId;
         private readonly ApiClient _apiClient;
+        private readonly AuthService _authService;
 
         //public FormUserGesture(HomeUser homeForm, string userId)
         public FormUserGesture(HomeUser homeForm)
@@ -25,11 +28,19 @@ namespace GestPipePowerPonit
             this.Load += FormUserGesture_Load;
             _homeForm = homeForm;
             guna2DataGridView1.CellContentClick += guna2DataGridView1_CellContentClick;
+
             if (btnLanguageEN != null)
                 btnLanguageEN.Click += (s, e) => UpdateCultureAndApply("en-US");
             if (btnLanguageVN != null)
                 btnLanguageVN.Click += (s, e) => UpdateCultureAndApply("vi-VN");
+
+            // ✅ THÊM 2 DÒNG NÀY
+            btnLogout.Click += btnLogout_Click;
+            btnProfile.Click += btnProfile_Click;
+
             _apiClient = new ApiClient("https://localhost:7219");
+            _authService = new AuthService(); // ✅ KHỞI TẠO AuthService
+
             CultureManager.CultureChanged += async (s, e) =>
             {
                 ApplyLanguage(CultureManager.CurrentCultureCode);
@@ -192,7 +203,116 @@ namespace GestPipePowerPonit
             guna2DataGridView1.Columns["ColumnStatus"].HeaderText = Properties.Resources.Col_Status;
             guna2DataGridView1.Columns["ColumnLastUpdate"].HeaderText = Properties.Resources.Col_LastUpdate;
         }
+        // ✅ THÊM LOGOUT HANDLER
+        private async void btnLogout_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = CustomMessageBox.ShowQuestion(
+                    Properties.Resources.Message_LogoutConfirm,
+                    Properties.Resources.Title_Confirmation
+                );
 
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                btnLogout.Enabled = false;
+                btnProfile.Enabled = false;
+                Cursor = Cursors.WaitCursor;
+
+                Console.WriteLine("\n" + new string('=', 60));
+                Console.WriteLine("[FormUserGesture] LOGOUT PROCESS STARTED");
+                Console.WriteLine(new string('=', 60));
+
+                var response = await _authService.LogoutAsync();
+
+                if (response?.Success == true)
+                {
+                    Console.WriteLine("[FormUserGesture] ✅ Logout successful");
+
+                    CustomMessageBox.ShowSuccess(
+                        Properties.Resources.Message_LogoutSuccess,
+                        Properties.Resources.Title_Success
+                    );
+
+                    var loginForm = new Views.Auth.LoginForm();
+
+                    // Đóng HomeUser nếu đang mở
+                    _homeForm?.Close();
+
+                    // Đóng form hiện tại
+                    this.Hide();
+
+                    // Show LoginForm
+                    loginForm.Show();
+
+                    // Dispose form hiện tại
+                    this.Dispose();
+
+                    Console.WriteLine("[FormUserGesture] ✅ Returned to LoginForm");
+                    Console.WriteLine(new string('=', 60) + "\n");
+                }
+                else
+                {
+                    Console.WriteLine($"[FormUserGesture] ❌ Logout failed: {response?.Message}");
+
+                    CustomMessageBox.ShowError(
+                        response?.Message ?? Properties.Resources.Message_LogoutFailed,
+                        Properties.Resources.Title_Error
+                    );
+
+                    btnLogout.Enabled = true;
+                    btnProfile.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[FormUserGesture] ❌ Exception: {ex.Message}");
+
+                CustomMessageBox.ShowError(
+                    $"{Properties.Resources.Message_LogoutError}: {ex.Message}",
+                    Properties.Resources.Title_ConnectionError
+                );
+
+                btnLogout.Enabled = true;
+                btnProfile.Enabled = true;
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        // ✅ THÊM PROFILE HANDLER
+        private void btnProfile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ProfileForm profileForm = new ProfileForm(userId, this);
+
+                this.Hide();
+
+                profileForm.Show();
+
+                profileForm.FormClosed += (s, args) =>
+                {
+                    this.Show();
+                };
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = CultureManager.CurrentCultureCode == "vi-VN"
+                    ? $"Không thể mở trang profile: {ex.Message}"
+                    : $"Cannot open profile page: {ex.Message}";
+
+                CustomMessageBox.ShowError(
+                    errorMessage,
+                    Properties.Resources.Title_Error
+                );
+            }
+        }
         private void guna2ControlBoxClose_Click(object sender, EventArgs e)
         {
             AppSettings.ExitAll();

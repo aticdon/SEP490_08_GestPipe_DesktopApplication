@@ -1,5 +1,5 @@
 ﻿using GestPipe.Backend.Models.Setting;
-using GestPipe.Backend.Services.Interfaces;
+using GestPipe.Backend.Services.IServices;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net;

@@ -362,36 +362,173 @@
     <value>..\Resources\image 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 	<!-- ====================== Logout Messages (EN) ====================== -->
-	<data name="Message_LogoutConfirm_EN" xml:space="preserve">
+	<data name="Message_LogoutConfirm" xml:space="preserve">
+    <value>Are you sure you want to logout?</value>
+  </data>
+
+	<data name="Message_LogoutSuccess" xml:space="preserve">
+    <value>Logged out successfully!</value>
+  </data>
+
+	<data name="Message_LogoutFailed" xml:space="preserve">
+    <value>Failed to logout.</value>
+  </data>
+
+	<data name="Message_LogoutError" xml:space="preserve">
+    <value>Error during logout</value>
+  </data>
+
+	<data name="Title_Confirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+
+	<data name="Title_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+
+	<data name="Title_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+
+	<data name="Title_ConnectionError" xml:space="preserve">
+    <value>Connection Error</value>
+  </data>
+
+
+
+	<!-- ==================== PROFILE FORM (ENGLISH) ==================== -->
+	<data name="ProfileForm_Title" xml:space="preserve">
+  <value>My Profile</value>
+</data>
+
+	<data name="ProfileForm_BtnEdit" xml:space="preserve">
+  <value>Edit Profile</value>
+</data>
+
+	<data name="ProfileForm_BtnSave" xml:space="preserve">
+  <value>Save Changes</value>
+</data>
+
+	<data name="ProfileForm_BtnCancel" xml:space="preserve">
+  <value>Cancel</value>
+</data>
+
+	<data name="ProfileForm_BtnChangePassword" xml:space="preserve">
+  <value>Change Password</value>
+</data>
+
+	<data name="ProfileForm_BtnBack" xml:space="preserve">
+  <value>Back</value>
+</data>
+
+	<data name="ProfileForm_FullName" xml:space="preserve">
+  <value>Full Name</value>
+</data>
+
+	<data name="ProfileForm_Email" xml:space="preserve">
+  <value>Email</value>
+</data>
+
+	<data name="ProfileForm_Phone" xml:space="preserve">
+  <value>Phone Number</value>
+</data>
+
+	<data name="ProfileForm_Gender" xml:space="preserve">
+  <value>Gender</value>
+</data>
+
+	<data name="ProfileForm_BirthDate" xml:space="preserve">
+  <value>Birth Date</value>
+</data>
+
+	<data name="ProfileForm_Address" xml:space="preserve">
+  <value>Address</value>
+</data>
+
+	<data name="ProfileForm_Education" xml:space="preserve">
+  <value>Education Level</value>
+</data>
+
+	<data name="ProfileForm_Company" xml:space="preserve">
+  <value>Company</value>
+</data>
+
+	<data name="ProfileForm_Occupation" xml:space="preserve">
+  <value>Occupation</value>
+</data>
+
+	<data name="ProfileForm_Loading" xml:space="preserve">
+  <value>Loading profile...</value>
+</data>
+
+	<data name="ProfileForm_Saving" xml:space="preserve">
+  <value>Saving...</value>
+</data>
+
+	<!-- Gender Options (EN) -->
+	<data name="Gender_Male" xml:space="preserve">
+  <value>Male</value>
+</data>
+
+	<data name="Gender_Female" xml:space="preserve">
+  <value>Female</value>
+</data>
+
+	<data name="Gender_Other" xml:space="preserve">
+  <value>Other</value>
+</data>
+
+	<!-- Profile Messages (EN) -->
+	<data name="Message_LoadProfileFailed" xml:space="preserve">
+  <value>Failed to load profile.</value>
+</data>
+
+	<data name="Message_ProfileUpdateSuccess" xml:space="preserve">
+  <value>Profile updated successfully!</value>
+</data>
+
+	<data name="Message_ProfileUpdateFailed" xml:space="preserve">
+  <value>Failed to update profile.</value>
+</data>
+
+	<data name="Message_ChangeLanguageSuccess" xml:space="preserve">
+  <value>Language changed successfully!</value>
+</data>
+
+	<data name="Message_ChangeLanguageFailed" xml:space="preserve">
+  <value>Failed to change language</value>
+</data>
+
+	<!-- Clean up logout messages (remove _EN suffix) -->
+	<data name="Message_LogoutConfirm" xml:space="preserve">
   <value>Are you sure you want to logout?</value>
 </data>
 
-	<data name="Message_LogoutSuccess_EN" xml:space="preserve">
+	<data name="Message_LogoutSuccess" xml:space="preserve">
   <value>Logged out successfully!</value>
 </data>
 
-	<data name="Message_LogoutFailed_EN" xml:space="preserve">
+	<data name="Message_LogoutFailed" xml:space="preserve">
   <value>Failed to logout.</value>
 </data>
 
-	<data name="Message_LogoutError_EN" xml:space="preserve">
+	<data name="Message_LogoutError" xml:space="preserve">
   <value>Error during logout</value>
 </data>
 
-	<!-- ====================== Dialog Titles (EN) ====================== -->
-	<data name="Title_Confirmation_EN" xml:space="preserve">
+	<data name="Title_Confirmation" xml:space="preserve">
   <value>Confirmation</value>
 </data>
 
-	<data name="Title_Success_EN" xml:space="preserve">
+	<data name="Title_Success" xml:space="preserve">
   <value>Success</value>
 </data>
 
-	<data name="Title_Error_EN" xml:space="preserve">
+	<data name="Title_Error" xml:space="preserve">
   <value>Error</value>
 </data>
 
-	<data name="Title_ConnectionError_EN" xml:space="preserve">
+	<data name="Title_ConnectionError" xml:space="preserve">
   <value>Connection Error</value>
 </data>
 </root>

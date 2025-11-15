@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GestPipe.Backend.Models.DTOs.ProfileUser
+namespace GestPipePowerPonit.Models.DTOs
 {
     public class ChangePasswordDto
     {

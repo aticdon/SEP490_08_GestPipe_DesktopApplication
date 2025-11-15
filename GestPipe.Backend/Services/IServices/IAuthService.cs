@@ -3,7 +3,7 @@ using GestPipe.Backend.Models.DTOs;
 using GestPipe.Backend.Models.DTOs.Auth;
 using System.Threading.Tasks;
 
-namespace GestPipe.Backend.Services.Interfaces
+namespace GestPipe.Backend.Services.IServices
 {
     public interface IAuthService
     {

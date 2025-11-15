@@ -17,9 +17,6 @@ namespace GestPipe.Backend.Models
         [BsonElement("full_name")]
         public string? FullName { get; set; }
 
-        [BsonElement("profile_image")]
-        public string? ProfileImage { get; set; }
-
         [BsonElement("updated_at")]
         public DateTime? UpdatedAt { get; set; }
 

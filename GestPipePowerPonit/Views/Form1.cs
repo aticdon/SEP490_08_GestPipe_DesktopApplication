@@ -4,6 +4,9 @@ using DocumentFormat.OpenXml.Presentation;
 using GestPipePowerPonit.I18n;
 using GestPipePowerPonit.Models;
 using GestPipePowerPonit.Services;
+using GestPipePowerPonit.Views.Auth;
+using GestPipePowerPonit.Views.Profile;
+using GestPipePowerPonit.Views;
 using Microsoft.Office.Core;
 using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json;
@@ -81,6 +84,9 @@ namespace GestPipePowerPonit
         private string userId = Properties.Settings.Default.UserId;
         private readonly ApiClient _apiClient;
 
+        // ✅ THÊM AuthService
+        private readonly AuthService _authService;
+
         [DllImport("user32.dll")]
         private static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
@@ -95,6 +101,7 @@ namespace GestPipePowerPonit
 
         [DllImport("user32.dll")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
+
         public Form1(HomeUser homeForm)
         {
             InitializeComponent();
@@ -119,12 +126,23 @@ namespace GestPipePowerPonit
             webView2_3D.Visible = false;
             webView2_3D.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelSlide.Controls.Add(webView2_3D);
+
             _homeForm = homeForm;
+
             if (btnLanguageEN != null)
                 btnLanguageEN.Click += (s, e) => UpdateCultureAndApply("en-US");
             if (btnLanguageVN != null)
                 btnLanguageVN.Click += (s, e) => UpdateCultureAndApply("vi-VN");
+
+            // ✅ GẮN SỰ KIỆN LOGOUT VÀ PROFILE
+            btnLogout.Click += btnLogout_Click;
+            btnProfile.Click += btnProfile_Click;
+
             _apiClient = new ApiClient("https://localhost:7219");
+
+            // ✅ KHỞI TẠO AuthService
+            _authService = new AuthService();
+
             CultureManager.CultureChanged += async (s, e) =>
             {
                 ApplyLanguage(CultureManager.CurrentCultureCode);
@@ -748,23 +766,7 @@ namespace GestPipePowerPonit
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            StopCameraReceiver();
-            if (pythonProcess != null && !pythonProcess.HasExited)
-            {
-                try
-                {
-                    pythonProcess.Kill();
-                    pythonProcess.Dispose();
-                }
-                catch { }
-            }
-            try
-            {
-                if (oPres != null) { oPres.Close(); oPres = null; }
-                if (oPPT != null) { oPPT.Quit(); oPPT = null; }
-            }
-            catch { }
-            server?.Stop();
+            CleanupResources();
             base.OnFormClosing(e);
         }
 
@@ -1197,6 +1199,168 @@ namespace GestPipePowerPonit
         private void guna2ControlBoxClose_Click(object sender, EventArgs e)
         {
             AppSettings.ExitAll();
+        }
+        // ✅ THÊM LOGOUT HANDLER
+        private async void btnLogout_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var result = CustomMessageBox.ShowQuestion(
+                    Properties.Resources.Message_LogoutConfirm,
+                    Properties.Resources.Title_Confirmation
+                );
+
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                btnLogout.Enabled = false;
+                btnProfile.Enabled = false;
+                Cursor = Cursors.WaitCursor;
+
+                Console.WriteLine("\n" + new string('=', 60));
+                Console.WriteLine("[Form1] LOGOUT PROCESS STARTED");
+                Console.WriteLine(new string('=', 60));
+
+                // ✅ Cleanup PowerPoint và Python process trước khi logout
+                CleanupResources();
+
+                var response = await _authService.LogoutAsync();
+
+                if (response?.Success == true)
+                {
+                    Console.WriteLine("[Form1] ✅ Logout successful");
+
+                    CustomMessageBox.ShowSuccess(
+                        Properties.Resources.Message_LogoutSuccess,
+                        Properties.Resources.Title_Success
+                    );
+
+                    var loginForm = new LoginForm();
+
+                    // Đóng HomeUser nếu đang mở
+                    _homeForm?.Close();
+
+                    // Đóng form hiện tại
+                    this.Hide();
+
+                    // Show LoginForm
+                    loginForm.Show();
+
+                    // Dispose form hiện tại
+                    this.Dispose();
+
+                    Console.WriteLine("[Form1] ✅ Returned to LoginForm");
+                    Console.WriteLine(new string('=', 60) + "\n");
+                }
+                else
+                {
+                    Console.WriteLine($"[Form1] ❌ Logout failed: {response?.Message}");
+
+                    CustomMessageBox.ShowError(
+                        response?.Message ?? Properties.Resources.Message_LogoutFailed,
+                        Properties.Resources.Title_Error
+                    );
+
+                    btnLogout.Enabled = true;
+                    btnProfile.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Form1] ❌ Exception: {ex.Message}");
+
+                CustomMessageBox.ShowError(
+                    $"{Properties.Resources.Message_LogoutError}: {ex.Message}",
+                    Properties.Resources.Title_ConnectionError
+                );
+
+                btnLogout.Enabled = true;
+                btnProfile.Enabled = true;
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        // ✅ THÊM PROFILE HANDLER
+        private void btnProfile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // ✅ Cách 2: Truyền this (Form) thay vì _homeForm (HomeUser)
+                ProfileForm profileForm = new ProfileForm(userId, this);
+
+                this.Hide();
+
+                profileForm.Show();
+
+                profileForm.FormClosed += (s, args) =>
+                {
+                    // Quay lại Form1 sau khi đóng Profile
+                    this.Show();
+                };
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = CultureManager.CurrentCultureCode == "vi-VN"
+                    ? $"Không thể mở trang profile: {ex.Message}"
+                    : $"Cannot open profile page: {ex.Message}";
+
+                CustomMessageBox.ShowError(
+                    errorMessage,
+                    Properties.Resources.Title_Error
+                );
+            }
+        }
+
+        // ✅ THÊM METHOD CLEANUP RESOURCES
+        private void CleanupResources()
+        {
+            try
+            {
+                // Stop camera receiver
+                StopCameraReceiver();
+
+                // Stop Python process
+                if (pythonProcess != null && !pythonProcess.HasExited)
+                {
+                    pythonProcess.Kill();
+                    pythonProcess.Dispose();
+                }
+
+                // Close PowerPoint
+                if (oPPT != null && oPPT.SlideShowWindows.Count > 0)
+                {
+                    oPPT.SlideShowWindows[1].View.Exit();
+                }
+
+                if (oPres != null)
+                {
+                    oPres.Close();
+                    Marshal.FinalReleaseComObject(oPres);
+                    oPres = null;
+                }
+
+                if (oPPT != null)
+                {
+                    oPPT.Quit();
+                    Marshal.FinalReleaseComObject(oPPT);
+                    oPPT = null;
+                }
+
+                // Stop socket server
+                server?.Stop();
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error cleaning up resources: {ex.Message}");
+            }
         }
     }
 }

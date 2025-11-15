@@ -319,6 +319,7 @@ namespace GestPipePowerPonit.Views.Auth
 
                 if (response?.Success == true)
                 {
+                    // ✅ Lưu session (không lưu remember me cho Google login)
                     _authService.SaveUserSession(response, false);
 
                     AppSettings.LoadLanguageSettings();
@@ -331,6 +332,7 @@ namespace GestPipePowerPonit.Views.Auth
                             AppSettings.GetText("Title_Notification") ?? "Notice"
                         );
 
+                        // TODO: Chuyển đến EditProfileForm khi đã tạo
                         CustomMessageBox.ShowInfo(
                             "🚧 EditProfileForm chưa được tạo.\n\n" +
                             "Bạn sẽ được chuyển đến form này để điền thông tin còn thiếu:\n" +
@@ -344,13 +346,23 @@ namespace GestPipePowerPonit.Views.Auth
                             "- Occupation",
                             "TODO: Complete Profile"
                         );
+
+                        // ✅ SỬA: Vẫn chuyển vào HomeUser ngay cả khi cần complete profile
+                        HomeUser homeForm = new HomeUser(response.UserId);
+                        this.Hide();
+                        homeForm.Show();
                     }
                     else
                     {
+                        // ✅ Profile đã đầy đủ - chuyển vào HomeUser
                         CustomMessageBox.ShowSuccess(
                             AppSettings.GetText("Message_GoogleSuccess"),
                             AppSettings.GetText("Title_Success") ?? "Success"
                         );
+
+                        HomeUser homeForm = new HomeUser(response.UserId);
+                        this.Hide();
+                        homeForm.Show();
                     }
                 }
                 else

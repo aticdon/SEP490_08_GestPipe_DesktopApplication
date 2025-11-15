@@ -3,7 +3,6 @@ using GestPipe.Backend.Models;
 using GestPipe.Backend.Models.Setting;
 using GestPipe.Backend.Services;
 using GestPipe.Backend.Services.Implementation;
-using GestPipe.Backend.Services.Interfaces;
 using GestPipe.Backend.Services.IServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -85,6 +84,8 @@ namespace GestPipe.Backend
             builder.Services.AddScoped<IGestureTypeService, GestureTypeService>();
             builder.Services.AddScoped<IUserGestureConfigService, UserGestureConfigService>();
             builder.Services.AddScoped<ITrainingGestureService, TrainingGestureService>();
+            builder.Services.AddScoped<IGestureInitializationService, GestureInitializationService>();
+
             // Add Services
             //builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<TopicService>();

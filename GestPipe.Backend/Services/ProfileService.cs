@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using GestPipe.Backend.Mappings;
 using GestPipe.Backend.Models;
-using GestPipe.Backend.Models.DTOs;
 using GestPipe.Backend.Models.DTOs.Auth;
-using GestPipe.Backend.Models.DTOs.Profile;
+using GestPipe.Backend.Models.DTOs.ProfileUser;
 using GestPipe.Backend.Models.Setting;
-using GestPipe.Backend.Services.Interfaces;
+using GestPipe.Backend.Services.IServices;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
@@ -35,66 +33,66 @@ namespace GestPipe.Backend.Services
             _logger = logger;
         }
 
-        // ✅ VIEW PROFILE
-        public async Task<AuthResponseDto> GetUserProfileAsync(string userId)
+        // ✅ THAY ĐỔI: Return type AuthResponseDto → ProfileResponseDto
+        public async Task<ProfileResponseDto> GetUserProfileAsync(string userId)
         {
             try
             {
                 if (!ObjectId.TryParse(userId, out _))
-                    return new AuthResponseDto { Success = false, Message = "Invalid user ID." };
+                    return new ProfileResponseDto { Success = false, Message = "Invalid user ID." };
 
                 var user = await _usersCollection.Find(u => u.Id == userId).FirstOrDefaultAsync();
                 if (user == null)
-                    return new AuthResponseDto { Success = false, Message = "User not found." };
+                    return new ProfileResponseDto { Success = false, Message = "User not found." };
 
                 var profile = await _profilesCollection.Find(p => p.UserId == userId).FirstOrDefaultAsync();
                 if (profile == null)
-                    return new AuthResponseDto { Success = false, Message = "Profile not found." };
+                    return new ProfileResponseDto { Success = false, Message = "Profile not found." };
 
-                return new AuthResponseDto
+                // ✅ THAY ĐỔI: Dùng ProfileResponseDto với ProfileDataDto
+                return new ProfileResponseDto
                 {
                     Success = true,
                     Message = "Profile retrieved successfully.",
                     UserId = userId,
                     Email = user.Email,
-                    Data = new
+                    Data = new ProfileDataDto
                     {
                         Profile = _mapper.Map<UserProfileDto>(profile),
-                        User = _mapper.Map<UserDto>(user)
+                        User = _mapper.Map<UserResponseDto>(user)
                     }
                 };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting profile: {UserId}", userId);
-                return new AuthResponseDto { Success = false, Message = "Error retrieving profile." };
+                return new ProfileResponseDto { Success = false, Message = "Error retrieving profile." };
             }
         }
 
-        // ✅ UPDATE PROFILE
-        public async Task<AuthResponseDto> UpdateProfileAsync(string userId, UpdateProfileDto updateDto)
+        // ✅ THAY ĐỔI: Return type AuthResponseDto → ProfileResponseDto
+        public async Task<ProfileResponseDto> UpdateProfileAsync(string userId, UpdateProfileDto updateDto)
         {
             try
             {
                 if (!ObjectId.TryParse(userId, out _))
-                    return new AuthResponseDto { Success = false, Message = "Invalid user ID." };
+                    return new ProfileResponseDto { Success = false, Message = "Invalid user ID." };
 
                 var user = await _usersCollection.Find(u => u.Id == userId).FirstOrDefaultAsync();
                 if (user == null)
-                    return new AuthResponseDto { Success = false, Message = "User not found." };
+                    return new ProfileResponseDto { Success = false, Message = "User not found." };
 
                 var profile = await _profilesCollection.Find(p => p.UserId == userId).FirstOrDefaultAsync();
                 if (profile == null)
-                    return new AuthResponseDto { Success = false, Message = "Profile not found." };
+                    return new ProfileResponseDto { Success = false, Message = "Profile not found." };
 
                 // ✅ Map using AutoMapper
                 _mapper.Map(updateDto, profile);
                 profile.UpdatedAt = DateTime.UtcNow;
 
-                // ✅ Update AvatarUrl nếu có
+                // ✅ UPDATE AVATAR CHỈ Ở USER MODEL
                 if (!string.IsNullOrEmpty(updateDto.AvatarUrl))
                 {
-                    profile.ProfileImage = updateDto.AvatarUrl;
                     user.AvatarUrl = updateDto.AvatarUrl;
                     await _usersCollection.ReplaceOneAsync(u => u.Id == userId, user);
                 }
@@ -102,31 +100,31 @@ namespace GestPipe.Backend.Services
                 var result = await _profilesCollection.ReplaceOneAsync(p => p.Id == profile.Id, profile);
 
                 if (result.ModifiedCount == 0)
-                    return new AuthResponseDto { Success = false, Message = "Failed to update profile." };
+                    return new ProfileResponseDto { Success = false, Message = "Failed to update profile." };
 
                 _logger.LogInformation("Profile updated: {UserId}", userId);
 
-                return new AuthResponseDto
+                return new ProfileResponseDto
                 {
                     Success = true,
                     Message = "Profile updated successfully.",
                     UserId = userId,
                     Email = user.Email,
-                    Data = new
+                    Data = new ProfileDataDto
                     {
                         Profile = _mapper.Map<UserProfileDto>(profile),
-                        User = _mapper.Map<UserDto>(user)
+                        User = _mapper.Map<UserResponseDto>(user)
                     }
                 };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating profile: {UserId}", userId);
-                return new AuthResponseDto { Success = false, Message = "Error updating profile." };
+                return new ProfileResponseDto { Success = false, Message = "Error updating profile." };
             }
         }
 
-        // ✅ CHANGE PASSWORD
+        // ✅ GIỮ NGUYÊN: ChangePassword vẫn dùng AuthResponseDto
         public async Task<AuthResponseDto> ChangePasswordAsync(string userId, ChangePasswordDto changePasswordDto)
         {
             try

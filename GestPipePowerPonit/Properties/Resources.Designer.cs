@@ -267,6 +267,33 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Female.
+        /// </summary>
+        public static string Gender_Female {
+            get {
+                return ResourceManager.GetString("Gender_Female", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Male.
+        /// </summary>
+        public static string Gender_Male {
+            get {
+                return ResourceManager.GetString("Gender_Male", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other.
+        /// </summary>
+        public static string Gender_Other {
+            get {
+                return ResourceManager.GetString("Gender_Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap google {
@@ -665,38 +692,83 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to change language.
+        /// </summary>
+        public static string Message_ChangeLanguageFailed {
+            get {
+                return ResourceManager.GetString("Message_ChangeLanguageFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language changed successfully!.
+        /// </summary>
+        public static string Message_ChangeLanguageSuccess {
+            get {
+                return ResourceManager.GetString("Message_ChangeLanguageSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load profile..
+        /// </summary>
+        public static string Message_LoadProfileFailed {
+            get {
+                return ResourceManager.GetString("Message_LoadProfileFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to logout?.
         /// </summary>
-        public static string Message_LogoutConfirm_EN {
+        public static string Message_LogoutConfirm {
             get {
-                return ResourceManager.GetString("Message_LogoutConfirm_EN", resourceCulture);
+                return ResourceManager.GetString("Message_LogoutConfirm", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Error during logout.
         /// </summary>
-        public static string Message_LogoutError_EN {
+        public static string Message_LogoutError {
             get {
-                return ResourceManager.GetString("Message_LogoutError_EN", resourceCulture);
+                return ResourceManager.GetString("Message_LogoutError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Failed to logout..
         /// </summary>
-        public static string Message_LogoutFailed_EN {
+        public static string Message_LogoutFailed {
             get {
-                return ResourceManager.GetString("Message_LogoutFailed_EN", resourceCulture);
+                return ResourceManager.GetString("Message_LogoutFailed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Logged out successfully!.
         /// </summary>
-        public static string Message_LogoutSuccess_EN {
+        public static string Message_LogoutSuccess {
             get {
-                return ResourceManager.GetString("Message_LogoutSuccess_EN", resourceCulture);
+                return ResourceManager.GetString("Message_LogoutSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to update profile..
+        /// </summary>
+        public static string Message_ProfileUpdateFailed {
+            get {
+                return ResourceManager.GetString("Message_ProfileUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile updated successfully!.
+        /// </summary>
+        public static string Message_ProfileUpdateSuccess {
+            get {
+                return ResourceManager.GetString("Message_ProfileUpdateSuccess", resourceCulture);
             }
         }
         
@@ -717,6 +789,159 @@ namespace GestPipePowerPonit.Properties {
             get {
                 object obj = ResourceManager.GetObject("pinkyImg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address.
+        /// </summary>
+        public static string ProfileForm_Address {
+            get {
+                return ResourceManager.GetString("ProfileForm_Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Birth Date.
+        /// </summary>
+        public static string ProfileForm_BirthDate {
+            get {
+                return ResourceManager.GetString("ProfileForm_BirthDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string ProfileForm_BtnBack {
+            get {
+                return ResourceManager.GetString("ProfileForm_BtnBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string ProfileForm_BtnCancel {
+            get {
+                return ResourceManager.GetString("ProfileForm_BtnCancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Password.
+        /// </summary>
+        public static string ProfileForm_BtnChangePassword {
+            get {
+                return ResourceManager.GetString("ProfileForm_BtnChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Profile.
+        /// </summary>
+        public static string ProfileForm_BtnEdit {
+            get {
+                return ResourceManager.GetString("ProfileForm_BtnEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Changes.
+        /// </summary>
+        public static string ProfileForm_BtnSave {
+            get {
+                return ResourceManager.GetString("ProfileForm_BtnSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Company.
+        /// </summary>
+        public static string ProfileForm_Company {
+            get {
+                return ResourceManager.GetString("ProfileForm_Company", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Education Level.
+        /// </summary>
+        public static string ProfileForm_Education {
+            get {
+                return ResourceManager.GetString("ProfileForm_Education", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string ProfileForm_Email {
+            get {
+                return ResourceManager.GetString("ProfileForm_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Name.
+        /// </summary>
+        public static string ProfileForm_FullName {
+            get {
+                return ResourceManager.GetString("ProfileForm_FullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gender.
+        /// </summary>
+        public static string ProfileForm_Gender {
+            get {
+                return ResourceManager.GetString("ProfileForm_Gender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading profile....
+        /// </summary>
+        public static string ProfileForm_Loading {
+            get {
+                return ResourceManager.GetString("ProfileForm_Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Occupation.
+        /// </summary>
+        public static string ProfileForm_Occupation {
+            get {
+                return ResourceManager.GetString("ProfileForm_Occupation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone Number.
+        /// </summary>
+        public static string ProfileForm_Phone {
+            get {
+                return ResourceManager.GetString("ProfileForm_Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving....
+        /// </summary>
+        public static string ProfileForm_Saving {
+            get {
+                return ResourceManager.GetString("ProfileForm_Saving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Profile.
+        /// </summary>
+        public static string ProfileForm_Title {
+            get {
+                return ResourceManager.GetString("ProfileForm_Title", resourceCulture);
             }
         }
         
@@ -843,36 +1068,36 @@ namespace GestPipePowerPonit.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Confirmation.
         /// </summary>
-        public static string Title_Confirmation_EN {
+        public static string Title_Confirmation {
             get {
-                return ResourceManager.GetString("Title_Confirmation_EN", resourceCulture);
+                return ResourceManager.GetString("Title_Confirmation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Connection Error.
         /// </summary>
-        public static string Title_ConnectionError_EN {
+        public static string Title_ConnectionError {
             get {
-                return ResourceManager.GetString("Title_ConnectionError_EN", resourceCulture);
+                return ResourceManager.GetString("Title_ConnectionError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
-        public static string Title_Error_EN {
+        public static string Title_Error {
             get {
-                return ResourceManager.GetString("Title_Error_EN", resourceCulture);
+                return ResourceManager.GetString("Title_Error", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Success.
         /// </summary>
-        public static string Title_Success_EN {
+        public static string Title_Success {
             get {
-                return ResourceManager.GetString("Title_Success_EN", resourceCulture);
+                return ResourceManager.GetString("Title_Success", resourceCulture);
             }
         }
         

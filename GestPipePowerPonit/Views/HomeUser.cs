@@ -2,8 +2,10 @@
 using GestPipePowerPonit.Services;
 using GestPipePowerPonit.Views;
 using GestPipePowerPonit.Views.Auth;
+using GestPipePowerPonit.Views.Profile;
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -155,24 +157,17 @@ namespace GestPipePowerPonit
             AppSettings.ExitAll();
         }
 
-        // ✅ LOGOUT BUTTON IMPLEMENTATION - SỬA LẠI
+        // ✅ LOGOUT BUTTON IMPLEMENTATION - FIXED
+        // ✅ LOGOUT BUTTON IMPLEMENTATION - Test Case 1
+        // ✅ LOGOUT BUTTON IMPLEMENTATION - FIXED
         private async void btnLogout_Click(object sender, EventArgs e)
         {
             try
             {
-                // ✅ Lấy language suffix dựa vào _currentCultureCode
-                string languageSuffix = _currentCultureCode == "vi-VN" ? "_VI" : "_EN";
-
-                // ✅ Lấy text từ Resources với suffix
-                string confirmMessage = _currentCultureCode == "vi-VN"
-                    ? "Bạn có chắc chắn muốn đăng xuất?"
-                    : "Are you sure you want to logout?";
-
-                string confirmTitle = _currentCultureCode == "vi-VN"
-                    ? "Xác nhận"
-                    : "Confirmation";
-
-                var result = CustomMessageBox.ShowQuestion(confirmMessage, confirmTitle);
+                var result = CustomMessageBox.ShowQuestion(
+                    Properties.Resources.Message_LogoutConfirm,
+                    Properties.Resources.Title_Confirmation
+                );
 
                 if (result != DialogResult.Yes)
                 {
@@ -180,57 +175,96 @@ namespace GestPipePowerPonit
                 }
 
                 btnLogout.Enabled = false;
+                btnProfile.Enabled = false;
+                Cursor = Cursors.WaitCursor;
+
+                Console.WriteLine("\n" + new string('=', 60));
+                Console.WriteLine("[HomeUser] LOGOUT PROCESS STARTED");
+                Console.WriteLine(new string('=', 60));
 
                 var response = await _authService.LogoutAsync();
 
                 if (response?.Success == true)
                 {
-                    string successMessage = _currentCultureCode == "vi-VN"
-                        ? "Đăng xuất thành công!"
-                        : "Logged out successfully!";
+                    Console.WriteLine("[HomeUser] ✅ Logout successful");
 
-                    string successTitle = _currentCultureCode == "vi-VN"
-                        ? "Thành công"
-                        : "Success";
+                    CustomMessageBox.ShowSuccess(
+                        Properties.Resources.Message_LogoutSuccess,
+                        Properties.Resources.Title_Success
+                    );
 
-                    CustomMessageBox.ShowSuccess(successMessage, successTitle);
+                    // ✅ FIX: Không set FormClosed event
+                    var loginForm = new LoginForm();
 
+                    // ✅ Close HomeUser TRƯỚC
                     this.Hide();
 
-                    var loginForm = new LoginForm();
-                    loginForm.FormClosed += (s, args) => Application.Exit();
+                    // ✅ Show LoginForm
                     loginForm.Show();
 
+                    // ✅ Dispose HomeUser sau khi LoginForm hiển thị
                     this.Dispose();
+
+                    Console.WriteLine("[HomeUser] ✅ Returned to LoginForm");
+                    Console.WriteLine(new string('=', 60) + "\n");
                 }
                 else
                 {
-                    string errorMessage = response?.Message ?? (_currentCultureCode == "vi-VN"
-                        ? "Đăng xuất thất bại."
-                        : "Failed to logout.");
+                    Console.WriteLine($"[HomeUser] ❌ Logout failed: {response?.Message}");
 
-                    string errorTitle = _currentCultureCode == "vi-VN"
-                        ? "Lỗi"
-                        : "Error";
-
-                    CustomMessageBox.ShowError(errorMessage, errorTitle);
+                    CustomMessageBox.ShowError(
+                        response?.Message ?? Properties.Resources.Message_LogoutFailed,
+                        Properties.Resources.Title_Error
+                    );
 
                     btnLogout.Enabled = true;
+                    btnProfile.Enabled = true;
                 }
             }
             catch (Exception ex)
             {
-                string errorPrefix = _currentCultureCode == "vi-VN"
-                    ? "Lỗi khi đăng xuất"
-                    : "Error during logout";
+                Console.WriteLine($"[HomeUser] ❌ Exception: {ex.Message}");
 
-                string errorTitle = _currentCultureCode == "vi-VN"
-                    ? "Lỗi Kết Nối"
-                    : "Connection Error";
-
-                CustomMessageBox.ShowError($"{errorPrefix}: {ex.Message}", errorTitle);
+                CustomMessageBox.ShowError(
+                    $"{Properties.Resources.Message_LogoutError}: {ex.Message}",
+                    Properties.Resources.Title_ConnectionError
+                );
 
                 btnLogout.Enabled = true;
+                btnProfile.Enabled = true;
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        // ✅ PROFILE BUTTON IMPLEMENTATION
+        private void btnProfile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ProfileForm profileForm = new ProfileForm(_currentUserId, this);
+
+                this.Hide();
+
+                profileForm.Show();
+
+                profileForm.FormClosed += (s, args) =>
+                {
+                    this.Show();
+                };
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = _currentCultureCode == "vi-VN"
+                    ? $"Không thể mở trang profile: {ex.Message}"
+                    : $"Cannot open profile page: {ex.Message}";
+
+                CustomMessageBox.ShowError(
+                    errorMessage,
+                    Properties.Resources.Title_Error
+                );
             }
         }
     }

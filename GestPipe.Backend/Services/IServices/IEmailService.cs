@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GestPipe.Backend.Services.Interfaces
+namespace GestPipe.Backend.Services.IServices
 {
     public interface IEmailService
     {
