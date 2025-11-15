@@ -44,5 +44,23 @@ namespace GestPipe.Backend.Services
             var res = _users.UpdateOne(filter, update);
             return res.ModifiedCount > 0;
         }
+
+        public bool IncrementRequestCount(string userId)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+            var update = Builders<User>.Update
+                .Inc(u => u.RequestCountToday, 1);
+            var res = _users.UpdateOne(filter, update);
+            return res.ModifiedCount > 0;
+        }
+
+        public bool UpdateGestureRequestStatus(string userId, string status)
+        {
+            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+            var update = Builders<User>.Update
+                .Set(u => u.GestureRequestStatus, status);
+            var res = _users.UpdateOne(filter, update);
+            return res.ModifiedCount > 0;
+        }
     }
 }

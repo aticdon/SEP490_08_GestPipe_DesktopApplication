@@ -16,7 +16,7 @@ namespace GestPipePowerPonit
         private readonly ApiClient _apiClient;
         private readonly AuthService _authService;
         private readonly string _currentUserId;
-        private string _currentCultureCode = "en-US";
+        private string _currentCultureCode = "";
 
         public HomeUser(string currentUserId)
         {
@@ -95,14 +95,14 @@ namespace GestPipePowerPonit
             try
             {
                 var user = await _apiClient.GetUserAsync(_currentUserId);
-                _currentCultureCode = (user != null && !string.IsNullOrWhiteSpace(user.Language)) ? user.Language : "en-US";
+                _currentCultureCode = (user != null && !string.IsNullOrWhiteSpace(user.UiLanguage)) ? user.UiLanguage : "en-US";
                 CultureManager.CurrentCultureCode = _currentCultureCode;
                 ResourceHelper.SetCulture(_currentCultureCode, this);
                 ApplyResourceToControls();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Không thể load user: " + ex.Message + "\n" + ex.StackTrace);
+                Console.WriteLine("Không thể load user: " + ex.Message + "\n" + ex.StackTrace);
             }
         }
 
@@ -118,7 +118,7 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Không thể đổi ngôn ngữ: " + ex.Message + "\n" + ex.StackTrace);
+                Console.WriteLine("Không thể đổi ngôn ngữ: " + ex.Message + "\n" + ex.StackTrace);
             }
         }
 
@@ -129,19 +129,21 @@ namespace GestPipePowerPonit
             btnVersion.Text = Properties.Resources.Btn_Version;
             btnInstruction.Text = Properties.Resources.Btn_Instruction;
             btnPresent.Text = Properties.Resources.Btn_Present;
-            btnCustomeGesture.Text = Properties.Resources.Btn_CustomGesture;
+            btnCustomGesture.Text = Properties.Resources.Btn_CustomGesture;
+            btnTrainingGesture.Text = Properties.Resources.Btn_Training;
             btnTraining.Text = Properties.Resources.Btn_Training;
             lblWelcome.Text = Properties.Resources.Home_Welcome;
             lblSubtitle.Text = Properties.Resources.LblSubtitle;
             btnPresentation.Text = Properties.Resources.Btn_Present;
         }
 
-        private void btnCustomGesture_Click(object sender, EventArgs e)
+        private void btnTrainingGesture_Click(object sender, EventArgs e)
         {
             FormUserGesture usergestureForm = new FormUserGesture(this);
             usergestureForm.Show();
             this.Hide();
         }
+
 
         private void btnPresentation_Click(object sender, EventArgs e)
         {
@@ -232,6 +234,13 @@ namespace GestPipePowerPonit
 
                 btnLogout.Enabled = true;
             }
+        }
+
+        private void btnCustomGesture_Click(object sender, EventArgs e)
+        {
+            FormUserGestureCustom usergestureForm = new FormUserGestureCustom(this);
+            usergestureForm.Show();
+            this.Hide();
         }
     }
 }

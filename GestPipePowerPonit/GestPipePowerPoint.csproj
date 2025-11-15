@@ -271,6 +271,9 @@
     <Compile Include="Models\DTOs\LoginDto.cs" />
     <Compile Include="Models\DTOs\RegisterDto.cs" />
     <Compile Include="Models\DTOs\ResetPasswordDto.cs" />
+    <Compile Include="Models\DTOs\UserRequestDto.cs" />
+    <Compile Include="Models\UserGestureConfig.cs" />
+    <Compile Include="Models\DTOs\UserGestureRequestDto.cs" />
     <Compile Include="Models\DTOs\VerifyOtpDto.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -279,6 +282,8 @@
     </Compile>
     <Compile Include="Services\ApiService.cs" />
     <Compile Include="Services\AuthService.cs" />
+    <Compile Include="Services\UserGestureRequestService.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Compile Include="Views\Auth\ForgotPasswordForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -316,6 +321,12 @@
     <Compile Include="Views\Auth\VerifyOtpForm.Designer.cs">
       <DependentUpon>VerifyOtpForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomGestureInstructionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CustomGestureInstructionForm.Designer.cs">
+      <DependentUpon>CustomGestureInstructionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -349,6 +360,12 @@
     <Compile Include="Views\FormInstructionTraining.Designer.cs">
       <DependentUpon>FormInstructionTraining.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\FormRequestGestures.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormRequestGestures.Designer.cs">
+      <DependentUpon>FormRequestGestures.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\FormTrainingResult.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -360,6 +377,12 @@
     </Compile>
     <Compile Include="Views\FormUserGesture.Designer.cs">
       <DependentUpon>FormUserGesture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FormUserGestureCustom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\FormUserGestureCustom.Designer.cs">
+      <DependentUpon>FormUserGestureCustom.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\HomeUser.cs">
       <SubType>Form</SubType>
@@ -437,11 +460,17 @@
     <EmbeddedResource Include="Views\FormInstructionTraining.resx">
       <DependentUpon>FormInstructionTraining.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormRequestGestures.resx">
+      <DependentUpon>FormRequestGestures.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\FormTrainingResult.resx">
       <DependentUpon>FormTrainingResult.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormUserGesture.resx">
       <DependentUpon>FormUserGesture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\FormUserGestureCustom.resx">
+      <DependentUpon>FormUserGestureCustom.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\HomeUser.resx">
       <DependentUpon>HomeUser.cs</DependentUpon>
