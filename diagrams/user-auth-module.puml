@@ -1,0 +1,186 @@
+@startuml User_Authentication_Module
+
+skinparam class {
+    BackgroundColor<<Entity>> LightBlue
+    BackgroundColor<<Service>> LightGreen
+    BackgroundColor<<Controller>> LightYellow
+    BackgroundColor<<DTO>> LightGray
+}
+
+package "Domain" {
+    class User <<Entity>> {
+        + Id: string
+        + Email: string
+        + PasswordHash: string
+        + AccountStatus: string
+        + GestureRequestStatus: string
+        + UiLanguage: string?
+        + AvatarUrl: string
+        + RequestCountToday: int
+        + CreatedAt: DateTime
+        + LastLogin: DateTime?
+        + VersionGestureId: string?
+        + AuthProvider: string?
+        + ProviderId: string?
+        + EmailVerified: bool
+    }
+    
+    class UserProfile <<Entity>> {
+        + Id: string
+        + UserId: string
+        + FullName: string?
+        + UpdatedAt: DateTime?
+        + Occupation: string?
+        + Company: string?
+        + BirthDate: DateTime?
+        + EducationLevel: string?
+        + PhoneNumber: string?
+        + Gender: string?
+        + Address: string?
+    }
+    
+    class Otp <<Entity>> {
+        + Email: string
+        + OtpCode: string
+        + Purpose: string
+        + CreatedAt: DateTime
+        + ExpiresAt: DateTime
+        + AttemptsCount: int
+        + IsExpired(): bool
+    }
+}
+
+package "DTOs" {
+    class RegisterDto <<DTO>> {
+        + Email: string
+        + Password: string
+        + FullName: string
+    }
+    
+    class LoginDto <<DTO>> {
+        + Email: string
+        + Password: string
+    }
+    
+    class VerifyOtpDto <<DTO>> {
+        + Email: string
+        + OtpCode: string
+    }
+    
+    class GoogleLoginDto <<DTO>> {
+        + IdToken: string
+    }
+    
+    class AuthResponseDto <<DTO>> {
+        + Success: bool
+        + Message: string
+        + Token: string?
+        + UserId: string?
+        + Email: string?
+        + RequiresVerification: bool
+    }
+    
+    class ResetPasswordDto <<DTO>> {
+        + Email: string
+        + OtpCode: string
+        + NewPassword: string
+    }
+    
+    class EmailRequestDto <<DTO>> {
+        + Email: string
+    }
+    
+    class UserProfileDto <<DTO>> {
+        + FullName: string?
+        + Occupation: string?
+        + Company: string?
+        + BirthDate: DateTime?
+        + EducationLevel: string?
+        + PhoneNumber: string?
+        + Gender: string?
+        + Address: string?
+    }
+}
+
+package "Services" {
+    interface IAuthService <<Service>> {
+        + RegisterAsync(RegisterDto): Task<AuthResponseDto>
+        + LoginAsync(LoginDto, ip, agent): Task<AuthResponseDto>
+        + VerifyOtpAsync(VerifyOtpDto): Task<AuthResponseDto>
+        + GoogleLoginAsync(token, ip, agent): Task<AuthResponseDto>
+        + ForgotPasswordAsync(email): Task<AuthResponseDto>
+        + ResetPasswordAsync(ResetPasswordDto): Task<AuthResponseDto>
+        + LogoutAsync(userId): Task<AuthResponseDto>
+        + GetUserByEmailAsync(email): Task<User>
+        + GetUserByIdAsync(userId): Task<User>
+        + IsEmailUniqueAsync(email): Task<bool>
+    }
+    
+    interface IOtpService <<Service>> {
+        + GenerateOtpAsync(userId, email, purpose): Task<string>
+        + ValidateOtpAsync(email, code, purpose): Task<bool>
+        + MarkOtpAsVerifiedAsync(email, code): Task<bool>
+        + IsOtpLimitExceededAsync(email): Task<bool>
+    }
+    
+    interface IEmailService <<Service>> {
+        + SendVerificationEmailAsync(email, otp): Task
+        + SendPasswordResetEmailAsync(email, otp): Task
+    }
+    
+    interface IProfileService <<Service>> {
+        + GetProfileAsync(userId): Task<UserProfileDto>
+        + UpdateProfileAsync(userId, dto): Task<bool>
+    }
+    
+    class AuthService <<Service>> implements IAuthService
+    class OtpService <<Service>> implements IOtpService
+    class EmailService <<Service>> implements IEmailService
+    class ProfileService <<Service>> implements IProfileService
+}
+
+package "Controllers" {
+    class AuthController <<Controller>> {
+        - _authService: IAuthService
+        - _otpService: IOtpService
+        - _emailService: IEmailService
+        - _gestureInitService: IGestureInitializationService
+        + Register(RegisterDto): IActionResult
+        + Login(LoginDto): IActionResult
+        + ValidateOtp(VerifyOtpDto, purpose): IActionResult
+        + ResendOtp(EmailRequestDto): IActionResult
+        + GoogleLogin(GoogleLoginDto): IActionResult
+        + ForgotPassword(EmailRequestDto): IActionResult
+        + ResetPassword(ResetPasswordDto): IActionResult
+        + Logout(): IActionResult
+    }
+    
+    class ProfileController <<Controller>> {
+        - _profileService: IProfileService
+        + GetProfile(): IActionResult
+        + UpdateProfile(UserProfileDto): IActionResult
+    }
+}
+
+' Relationships
+User "1" -- "1" UserProfile : has
+
+AuthController ..> IAuthService : uses
+AuthController ..> IOtpService : uses
+AuthController ..> IEmailService : uses
+ProfileController ..> IProfileService : uses
+
+IAuthService ..> User : manages
+IOtpService ..> Otp : manages
+IProfileService ..> UserProfile : manages
+
+AuthController ..> RegisterDto : receives
+AuthController ..> LoginDto : receives
+AuthController ..> VerifyOtpDto : receives
+AuthController ..> GoogleLoginDto : receives
+AuthController ..> AuthResponseDto : returns
+AuthController ..> ResetPasswordDto : receives
+
+ProfileController ..> UserProfileDto : uses
+
+@enduml

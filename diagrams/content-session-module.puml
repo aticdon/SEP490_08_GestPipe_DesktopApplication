@@ -1,0 +1,106 @@
+@startuml Content_Session_Module
+
+skinparam class {
+    BackgroundColor<<Entity>> LightBlue
+    BackgroundColor<<Service>> LightGreen
+    BackgroundColor<<Controller>> LightYellow
+}
+
+package "Domain" {
+    class Category <<Entity>> {
+        + Id: string
+        + Name: Dictionary<string, string>
+    }
+    
+    class Topic <<Entity>> {
+        + Id: string
+        + Title: Dictionary<string, string>
+        + CategoryId: string
+        + Description: string
+        + Difficulty: string
+    }
+    
+    class Session <<Entity>> {
+        + Id: string
+        + UserId: string
+        + CategoryId: string
+        + TopicId: string
+        + Records: Dictionary<string, int>
+        + Duration: double
+        + CreatedAt: DateTime
+    }
+    
+    class User <<Entity>> {
+        + Id: string
+        + Email: string
+    }
+}
+
+package "Services" {
+    class CategoryService <<Service>> {
+        + GetAllCategoriesAsync(): Task<List<Category>>
+        + GetCategoryByIdAsync(id): Task<Category>
+    }
+    
+    class TopicService <<Service>> {
+        + GetAllTopicsAsync(): Task<List<Topic>>
+        + GetTopicByIdAsync(id): Task<Topic>
+        + GetTopicsByCategoryAsync(categoryId): Task<List<Topic>>
+    }
+    
+    class SessionService <<Service>> {
+        + GetUserSessionsAsync(userId): Task<List<Session>>
+        + CreateSessionAsync(dto): Task<Session>
+        + GetSessionByIdAsync(id): Task<Session>
+    }
+}
+
+package "Controllers" {
+    class CategoryController <<Controller>> {
+        - _categoryService: CategoryService
+        + GetAllCategories(): IActionResult
+        + GetCategoryById(id): IActionResult
+    }
+    
+    class TopicController <<Controller>> {
+        - _topicService: TopicService
+        + GetAllTopics(): IActionResult
+        + GetTopicsByCategory(categoryId): IActionResult
+    }
+    
+    class SessionController <<Controller>> {
+        - _sessionService: SessionService
+        + GetUserSessions(): IActionResult
+        + CreateSession(dto): IActionResult
+    }
+}
+
+' Relationships
+Category "1" -- "*" Topic : contains
+Category "1" -- "*" Session : categorizes
+Topic "1" -- "*" Session : includes
+User "1" -- "*" Session : participates
+
+' Service dependencies
+CategoryService ..> Category : manages
+TopicService ..> Topic : manages
+SessionService ..> Session : manages
+
+' Controller dependencies
+CategoryController ..> CategoryService : uses
+TopicController ..> TopicService : uses
+SessionController ..> SessionService : uses
+
+note right of Category
+  Name là Dictionary<string, string>
+  để hỗ trợ đa ngôn ngữ
+  VD: {"en": "Education", "vi": "Giáo dục"}
+end note
+
+note right of Session
+  Records lưu số lượng các cử chỉ
+  được thực hiện trong session
+  VD: {"gesture1": 10, "gesture2": 5}
+end note
+
+@enduml

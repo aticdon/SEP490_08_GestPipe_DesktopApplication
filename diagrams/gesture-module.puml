@@ -1,0 +1,183 @@
+@startuml Gesture_Management_Module
+
+skinparam class {
+    BackgroundColor<<Entity>> LightBlue
+    BackgroundColor<<Service>> LightGreen
+    BackgroundColor<<Controller>> LightYellow
+    BackgroundColor<<ValueObject>> Pink
+}
+
+package "Domain" {
+    class GestureType <<Entity>> {
+        + Id: string
+        + TypeName: Dictionary<string, string>
+        + Code: Dictionary<string, string>
+    }
+    
+    class DefaultGesture <<Entity>> {
+        + Id: string
+        + VersionId: string
+        + GestureTypeId: string
+        + PoseLabel: string
+        + Status: Dictionary<string, string>
+        + Accuracy: double
+        + CreatedAt: DateTime
+        + VectorData: VectorData
+    }
+    
+    class UserGestureConfig <<Entity>> {
+        + Id: string
+        + UserId: string
+        + GestureTypeId: string
+        + PoseLabel: string
+        + Status: Dictionary<string, string>
+        + Accuracy: double
+        + UpdateAt: DateTime
+        + VectorData: VectorData
+    }
+    
+    class TrainingGesture <<Entity>> {
+        + Id: string
+        + UserId: string
+        + PoseLabel: string
+        + TotalTrain: int
+        + CorrectTrain: int
+        + Accuracy: double
+        + VectorData: VectorData
+        + CreateAt: DateTime
+    }
+    
+    class UserGestureRequest <<Entity>> {
+        + Id: string
+        + UserId: string
+        + UserGestureConfigId: string
+        + GestureTypeId: string
+        + PoseLabel: string
+        + Status: Dictionary<string, string>
+        + CreatedAt: DateTime
+    }
+    
+    class VectorData <<ValueObject>> {
+        + Fingers: int[]
+        + MainAxisX: double
+        + MainAxisY: double
+        + DeltaX: double
+        + DeltaY: double
+    }
+    
+    class User <<Entity>> {
+        + Id: string
+        + Email: string
+        + VersionGestureId: string?
+    }
+}
+
+package "Services" {
+    interface IGestureTypeService <<Service>> {
+        + GetAllGestureTypesAsync(): Task<List<GestureType>>
+        + GetGestureTypeByIdAsync(id): Task<GestureType>
+    }
+    
+    interface IDefaultGestureService <<Service>> {
+        + GetDefaultGesturesAsync(versionId): Task<List<DefaultGesture>>
+        + GetDefaultGestureByIdAsync(id): Task<DefaultGesture>
+    }
+    
+    interface IUserGestureConfigService <<Service>> {
+        + GetUserGesturesAsync(userId): Task<List<UserGestureConfig>>
+        + CreateUserGestureAsync(dto): Task<UserGestureConfig>
+        + UpdateUserGestureAsync(id, dto): Task<bool>
+    }
+    
+    interface ITrainingGestureService <<Service>> {
+        + GetTrainingGesturesAsync(userId): Task<List<TrainingGesture>>
+        + CreateTrainingGestureAsync(dto): Task<TrainingGesture>
+    }
+    
+    interface IUserGestureRequestService <<Service>> {
+        + GetUserRequestsAsync(userId): Task<List<UserGestureRequest>>
+        + CreateRequestAsync(dto): Task<UserGestureRequest>
+        + UpdateRequestStatusAsync(id, status): Task<bool>
+    }
+    
+    interface IGestureInitializationService <<Service>> {
+        + InitializeUserGesturesAsync(userId): Task
+        + GetUserGestureStatsAsync(userId): Task<GestureStats>
+    }
+    
+    class GestureTypeService <<Service>> implements IGestureTypeService
+    class DefaultGestureService <<Service>> implements IDefaultGestureService
+    class UserGestureConfigService <<Service>> implements IUserGestureConfigService
+    class TrainingGestureService <<Service>> implements ITrainingGestureService
+    class UserGestureRequestService <<Service>> implements IUserGestureRequestService
+    class GestureInitializationService <<Service>> implements IGestureInitializationService
+}
+
+package "Controllers" {
+    class GestureTypeController <<Controller>> {
+        - _gestureTypeService: IGestureTypeService
+        + GetAllGestureTypes(): IActionResult
+        + GetGestureTypeById(id): IActionResult
+    }
+    
+    class DefaultGestureController <<Controller>> {
+        - _defaultGestureService: IDefaultGestureService
+        + GetDefaultGestures(versionId): IActionResult
+    }
+    
+    class UserGestureConfigController <<Controller>> {
+        - _userGestureConfigService: IUserGestureConfigService
+        + GetUserGestures(): IActionResult
+        + CreateUserGesture(dto): IActionResult
+        + UpdateUserGesture(id, dto): IActionResult
+    }
+    
+    class TrainingGestureController <<Controller>> {
+        - _trainingGestureService: ITrainingGestureService
+        + GetTrainingGestures(): IActionResult
+        + CreateTrainingGesture(dto): IActionResult
+    }
+    
+    class UserGestureRequestController <<Controller>> {
+        - _userGestureRequestService: IUserGestureRequestService
+        + GetUserRequests(): IActionResult
+        + CreateRequest(dto): IActionResult
+    }
+}
+
+' Relationships
+GestureType "1" -- "*" DefaultGesture : defines
+GestureType "1" -- "*" UserGestureConfig : types
+GestureType "1" -- "*" UserGestureRequest : types
+
+User "1" -- "*" UserGestureConfig : configures
+User "1" -- "*" TrainingGesture : trains
+User "1" -- "*" UserGestureRequest : requests
+
+DefaultGesture *-- VectorData : contains
+UserGestureConfig *-- VectorData : contains
+TrainingGesture *-- VectorData : contains
+
+UserGestureConfig "1" -- "*" UserGestureRequest : basis
+
+' Service dependencies
+IGestureTypeService ..> GestureType : manages
+IDefaultGestureService ..> DefaultGesture : manages
+IUserGestureConfigService ..> UserGestureConfig : manages
+ITrainingGestureService ..> TrainingGesture : manages
+IUserGestureRequestService ..> UserGestureRequest : manages
+
+' Controller dependencies
+GestureTypeController ..> IGestureTypeService : uses
+DefaultGestureController ..> IDefaultGestureService : uses
+UserGestureConfigController ..> IUserGestureConfigService : uses
+TrainingGestureController ..> ITrainingGestureService : uses
+UserGestureRequestController ..> IUserGestureRequestService : uses
+
+note right of VectorData
+  Embedded value object
+  chứa dữ liệu vector
+  của cử chỉ tay
+end note
+
+@enduml
