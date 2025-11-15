@@ -3,7 +3,7 @@ using GestPipe.Backend.Models;
 using GestPipe.Backend.Models.DTOs;
 using GestPipe.Backend.Models.DTOs.Auth;
 using GestPipe.Backend.Models.Setting;
-using GestPipe.Backend.Services.Interfaces;
+using GestPipe.Backend.Services.IServices;
 using Google.Apis.Auth;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +20,7 @@ namespace GestPipe.Backend.Services.Implementation
 {
     public class AuthService : IAuthService
     {
+        private const string DEFAULT_AVATAR_URL = "https://i.pinimg.com/736x/4a/4c/29/4a4c29807499a1a8085e9bde536a570a.jpg";
         private readonly IMongoCollection<User> _usersCollection;
         private readonly IMongoCollection<UserProfile> _profilesCollection;
         private readonly IEmailService _emailService;
@@ -49,10 +50,8 @@ namespace GestPipe.Backend.Services.Implementation
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
         {
-            // ✅ Chuẩn hóa email
             var normalizedEmail = registerDto.Email.Trim().ToLower();
-            
-            // ✅ Sử dụng normalizedEmail để kiểm tra
+
             if (!await IsEmailUniqueAsync(normalizedEmail))
             {
                 return new AuthResponseDto
@@ -62,14 +61,15 @@ namespace GestPipe.Backend.Services.Implementation
                 };
             }
 
-            // ✅ Sử dụng AutoMapper để map RegisterDto → User
             var user = _mapper.Map<User>(registerDto);
-            user.Email = normalizedEmail; // ✅ Đảm bảo email đã chuẩn hóa
+            user.Email = normalizedEmail;
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password);
+
+            // ✅ SET DEFAULT AVATAR
+            user.AvatarUrl = DEFAULT_AVATAR_URL;
 
             await _usersCollection.InsertOneAsync(user);
 
-            // ✅ Sử dụng AutoMapper để map RegisterDto → UserProfile
             var profile = _mapper.Map<UserProfile>(registerDto);
             profile.UserId = user.Id;
 
@@ -219,23 +219,22 @@ namespace GestPipe.Backend.Services.Implementation
                 };
 
                 var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
-                
-                // ✅ Chuẩn hóa email từ Google
                 var normalizedEmail = payload.Email.Trim().ToLower();
-                
-                // ✅ Sử dụng normalizedEmail để tìm user
+
                 var user = await _usersCollection.Find(u => u.Email == normalizedEmail).FirstOrDefaultAsync();
 
                 if (user == null)
                 {
-                    // ✅ Sử dụng AutoMapper để map Google Payload → User
                     user = _mapper.Map<User>(payload);
-                    // AutoMapper đã chuẩn hóa email rồi, nhưng đảm bảo lại
                     user.Email = normalizedEmail;
+
+                    // ✅ SET GOOGLE AVATAR OR DEFAULT
+                    user.AvatarUrl = !string.IsNullOrEmpty(payload.Picture)
+                        ? payload.Picture
+                        : DEFAULT_AVATAR_URL;
 
                     await _usersCollection.InsertOneAsync(user);
 
-                    // ✅ Sử dụng AutoMapper để map Google Payload → UserProfile
                     var profile = _mapper.Map<UserProfile>(payload);
                     profile.UserId = user.Id;
 
@@ -262,6 +261,15 @@ namespace GestPipe.Backend.Services.Implementation
                             .Set(u => u.AuthProvider, "Google")
                             .Set(u => u.ProviderId, payload.Subject)
                             .Set(u => u.EmailVerified, true);
+
+                        // ✅ UPDATE AVATAR IF EMPTY OR DEFAULT
+                        if (string.IsNullOrEmpty(user.AvatarUrl) || user.AvatarUrl == DEFAULT_AVATAR_URL)
+                        {
+                            if (!string.IsNullOrEmpty(payload.Picture))
+                            {
+                                update = update.Set(u => u.AvatarUrl, payload.Picture);
+                            }
+                        }
                     }
 
                     await _usersCollection.UpdateOneAsync(u => u.Id == user.Id, update);

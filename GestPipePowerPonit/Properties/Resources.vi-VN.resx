@@ -361,6 +361,104 @@
   <data name="Vietnamese" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\image 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Message_LogoutConfirm" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn đăng xuất?</value>
+  </data>
+  <data name="Message_LogoutSuccess" xml:space="preserve">
+    <value>Đăng xuất thành công!</value>
+  </data>
+  <data name="Message_LogoutFailed" xml:space="preserve">
+    <value>Đăng xuất thất bại.</value>
+  </data>
+  <data name="Message_LogoutError" xml:space="preserve">
+    <value>Lỗi khi đăng xuất</value>
+  </data>
+  <data name="Title_Confirmation" xml:space="preserve">
+    <value>Xác Nhận</value>
+  </data>
+  <data name="Title_Success" xml:space="preserve">
+    <value>Thành Công</value>
+  </data>
+  <data name="Title_Error" xml:space="preserve">
+    <value>Lỗi</value>
+  </data>
+  <data name="Title_ConnectionError" xml:space="preserve">
+    <value>Lỗi Kết Nối</value>
+  </data>
+  <data name="ProfileForm_Title" xml:space="preserve">
+    <value>Hồ Sơ Của Tôi</value>
+  </data>
+  <data name="ProfileForm_BtnEdit" xml:space="preserve">
+    <value>Chỉnh Sửa</value>
+  </data>
+  <data name="ProfileForm_BtnSave" xml:space="preserve">
+    <value>Lưu </value>
+  </data>
+  <data name="ProfileForm_BtnCancel" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+  <data name="ProfileForm_BtnChangePassword" xml:space="preserve">
+    <value>Đổi Mật Khẩu</value>
+  </data>
+  <data name="ProfileForm_BtnBack" xml:space="preserve">
+    <value>Quay Lại</value>
+  </data>
+  <data name="ProfileForm_FullName" xml:space="preserve">
+    <value>Họ và Tên</value>
+  </data>
+  <data name="ProfileForm_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="ProfileForm_Phone" xml:space="preserve">
+    <value>Số Điện Thoại</value>
+  </data>
+  <data name="ProfileForm_Gender" xml:space="preserve">
+    <value>Giới Tính</value>
+  </data>
+  <data name="ProfileForm_BirthDate" xml:space="preserve">
+    <value>Ngày Sinh</value>
+  </data>
+  <data name="ProfileForm_Address" xml:space="preserve">
+    <value>Địa Chỉ</value>
+  </data>
+  <data name="ProfileForm_Education" xml:space="preserve">
+    <value>Trình Độ Học Vấn</value>
+  </data>
+  <data name="ProfileForm_Company" xml:space="preserve">
+    <value>Công Ty</value>
+  </data>
+  <data name="ProfileForm_Occupation" xml:space="preserve">
+    <value>Nghề Nghiệp</value>
+  </data>
+  <data name="ProfileForm_Loading" xml:space="preserve">
+    <value>Đang tải hồ sơ...</value>
+  </data>
+  <data name="ProfileForm_Saving" xml:space="preserve">
+    <value>Đang lưu...</value>
+  </data>
+  <data name="Gender_Male" xml:space="preserve">
+    <value>Nam</value>
+  </data>
+  <data name="Gender_Female" xml:space="preserve">
+    <value>Nữ</value>
+  </data>
+  <data name="Gender_Other" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="Message_LoadProfileFailed" xml:space="preserve">
+    <value>Không thể tải hồ sơ.</value>
+  </data>
+  <data name="Message_ProfileUpdateSuccess" xml:space="preserve">
+    <value>Cập nhật hồ sơ thành công!</value>
+  </data>
+  <data name="Message_ProfileUpdateFailed" xml:space="preserve">
+    <value>Cập nhật hồ sơ thất bại.</value>
+  </data>
+  <data name="Message_ChangeLanguageSuccess" xml:space="preserve">
+    <value>Đổi ngôn ngữ thành công!</value>
+  </data>
+  <data name="Message_ChangeLanguageFailed" xml:space="preserve">
+    <value>Không thể đổi ngôn ngữ</value>
   <data name="Message_LogoutConfirm_VI" xml:space="preserve">
     <value>Bạn có chắc chắn muốn đăng xuất?</value>
   </data>

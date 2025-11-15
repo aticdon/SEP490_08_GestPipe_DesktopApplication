@@ -1,6 +1,6 @@
 ﻿using GestPipe.Backend.Models.DTOs.Auth;
-using GestPipe.Backend.Models.DTOs.Profile;
-using GestPipe.Backend.Services.Interfaces;
+using GestPipe.Backend.Models.DTOs.ProfileUser;
+using GestPipe.Backend.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

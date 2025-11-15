@@ -1,5 +1,5 @@
 ﻿using GestPipe.Backend.Models.DTOs;
-using GestPipe.Backend.Services.Interfaces;
+using GestPipe.Backend.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -16,17 +16,20 @@ namespace GestPipe.Backend.Controllers
         private readonly IAuthService _authService;
         private readonly IOtpService _otpService;
         private readonly IEmailService _emailService;
+        private readonly IGestureInitializationService _gestureInitService; // ✅ ADD
         private readonly ILogger<AuthController> _logger;
 
         public AuthController(
             IAuthService authService,
             IOtpService otpService,
             IEmailService emailService,
+            IGestureInitializationService gestureInitService, // ✅ ADD
             ILogger<AuthController> logger)
         {
             _authService = authService;
             _otpService = otpService;
             _emailService = emailService;
+            _gestureInitService = gestureInitService; // ✅ ADD
             _logger = logger;
         }
 
@@ -48,6 +51,22 @@ namespace GestPipe.Backend.Controllers
                 if (!response.Success)
                 {
                     return BadRequest(response);
+                }
+
+                // ✅ INITIALIZE DEFAULT GESTURES (async, don't wait)
+                if (!string.IsNullOrEmpty(response.UserId))
+                {
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await _gestureInitService.InitializeUserGesturesAsync(response.UserId);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Failed to initialize gestures for new user: {UserId}", response.UserId);
+                        }
+                    });
                 }
 
                 return Ok(response);
@@ -229,12 +248,56 @@ namespace GestPipe.Backend.Controllers
 
                 if (!response.Success) return BadRequest(response);
 
+                // ✅ INITIALIZE DEFAULT GESTURES FOR NEW GOOGLE USER
+                if (!string.IsNullOrEmpty(response.UserId))
+                {
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await _gestureInitService.InitializeUserGesturesAsync(response.UserId);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "Failed to initialize gestures for Google user: {UserId}", response.UserId);
+                        }
+                    });
+                }
+
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Lỗi khi đăng nhập bằng Google: {Message}", ex.Message);
                 return StatusCode(500, new AuthResponseDto { Success = false, Message = "Đã xảy ra lỗi khi đăng nhập bằng Google. Vui lòng thử lại sau." });
+            }
+        }
+        // ✅ NEW ENDPOINT: Get gesture statistics
+        [HttpGet("gestures/stats")]
+        [Authorize]
+        public async Task<IActionResult> GetGestureStats()
+        {
+            try
+            {
+                var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    return Unauthorized(new { message = "User not authenticated" });
+                }
+
+                var userId = userIdClaim.Value;
+                var stats = await _gestureInitService.GetUserGestureStatsAsync(userId);
+
+                return Ok(new
+                {
+                    success = true,
+                    data = stats
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting gesture stats");
+                return BadRequest(new { success = false, message = ex.Message });
             }
         }
 

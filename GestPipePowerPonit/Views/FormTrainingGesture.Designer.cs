@@ -52,8 +52,16 @@ namespace GestPipePowerPonit
             this.lblWrong = new System.Windows.Forms.Label();
             this.lblAccuracy = new System.Windows.Forms.Label();
             this.lblReason = new System.Windows.Forms.Label();
+            this.btnLogout = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            this.btnProfile = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            this.pnlHeader.SuspendLayout();
+            this.pnlSidebar.SuspendLayout();
+            this.pnlFooter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.pnlMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCamera)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnProfile)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2Elipse1
@@ -66,6 +74,45 @@ namespace GestPipePowerPonit
             this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
             this.guna2DragControl1.UseTransparentDrag = true;
             // 
+            // pnlHeader
+            // 
+            this.pnlHeader.Controls.Add(this.btnLogout);
+            this.pnlHeader.Controls.Add(this.btnProfile);
+            this.pnlHeader.Controls.Add(this.guna2ControlBoxClose);
+            this.pnlHeader.Controls.Add(this.guna2ControlBoxMinimize);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.FillColor = System.Drawing.Color.Black;
+            this.pnlHeader.Location = new System.Drawing.Point(300, 0);
+            this.pnlHeader.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1237, 150);
+            this.pnlHeader.TabIndex = 2;
+            // 
+            // guna2ControlBoxClose
+            // 
+            this.guna2ControlBoxClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBoxClose.FillColor = System.Drawing.Color.Transparent;
+            this.guna2ControlBoxClose.HoverState.FillColor = System.Drawing.Color.Red;
+            this.guna2ControlBoxClose.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBoxClose.Location = new System.Drawing.Point(1154, 15);
+            this.guna2ControlBoxClose.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.guna2ControlBoxClose.Name = "guna2ControlBoxClose";
+            this.guna2ControlBoxClose.Size = new System.Drawing.Size(56, 36);
+            this.guna2ControlBoxClose.TabIndex = 6;
+            this.guna2ControlBoxClose.Click += new System.EventHandler(this.guna2ControlBoxClose_Click);
+            // 
+            // guna2ControlBoxMinimize
+            // 
+            this.guna2ControlBoxMinimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBoxMinimize.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
+            this.guna2ControlBoxMinimize.FillColor = System.Drawing.Color.Transparent;
+            this.guna2ControlBoxMinimize.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBoxMinimize.Location = new System.Drawing.Point(1091, 15);
+            this.guna2ControlBoxMinimize.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.guna2ControlBoxMinimize.Name = "guna2ControlBoxMinimize";
+            this.guna2ControlBoxMinimize.Size = new System.Drawing.Size(56, 36);
+            this.guna2ControlBoxMinimize.TabIndex = 8;
+            // 
             // lblTrainingTitle
             // 
             this.lblTrainingTitle.AutoSize = true;
@@ -76,6 +123,24 @@ namespace GestPipePowerPonit
             this.lblTrainingTitle.Size = new System.Drawing.Size(100, 23);
             this.lblTrainingTitle.TabIndex = 0;
             this.lblTrainingTitle.Text = "Gesture Training Session";
+            // 
+            // pnlSidebar
+            // 
+            this.pnlSidebar.BackColor = System.Drawing.Color.Black;
+            this.pnlSidebar.Controls.Add(this.btnPresentation);
+            this.pnlSidebar.Controls.Add(this.btnCustomeGesture);
+            this.pnlSidebar.Controls.Add(this.pnlFooter);
+            this.pnlSidebar.Controls.Add(this.btnInstruction);
+            this.pnlSidebar.Controls.Add(this.btnVersion);
+            this.pnlSidebar.Controls.Add(this.btnGestureControl);
+            this.pnlSidebar.Controls.Add(this.btnHome);
+            this.pnlSidebar.Controls.Add(this.pictureBoxLogo);
+            this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
+            this.pnlSidebar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlSidebar.Name = "pnlSidebar";
+            this.pnlSidebar.Size = new System.Drawing.Size(300, 960);
+            this.pnlSidebar.TabIndex = 0;
             // 
             // btnPresentation
             // 
@@ -90,13 +155,177 @@ namespace GestPipePowerPonit
             this.btnPresentation.Image = global::GestPipePowerPonit.Properties.Resources.icon_search;
             this.btnPresentation.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnPresentation.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnPresentation.Location = new System.Drawing.Point(16, 493);
-            this.btnPresentation.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPresentation.Location = new System.Drawing.Point(18, 616);
+            this.btnPresentation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPresentation.Name = "btnPresentation";
-            this.btnPresentation.Size = new System.Drawing.Size(233, 55);
+            this.btnPresentation.Size = new System.Drawing.Size(262, 69);
             this.btnPresentation.TabIndex = 11;
             this.btnPresentation.Text = "Presentation";
             this.btnPresentation.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnCustomeGesture
+            // 
+            this.btnCustomeGesture.BorderRadius = 10;
+            this.btnCustomeGesture.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnCustomeGesture.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnCustomeGesture.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnCustomeGesture.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnCustomeGesture.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
+            this.btnCustomeGesture.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnCustomeGesture.ForeColor = System.Drawing.Color.White;
+            this.btnCustomeGesture.Image = global::GestPipePowerPonit.Properties.Resources.icon_add;
+            this.btnCustomeGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnCustomeGesture.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnCustomeGesture.Location = new System.Drawing.Point(18, 524);
+            this.btnCustomeGesture.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnCustomeGesture.Name = "btnCustomeGesture";
+            this.btnCustomeGesture.Size = new System.Drawing.Size(262, 69);
+            this.btnCustomeGesture.TabIndex = 6;
+            this.btnCustomeGesture.Text = "CustomGesture";
+            this.btnCustomeGesture.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // pnlFooter
+            // 
+            this.pnlFooter.Controls.Add(this.btnLanguageEN);
+            this.pnlFooter.Controls.Add(this.btnLanguageVN);
+            this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlFooter.Location = new System.Drawing.Point(0, 882);
+            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlFooter.Name = "pnlFooter";
+            this.pnlFooter.Size = new System.Drawing.Size(300, 78);
+            this.pnlFooter.TabIndex = 5;
+            // 
+            // btnLanguageEN
+            // 
+            this.btnLanguageEN.BorderRadius = 5;
+            this.btnLanguageEN.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnLanguageEN.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnLanguageEN.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnLanguageEN.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnLanguageEN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnLanguageEN.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnLanguageEN.ForeColor = System.Drawing.Color.White;
+            this.btnLanguageEN.Image = global::GestPipePowerPonit.Properties.Resources.English;
+            this.btnLanguageEN.ImageSize = new System.Drawing.Size(24, 16);
+            this.btnLanguageEN.Location = new System.Drawing.Point(80, 15);
+            this.btnLanguageEN.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLanguageEN.Name = "btnLanguageEN";
+            this.btnLanguageEN.Size = new System.Drawing.Size(53, 46);
+            this.btnLanguageEN.TabIndex = 1;
+            // 
+            // btnLanguageVN
+            // 
+            this.btnLanguageVN.BorderRadius = 5;
+            this.btnLanguageVN.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnLanguageVN.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnLanguageVN.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnLanguageVN.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnLanguageVN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnLanguageVN.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnLanguageVN.ForeColor = System.Drawing.Color.White;
+            this.btnLanguageVN.Image = global::GestPipePowerPonit.Properties.Resources.Vietnamese;
+            this.btnLanguageVN.ImageSize = new System.Drawing.Size(24, 16);
+            this.btnLanguageVN.Location = new System.Drawing.Point(18, 15);
+            this.btnLanguageVN.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLanguageVN.Name = "btnLanguageVN";
+            this.btnLanguageVN.Size = new System.Drawing.Size(53, 46);
+            this.btnLanguageVN.TabIndex = 0;
+            // 
+            // btnInstruction
+            // 
+            this.btnInstruction.BorderRadius = 10;
+            this.btnInstruction.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnInstruction.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnInstruction.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnInstruction.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnInstruction.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnInstruction.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnInstruction.ForeColor = System.Drawing.Color.White;
+            this.btnInstruction.Image = global::GestPipePowerPonit.Properties.Resources.icon_instruction;
+            this.btnInstruction.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnInstruction.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnInstruction.Location = new System.Drawing.Point(18, 431);
+            this.btnInstruction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnInstruction.Name = "btnInstruction";
+            this.btnInstruction.Size = new System.Drawing.Size(262, 69);
+            this.btnInstruction.TabIndex = 4;
+            this.btnInstruction.Text = "Instruction";
+            this.btnInstruction.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnVersion
+            // 
+            this.btnVersion.BorderRadius = 10;
+            this.btnVersion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnVersion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnVersion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnVersion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnVersion.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnVersion.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnVersion.ForeColor = System.Drawing.Color.White;
+            this.btnVersion.Image = global::GestPipePowerPonit.Properties.Resources.icon_version;
+            this.btnVersion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnVersion.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnVersion.Location = new System.Drawing.Point(18, 339);
+            this.btnVersion.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnVersion.Name = "btnVersion";
+            this.btnVersion.Size = new System.Drawing.Size(262, 69);
+            this.btnVersion.TabIndex = 3;
+            this.btnVersion.Text = "Version";
+            this.btnVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnGestureControl
+            // 
+            this.btnGestureControl.BorderRadius = 10;
+            this.btnGestureControl.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnGestureControl.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnGestureControl.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnGestureControl.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnGestureControl.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnGestureControl.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnGestureControl.ForeColor = System.Drawing.Color.White;
+            this.btnGestureControl.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
+            this.btnGestureControl.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnGestureControl.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnGestureControl.Location = new System.Drawing.Point(18, 246);
+            this.btnGestureControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnGestureControl.Name = "btnGestureControl";
+            this.btnGestureControl.Size = new System.Drawing.Size(262, 69);
+            this.btnGestureControl.TabIndex = 2;
+            this.btnGestureControl.Text = "Gesture Control";
+            this.btnGestureControl.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnHome
+            // 
+            this.btnHome.BorderRadius = 10;
+            this.btnHome.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnHome.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnHome.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnHome.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnHome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnHome.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnHome.ForeColor = System.Drawing.Color.White;
+            this.btnHome.Image = global::GestPipePowerPonit.Properties.Resources.icon_home;
+            this.btnHome.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnHome.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnHome.Location = new System.Drawing.Point(18, 154);
+            this.btnHome.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnHome.Name = "btnHome";
+            this.btnHome.Size = new System.Drawing.Size(262, 69);
+            this.btnHome.TabIndex = 1;
+            this.btnHome.Text = "Home";
+            this.btnHome.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnHome.Click += new System.EventHandler(this.btnHome_Click);
+            // 
+            // pictureBoxLogo
+            // 
+            this.pictureBoxLogo.Image = global::GestPipePowerPonit.Properties.Resources.Logo;
+            this.pictureBoxLogo.Location = new System.Drawing.Point(18, 19);
+            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pictureBoxLogo.Name = "pictureBoxLogo";
+            this.pictureBoxLogo.Size = new System.Drawing.Size(262, 92);
+            this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxLogo.TabIndex = 0;
+            this.pictureBoxLogo.TabStop = false;
             // 
             // pnlMain
             // 
@@ -138,7 +367,7 @@ namespace GestPipePowerPonit
             this.lblGestureName.ForeColor = System.Drawing.Color.White;
             this.lblGestureName.Location = new System.Drawing.Point(701, 172);
             this.lblGestureName.Name = "lblGestureName";
-            this.lblGestureName.Size = new System.Drawing.Size(171, 31);
+            this.lblGestureName.Size = new System.Drawing.Size(212, 38);
             this.lblGestureName.TabIndex = 8;
             this.lblGestureName.Text = "Gesture Name:";
             // 
@@ -152,7 +381,7 @@ namespace GestPipePowerPonit
             this.btnEndTraining.ForeColor = System.Drawing.Color.Black;
             this.btnEndTraining.Location = new System.Drawing.Point(918, 680);
             this.btnEndTraining.Name = "btnEndTraining";
-            this.btnEndTraining.Size = new System.Drawing.Size(143, 40);
+            this.btnEndTraining.Size = new System.Drawing.Size(161, 50);
             this.btnEndTraining.TabIndex = 7;
             this.btnEndTraining.Text = "End Training";
             this.btnEndTraining.Click += new System.EventHandler(this.btnClose_Click);
@@ -163,7 +392,7 @@ namespace GestPipePowerPonit
             this.picCamera.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.picCamera.Location = new System.Drawing.Point(25, 163);
             this.picCamera.Name = "picCamera";
-            this.picCamera.Size = new System.Drawing.Size(640, 480);
+            this.picCamera.Size = new System.Drawing.Size(720, 600);
             this.picCamera.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picCamera.TabIndex = 0;
             this.picCamera.TabStop = false;
@@ -174,7 +403,7 @@ namespace GestPipePowerPonit
             this.lblPose.ForeColor = System.Drawing.Color.White;
             this.lblPose.Location = new System.Drawing.Point(702, 232);
             this.lblPose.Name = "lblPose";
-            this.lblPose.Size = new System.Drawing.Size(359, 24);
+            this.lblPose.Size = new System.Drawing.Size(404, 30);
             this.lblPose.TabIndex = 1;
             this.lblPose.Text = "🎯 Pose Target: [Gesture]";
             // 
@@ -184,7 +413,7 @@ namespace GestPipePowerPonit
             this.lblResult.ForeColor = System.Drawing.Color.White;
             this.lblResult.Location = new System.Drawing.Point(702, 292);
             this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(220, 24);
+            this.lblResult.Size = new System.Drawing.Size(248, 30);
             this.lblResult.TabIndex = 2;
             this.lblResult.Text = "✅ Last Result: ";
             // 
@@ -194,7 +423,7 @@ namespace GestPipePowerPonit
             this.lblCorrect.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
             this.lblCorrect.Location = new System.Drawing.Point(703, 352);
             this.lblCorrect.Name = "lblCorrect";
-            this.lblCorrect.Size = new System.Drawing.Size(150, 24);
+            this.lblCorrect.Size = new System.Drawing.Size(169, 30);
             this.lblCorrect.TabIndex = 3;
             this.lblCorrect.Text = "✅ Correct: ";
             // 
@@ -204,7 +433,7 @@ namespace GestPipePowerPonit
             this.lblWrong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.lblWrong.Location = new System.Drawing.Point(703, 412);
             this.lblWrong.Name = "lblWrong";
-            this.lblWrong.Size = new System.Drawing.Size(150, 24);
+            this.lblWrong.Size = new System.Drawing.Size(169, 30);
             this.lblWrong.TabIndex = 4;
             this.lblWrong.Text = "❌ Wrong: ";
             // 
@@ -214,7 +443,7 @@ namespace GestPipePowerPonit
             this.lblAccuracy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.lblAccuracy.Location = new System.Drawing.Point(703, 472);
             this.lblAccuracy.Name = "lblAccuracy";
-            this.lblAccuracy.Size = new System.Drawing.Size(292, 24);
+            this.lblAccuracy.Size = new System.Drawing.Size(328, 30);
             this.lblAccuracy.TabIndex = 5;
             this.lblAccuracy.Text = "📊 Accuracy:";
             // 
@@ -224,24 +453,57 @@ namespace GestPipePowerPonit
             this.lblReason.ForeColor = System.Drawing.Color.Wheat;
             this.lblReason.Location = new System.Drawing.Point(701, 553);
             this.lblReason.Name = "lblReason";
-            this.lblReason.Size = new System.Drawing.Size(350, 90);
+            this.lblReason.Size = new System.Drawing.Size(394, 112);
             this.lblReason.TabIndex = 6;
             this.lblReason.Text = "Reason:";
             // 
+            // btnLogout
+            // 
+            this.btnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLogout.FillColor = System.Drawing.Color.Transparent;
+            this.btnLogout.Image = global::GestPipePowerPonit.Properties.Resources.icon_logout;
+            this.btnLogout.ImageRotate = 0F;
+            this.btnLogout.Location = new System.Drawing.Point(1154, 60);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.btnLogout.Size = new System.Drawing.Size(53, 54);
+            this.btnLogout.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnLogout.TabIndex = 9;
+            this.btnLogout.TabStop = false;
+            // 
+            // btnProfile
+            // 
+            this.btnProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnProfile.FillColor = System.Drawing.Color.Transparent;
+            this.btnProfile.Image = global::GestPipePowerPonit.Properties.Resources.icon_user;
+            this.btnProfile.ImageRotate = 0F;
+            this.btnProfile.Location = new System.Drawing.Point(1092, 60);
+            this.btnProfile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnProfile.Name = "btnProfile";
+            this.btnProfile.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.btnProfile.Size = new System.Drawing.Size(53, 54);
+            this.btnProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnProfile.TabIndex = 10;
+            this.btnProfile.TabStop = false;
+            // 
             // FormTrainingGesture
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1100, 750);
             this.Controls.Add(this.pnlMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormTrainingGesture";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.pnlMain.ResumeLayout(false);
             this.pnlMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCamera)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnProfile)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -253,6 +515,8 @@ namespace GestPipePowerPonit
         private Guna2Button btnEndTraining;
         private System.Windows.Forms.Label lblGestureName;
         private Guna2Button btnPresentation;
+        private Guna2CirclePictureBox btnLogout;
+        private Guna2CirclePictureBox btnProfile;
         private System.Windows.Forms.Label lblTraining;
     }
 }

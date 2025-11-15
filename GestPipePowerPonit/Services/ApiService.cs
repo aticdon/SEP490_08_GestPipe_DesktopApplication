@@ -128,5 +128,81 @@ namespace GestPipePowerPonit.Services
             Console.WriteLine($"[ApiService] ClearAuthToken called");
             _httpClient.DefaultRequestHeaders.Authorization = null;
         }
+        // ✅ THÊM 2 METHODS NÀY VÀO ApiService.cs
+
+        public async Task<T> GetAsync<T>(string endpoint) where T : class
+        {
+            try
+            {
+                Console.WriteLine($"[ApiService] GET {BaseUrl}{endpoint}");
+
+                var response = await _httpClient.GetAsync(endpoint);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine($"[ApiService] Response Status: {(int)response.StatusCode}");
+                Console.WriteLine($"[ApiService] Response Body: {responseContent}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return JsonConvert.DeserializeObject<T>(responseContent);
+                }
+                else
+                {
+                    try
+                    {
+                        return JsonConvert.DeserializeObject<T>(responseContent);
+                    }
+                    catch
+                    {
+                        throw new Exception($"API Error: {(int)response.StatusCode}\n{responseContent}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ApiService] Exception: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<T> PutAsync<T>(string endpoint, object data) where T : class
+        {
+            try
+            {
+                Console.WriteLine($"[ApiService] PUT {BaseUrl}{endpoint}");
+
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                Console.WriteLine($"[ApiService] Request Body: {json}");
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync(endpoint, content);
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"[ApiService] Response Status: {(int)response.StatusCode}");
+                Console.WriteLine($"[ApiService] Response Body: {responseContent}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return JsonConvert.DeserializeObject<T>(responseContent);
+                }
+                else
+                {
+                    try
+                    {
+                        return JsonConvert.DeserializeObject<T>(responseContent);
+                    }
+                    catch
+                    {
+                        throw new Exception($"API Error: {(int)response.StatusCode}\n{responseContent}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ApiService] Exception: {ex.Message}");
+                throw;
+            }
+        }
     }
+
 }

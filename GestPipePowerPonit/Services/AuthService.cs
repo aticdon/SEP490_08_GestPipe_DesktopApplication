@@ -14,6 +14,14 @@ namespace GestPipePowerPonit.Services
         private readonly string _googleClientId;
         private readonly string _googleClientSecret;
 
+        // ✅ Constants for file paths
+        private const string TOKEN_FILE_PATH = "token.json";
+        private static string TOKEN_FOLDER => Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "GestPipeTokenStore"
+        );
+        private static string TOKEN_FILE_FULL_PATH => Path.Combine(TOKEN_FOLDER, TOKEN_FILE_PATH);
+
         public AuthService(string googleClientId = "", string googleClientSecret = "")
         {
             _apiService = new ApiService();
@@ -105,7 +113,7 @@ namespace GestPipePowerPonit.Services
                 if (string.IsNullOrWhiteSpace(cid))
                 {
                     Console.WriteLine("❌ [GetGoogleIdTokenAsync] Google ClientId not configured");
-                    throw new InvalidOperationException("Google ClientId is not configured. Provide clientId in constructor or method parameter.");
+                    throw new InvalidOperationException("Google ClientId is not configured.");
                 }
 
                 Console.WriteLine($"\n[GetGoogleIdTokenAsync] Starting OAuth flow...");
@@ -117,36 +125,33 @@ namespace GestPipePowerPonit.Services
                     ClientSecret = csecret ?? string.Empty
                 };
 
-                // ✅ SCOPES - Thêm "profile" để lấy đầy đủ thông tin
+                // ✅ Scopes
                 string[] scopes = new[] {
-                    "openid",
-                    "email",
-                    "profile",
-                    "https://www.googleapis.com/auth/userinfo.profile"
-                };
+            "openid",
+            "email",
+            "profile",
+            "https://www.googleapis.com/auth/userinfo.profile"
+        };
 
-                // ✅ FileDataStore - Lưu token cục bộ
-                string tokenPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "GestPipeTokenStore"
-                );
-
-                if (!Directory.Exists(tokenPath))
+                // ✅ Token storage
+                if (!Directory.Exists(TOKEN_FOLDER))
                 {
-                    Directory.CreateDirectory(tokenPath);
+                    Directory.CreateDirectory(TOKEN_FOLDER);
                 }
 
-                var dataStore = new FileDataStore(tokenPath, true);
+                var dataStore = new FileDataStore(TOKEN_FOLDER, true);
 
-                Console.WriteLine($"  📁 Token path: {tokenPath}");
+                Console.WriteLine($"  📁 Token path: {TOKEN_FOLDER}");
                 Console.WriteLine($"  🔐 Authorizing with Google...");
 
+                // ✅ SỬA: Không dùng custom receiver, để Google tự động xử lý
                 var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     clientSecrets,
                     scopes,
                     userIdentifier,
                     CancellationToken.None,
                     dataStore
+                // ✅ Không truyền receiver parameter - để Google dùng default
                 );
 
                 Console.WriteLine($"  ✅ Authorization successful");
@@ -155,15 +160,12 @@ namespace GestPipePowerPonit.Services
                 {
                     Console.WriteLine($"  📊 Token info:");
                     Console.WriteLine($"    - TokenType: {credential.Token.TokenType}");
-                    Console.WriteLine($"    - AccessToken: {(credential.Token.AccessToken != null ? credential.Token.AccessToken.Substring(0, 20) + "..." : "NULL")}");
-                    Console.WriteLine($"    - IdToken: {(credential.Token.IdToken != null ? credential.Token.IdToken.Substring(0, 20) + "..." : "NULL")}");
-                    Console.WriteLine($"    - ExpiresIn: {credential.Token.ExpiresInSeconds}");
-                    Console.WriteLine($"    - IsExpired: {credential.Token.IsExpired(Google.Apis.Util.SystemClock.Default)}");
+                    Console.WriteLine($"    - IdToken: {(credential.Token.IdToken != null ? "✅ Available" : "❌ NULL")}");
                 }
 
                 var idToken = credential?.Token?.IdToken;
 
-                // ✅ Nếu không có IdToken, cố gắng lấy từ Access Token
+                // Fallback to AccessToken if IdToken not available
                 if (string.IsNullOrEmpty(idToken) && credential?.Token?.AccessToken != null)
                 {
                     Console.WriteLine($"  ⚠️  IdToken not available, using AccessToken as fallback");
@@ -233,7 +235,7 @@ namespace GestPipePowerPonit.Services
                 Console.WriteLine($"[GoogleLoginAsync] ✅ Backend response received");
                 Console.WriteLine($"  Success: {response?.Success}");
                 Console.WriteLine($"  Message: {response?.Message}");
-                Console.WriteLine($"  RequiresProfileCompletion: {response?.RequiresProfileCompletion}"); // ✅ NEW
+                Console.WriteLine($"  RequiresProfileCompletion: {response?.RequiresProfileCompletion}");
 
                 if (response?.Success == true)
                 {
@@ -271,7 +273,7 @@ namespace GestPipePowerPonit.Services
                     Properties.Settings.Default.UserEmail = response.Email;
                 }
 
-                // ✅ SỬA: Lưu giá trị rememberMe thật sự
+                // ✅ Lưu giá trị rememberMe thật sự
                 Properties.Settings.Default.RememberMe = rememberMe;
                 Properties.Settings.Default.Save();
 
@@ -293,6 +295,97 @@ namespace GestPipePowerPonit.Services
             _apiService.ClearAuthToken();
         }
 
+        /// <summary>
+        /// ✅ LOGOUT - Clear all stored data
+        /// </summary>
+        public async Task<AuthResponseDto> LogoutAsync()
+        {
+            try
+            {
+                Console.WriteLine("\n" + new string('=', 60));
+                Console.WriteLine("[LogoutAsync] STARTED");
+                Console.WriteLine(new string('=', 60));
+
+                // 1. Call backend logout API
+                var token = GetAuthToken();
+                if (!string.IsNullOrEmpty(token))
+                {
+                    try
+                    {
+                        Console.WriteLine("[Logout] 📤 Calling backend logout API...");
+                        var response = await _apiService.PostAsync<AuthResponseDto>("auth/logout", new { });
+                        Console.WriteLine($"[Logout] ✅ Backend response: {response?.Success}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[Logout] ⚠️ Backend API error (ignored): {ex.Message}");
+                    }
+                }
+
+                // 2. ✅ Clear local token file
+                Console.WriteLine("[Logout] 🗑️ Clearing token files...");
+                ClearStoredTokenFile();
+
+                // 3. ✅ Clear Properties.Settings (AuthToken, UserId, UserEmail)
+                Console.WriteLine("[Logout] 🗑️ Clearing user session...");
+                ClearUserSession();
+
+                Console.WriteLine("[Logout] ✅ Logout completed successfully");
+                Console.WriteLine(new string('=', 60) + "\n");
+
+                return new AuthResponseDto
+                {
+                    Success = true,
+                    Message = "Logged out successfully"
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ [LogoutAsync] Error: {ex.Message}");
+                Console.WriteLine(new string('=', 60) + "\n");
+                return new AuthResponseDto
+                {
+                    Success = false,
+                    Message = $"Logout failed: {ex.Message}"
+                };
+            }
+        }
+
+        /// <summary>
+        /// ✅ Clear stored token file (GestPipeTokenStore folder)
+        /// </summary>
+        private void ClearStoredTokenFile()
+        {
+            try
+            {
+                Console.WriteLine($"[ClearToken] Token folder: {TOKEN_FOLDER}");
+
+                // Delete entire folder and all its contents
+                if (Directory.Exists(TOKEN_FOLDER))
+                {
+                    // List files before deletion
+                    var files = Directory.GetFiles(TOKEN_FOLDER);
+                    Console.WriteLine($"[ClearToken] Found {files.Length} file(s):");
+                    foreach (var file in files)
+                    {
+                        Console.WriteLine($"  - {Path.GetFileName(file)}");
+                    }
+
+                    // Delete folder recursively
+                    Directory.Delete(TOKEN_FOLDER, recursive: true);
+                    Console.WriteLine($"[ClearToken] ✅ Deleted folder: {TOKEN_FOLDER}");
+                }
+                else
+                {
+                    Console.WriteLine($"[ClearToken] ℹ️ Folder does not exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ClearToken] ⚠️ Error: {ex.Message}");
+            }
+        }
+
         public bool IsLoggedIn()
         {
             return !string.IsNullOrEmpty(Properties.Settings.Default.AuthToken);
@@ -311,30 +404,6 @@ namespace GestPipePowerPonit.Services
         public string GetUserEmail()
         {
             return Properties.Settings.Default.UserEmail ?? string.Empty;
-        }
-        // ✅ THÊM METHOD NÀY
-        public async Task<AuthResponseDto> LogoutAsync()
-        {
-            try
-            {
-                var response = await _apiService.PostAsync<AuthResponseDto>("auth/logout", new { });
-
-                if (response?.Success == true)
-                {
-                    ClearUserSession();
-                }
-
-                return response;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"❌ [LogoutAsync] Error: {ex.Message}");
-                return new AuthResponseDto
-                {
-                    Success = false,
-                    Message = ex.Message
-                };
-            }
         }
     }
 }

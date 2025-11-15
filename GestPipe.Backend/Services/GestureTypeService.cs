@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using GestPipe.Backend.Services.IServices;
+using MongoDB.Driver;
 using System.Collections.Generic;
 
 public class GestureTypeService : IGestureTypeService

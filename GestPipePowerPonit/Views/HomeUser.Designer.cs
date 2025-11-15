@@ -1,22 +1,22 @@
-﻿namespace GestPipePowerPonit
-{
-    partial class HomeUser
+﻿    namespace GestPipePowerPonit
     {
-        private System.ComponentModel.IContainer components = null;
-
-        protected override void Dispose(bool disposing)
+        partial class HomeUser
         {
-            if (disposing && (components != null))
+            private System.ComponentModel.IContainer components = null;
+
+            protected override void Dispose(bool disposing)
             {
-                components.Dispose();
+                if (disposing && (components != null))
+                {
+                    components.Dispose();
+                }
+                base.Dispose(disposing);
             }
-            base.Dispose(disposing);
-        }
 
-        #region Windows Form Designer generated code
+            #region Windows Form Designer generated code
 
-        private void InitializeComponent()
-        {
+            private void InitializeComponent()
+            {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeUser));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
@@ -355,6 +355,7 @@
             this.btnProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnProfile.TabIndex = 6;
             this.btnProfile.TabStop = false;
+            this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
             // 
             // guna2ControlBoxClose
             // 
@@ -469,6 +470,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1366, 768);
             this.Controls.Add(this.pnlMain);
@@ -491,9 +493,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBanner)).EndInit();
             this.ResumeLayout(false);
 
-        }
+            }
 
-        #endregion
+            #endregion
 
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
         private Guna.UI2.WinForms.Guna2Panel pnlSidebar;

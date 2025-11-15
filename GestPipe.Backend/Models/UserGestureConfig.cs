@@ -1,5 +1,8 @@
-﻿using MongoDB.Bson;
+﻿using GestPipe.Backend.Models;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
+using System.Collections.Generic;
 
 namespace GestPipe.Backend.Models
 {
@@ -10,7 +13,6 @@ namespace GestPipe.Backend.Models
         public string Id { get; set; }
 
         [BsonElement("user_id")]
-        [BsonRepresentation(BsonType.ObjectId)]
         public string UserId { get; set; }
 
         [BsonElement("gesture_type_id")]

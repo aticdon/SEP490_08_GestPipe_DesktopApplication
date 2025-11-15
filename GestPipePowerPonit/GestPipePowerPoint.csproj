@@ -266,15 +266,22 @@
     <Compile Include="Languages\LoginFormStrings.Designer.cs" />
     <Compile Include="Languages\RegisterFormStrings.Designer.cs" />
     <Compile Include="Models\DTOs\AuthResponseDto.cs" />
+    <Compile Include="Models\DTOs\ChangePasswordDto.cs" />
     <Compile Include="Models\DTOs\EmailRequestDto.cs" />
     <Compile Include="Models\DTOs\GoogleLoginDto.cs" />
     <Compile Include="Models\DTOs\LoginDto.cs" />
+    <Compile Include="Models\DTOs\ProfileDataDto.cs" />
+    <Compile Include="Models\DTOs\ProfileResponseDto.cs" />
     <Compile Include="Models\DTOs\RegisterDto.cs" />
     <Compile Include="Models\DTOs\ResetPasswordDto.cs" />
+    <Compile Include="Models\DTOs\UpdateProfileDto.cs" />
+    <Compile Include="Models\DTOs\UserResponseDto.cs" />
+    <Compile Include="Models\DTOs\UserProfileDto.cs" />
     <Compile Include="Models\DTOs\UserRequestDto.cs" />
     <Compile Include="Models\UserGestureConfig.cs" />
     <Compile Include="Models\DTOs\UserGestureRequestDto.cs" />
     <Compile Include="Models\DTOs\VerifyOtpDto.cs" />
+    <Compile Include="Models\VectorData.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -282,6 +289,7 @@
     </Compile>
     <Compile Include="Services\ApiService.cs" />
     <Compile Include="Services\AuthService.cs" />
+    <Compile Include="Services\ProfileService.cs" />
     <Compile Include="Services\UserGestureRequestService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Views\Auth\ForgotPasswordForm.cs">
@@ -399,7 +407,6 @@
     <Compile Include="Models\TrainingGesture.cs" />
     <Compile Include="Models\UserDto.cs" />
     <Compile Include="Models\UserGestureConfigDto.cs" />
-    <Compile Include="Models\VectorData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.vi-VN.Designer.cs">
@@ -419,6 +426,18 @@
     </Compile>
     <Compile Include="Views\FormTrainingGesture.Designer.cs">
       <DependentUpon>FormTrainingGesture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProfileUser\ChangePasswordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ProfileUser\ChangePasswordForm.Designer.cs">
+      <DependentUpon>ChangePasswordForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProfileUser\ProfileForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ProfileUser\ProfileForm.Designer.cs">
+      <DependentUpon>ProfileForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Languages\LoginFormStrings.resx">
       <SubType>Designer</SubType>
@@ -487,6 +506,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormTrainingGesture.resx">
       <DependentUpon>FormTrainingGesture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ProfileUser\ChangePasswordForm.resx">
+      <DependentUpon>ChangePasswordForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ProfileUser\ProfileForm.resx">
+      <DependentUpon>ProfileForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="packages.config" />
