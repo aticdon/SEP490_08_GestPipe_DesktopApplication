@@ -70,8 +70,7 @@ namespace GestPipePowerPonit
                         I18nHelper.GetLocalized(g.Status),
                         g.LastUpdate.ToString("dd-MM-yyyy"),
                         Properties.Resources.icon_view,
-                        Properties.Resources.icon_traininggesture,
-                        Properties.Resources.CustomCamera
+                        Properties.Resources.icon_traininggesture
                     );
                 }
             }
@@ -107,16 +106,17 @@ namespace GestPipePowerPonit
                 );
                 detailForm.ShowDialog();
             }
-            else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnCustom"].Index && e.RowIndex >= 0)
-            {
-                // Lấy thông tin gesture nếu cần
-                var basic = gestures[e.RowIndex];
-                // Mở FormCustomGesture, truyền HomeUser (hoặc truyền gì bạn cần)
-                var customForm = new FormCustomGesture(_homeForm);
-                customForm.Show();
-                // Nếu muốn, có thể hide form hiện tại: this.Hide();
-                this.Hide();
-            }
+            //else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnCustom"].Index && e.RowIndex >= 0)
+            //{
+            //    var basic = gestures[e.RowIndex];
+            //    var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
+            //    string poseLabel = detail.PoseLabel; // hoặc basic.Name hay basic.ActionName, tuỳ mô hình dữ liệu
+            //    string userGesture = I18nHelper.GetLocalized(detail.Name);
+            //    string userName = Properties.Settings.Default.UserId; // hoặc biến userId
+            //    var customForm = new FormCustomGesture(_homeForm, userName, poseLabel,userGesture);
+            //    customForm.Show();
+            //    this.Hide();
+            //}
             else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnTraining"].Index && e.RowIndex >= 0)
             {
                 var basic = gestures[e.RowIndex];
@@ -194,7 +194,8 @@ namespace GestPipePowerPonit
             btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
             btnVersion.Text = Properties.Resources.Btn_Version;
             btnInstruction.Text = Properties.Resources.Btn_Instruction;
-            btnCustomeGesture.Text = Properties.Resources.Btn_CustomGesture;
+            btnCustomGesture.Text = Properties.Resources.Btn_CustomGesture;
+            btnTrainingGesture.Text = Properties.Resources.Btn_Training;
             btnPresentation.Text = Properties.Resources.Btn_Present;
             // Add any extra controls below if needed
             guna2DataGridView1.Columns["ColumnName"].HeaderText = Properties.Resources.Col_Name;
@@ -329,6 +330,13 @@ namespace GestPipePowerPonit
         {
             Form1 form1 = new Form1(_homeForm);
             form1.Show();
+            this.Hide();
+        }
+
+        private void btnCustomGesture_Click(object sender, EventArgs e)
+        {
+            FormUserGestureCustom uGestureForm = new FormUserGestureCustom(_homeForm);
+            uGestureForm.Show();
             this.Hide();
         }
     }

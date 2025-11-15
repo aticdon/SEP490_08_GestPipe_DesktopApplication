@@ -1,5 +1,6 @@
 ﻿using GestPipePowerPonit.I18n;
 using GestPipePowerPonit.Models;
+using GestPipePowerPonit.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -23,6 +24,10 @@ namespace GestPipePowerPonit.Services
         public async Task<List<UserGestureConfigDto>> GetUserGesturesAsync(string userId)
         {
             return await _httpClient.GetFromJsonAsync<List<UserGestureConfigDto>>($"/api/usergestureconfig/user/{userId}");
+        }
+        public async Task<UserGestureConfig> GetUserGestureByid(string Id)
+        {
+            return await _httpClient.GetFromJsonAsync<UserGestureConfig>($"/api/usergestureconfig/{Id}");
         }
 
         public async Task<GestureDetailsDto> GetGestureDetailAsync(string id)

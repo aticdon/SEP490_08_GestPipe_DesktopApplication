@@ -7,18 +7,18 @@ namespace GestPipePowerPonit
         private System.ComponentModel.IContainer components = null;
 
         // Guna Controls - Tích hợp từ Form1
-        private Guna.UI2.WinForms.Guna2Panel pnlSidebar, pnlFooter;
-        private System.Windows.Forms.PictureBox pictureBoxLogo;
-        private Guna2Panel pnlHeader;
+        //private Guna.UI2.WinForms.Guna2Panel pnlSidebar, pnlFooter;
+        //private System.Windows.Forms.PictureBox pictureBoxLogo;
+        //private Guna2Panel pnlHeader;
         private System.Windows.Forms.Label lblTrainingTitle; // Tiêu đề cho Header
         private Guna2GradientPanel pnlMain; // Panel chứa nội dung luyện tập
-        private Guna2ControlBox guna2ControlBoxMinimize;
-        private Guna2ControlBox guna2ControlBoxClose;
+        //private Guna2ControlBox guna2ControlBoxMinimize;
+        //private Guna2ControlBox guna2ControlBoxClose;
         private Guna2Elipse guna2Elipse1;
         private Guna2DragControl guna2DragControl1;
-        private Guna.UI2.WinForms.Guna2Button btnCustomeGesture, btnInstruction, btnVersion, btnGestureControl, btnHome;
-        private Guna.UI2.WinForms.Guna2Button btnLanguageVN;
-        private Guna.UI2.WinForms.Guna2Button btnLanguageEN;
+        //private Guna.UI2.WinForms.Guna2Button btnCustomeGesture, btnInstruction, btnVersion, btnGestureControl, btnHome;
+        //private Guna.UI2.WinForms.Guna2Button btnLanguageVN;
+        //private Guna.UI2.WinForms.Guna2Button btnLanguageEN;
 
         // Các Control luyện tập gốc, được thêm vào pnlMain
         private System.Windows.Forms.PictureBox picCamera;
@@ -39,22 +39,10 @@ namespace GestPipePowerPonit
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTrainingGesture));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
-            this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
-            this.guna2ControlBoxClose = new Guna.UI2.WinForms.Guna2ControlBox();
-            this.guna2ControlBoxMinimize = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblTrainingTitle = new System.Windows.Forms.Label();
-            this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             this.btnPresentation = new Guna.UI2.WinForms.Guna2Button();
-            this.btnCustomeGesture = new Guna.UI2.WinForms.Guna2Button();
-            this.pnlFooter = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnLanguageEN = new Guna.UI2.WinForms.Guna2Button();
-            this.btnLanguageVN = new Guna.UI2.WinForms.Guna2Button();
-            this.btnInstruction = new Guna.UI2.WinForms.Guna2Button();
-            this.btnVersion = new Guna.UI2.WinForms.Guna2Button();
-            this.btnGestureControl = new Guna.UI2.WinForms.Guna2Button();
-            this.btnHome = new Guna.UI2.WinForms.Guna2Button();
-            this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.pnlMain = new Guna.UI2.WinForms.Guna2GradientPanel();
+            this.lblTraining = new System.Windows.Forms.Label();
             this.lblGestureName = new System.Windows.Forms.Label();
             this.btnEndTraining = new Guna.UI2.WinForms.Guna2Button();
             this.picCamera = new System.Windows.Forms.PictureBox();
@@ -84,7 +72,6 @@ namespace GestPipePowerPonit
             // guna2DragControl1
             // 
             this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
-            this.guna2DragControl1.TargetControl = this.pnlHeader;
             this.guna2DragControl1.UseTransparentDrag = true;
             // 
             // pnlHeader
@@ -343,6 +330,7 @@ namespace GestPipePowerPonit
             // pnlMain
             // 
             this.pnlMain.BackColor = System.Drawing.Color.Transparent;
+            this.pnlMain.Controls.Add(this.lblTraining);
             this.pnlMain.Controls.Add(this.lblGestureName);
             this.pnlMain.Controls.Add(this.btnEndTraining);
             this.pnlMain.Controls.Add(this.picCamera);
@@ -356,18 +344,28 @@ namespace GestPipePowerPonit
             this.pnlMain.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(40)))), ((int)(((byte)(80)))));
             this.pnlMain.FillColor2 = System.Drawing.Color.Black;
             this.pnlMain.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            this.pnlMain.Location = new System.Drawing.Point(300, 150);
-            this.pnlMain.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.pnlMain.Location = new System.Drawing.Point(0, 0);
             this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(1237, 810);
+            this.pnlMain.Size = new System.Drawing.Size(1100, 750);
             this.pnlMain.TabIndex = 0;
+            // 
+            // lblTraining
+            // 
+            this.lblTraining.AutoSize = true;
+            this.lblTraining.Font = new System.Drawing.Font("Segoe UI Black", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTraining.ForeColor = System.Drawing.Color.Cyan;
+            this.lblTraining.Location = new System.Drawing.Point(209, 43);
+            this.lblTraining.Name = "lblTraining";
+            this.lblTraining.Size = new System.Drawing.Size(681, 81);
+            this.lblTraining.TabIndex = 9;
+            this.lblTraining.Text = "User Training Gesture";
             // 
             // lblGestureName
             // 
             this.lblGestureName.AutoSize = true;
             this.lblGestureName.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGestureName.ForeColor = System.Drawing.Color.White;
-            this.lblGestureName.Location = new System.Drawing.Point(789, 31);
+            this.lblGestureName.Location = new System.Drawing.Point(701, 172);
             this.lblGestureName.Name = "lblGestureName";
             this.lblGestureName.Size = new System.Drawing.Size(212, 38);
             this.lblGestureName.TabIndex = 8;
@@ -378,11 +376,10 @@ namespace GestPipePowerPonit
             this.btnEndTraining.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEndTraining.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnEndTraining.BorderRadius = 10;
-            this.btnEndTraining.FillColor = System.Drawing.Color.MidnightBlue;
+            this.btnEndTraining.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btnEndTraining.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnEndTraining.ForeColor = System.Drawing.Color.White;
-            this.btnEndTraining.Location = new System.Drawing.Point(28, 718);
-            this.btnEndTraining.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnEndTraining.ForeColor = System.Drawing.Color.Black;
+            this.btnEndTraining.Location = new System.Drawing.Point(918, 680);
             this.btnEndTraining.Name = "btnEndTraining";
             this.btnEndTraining.Size = new System.Drawing.Size(161, 50);
             this.btnEndTraining.TabIndex = 7;
@@ -393,8 +390,7 @@ namespace GestPipePowerPonit
             // 
             this.picCamera.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(40)))));
             this.picCamera.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picCamera.Location = new System.Drawing.Point(27, 31);
-            this.picCamera.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.picCamera.Location = new System.Drawing.Point(25, 163);
             this.picCamera.Name = "picCamera";
             this.picCamera.Size = new System.Drawing.Size(720, 600);
             this.picCamera.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -405,7 +401,7 @@ namespace GestPipePowerPonit
             // 
             this.lblPose.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblPose.ForeColor = System.Drawing.Color.White;
-            this.lblPose.Location = new System.Drawing.Point(790, 106);
+            this.lblPose.Location = new System.Drawing.Point(702, 232);
             this.lblPose.Name = "lblPose";
             this.lblPose.Size = new System.Drawing.Size(404, 30);
             this.lblPose.TabIndex = 1;
@@ -415,7 +411,7 @@ namespace GestPipePowerPonit
             // 
             this.lblResult.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblResult.ForeColor = System.Drawing.Color.White;
-            this.lblResult.Location = new System.Drawing.Point(790, 181);
+            this.lblResult.Location = new System.Drawing.Point(702, 292);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(248, 30);
             this.lblResult.TabIndex = 2;
@@ -425,7 +421,7 @@ namespace GestPipePowerPonit
             // 
             this.lblCorrect.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblCorrect.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
-            this.lblCorrect.Location = new System.Drawing.Point(791, 256);
+            this.lblCorrect.Location = new System.Drawing.Point(703, 352);
             this.lblCorrect.Name = "lblCorrect";
             this.lblCorrect.Size = new System.Drawing.Size(169, 30);
             this.lblCorrect.TabIndex = 3;
@@ -435,7 +431,7 @@ namespace GestPipePowerPonit
             // 
             this.lblWrong.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblWrong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.lblWrong.Location = new System.Drawing.Point(791, 331);
+            this.lblWrong.Location = new System.Drawing.Point(703, 412);
             this.lblWrong.Name = "lblWrong";
             this.lblWrong.Size = new System.Drawing.Size(169, 30);
             this.lblWrong.TabIndex = 4;
@@ -445,7 +441,7 @@ namespace GestPipePowerPonit
             // 
             this.lblAccuracy.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblAccuracy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.lblAccuracy.Location = new System.Drawing.Point(791, 406);
+            this.lblAccuracy.Location = new System.Drawing.Point(703, 472);
             this.lblAccuracy.Name = "lblAccuracy";
             this.lblAccuracy.Size = new System.Drawing.Size(328, 30);
             this.lblAccuracy.TabIndex = 5;
@@ -455,7 +451,7 @@ namespace GestPipePowerPonit
             // 
             this.lblReason.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblReason.ForeColor = System.Drawing.Color.Wheat;
-            this.lblReason.Location = new System.Drawing.Point(789, 508);
+            this.lblReason.Location = new System.Drawing.Point(701, 553);
             this.lblReason.Name = "lblReason";
             this.lblReason.Size = new System.Drawing.Size(394, 112);
             this.lblReason.TabIndex = 6;
@@ -496,20 +492,13 @@ namespace GestPipePowerPonit
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(1537, 960);
+            this.ClientSize = new System.Drawing.Size(1100, 750);
             this.Controls.Add(this.pnlMain);
-            this.Controls.Add(this.pnlHeader);
-            this.Controls.Add(this.pnlSidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormTrainingGesture";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "TrainingGesture";
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlSidebar.ResumeLayout(false);
-            this.pnlFooter.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.pnlMain.ResumeLayout(false);
             this.pnlMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCamera)).EndInit();
@@ -528,5 +517,6 @@ namespace GestPipePowerPonit
         private Guna2Button btnPresentation;
         private Guna2CirclePictureBox btnLogout;
         private Guna2CirclePictureBox btnProfile;
+        private System.Windows.Forms.Label lblTraining;
     }
 }

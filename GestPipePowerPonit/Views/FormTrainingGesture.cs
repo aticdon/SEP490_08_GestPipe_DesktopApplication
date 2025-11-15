@@ -148,12 +148,6 @@ namespace GestPipePowerPonit
                             {
                                 this.Invoke(new Action(() =>
                                 {
-                                    //lblResult.Text = "✅ Last Result: " + parts[0];
-                                    //lblPose.Text = "🎯 Pose Target: " + parts[1];
-                                    //lblCorrect.Text = "✅ Correct: " + parts[2];
-                                    //lblWrong.Text = "❌ Wrong: " + parts[3];
-                                    //lblAccuracy.Text = "📊 Accuracy: " + parts[4] + "%";
-                                    //lblReason.Text = "Reason: " + parts[5];
                                     lblResult.Text = "✅ " + Properties.Resources.Lbl_LastResult + ": " + TranslateResult(parts[0]);
                                     lblPose.Text = "🎯 " + Properties.Resources.Lbl_PoseTarget + ": " + parts[1];
                                     lblCorrect.Text = "✅ " + Properties.Resources.Lbl_Result_Correct + ": " + parts[2];
@@ -271,8 +265,6 @@ namespace GestPipePowerPonit
                 VectorData = vectorData,
                 CreateAt = DateTime.Now
             };
-            //await trainingGestureService.SaveTrainingGestureAsync(result);
-            //MessageBox.Show(System.Text.Json.JsonSerializer.Serialize(result));
             try
             {
                 bool ok = await trainingGestureService.SaveTrainingGestureAsync(result);
@@ -323,11 +315,11 @@ namespace GestPipePowerPonit
             lblReason.Text = Properties.Resources.Lbl_Reason + ":";
 
             // Các button
-            btnHome.Text = Properties.Resources.Btn_Home;
-            btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
-            btnVersion.Text = Properties.Resources.Btn_Version;
-            btnInstruction.Text = Properties.Resources.Btn_Instruction;
-            btnCustomeGesture.Text = Properties.Resources.Btn_CustomGesture;
+            //btnHome.Text = Properties.Resources.Btn_Home;
+            //btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
+            //btnVersion.Text = Properties.Resources.Btn_Version;
+            //btnInstruction.Text = Properties.Resources.Btn_Instruction;
+            //btnCustomeGesture.Text = Properties.Resources.Btn_CustomGesture;
             btnPresentation.Text = Properties.Resources.Btn_Present;
             btnEndTraining.Text = Properties.Resources.LblClose;
             // ... add thêm các caption, heading, tool tip nếu có

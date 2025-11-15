@@ -459,5 +459,49 @@
   </data>
   <data name="Message_ChangeLanguageFailed" xml:space="preserve">
     <value>Không thể đổi ngôn ngữ</value>
+  <data name="Message_LogoutConfirm_VI" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn đăng xuất?</value>
+  </data>
+  <data name="Message_LogoutSuccess_VI" xml:space="preserve">
+    <value>Đăng xuất thành công!</value>
+  </data>
+  <data name="Message_LogoutFailed_VI" xml:space="preserve">
+    <value>Đăng xuất thất bại.</value>
+  </data>
+  <data name="Message_LogoutError_VI" xml:space="preserve">
+    <value>Lỗi khi đăng xuất</value>
+  </data>
+  <data name="Title_Confirmation_VI" xml:space="preserve">
+    <value>Xác nhận</value>
+  </data>
+  <data name="Title_Success_VI" xml:space="preserve">
+    <value>Thành công</value>
+  </data>
+  <data name="Title_Error_VI" xml:space="preserve">
+    <value>Lỗi</value>
+  </data>
+  <data name="Title_ConnectionError_VI" xml:space="preserve">
+    <value>Lỗi Kết Nối</value>
+  </data>
+  <data name="CustomGesture_Title" xml:space="preserve">
+    <value>Hướng Dẫn Tùy Chỉnh Cử Chỉ</value>
+  </data>
+  <data name="CustomGesture_Instruction_01" xml:space="preserve">
+    <value>🎯 Giữ tay trong khung hình, cách camera 40–60 cm</value>
+  </data>
+  <data name="CustomGesture_Instruction_02" xml:space="preserve">
+    <value>✋ Không để tay ra ngoài mép khung</value>
+  </data>
+  <data name="CustomGesture_Instruction_03" xml:space="preserve">
+    <value>💡 Đảm bảo đủ ánh sáng</value>
+  </data>
+  <data name="CustomGesture_Instruction_04" xml:space="preserve">
+    <value>📵 Không để vật thể khác che tay</value>
+  </data>
+  <data name="CustomGesture_Instruction_05" xml:space="preserve">
+    <value>⏱ Giữ tư thế trong 0.8–1.0 giây để mẫu được ghi</value>
+  </data>
+  <data name="CustomGesture_Instruction_06" xml:space="preserve">
+    <value>🔄 Lặp lại 5 lần để đảm bảo chất lượng mẫu</value>
   </data>
 </root>

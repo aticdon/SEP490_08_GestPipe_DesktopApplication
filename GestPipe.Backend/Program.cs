@@ -86,6 +86,7 @@ namespace GestPipe.Backend
             builder.Services.AddScoped<ITrainingGestureService, TrainingGestureService>();
             builder.Services.AddScoped<IGestureInitializationService, GestureInitializationService>();
 
+            builder.Services.AddScoped<IUserGestureRequestService, UserGestureRequestService>();
             // Add Services
             //builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<TopicService>();
