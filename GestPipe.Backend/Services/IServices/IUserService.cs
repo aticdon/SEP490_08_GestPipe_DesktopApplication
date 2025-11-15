@@ -8,5 +8,7 @@ namespace GestPipe.Backend.Services.IServices
         User GetById(string id);
         void Create(User user);
         bool SetLanguage(string userId, string language);
+        bool IncrementRequestCount(string userId);
+        bool UpdateGestureRequestStatus(string userId, string status);
     }
 }

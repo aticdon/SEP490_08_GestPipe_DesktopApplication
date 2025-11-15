@@ -247,6 +247,69 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🎯 Keep hands within frame, 40–60 cm from camera.
+        /// </summary>
+        public static string CustomGesture_Instruction_01 {
+            get {
+                return ResourceManager.GetString("CustomGesture_Instruction_01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ✋ Don&apos;t let hands go outside frame edges.
+        /// </summary>
+        public static string CustomGesture_Instruction_02 {
+            get {
+                return ResourceManager.GetString("CustomGesture_Instruction_02", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💡 Ensure sufficient lighting.
+        /// </summary>
+        public static string CustomGesture_Instruction_03 {
+            get {
+                return ResourceManager.GetString("CustomGesture_Instruction_03", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📵 Don&apos;t let other objects cover hands.
+        /// </summary>
+        public static string CustomGesture_Instruction_04 {
+            get {
+                return ResourceManager.GetString("CustomGesture_Instruction_04", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⏱ Hold pose for 0.8–1.0 seconds for sample recording.
+        /// </summary>
+        public static string CustomGesture_Instruction_05 {
+            get {
+                return ResourceManager.GetString("CustomGesture_Instruction_05", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔄 Repeat 5 times to ensure sample quality.
+        /// </summary>
+        public static string CustomGesture_Instruction_06 {
+            get {
+                return ResourceManager.GetString("CustomGesture_Instruction_06", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Gesture Instructions.
+        /// </summary>
+        public static string CustomGesture_Title {
+            get {
+                return ResourceManager.GetString("CustomGesture_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         public static System.Drawing.Bitmap English {

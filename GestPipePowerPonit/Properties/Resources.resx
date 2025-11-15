@@ -361,37 +361,49 @@
   <data name="Vietnamese" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\image 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-	<!-- ====================== Logout Messages (EN) ====================== -->
-	<data name="Message_LogoutConfirm_EN" xml:space="preserve">
-  <value>Are you sure you want to logout?</value>
-</data>
-
-	<data name="Message_LogoutSuccess_EN" xml:space="preserve">
-  <value>Logged out successfully!</value>
-</data>
-
-	<data name="Message_LogoutFailed_EN" xml:space="preserve">
-  <value>Failed to logout.</value>
-</data>
-
-	<data name="Message_LogoutError_EN" xml:space="preserve">
-  <value>Error during logout</value>
-</data>
-
-	<!-- ====================== Dialog Titles (EN) ====================== -->
-	<data name="Title_Confirmation_EN" xml:space="preserve">
-  <value>Confirmation</value>
-</data>
-
-	<data name="Title_Success_EN" xml:space="preserve">
-  <value>Success</value>
-</data>
-
-	<data name="Title_Error_EN" xml:space="preserve">
-  <value>Error</value>
-</data>
-
-	<data name="Title_ConnectionError_EN" xml:space="preserve">
-  <value>Connection Error</value>
-</data>
+  <data name="Message_LogoutConfirm_EN" xml:space="preserve">
+    <value>Are you sure you want to logout?</value>
+  </data>
+  <data name="Message_LogoutSuccess_EN" xml:space="preserve">
+    <value>Logged out successfully!</value>
+  </data>
+  <data name="Message_LogoutFailed_EN" xml:space="preserve">
+    <value>Failed to logout.</value>
+  </data>
+  <data name="Message_LogoutError_EN" xml:space="preserve">
+    <value>Error during logout</value>
+  </data>
+  <data name="Title_Confirmation_EN" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="Title_Success_EN" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Title_Error_EN" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Title_ConnectionError_EN" xml:space="preserve">
+    <value>Connection Error</value>
+  </data>
+  <data name="CustomGesture_Title" xml:space="preserve">
+    <value>Custom Gesture Instructions</value>
+  </data>
+  <data name="CustomGesture_Instruction_01" xml:space="preserve">
+    <value>🎯 Keep hands within frame, 40–60 cm from camera</value>
+  </data>
+  <data name="CustomGesture_Instruction_02" xml:space="preserve">
+    <value>✋ Don't let hands go outside frame edges</value>
+  </data>
+  <data name="CustomGesture_Instruction_03" xml:space="preserve">
+    <value>💡 Ensure sufficient lighting</value>
+  </data>
+  <data name="CustomGesture_Instruction_04" xml:space="preserve">
+    <value>📵 Don't let other objects cover hands</value>
+  </data>
+  <data name="CustomGesture_Instruction_05" xml:space="preserve">
+    <value>⏱ Hold pose for 0.8–1.0 seconds for sample recording</value>
+  </data>
+  <data name="CustomGesture_Instruction_06" xml:space="preserve">
+    <value>🔄 Repeat 5 times to ensure sample quality</value>
+  </data>
 </root>

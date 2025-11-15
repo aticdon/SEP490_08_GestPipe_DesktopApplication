@@ -17,6 +17,7 @@ namespace GestPipePowerPonit
             Application.SetCompatibleTextRenderingDefault(false);
 
             string currentUserId = Properties.Settings.Default.UserId; // Thay thế bằng ID người dùng thực tế
+            //string currentUserId = "68fa3209582c17a482c5b11e";
 
             // Lấy ngôn ngữ của user trước khi tạo form
             string lang = "en-US"; // mặc định
@@ -28,9 +29,9 @@ namespace GestPipePowerPonit
                     var userTask = apiClient.GetUserAsync(currentUserId);
                     userTask.Wait();
                     var user = userTask.Result;
-                    if (user != null && !string.IsNullOrWhiteSpace(user.Language))
+                    if (user != null && !string.IsNullOrWhiteSpace(user.UiLanguage))
                     {
-                        lang = user.Language;
+                        lang = user.UiLanguage;
                     }
                 }
             }
@@ -40,10 +41,11 @@ namespace GestPipePowerPonit
                 lang = "en-US";
             }
 
-            // Set culture trước khi khởi tạo form
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(lang);
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(lang);
-
+            
+            //HomeUser homeFomr = new HomeUser(currentUserId);
+            //Application.Run(homeFomr);
             // Chạy form chính
             var loginForm = new LoginForm();
             Application.Run(loginForm);

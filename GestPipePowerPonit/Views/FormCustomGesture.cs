@@ -1,4 +1,9 @@
-﻿using System;
+﻿using GestPipePowerPonit.Models.DTOs;
+using GestPipePowerPonit.Services;
+using GestPipePowerPonit.Views; // ✅ Import CustomMessageBox
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -24,37 +29,197 @@ namespace GestPipePowerPonit
 
         private string userName;
         private string poseLabel;
+        private string gestureName;
+        private string gestureId;
+        private string gestureTypeId;
 
         private int savedCount = 0;
         private const int CUSTOM_MAX = 5;
+        private bool isRecording = false;
 
-        public FormCustomGesture(HomeUser homeForm, string userName, string poseLabel)
+        public FormCustomGesture(HomeUser homeForm, string gestureId,string userName, string poseLabel, string gestureName)
         {
             InitializeComponent();
             _homeForm = homeForm;
             this.userName = userName;
             this.poseLabel = poseLabel;
+            this.gestureName = gestureName;
+            this.gestureId = gestureId;
 
             this.Load += FormCustomGesture_Load;
+            lblName.Text = gestureName;
+            UpdateInstructionTexts();
         }
 
-        private void FormCustomGesture_Load(object sender, EventArgs e)
+        private async void FormCustomGesture_Load(object sender, EventArgs e)
         {
             try
             {
                 Debug.WriteLine($"[CustomGesture] Form loaded. User: {userName}, Pose: {poseLabel}");
-                StartPythonProcess();
 
-                SendUserAndPoseToPython(userName, poseLabel);
+                lblCustomInfo.Text = $"User: {userName}\r\n\r\nPose: {poseLabel}";
 
-                StartReceivingCameraFrames(6001);
-                StartReceivingCustomStatus(6002);
+                // ✅ Apply language to initial status
+                UpdateInitialStatus();
+                CreateInstructionIcon();
 
-                lblCustomInfo.Text = $"User: {userName}\r\nPose: {poseLabel}";
+                var gestureDetail = await new UserGestureConfigService().GetUserGestureByid(gestureId);
+                gestureTypeId = gestureDetail.GestureTypeId;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi khởi tạo CustomGesture: " + ex.Message);
+                string errorMsg = GetLocalizedText("error_init", "Error initializing CustomGesture: ", "Lỗi khi khởi tạo CustomGesture: ");
+                CustomMessageBox.ShowError(errorMsg + ex.Message);
+            }
+        }
+
+        // ✅ UPDATE: Localized initial status
+        private void UpdateInitialStatus()
+        {
+            string statusMsg = GetLocalizedText("ready_to_start",
+                "Press 'Start Recording' to activate camera",
+                "Nhấn 'Bắt đầu ghi' để khởi động camera");
+            lblCustomStatus.Text = statusMsg;
+            lblCustomStatus.ForeColor = Color.Yellow;
+        }
+
+        private void btnStartRecording_Click(object sender, EventArgs e)
+        {
+            if (!isRecording)
+            {
+                StartRecordingProcess();
+            }
+        }
+
+        private void StartRecordingProcess()
+        {
+            try
+            {
+                isRecording = true;
+                btnStartRecording.Enabled = false;
+
+                // ✅ UPDATE: Localized button text
+                string startingText = GetLocalizedText("starting_btn", "⏳ Starting...", "⏳ Khởi động...");
+                btnStartRecording.Text = startingText;
+
+                // ✅ UPDATE: Localized status message
+                string statusMsg = GetLocalizedText("starting_camera",
+                    "Starting camera and Python...",
+                    "Đang khởi động camera và Python...");
+                lblCustomStatus.Text = statusMsg;
+                lblCustomStatus.ForeColor = Color.Yellow;
+
+                StartPythonProcess();
+                SendUserAndPoseToPython(userName, poseLabel);
+                StartReceivingCameraFrames(6001);
+                StartReceivingCustomStatus(6002);
+
+                // ✅ UPDATE: Localized ready status
+                string readyMsg = GetLocalizedText("ready_gesture",
+                    "Ready! Perform gesture according to instructions",
+                    "Sẵn sàng! Thực hiện gesture theo hướng dẫn");
+                lblCustomStatus.Text = readyMsg;
+                lblCustomStatus.ForeColor = Color.Lime;
+
+                string recordingText = GetLocalizedText("recording_btn", "✅ Recording", "✅ Đang ghi");
+                btnStartRecording.Text = recordingText;
+                btnStartRecording.FillColor = Color.FromArgb(76, 175, 80);
+            }
+            catch (Exception ex)
+            {
+                string errorMsg = GetLocalizedText("error_start_recording",
+                    "Error starting recording: ",
+                    "Lỗi khi bắt đầu ghi: ");
+                CustomMessageBox.ShowError(errorMsg + ex.Message);
+
+                isRecording = false;
+                btnStartRecording.Enabled = true;
+                UpdateInstructionTexts(); // Reset button text
+            }
+        }
+
+        private void UpdateInstructionTexts()
+        {
+            bool isVietnamese = IsVietnamese();
+
+            if (isVietnamese)
+            {
+                lblInstructionTitle.Text = "📋 Hướng dẫn thực hiện";
+                lblInstruction1.Text = "🎯 Giữ tay trong khung hình, cách camera 40–60 cm";
+                lblInstruction2.Text = "✋ Không để tay ra ngoài mép khung";
+                lblInstruction3.Text = "💡 Đảm bảo đủ ánh sáng";
+                lblInstruction4.Text = "📵 Không để vật thể khác che tay";
+                lblInstruction5.Text = "⏱ Giữ tư thế trong 0.8–1.0 giây để mẫu được ghi";
+                lblInstruction6.Text = "🔄 Lặp lại 5 lần để đảm bảo chất lượng mẫu";
+                btnStartRecording.Text = "🚀 Bắt đầu ghi";
+                btnHome.Text = "Về Trang Chủ";
+            }
+            else
+            {
+                lblInstructionTitle.Text = "📋 Instructions";
+                lblInstruction1.Text = "🎯 Keep hands within frame, 40–60 cm from camera";
+                lblInstruction2.Text = "✋ Don't let hands go outside frame edges";
+                lblInstruction3.Text = "💡 Ensure sufficient lighting";
+                lblInstruction4.Text = "📵 Don't let other objects cover hands";
+                lblInstruction5.Text = "⏱ Hold pose for 0.8–1.0 seconds for recording";
+                lblInstruction6.Text = "🔄 Repeat 5 times to ensure sample quality";
+                btnStartRecording.Text = "🚀 Start Recording";
+                btnHome.Text = "Home";
+            }
+        }
+
+        private void CreateInstructionIcon()
+        {
+            try
+            {
+                var bmp = new Bitmap(35, 35);
+                using (var g = Graphics.FromImage(bmp))
+                {
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    g.Clear(Color.Transparent);
+
+                    using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(
+                        new Point(0, 0),
+                        new Point(35, 35),
+                        Color.FromArgb(0, 188, 212),
+                        Color.FromArgb(0, 150, 170)))
+                    {
+                        g.FillEllipse(brush, 0, 0, 35, 35);
+                    }
+
+                    using (var font = new Font("Segoe UI", 16, FontStyle.Bold))
+                    using (var textBrush = new SolidBrush(Color.White))
+                    {
+                        var text = "✋";
+                        var size = g.MeasureString(text, font);
+                        var x = (35 - size.Width) / 2;
+                        var y = (35 - size.Height) / 2;
+                        g.DrawString(text, font, textBrush, x, y);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error creating instruction icon: {ex.Message}");
+            }
+        }
+
+        // ✅ NEW: Helper method for localized text
+        private string GetLocalizedText(string key, string englishText, string vietnameseText)
+        {
+            return IsVietnamese() ? vietnameseText : englishText;
+        }
+
+        private bool IsVietnamese()
+        {
+            try
+            {
+                return GestPipePowerPonit.CultureManager.CurrentCultureCode.Contains("vi") ||
+                       AppSettings.CurrentLanguage == "VN";
+            }
+            catch
+            {
+                return true; // Default to Vietnamese
             }
         }
 
@@ -87,8 +252,13 @@ namespace GestPipePowerPonit
                     retry++;
                 }
             }
-            MessageBox.Show("Không thể gửi username/pose sang Python server sau 10 lần thử.");
+
+            string errorMsg = GetLocalizedText("error_send_python",
+                "Cannot send username/pose to Python server after 10 attempts.",
+                "Không thể gửi username/pose sang Python server sau 10 lần thử.");
+            CustomMessageBox.ShowError(errorMsg);
         }
+
         private void StartPythonProcess()
         {
             try
@@ -98,7 +268,10 @@ namespace GestPipePowerPonit
 
                 if (!File.Exists(scriptFile))
                 {
-                    MessageBox.Show("Không tìm thấy file Python script: " + scriptFile);
+                    string errorMsg = GetLocalizedText("error_script_not_found",
+                        "Python script file not found: ",
+                        "Không tìm thấy file Python script: ");
+                    CustomMessageBox.ShowError(errorMsg + scriptFile);
                     return;
                 }
 
@@ -108,7 +281,6 @@ namespace GestPipePowerPonit
                 pythonProcess.StartInfo.FileName = pythonExePath;
                 pythonProcess.StartInfo.Arguments = $"\"{scriptFile}\"";
 
-                // ✅ ĐẢM BẢO WORKING DIRECTORY ĐÚNG
                 string scriptDirectory = Path.GetDirectoryName(scriptFile);
                 pythonProcess.StartInfo.WorkingDirectory = scriptDirectory;
 
@@ -118,7 +290,6 @@ namespace GestPipePowerPonit
                 pythonProcess.StartInfo.CreateNoWindow = true;
                 pythonProcess.EnableRaisingEvents = true;
 
-                // ✅ LOG ĐỂ DEBUG
                 Debug.WriteLine($"[CustomGesture] Python Working Directory: {scriptDirectory}");
                 Debug.WriteLine($"[CustomGesture] Script Path: {scriptFile}");
 
@@ -141,7 +312,10 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi mở Python script: " + ex.Message);
+                string errorMsg = GetLocalizedText("error_python_start",
+                    "Error starting Python script: ",
+                    "Lỗi khi mở Python script: ");
+                CustomMessageBox.ShowError(errorMsg + ex.Message);
             }
         }
 
@@ -212,7 +386,35 @@ namespace GestPipePowerPonit
             cameraThread.IsBackground = true;
             cameraThread.Start();
         }
+        private async void SaveCustomGestureRequest()
+        {
+            try
+            {
+                var dto = new UserGestureRequestDto
+                {
+                    UserId = userName,
+                    UserGestureConfigId = gestureId,
+                    GestureTypeId = gestureTypeId,
+                    PoseLabel = poseLabel,
+                    Status = new Dictionary<string, string> { { "en", "Pending" },
+                    { "vi", "Đang xử lý" }}
+                };
 
+                var service = new UserGestureRequestService();
+                bool success = await service.CreateRequestAsync(dto);
+
+                if (success)
+                    MessageBox.Show("Custom gesture request saved to database (pending status).");
+                else
+                    MessageBox.Show("Failed to save custom gesture request!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error saving custom gesture to DB: " + ex.Message);
+            }
+        }
+
+        // ✅ UPDATED: Use CustomMessageBox and navigate to FormUserGestureCustom
         private void StartReceivingCustomStatus(int port)
         {
             if (statusThread != null && statusThread.IsAlive) return;
@@ -233,7 +435,6 @@ namespace GestPipePowerPonit
                             string text = Encoding.UTF8.GetString(buffer, 0, received);
                             Debug.WriteLine("[CustomGesture] Status received: " + text);
                             var parts = text.Split('|');
-                            // Event|Pose|SavedCount|Conflict|Reason
                             if (parts.Length >= 5)
                             {
                                 string eventName = parts[0];
@@ -242,12 +443,17 @@ namespace GestPipePowerPonit
                                 bool okCount = int.TryParse(parts[2], out parsedSavedCount);
                                 bool isConflict = parts[3] == "True";
                                 string statusReason = parts[4];
+
                                 this.Invoke(new Action(() =>
                                 {
                                     lblCustomStatus.Text = statusReason;
                                     savedCount = okCount ? parsedSavedCount : savedCount;
-                                    lblCustomCount.Text = $"Đã ghi: {savedCount}/5";
-                                    // Optionally: Show event type, show conflict warning, etc.
+
+                                    bool isVietnamese = IsVietnamese();
+                                    lblCustomCount.Text = isVietnamese ?
+                                        $"Đã ghi: {savedCount}/5" :
+                                        $"Recorded: {savedCount}/5";
+
                                     if (eventName == "CONFLICT" || isConflict)
                                         lblCustomStatus.ForeColor = Color.Red;
                                     else if (eventName == "ERROR")
@@ -255,14 +461,39 @@ namespace GestPipePowerPonit
                                     else
                                         lblCustomStatus.ForeColor = Color.DarkGreen;
 
+                                    // ✅ MAIN CHANGE: Use CustomMessageBox and navigate to FormUserGestureCustom
                                     if (eventName == "FINISH")
                                     {
-                                        MessageBox.Show($"Hoàn thành lưu file!\n{statusReason}", "Hoàn thành", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                        this.Close();
-                                    }
-                                    else if (savedCount >= CUSTOM_MAX)
-                                    {
-                                        
+                                        // Prepare success message
+                                        string successMessage = GetLocalizedText("training_success",
+                                            $"Training completed successfully!",
+                                            $"Huấn luyện hoàn thành thành công!");
+
+                                        string successTitle = GetLocalizedText("success_title", "Training Completed", "Hoàn thành huấn luyện");
+
+                                        // Show custom success message
+                                        var result = CustomMessageBox.ShowSuccess(successMessage, successTitle);
+                                        SaveCustomGestureRequest();
+                                       
+
+                                        if (result == DialogResult.OK)
+                                        {
+                                            this.Hide();
+
+                                            try
+                                            {
+                                                var customGestureForm = new FormUserGestureCustom(_homeForm);
+                                                customGestureForm.Show();
+                                                this.Close();
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                Debug.WriteLine($"Error opening FormUserGestureCustom: {ex.Message}");
+                                                // Fallback to home form
+                                                _homeForm.Show();
+                                                this.Close();
+                                            }
+                                        }
                                     }
                                 }));
                             }
@@ -277,11 +508,11 @@ namespace GestPipePowerPonit
             statusThread.IsBackground = true;
             statusThread.Start();
         }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             try
             {
-                // ✅ ĐÓNG CONNECTIONS TRƯỚC ĐỂ PYTHON BIẾT VÀ THOÁT GRACEFULLY
                 Debug.WriteLine("[CustomGesture] Closing connections to signal Python to exit...");
 
                 cameraThread?.Abort();
@@ -292,13 +523,10 @@ namespace GestPipePowerPonit
                 statusStream?.Close();
                 statusClient?.Close();
 
-                // ✅ CHỜ PYTHON TỰ THOÁT VÀ LƯU FILE (QUAN TRỌNG!)
                 if (pythonProcess != null && !pythonProcess.HasExited)
                 {
                     Debug.WriteLine("[CustomGesture] Waiting for Python to save files and exit gracefully...");
-
-                    // Chờ Python tự thoát khi detect connection lost
-                    bool exitedGracefully = pythonProcess.WaitForExit(10000); // 10 giây
+                    bool exitedGracefully = pythonProcess.WaitForExit(10000);
 
                     if (exitedGracefully)
                     {
@@ -311,7 +539,6 @@ namespace GestPipePowerPonit
                         pythonProcess.WaitForExit();
                     }
                 }
-
             }
             catch (Exception ex)
             {

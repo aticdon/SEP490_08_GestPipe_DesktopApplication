@@ -1,6 +1,7 @@
 ﻿using GestPipePowerPonit.I18n;
 using GestPipePowerPonit.Models;
 using GestPipePowerPonit.Services;
+using GestPipePowerPonit.Views;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,19 +11,20 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace GestPipePowerPonit
 {
-    public partial class FormUserGesture : Form
+    public partial class FormUserGestureCustom : Form
     {
         private UserGestureConfigService _gestureService = new UserGestureConfigService();
         private HomeUser _homeForm;
         private List<UserGestureConfigDto> gestures;
         private string userId = Properties.Settings.Default.UserId;
         private readonly ApiClient _apiClient;
+        private UserService _userService = new UserService();
 
         //public FormUserGesture(HomeUser homeForm, string userId)
-        public FormUserGesture(HomeUser homeForm)
+        public FormUserGestureCustom(HomeUser homeForm)
         {
             InitializeComponent();
-            this.Load += FormUserGesture_Load;
+            this.Load += FormUserGestureCustom_Load;
             _homeForm = homeForm;
             guna2DataGridView1.CellContentClick += guna2DataGridView1_CellContentClick;
             if (btnLanguageEN != null)
@@ -37,29 +39,55 @@ namespace GestPipePowerPonit
             };
         }
 
-        private async void FormUserGesture_Load(object sender, EventArgs e)
+        private async void FormUserGestureCustom_Load(object sender, EventArgs e)
         {
             ApplyLanguage(GestPipePowerPonit.CultureManager.CurrentCultureCode);
             await LoadDefaultGesturesAsync();
-        }
 
+            //var userService = new UserService();
+            bool canRequest = await _userService.CheckCanRequestAsync(userId);
+
+            btnRequest.Enabled = canRequest;                // Nếu không được, sẽ bị disable
+            btnRequest.ForeColor = canRequest ? Color.Black : Color.Gray; // Làm mờ text nếu cần
+        }
         private async Task LoadDefaultGesturesAsync()
         {
             try
             {
                 gestures = await _gestureService.GetUserGesturesAsync(userId);
                 guna2DataGridView1.Rows.Clear();
+                guna2DataGridView1.AllowUserToAddRows = false;
 
-                foreach (var g in gestures)
+                var requestService = new UserGestureRequestService();
+
+                foreach (var config in gestures)
                 {
+                    // GỌI HÀM SERVICE lấy request mới nhất dựa vào config.Id
+                    var request = await requestService.GetLatestRequestByConfigAsync(config.Id);
+                    string statusToShow, timeToShow;
+                    string accuracToShow;
+                    if (request != null)
+                    {
+                        statusToShow = I18nHelper.GetLocalized(request.Status);
+                        // Nếu có trường CreatedAt thì sử dụng, nếu không cần sửa DTO/model cho đủ.
+                        timeToShow = request.CreatedAt.ToString("dd-MM-yyyy HH:mm");
+                        accuracToShow = "N/A";
+                    }
+                    else
+                    {
+                        statusToShow = I18nHelper.GetLocalized(config.Status);
+                        timeToShow = config.LastUpdate.ToString("dd-MM-yyyy HH:mm");
+                        accuracToShow = $"{config.Accuracy * 100:F1}%";
+                    }
                     guna2DataGridView1.Rows.Add(
-                        I18nHelper.GetLocalized(g.Name),
-                        I18nHelper.GetLocalized(g.Type),
-                        $"{g.Accuracy * 100:F1}%",   // Hiển thị phần trăm
-                        I18nHelper.GetLocalized(g.Status),
-                        g.LastUpdate.ToString("dd-MM-yyyy"),
+                        I18nHelper.GetLocalized(config.Name),
+                        I18nHelper.GetLocalized(config.Type),
+                        accuracToShow,
+                        statusToShow,
+                        timeToShow,
                         Properties.Resources.icon_view,
-                        Properties.Resources.icon_traininggesture
+                        Properties.Resources.icon_traininggesture,
+                        Properties.Resources.CustomCamera
                     );
                 }
             }
@@ -70,14 +98,28 @@ namespace GestPipePowerPonit
         }
         private async void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnView"].Index && e.RowIndex >= 0)
+            if (e.RowIndex < 0) return;
+            var basic = gestures[e.RowIndex];
+
+            // LẤY request cho row hiện tại
+            var requestService = new UserGestureRequestService();
+            var request = await requestService.GetLatestRequestByConfigAsync(basic.Id);
+
+            // Nếu là dòng có request thì KHÔNG xử lý View/Custom
+            if (request != null &&
+                (e.ColumnIndex == guna2DataGridView1.Columns["ColumnView"].Index ||
+                 e.ColumnIndex == guna2DataGridView1.Columns["ColumnCustom"].Index))
             {
-                var basic = gestures[e.RowIndex];
+                return;
+            }
+
+            // Nếu không có request thì cho phép thao tác như cũ:
+            if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnView"].Index)
+            {
                 var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
 
                 if (detail == null)
                 {
-                    MessageBox.Show("Cannot get gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -95,75 +137,16 @@ namespace GestPipePowerPonit
                 );
                 detailForm.ShowDialog();
             }
-            //else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnCustom"].Index && e.RowIndex >= 0)
-            //{
-            //    var basic = gestures[e.RowIndex];
-            //    var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
-            //    string poseLabel = detail.PoseLabel; // hoặc basic.Name hay basic.ActionName, tuỳ mô hình dữ liệu
-            //    string userGesture = I18nHelper.GetLocalized(detail.Name);
-            //    string userName = Properties.Settings.Default.UserId; // hoặc biến userId
-            //    var customForm = new FormCustomGesture(_homeForm, userName, poseLabel,userGesture);
-            //    customForm.Show();
-            //    this.Hide();
-            //}
-            else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnTraining"].Index && e.RowIndex >= 0)
+            else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnCustom"].Index)
             {
-                var basic = gestures[e.RowIndex];
                 var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
-                // ... Sau khi lấy detail xong
-                Bitmap arrowImg = null;
-                string directionStr = "";
-                string typeName = I18nHelper.GetLocalized(detail.Type);
-                if (typeName == I18nHelper.GetString("Static", "Tĩnh"))
-                {
-                    arrowImg = Properties.Resources.handlestaticImg;
-                    directionStr = I18nHelper.GetString("Stand Still", "Đứng yên");
-                }
-                else
-                {
-                    if (detail.VectorData.MainAxisX == 1)
-                    {
-                        if (detail.VectorData.DeltaX > 0)
-                        {
-                            arrowImg = Properties.Resources.Left_to_right;
-                            directionStr = I18nHelper.GetString("Left to Right", "Trái sang phải");
-                        }
-                        else
-                        {
-                            arrowImg = Properties.Resources.Right_to_left;
-                            directionStr = I18nHelper.GetString("Right to Left", "Phải sang trái");
-                        }
-                    }
-                    else if (detail.VectorData.MainAxisY == 1)
-                    {
-                        if (detail.VectorData.DeltaY > 0)
-                        {
-                            arrowImg = Properties.Resources.Top_to_bottom;
-                            directionStr = I18nHelper.GetString("Top to Bottom", "Trên xuống dưới");
-                        }
-                        else
-                        {
-                            arrowImg = Properties.Resources.Bottom_to_top;
-                            directionStr = I18nHelper.GetString("Bottom to Top", "Dưới lên trên");
-                        }
-                    }
-                }
-
-                // Truyền tất cả sang form instruction, cùng một nguồn!
-                var trainingForm = new FormInstructionTraining(
-                    detail.VectorData.Fingers,
-                    arrowImg,
-                    I18nHelper.GetLocalized(detail.Name),
-                    detail.PoseLabel,
-                    I18nHelper.GetLocalized(detail.Type),
-                    directionStr, // truyền string direction
-                    this
-                );
-
-                trainingForm.GestureDetail = detail;
-                trainingForm.SetDirectionText(directionStr); // -> bạn thêm hàm public void SetDirectionText(string txt) { lblDirectionValue.Text = txt; }
-
-                trainingForm.Show();
+                string poseLabel = detail.PoseLabel;
+                string userGesture = I18nHelper.GetLocalized(detail.Name);
+                string userName = Properties.Settings.Default.UserId;
+                string gestureId = basic.Id;
+                var customForm = new FormCustomGesture(_homeForm, gestureId, userName, poseLabel, userGesture);
+                customForm.Show();
+                this.Hide();
             }
         }
         private void btnHome_Click(object sender, EventArgs e)
@@ -213,11 +196,17 @@ namespace GestPipePowerPonit
             this.Hide();
         }
 
-        private void btnCustomGesture_Click(object sender, EventArgs e)
+        private void btnTrainingGesture_Click(object sender, EventArgs e)
         {
-            FormUserGestureCustom uGestureForm = new FormUserGestureCustom(_homeForm);
+            FormUserGesture uGestureForm = new FormUserGesture(_homeForm);
             uGestureForm.Show();
             this.Hide();
+        }
+
+        private void btnRequest_Click(object sender, EventArgs e)
+        {
+            var requestForm = new FormRequestGestures(userId);
+            requestForm.ShowDialog();
         }
     }
 }

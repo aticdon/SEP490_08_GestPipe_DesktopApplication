@@ -315,11 +315,11 @@ namespace GestPipePowerPonit
             lblReason.Text = Properties.Resources.Lbl_Reason + ":";
 
             // Các button
-            btnHome.Text = Properties.Resources.Btn_Home;
-            btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
-            btnVersion.Text = Properties.Resources.Btn_Version;
-            btnInstruction.Text = Properties.Resources.Btn_Instruction;
-            btnCustomeGesture.Text = Properties.Resources.Btn_CustomGesture;
+            //btnHome.Text = Properties.Resources.Btn_Home;
+            //btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
+            //btnVersion.Text = Properties.Resources.Btn_Version;
+            //btnInstruction.Text = Properties.Resources.Btn_Instruction;
+            //btnCustomeGesture.Text = Properties.Resources.Btn_CustomGesture;
             btnPresentation.Text = Properties.Resources.Btn_Present;
             btnEndTraining.Text = Properties.Resources.LblClose;
             // ... add thêm các caption, heading, tool tip nếu có

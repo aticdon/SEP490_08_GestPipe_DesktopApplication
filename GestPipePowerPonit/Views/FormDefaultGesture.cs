@@ -119,7 +119,8 @@ namespace GestPipePowerPonit
             btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
             btnVersion.Text = Properties.Resources.Btn_Version;
             btnInstruction.Text = Properties.Resources.Btn_Instruction;
-            btnCustomeGesture.Text = Properties.Resources.Btn_CustomGesture;
+            btnCustomGesture.Text = Properties.Resources.Btn_CustomGesture;
+            btnTrainingGesture.Text = Properties.Resources.Btn_Training;
             btnPresentation.Text = Properties.Resources.Btn_Present;
             // Add any extra controls below if needed
             guna2DataGridView1.Columns["ColumnName"].HeaderText = Properties.Resources.Col_Name;
@@ -134,7 +135,7 @@ namespace GestPipePowerPonit
             AppSettings.ExitAll();
         }
 
-        private void btnCustomeGesture_Click(object sender, EventArgs e)
+        private void btnTrainingGesture_Click(object sender, EventArgs e)
         {
             FormUserGesture uGestureForm = new FormUserGesture(_homeForm);
             uGestureForm.Show();
@@ -145,6 +146,13 @@ namespace GestPipePowerPonit
         {
             Form1 form1 = new Form1(_homeForm);
             form1.Show();
+            this.Hide();
+        }
+
+        private void btnCustomGesture_Click(object sender, EventArgs e)
+        {
+            FormUserGestureCustom uGestureForm = new FormUserGestureCustom(_homeForm);
+            uGestureForm.Show();
             this.Hide();
         }
     }

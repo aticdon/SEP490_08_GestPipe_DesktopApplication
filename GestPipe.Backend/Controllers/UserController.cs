@@ -36,5 +36,23 @@ namespace GestPipe.Backend.Controllers
             if (!ok) return BadRequest("Invalid language or user not found");
             return NoContent();
         }
+
+        [HttpPost("{id}/increment-request-count")]
+        public IActionResult IncrementRequestCount(string id)
+        {
+            var ok = _userService.IncrementRequestCount(id);
+            if (!ok) return BadRequest("Update count failed");
+            return NoContent();
+        }
+
+        [HttpPost("{id}/update-request-status")]
+        public IActionResult UpdateRequestStatus(string id, [FromBody] string status)
+        {
+            if (string.IsNullOrWhiteSpace(status))
+                return BadRequest("Missing status");
+            var ok = _userService.UpdateGestureRequestStatus(id, status);
+            if (!ok) return BadRequest("Update status failed");
+            return NoContent();
+        }
     }
 }
