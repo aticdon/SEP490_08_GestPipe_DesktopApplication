@@ -139,7 +139,7 @@ namespace GestPipePowerPonit
                     string description = _gestureService.GetGestureDescription(detail);
                     string instruction = _gestureService.GetInstructionTable(detail);
 
-                    var detailForm = new FormGestureDetails(
+                    var detailForm = new DetailGestureForm(
                         I18nHelper.GetLocalized(detail.Name),
                         I18nHelper.GetLocalized(detail.Type),
                         $"{detail.Accuracy * 100:F1}%",
@@ -193,7 +193,7 @@ namespace GestPipePowerPonit
                         }
                     }
 
-                    var trainingForm = new FormInstructionTraining(
+                    var trainingForm = new IntructionTraingForm(
                         detail.VectorData.Fingers,
                         arrowImg,
                         I18nHelper.GetLocalized(detail.Name),
@@ -224,7 +224,7 @@ namespace GestPipePowerPonit
                     string description = _uGestureService.GetGestureDescription(detail);
                     string instruction = _uGestureService.GetInstructionTable(detail);
 
-                    var detailForm = new FormGestureDetails(
+                    var detailForm = new DetailGestureForm(
                         I18nHelper.GetLocalized(detail.Name),
                         I18nHelper.GetLocalized(detail.Type),
                         $"{detail.Accuracy * 100:F1}%",
@@ -287,7 +287,7 @@ namespace GestPipePowerPonit
                     //    directionStr,
                     //    this
                     //);
-                    var trainingForm = new FormInstructionTraining(
+                    var trainingForm = new IntructionTraingForm(
                         detail.VectorData.Fingers,
                         arrowImg,
                         I18nHelper.GetLocalized(detail.Name),

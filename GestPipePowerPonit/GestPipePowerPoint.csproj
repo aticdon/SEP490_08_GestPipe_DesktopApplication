@@ -330,6 +330,12 @@
     <Compile Include="Views\Auth\VerifyOtpForm.Designer.cs">
       <DependentUpon>VerifyOtpForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomGestureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CustomGestureForm.Designer.cs">
+      <DependentUpon>CustomGestureForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomGestureInstructionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -339,53 +345,29 @@
     <Compile Include="Views\CustomMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Form1.cs">
+    <Compile Include="Views\DetailGestureForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FormCustomGesture.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\FormCustomGesture.Designer.cs">
-      <DependentUpon>FormCustomGesture.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FormDefaultGesture.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\FormDefaultGesture.Designer.cs">
-      <DependentUpon>FormDefaultGesture.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FormGestureDetails.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\FormGestureDetails.Designer.cs">
-      <DependentUpon>FormGestureDetails.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FormInstructionTraining.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\FormInstructionTraining.Designer.cs">
-      <DependentUpon>FormInstructionTraining.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FormRequestGestures.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\FormRequestGestures.Designer.cs">
-      <DependentUpon>FormRequestGestures.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FormTrainingResult.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\FormTrainingResult.Designer.cs">
-      <DependentUpon>FormTrainingResult.cs</DependentUpon>
+    <Compile Include="Views\DetailGestureForm.Designer.cs">
+      <DependentUpon>DetailGestureForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\FormUserGesture.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\FormUserGesture.Designer.cs">
       <DependentUpon>FormUserGesture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IntructionTraingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\IntructionTraingForm.Designer.cs">
+      <DependentUpon>IntructionTraingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListDefaultGestureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ListDefaultGestureForm.Designer.cs">
+      <DependentUpon>ListDefaultGestureForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ListRequestGestureForm.cs">
       <SubType>Form</SubType>
@@ -422,6 +404,24 @@
     <Compile Include="Services\TrainingGestureService.cs" />
     <Compile Include="Services\UserGestureConfigService.cs" />
     <Compile Include="SocketServer.cs" />
+    <Compile Include="Views\PresentationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PresentationForm.Designer.cs">
+      <DependentUpon>PresentationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RequestGestureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\RequestGestureForm.Designer.cs">
+      <DependentUpon>RequestGestureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TraingResultForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\TraingResultForm.Designer.cs">
+      <DependentUpon>TraingResultForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\TrainingDefaultGestureForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -473,32 +473,23 @@
     <EmbeddedResource Include="Views\Auth\VerifyOtpForm.resx">
       <DependentUpon>VerifyOtpForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\CustomGestureForm.resx">
+      <DependentUpon>CustomGestureForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\CustomMessageBox.resx">
       <DependentUpon>CustomMessageBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormCustomGesture.resx">
-      <DependentUpon>FormCustomGesture.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormDefaultGesture.resx">
-      <DependentUpon>FormDefaultGesture.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormGestureDetails.resx">
-      <DependentUpon>FormGestureDetails.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormInstructionTraining.resx">
-      <DependentUpon>FormInstructionTraining.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormRequestGestures.resx">
-      <DependentUpon>FormRequestGestures.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormTrainingResult.resx">
-      <DependentUpon>FormTrainingResult.cs</DependentUpon>
+    <EmbeddedResource Include="Views\DetailGestureForm.resx">
+      <DependentUpon>DetailGestureForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormUserGesture.resx">
       <DependentUpon>FormUserGesture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\IntructionTraingForm.resx">
+      <DependentUpon>IntructionTraingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ListDefaultGestureForm.resx">
+      <DependentUpon>ListDefaultGestureForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ListRequestGestureForm.resx">
       <DependentUpon>ListRequestGestureForm.cs</DependentUpon>
@@ -515,6 +506,15 @@
       <SubType>Designer</SubType>
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\PresentationForm.resx">
+      <DependentUpon>PresentationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RequestGestureForm.resx">
+      <DependentUpon>RequestGestureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\TraingResultForm.resx">
+      <DependentUpon>TraingResultForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\TrainingDefaultGestureForm.resx">
       <DependentUpon>TrainingDefaultGestureForm.cs</DependentUpon>

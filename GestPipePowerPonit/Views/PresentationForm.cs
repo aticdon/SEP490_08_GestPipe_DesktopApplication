@@ -31,7 +31,7 @@ using WinFormControl = System.Windows.Forms.Control;
 
 namespace GestPipePowerPonit
 {
-    public partial class Form1 : Form
+    public partial class PresentationForm : Form
     {
         PowerPoint.Application oPPT = null;
         PowerPoint.Presentation oPres = null;
@@ -83,6 +83,7 @@ namespace GestPipePowerPonit
         private Dictionary<string, int> gestureCounts = new Dictionary<string, int>();
         private string userId = Properties.Settings.Default.UserId;
         private readonly ApiClient _apiClient;
+        private bool firstCameraFrameReceived = false;
 
         // ✅ THÊM AuthService
         private readonly AuthService _authService;
@@ -102,7 +103,7 @@ namespace GestPipePowerPonit
         [DllImport("user32.dll")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        public Form1(HomeUser homeForm)
+        public PresentationForm(HomeUser homeForm)
         {
             InitializeComponent();
             btnViewLeft.Visible = false;
@@ -189,6 +190,66 @@ namespace GestPipePowerPonit
             catch { }
         }
 
+        //private void StartCameraReceiver(int port = 6000)
+        //{
+        //    try
+        //    {
+        //        cameraListener = new TcpListener(System.Net.IPAddress.Any, port);
+        //        cameraListener.Start();
+        //        cameraRunning = true;
+        //        cameraThread = new Thread(() =>
+        //        {
+        //            try
+        //            {
+        //                using (TcpClient client = cameraListener.AcceptTcpClient())
+        //                using (NetworkStream ns = client.GetStream())
+        //                {
+        //                    while (cameraRunning)
+        //                    {
+        //                        byte[] lengthBytes = new byte[4];
+        //                        int bytesRead = 0;
+        //                        while (bytesRead < 4)
+        //                        {
+        //                            int r = ns.Read(lengthBytes, bytesRead, 4 - bytesRead);
+        //                            if (r <= 0) return;
+        //                            bytesRead += r;
+        //                        }
+        //                        int length = System.BitConverter.ToInt32(lengthBytes.Reverse().ToArray(), 0);
+        //                        byte[] imageBytes = new byte[length];
+        //                        int read = 0;
+        //                        while (read < length)
+        //                        {
+        //                            int r = ns.Read(imageBytes, read, length - read);
+        //                            if (r <= 0) return;
+        //                            read += r;
+        //                        }
+        //                        using (var ms = new MemoryStream(imageBytes))
+        //                        {
+        //                            var img = Image.FromStream(ms);
+        //                            img.RotateFlip(RotateFlipType.RotateNoneFlipX);
+        //                            this.Invoke(new Action(() =>
+        //                            {
+        //                                pictureBoxCamera.Image = img;
+        //                            }));
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                //MessageBox.Show("Camera thread error: " + ex.Message);
+        //                Debug.WriteLine("Camera thread error: " + ex.ToString());
+        //            }
+        //        });
+        //        cameraThread.IsBackground = true;
+        //        cameraThread.Start();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //MessageBox.Show("StartCameraReceiver error: " + ex.Message);
+        //        Debug.WriteLine("StartCameraReceiver error: " + ex.ToString());
+        //    }
+        //}
         private void StartCameraReceiver(int port = 6000)
         {
             try
@@ -196,68 +257,144 @@ namespace GestPipePowerPonit
                 cameraListener = new TcpListener(System.Net.IPAddress.Any, port);
                 cameraListener.Start();
                 cameraRunning = true;
+
                 cameraThread = new Thread(() =>
                 {
                     try
                     {
+                        Debug.WriteLine($"[Camera] Waiting for connection on port {port}...");
+
                         using (TcpClient client = cameraListener.AcceptTcpClient())
                         using (NetworkStream ns = client.GetStream())
                         {
+                            Debug.WriteLine("[Camera] Client connected!");
+
                             while (cameraRunning)
                             {
                                 byte[] lengthBytes = new byte[4];
                                 int bytesRead = 0;
+
                                 while (bytesRead < 4)
                                 {
                                     int r = ns.Read(lengthBytes, bytesRead, 4 - bytesRead);
-                                    if (r <= 0) return;
+                                    if (r <= 0)
+                                    {
+                                        Debug.WriteLine("[Camera] Connection closed while reading length");
+                                        return;
+                                    }
                                     bytesRead += r;
                                 }
+
                                 int length = System.BitConverter.ToInt32(lengthBytes.Reverse().ToArray(), 0);
+
+                                // Validate frame size
+                                if (length < 1000 || length > 10000000)
+                                {
+                                    Debug.WriteLine($"[Camera] Invalid frame size: {length}");
+                                    continue;
+                                }
+
                                 byte[] imageBytes = new byte[length];
                                 int read = 0;
+
                                 while (read < length)
                                 {
                                     int r = ns.Read(imageBytes, read, length - read);
-                                    if (r <= 0) return;
+                                    if (r <= 0)
+                                    {
+                                        Debug.WriteLine("[Camera] Connection closed while reading image");
+                                        return;
+                                    }
                                     read += r;
                                 }
+
                                 using (var ms = new MemoryStream(imageBytes))
                                 {
-                                    var img = Image.FromStream(ms);
-                                    img.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                                    this.Invoke(new Action(() =>
+                                    try
                                     {
-                                        pictureBoxCamera.Image = img;
-                                    }));
+                                        var img = Image.FromStream(ms);
+                                        img.RotateFlip(RotateFlipType.RotateNoneFlipX);
+
+                                        this.Invoke(new Action(() =>
+                                        {
+                                            var oldImage = pictureBoxCamera.Image;
+                                            pictureBoxCamera.Image = img;
+                                            oldImage?.Dispose();
+
+                                            // ✅ ĐÁNh DẤU ĐÃ NHẬN FRAME ĐẦU TIÊN
+                                            if (!firstCameraFrameReceived)
+                                            {
+                                                firstCameraFrameReceived = true;
+                                                Debug.WriteLine("✅ First camera frame received!");
+                                            }
+                                        }));
+
+                                        Debug.WriteLine($"[Camera] Frame displayed ({length} bytes)");
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Debug.WriteLine($"[Camera] Error decoding frame: {ex.Message}");
+                                    }
                                 }
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        //MessageBox.Show("Camera thread error: " + ex.Message);
-                        Debug.WriteLine("Camera thread error: " + ex.ToString());
+                        Debug.WriteLine($"[Camera] Thread error: {ex.Message}");
+                    }
+                    finally
+                    {
+                        Debug.WriteLine("[Camera] Thread exited");
                     }
                 });
+
                 cameraThread.IsBackground = true;
                 cameraThread.Start();
+
+                Debug.WriteLine($"[Camera] Receiver thread started on port {port}");
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("StartCameraReceiver error: " + ex.Message);
-                Debug.WriteLine("StartCameraReceiver error: " + ex.ToString());
+                Debug.WriteLine($"[Camera] StartCameraReceiver error: {ex.Message}");
             }
         }
+        //private void StopCameraReceiver()
+        //{
+        //    cameraRunning = false;
+        //    try
+        //    {
+        //        cameraListener?.Stop();
+        //        cameraThread?.Abort();
+        //    }
+        //    catch { }
+        //}
         private void StopCameraReceiver()
         {
+            Debug.WriteLine("[Camera] Stopping camera receiver...");
+
             cameraRunning = false;
+            firstCameraFrameReceived = false; // ✅ Reset flag
+
             try
             {
                 cameraListener?.Stop();
-                cameraThread?.Abort();
+
+                if (cameraThread != null && cameraThread.IsAlive)
+                {
+                    if (!cameraThread.Join(2000)) // Chờ 2 giây
+                    {
+                        Debug.WriteLine("[Camera] Thread did not stop gracefully, aborting...");
+                        cameraThread.Abort();
+                    }
+                }
+
+                Debug.WriteLine("[Camera] Camera receiver stopped");
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[Camera] Error stopping camera: {ex.Message}");
+            }
         }
 
         private List<int> Detect3DSlides(string pptxPath)
@@ -346,83 +483,259 @@ namespace GestPipePowerPonit
             }
             return titles;
         }
-
-        private void btnOpen_Click(object sender, EventArgs e)
+        private async void btnOpen_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "PowerPoint Files|*.pptx";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                string loadingMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                    ? "Đang mở file và khởi động camera...\nVui lòng đợi..."
+                    : "Opening file and starting camera...\nPlease wait...";
+                ShowLoading(loadingMsg);
+
                 try
                 {
+                    // Cleanup PowerPoint
                     if (oPres != null)
                     {
                         oPres.Close();
                         Marshal.FinalReleaseComObject(oPres);
                         oPres = null;
                     }
-                }
-                catch { oPres = null; }
-                try
-                {
                     if (oPPT != null)
                     {
                         oPPT.Quit();
                         Marshal.FinalReleaseComObject(oPPT);
                         oPPT = null;
                     }
+
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    foreach (var process in System.Diagnostics.Process.GetProcessesByName("POWERPNT"))
+                    {
+                        process.Kill();
+                    }
+
+                    txtFile.Text = openFileDialog1.FileName;
+                    string ext = System.IO.Path.GetExtension(txtFile.Text).ToLower();
+
+                    // ✅ Reset camera state
+                    firstCameraFrameReceived = false;
+
+                    // Start Python process
+                    await Task.Run(() =>
+                    {
+                        StartPythonProcess();
+                    });
+
+                    RegisterKeys();
+                    server = new SocketServer(5006, this, HandleGestureCommand);
+                    server.Start();
+
+                    // ✅ Start camera receiver
+                    StartCameraReceiver(6000);
+                    pictureBoxCamera.Visible = true;
+
+                    if (ext == ".pptx")
+                    {
+                        webView2_3D.Visible = false;
+                        SetButtonsEnabled(true, false);
+
+                        // Detect 3D slides
+                        await Task.Run(() =>
+                        {
+                            slidesWith3D = Detect3DSlides(txtFile.Text);
+                            pptxFolderPath = System.IO.Path.GetDirectoryName(txtFile.Text);
+                            slideTitles = GetSlideTitles(txtFile.Text);
+                        });
+
+                        try
+                        {
+                            oPPT = new PowerPoint.Application();
+                            oPres = oPPT.Presentations.Open(txtFile.Text,
+                                MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
+
+                            oPPT.SlideShowNextSlide += O_PPT_SlideShowNextSlide;
+                            btnSlideShow.Enabled = true;
+
+                            // ✅ Cập nhật thông báo đang chờ camera
+                            string waitingCameraMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                                ? "✅ File đã mở!\n🎥 Đang kết nối camera..."
+                                : "✅ File opened!\n🎥 Connecting camera...";
+                            UpdateLoadingText(waitingCameraMsg);
+
+                            // ✅ ĐỢI CAMERA KẾT NỐI
+                            await WaitForCameraConnectionAsync();
+
+                            // ✅ Success - Camera đã sẵn sàng
+                            string successMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                                ? "✅ Tất cả đã sẵn sàng!"
+                                : "✅ Everything is ready!";
+                            UpdateLoadingText(successMsg);
+
+                            await Task.Delay(1000);
+                        }
+                        catch (System.Runtime.InteropServices.COMException ex)
+                        {
+                            string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                                ? $"Không thể mở PowerPoint: {ex.Message}"
+                                : $"Cannot open PowerPoint: {ex.Message}";
+
+                            MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            oPPT = null;
+                            oPres = null;
+                            btnSlideShow.Enabled = false;
+                        }
+                        catch (Exception ex)
+                        {
+                            string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                                ? $"Lỗi khi mở file: {ex.Message}"
+                                : $"Error opening file: {ex.Message}";
+
+                            MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
                 }
-                catch { oPPT = null; }
-
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                foreach (var process in System.Diagnostics.Process.GetProcessesByName("POWERPNT"))
+                catch (Exception ex)
                 {
-                    process.Kill();
+                    string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                        ? $"Lỗi: {ex.Message}"
+                        : $"Error: {ex.Message}";
+
+                    MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                txtFile.Text = openFileDialog1.FileName;
-                string ext = System.IO.Path.GetExtension(txtFile.Text).ToLower();
-                StartPythonProcess();
-                RegisterKeys();
-                server = new SocketServer(5006, this, HandleGestureCommand);
-                server.Start();
-                StartCameraReceiver(6000);
-                pictureBoxCamera.Visible = true;
-
-                if (ext == ".pptx")
+                finally
                 {
-                    webView2_3D.Visible = false;
-                    SetButtonsEnabled(true, false);
-                    slidesWith3D = Detect3DSlides(txtFile.Text);
-                    pptxFolderPath = System.IO.Path.GetDirectoryName(txtFile.Text);
-                    slideTitles = GetSlideTitles(txtFile.Text);
-
-                    try
-                    {
-                        oPPT = new PowerPoint.Application();
-                        oPres = oPPT.Presentations.Open(txtFile.Text,
-                            MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
-
-                        oPPT.SlideShowNextSlide += O_PPT_SlideShowNextSlide;
-                        btnSlideShow.Enabled = true;
-                    }
-                    catch (System.Runtime.InteropServices.COMException ex)
-                    {
-                        MessageBox.Show("Không thể mở PowerPoint: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        oPPT = null;
-                        oPres = null;
-                        btnSlideShow.Enabled = false;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Lỗi khi mở file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        oPPT = null;
-                        oPres = null;
-                        btnSlideShow.Enabled = false;
-                    }
+                    // ✅ Chỉ ẩn loading sau khi camera đã sẵn sàng
+                    HideLoading();
                 }
             }
         }
+
+        //private async void btnOpen_Click(object sender, EventArgs e)
+        //{
+        //    openFileDialog1.Filter = "PowerPoint Files|*.pptx";
+        //    if (openFileDialog1.ShowDialog() == DialogResult.OK)
+        //    {
+        //        string loadingMsg = CultureManager.CurrentCultureCode.Contains("vi")
+        //            ? "Đang mở file PowerPoint...\nVui lòng đợi..."
+        //            : "Opening PowerPoint file...\nPlease wait...";
+        //                ShowLoading(loadingMsg);
+        //        try
+        //        {
+        //            if (oPres != null)
+        //            {
+        //                oPres.Close();
+        //                Marshal.FinalReleaseComObject(oPres);
+        //                oPres = null;
+        //            }
+        //        }
+        //        catch { oPres = null; }
+        //        try
+        //        {
+        //            if (oPPT != null)
+        //            {
+        //                oPPT.Quit();
+        //                Marshal.FinalReleaseComObject(oPPT);
+        //                oPPT = null;
+        //            }
+        //        }
+        //        catch { oPPT = null; }
+
+        //        GC.Collect();
+        //        GC.WaitForPendingFinalizers();
+        //        foreach (var process in System.Diagnostics.Process.GetProcessesByName("POWERPNT"))
+        //        {
+        //            process.Kill();
+        //        }
+
+        //        txtFile.Text = openFileDialog1.FileName;
+        //        string ext = System.IO.Path.GetExtension(txtFile.Text).ToLower();
+
+        //        firstCameraFrameReceived = false;
+        //        //StartPythonProcess();
+        //        await Task.Run(() =>
+        //        {
+        //            StartPythonProcess();
+        //        });
+        //        RegisterKeys();
+        //        server = new SocketServer(5006, this, HandleGestureCommand);
+        //        server.Start();
+        //        StartCameraReceiver(6000);
+        //        pictureBoxCamera.Visible = true;
+
+        //        if (ext == ".pptx")
+        //        {
+        //            webView2_3D.Visible = false;
+        //            SetButtonsEnabled(true, false);
+        //            await Task.Run(() =>
+        //            {
+        //                slidesWith3D = Detect3DSlides(txtFile.Text);
+        //                pptxFolderPath = System.IO.Path.GetDirectoryName(txtFile.Text);
+        //                slideTitles = GetSlideTitles(txtFile.Text);
+        //            });
+        //            //slidesWith3D = Detect3DSlides(txtFile.Text);
+        //            //pptxFolderPath = System.IO.Path.GetDirectoryName(txtFile.Text);
+        //            //slideTitles = GetSlideTitles(txtFile.Text);
+
+        //            try
+        //            {
+        //                oPPT = new PowerPoint.Application();
+        //                oPres = oPPT.Presentations.Open(txtFile.Text,
+        //                    MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
+
+        //                oPPT.SlideShowNextSlide += O_PPT_SlideShowNextSlide;
+        //                btnSlideShow.Enabled = true;
+
+        //                string waitingCameraMsg = CultureManager.CurrentCultureCode.Contains("vi")
+        //                ? "✅ File đã mở!\n🎥 Đang kết nối camera..."
+        //                : "✅ File opened!\n🎥 Connecting camera...";
+        //                UpdateLoadingText(waitingCameraMsg);
+
+        //                // ✅ ĐỢI CAMERA KẾT NỐI
+        //                await WaitForCameraConnectionAsync();
+
+        //                string successMsg = CultureManager.CurrentCultureCode.Contains("vi")
+        //                ? "✅ Mở file thành công!"
+        //                : "✅ File opened successfully!";
+        //                UpdateLoadingText(successMsg);
+
+        //                await Task.Delay(1000);
+        //            }
+        //            catch (System.Runtime.InteropServices.COMException ex)
+        //            {
+        //                //MessageBox.Show("Không thể mở PowerPoint: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //                //oPPT = null;
+        //                //oPres = null;
+        //                //btnSlideShow.Enabled = false;
+        //                string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
+        //                ? $"Không thể mở PowerPoint: {ex.Message}"
+        //                : $"Cannot open PowerPoint: {ex.Message}";
+
+        //                MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //                oPPT = null;
+        //                oPres = null;
+        //                btnSlideShow.Enabled = false;
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                //MessageBox.Show("Lỗi khi mở file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //                //oPPT = null;
+        //                //oPres = null;
+        //                //btnSlideShow.Enabled = false;
+        //                string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
+        //                ? $"Lỗi khi mở file: {ex.Message}"
+        //                : $"Error opening file: {ex.Message}";
+
+        //                MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //            }
+        //            finally
+        //            {
+        //                HideLoading();
+        //            }
+        //        }
+        //    }
+        //}
 
         protected override void WndProc(ref Message m)
         {
@@ -481,87 +794,197 @@ namespace GestPipePowerPonit
                 UnregisterHotKey(this.Handle, i);
         }
 
+        //private async void ShowGLBModel(string glbPath)
+        //{
+        //    webView2_3D.Visible = true;
+        //    if (!File.Exists(glbPath))
+        //    {
+        //        MessageBox.Show("Không tìm thấy file GLB: " + glbPath);
+        //        return;
+        //    }
+
+        //    if (webView2_3D.Parent != panelSlide)
+        //    {
+        //        MessageBox.Show("WebView2 không nằm trong panelSlide!");
+        //    }
+        //    string folderPath = System.IO.Path.GetDirectoryName(glbPath);
+        //    string fileName = System.IO.Path.GetFileName(glbPath);
+        //    string virtualHostName = "http://virtualhost.local/";
+
+        //    string html = $@"
+        //                <html>
+        //                  <head>
+        //                    <meta charset='UTF-8'>
+        //                    <script type='module' src='https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js'></script>
+        //                    <style>
+        //                      html, body {{ width: 100%; height: 100%; margin: 0; background: #222; }}
+        //                      model-viewer {{ width: 100vw; height: 100vh; background: #222; }}
+        //                    </style>
+        //                    <script>
+        //                      window.mvReady = false;
+        //                      window.addEventListener('DOMContentLoaded', () => {{
+        //                        const mv = document.getElementById('mv');
+        //                        mv.addEventListener('load', () => {{
+        //                          window.mvReady = true;
+        //                        }});
+        //                        setTimeout(() => {{ window.mvReady = true; }}, 1000);
+        //                      }});
+        //                    </script>
+        //                  </head>
+        //                  <body>
+        //                    <model-viewer id='mv' src='{virtualHostName}{fileName}'
+        //                      camera-controls
+        //                      interaction-prompt='none'
+        //                      background-color='#222' ></model-viewer>
+        //                  </body>
+        //                </html>";
+
+        //    if (webView2_3D.CoreWebView2 == null)
+        //    {
+        //        await webView2_3D.EnsureCoreWebView2Async();
+        //        webView2_3D.CoreWebView2.SetVirtualHostNameToFolderMapping(
+        //            "virtualhost.local",
+        //            folderPath,
+        //            Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow);
+        //    }
+
+        //    webView2_3D.NavigateToString(html);
+
+        //    await Task.Delay(1500);
+
+        //    var result = await webView2_3D.ExecuteScriptAsync(@"
+        //        (function() {
+        //            let el = document.getElementById('mv');
+        //            if (el && el.getCameraOrbit) {
+        //                let orbit = el.getCameraOrbit();
+        //                return orbit.radius;
+        //            }
+        //            return '';
+        //        })();
+        //    ");
+        //    result = result.Trim('"');
+        //    if (double.TryParse(result, out double radius))
+        //    {
+        //        initialRadius = radius;
+        //    }
+        //    else
+        //    {
+        //        initialRadius = 2.5;
+        //    }
+        //    zoomPercent = 100;
+        //    modelAzimuth = 0;
+        //    modelPolar = Math.PI / 2;
+        //    UpdateZoomOverlay();
+        //}
         private async void ShowGLBModel(string glbPath)
         {
-            webView2_3D.Visible = true;
-            if (!File.Exists(glbPath))
+            string loadingMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                ? "Đang tải mô hình 3D...\nVui lòng đợi..."
+                : "Loading 3D model...\nPlease wait...";
+            ShowLoading(loadingMsg);
+
+            try
             {
-                MessageBox.Show("Không tìm thấy file GLB: " + glbPath);
-                return;
-            }
+                webView2_3D.Visible = true;
 
-            if (webView2_3D.Parent != panelSlide)
+                if (!File.Exists(glbPath))
+                {
+                    HideLoading();
+                    MessageBox.Show("Không tìm thấy file GLB: " + glbPath);
+                    return;
+                }
+
+                if (webView2_3D.Parent != panelSlide)
+                {
+                    HideLoading();
+                    MessageBox.Show("WebView2 không nằm trong panelSlide!");
+                    return;
+                }
+
+                string folderPath = System.IO.Path.GetDirectoryName(glbPath);
+                string fileName = System.IO.Path.GetFileName(glbPath);
+                string virtualHostName = "http://virtualhost.local/";
+
+                string html = $@"
+            <html>
+              <head>
+                <meta charset='UTF-8'>
+                <script type='module' src='https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js'></script>
+                <style>
+                  html, body {{ width: 100%; height: 100%; margin: 0; background: #222; }}
+                  model-viewer {{ width: 100vw; height: 100vh; background: #222; }}
+                </style>
+                <script>
+                  window.mvReady = false;
+                  window.addEventListener('DOMContentLoaded', () => {{
+                    const mv = document.getElementById('mv');
+                    mv.addEventListener('load', () => {{
+                      window.mvReady = true;
+                    }});
+                    setTimeout(() => {{ window.mvReady = true; }}, 1000);
+                  }});
+                </script>
+              </head>
+              <body>
+                <model-viewer id='mv' src='{virtualHostName}{fileName}'
+                  camera-controls
+                  interaction-prompt='none'
+                  background-color='#222' ></model-viewer>
+              </body>
+            </html>";
+
+                if (webView2_3D.CoreWebView2 == null)
+                {
+                    await webView2_3D.EnsureCoreWebView2Async();
+                    webView2_3D.CoreWebView2.SetVirtualHostNameToFolderMapping(
+                        "virtualhost.local",
+                        folderPath,
+                        Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow);
+                }
+
+                webView2_3D.NavigateToString(html);
+
+                // ✅ Chờ model load
+                await Task.Delay(1500);
+
+                var result = await webView2_3D.ExecuteScriptAsync(@"
+            (function() {
+                let el = document.getElementById('mv');
+                if (el && el.getCameraOrbit) {
+                    let orbit = el.getCameraOrbit();
+                    return orbit.radius;
+                }
+                return '';
+            })();
+        ");
+
+                result = result.Trim('"');
+                if (double.TryParse(result, out double radius))
+                {
+                    initialRadius = radius;
+                }
+                else
+                {
+                    initialRadius = 2.5;
+                }
+
+                zoomPercent = 100;
+                modelAzimuth = 0;
+                modelPolar = Math.PI / 2;
+                UpdateZoomOverlay();
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show("WebView2 không nằm trong panelSlide!");
+                string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                    ? $"Lỗi khi tải mô hình 3D: {ex.Message}"
+                    : $"Error loading 3D model: {ex.Message}";
+
+                MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            string folderPath = System.IO.Path.GetDirectoryName(glbPath);
-            string fileName = System.IO.Path.GetFileName(glbPath);
-            string virtualHostName = "http://virtualhost.local/";
-
-            string html = $@"
-                        <html>
-                          <head>
-                            <meta charset='UTF-8'>
-                            <script type='module' src='https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js'></script>
-                            <style>
-                              html, body {{ width: 100%; height: 100%; margin: 0; background: #222; }}
-                              model-viewer {{ width: 100vw; height: 100vh; background: #222; }}
-                            </style>
-                            <script>
-                              window.mvReady = false;
-                              window.addEventListener('DOMContentLoaded', () => {{
-                                const mv = document.getElementById('mv');
-                                mv.addEventListener('load', () => {{
-                                  window.mvReady = true;
-                                }});
-                                setTimeout(() => {{ window.mvReady = true; }}, 1000);
-                              }});
-                            </script>
-                          </head>
-                          <body>
-                            <model-viewer id='mv' src='{virtualHostName}{fileName}'
-                              camera-controls
-                              interaction-prompt='none'
-                              background-color='#222' ></model-viewer>
-                          </body>
-                        </html>";
-
-            if (webView2_3D.CoreWebView2 == null)
+            finally
             {
-                await webView2_3D.EnsureCoreWebView2Async();
-                webView2_3D.CoreWebView2.SetVirtualHostNameToFolderMapping(
-                    "virtualhost.local",
-                    folderPath,
-                    Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow);
+                HideLoading();
             }
-
-            webView2_3D.NavigateToString(html);
-
-            await Task.Delay(1500);
-
-            var result = await webView2_3D.ExecuteScriptAsync(@"
-                (function() {
-                    let el = document.getElementById('mv');
-                    if (el && el.getCameraOrbit) {
-                        let orbit = el.getCameraOrbit();
-                        return orbit.radius;
-                    }
-                    return '';
-                })();
-            ");
-            result = result.Trim('"');
-            if (double.TryParse(result, out double radius))
-            {
-                initialRadius = radius;
-            }
-            else
-            {
-                initialRadius = 2.5;
-            }
-            zoomPercent = 100;
-            modelAzimuth = 0;
-            modelPolar = Math.PI / 2;
-            UpdateZoomOverlay();
         }
 
         private void CheckAndShowGLBForCurrentSlide()
@@ -1197,7 +1620,7 @@ namespace GestPipePowerPonit
 
         private void btnGestureControl_Click(object sender, EventArgs e)
         {
-            FormDefaultGesture dGestureForm = new FormDefaultGesture(_homeForm);
+            ListDefaultGestureForm dGestureForm = new ListDefaultGestureForm(_homeForm);
             dGestureForm.Show();
             this.Hide();
         }
@@ -1214,6 +1637,89 @@ namespace GestPipePowerPonit
             AppSettings.ExitAll();
         }
         // ✅ THÊM LOGOUT HANDLER
+        //private async void btnLogout_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        var result = CustomMessageBox.ShowQuestion(
+        //            Properties.Resources.Message_LogoutConfirm,
+        //            Properties.Resources.Title_Confirmation
+        //        );
+
+        //        if (result != DialogResult.Yes)
+        //        {
+        //            return;
+        //        }
+
+        //        btnLogout.Enabled = false;
+        //        btnProfile.Enabled = false;
+        //        Cursor = Cursors.WaitCursor;
+
+        //        Console.WriteLine("\n" + new string('=', 60));
+        //        Console.WriteLine("[Form1] LOGOUT PROCESS STARTED");
+        //        Console.WriteLine(new string('=', 60));
+
+        //        // ✅ Cleanup PowerPoint và Python process trước khi logout
+        //        CleanupResources();
+
+        //        var response = await _authService.LogoutAsync();
+
+        //        if (response?.Success == true)
+        //        {
+        //            Console.WriteLine("[Form1] ✅ Logout successful");
+
+        //            CustomMessageBox.ShowSuccess(
+        //                Properties.Resources.Message_LogoutSuccess,
+        //                Properties.Resources.Title_Success
+        //            );
+
+        //            var loginForm = new LoginForm();
+
+        //            // Đóng HomeUser nếu đang mở
+        //            _homeForm?.Close();
+
+        //            // Đóng form hiện tại
+        //            this.Hide();
+
+        //            // Show LoginForm
+        //            loginForm.Show();
+
+        //            // Dispose form hiện tại
+        //            this.Dispose();
+
+        //            Console.WriteLine("[Form1] ✅ Returned to LoginForm");
+        //            Console.WriteLine(new string('=', 60) + "\n");
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine($"[Form1] ❌ Logout failed: {response?.Message}");
+
+        //            CustomMessageBox.ShowError(
+        //                response?.Message ?? Properties.Resources.Message_LogoutFailed,
+        //                Properties.Resources.Title_Error
+        //            );
+
+        //            btnLogout.Enabled = true;
+        //            btnProfile.Enabled = true;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"[Form1] ❌ Exception: {ex.Message}");
+
+        //        CustomMessageBox.ShowError(
+        //            $"{Properties.Resources.Message_LogoutError}: {ex.Message}",
+        //            Properties.Resources.Title_ConnectionError
+        //        );
+
+        //        btnLogout.Enabled = true;
+        //        btnProfile.Enabled = true;
+        //    }
+        //    finally
+        //    {
+        //        Cursor = Cursors.Default;
+        //    }
+        //}
         private async void btnLogout_Click(object sender, EventArgs e)
         {
             try
@@ -1228,22 +1734,37 @@ namespace GestPipePowerPonit
                     return;
                 }
 
+                // ✅ Show loading
+                string loadingMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                    ? "Đang đăng xuất...\nVui lòng đợi..."
+                    : "Logging out...\nPlease wait...";
+                ShowLoading(loadingMsg);
+
                 btnLogout.Enabled = false;
                 btnProfile.Enabled = false;
-                Cursor = Cursors.WaitCursor;
 
                 Console.WriteLine("\n" + new string('=', 60));
-                Console.WriteLine("[Form1] LOGOUT PROCESS STARTED");
+                Console.WriteLine("[PresentationForm] LOGOUT PROCESS STARTED");
                 Console.WriteLine(new string('=', 60));
 
-                // ✅ Cleanup PowerPoint và Python process trước khi logout
+                // Cleanup resources
                 CleanupResources();
 
                 var response = await _authService.LogoutAsync();
 
                 if (response?.Success == true)
                 {
-                    Console.WriteLine("[Form1] ✅ Logout successful");
+                    Console.WriteLine("[PresentationForm] ✅ Logout successful");
+
+                    // ✅ Update loading message
+                    string successMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                        ? "✅ Đăng xuất thành công!"
+                        : "✅ Logout successful!";
+                    UpdateLoadingText(successMsg);
+
+                    await Task.Delay(1000);
+
+                    HideLoading();
 
                     CustomMessageBox.ShowSuccess(
                         Properties.Resources.Message_LogoutSuccess,
@@ -1251,25 +1772,14 @@ namespace GestPipePowerPonit
                     );
 
                     var loginForm = new LoginForm();
-
-                    // Đóng HomeUser nếu đang mở
                     _homeForm?.Close();
-
-                    // Đóng form hiện tại
                     this.Hide();
-
-                    // Show LoginForm
                     loginForm.Show();
-
-                    // Dispose form hiện tại
                     this.Dispose();
-
-                    Console.WriteLine("[Form1] ✅ Returned to LoginForm");
-                    Console.WriteLine(new string('=', 60) + "\n");
                 }
                 else
                 {
-                    Console.WriteLine($"[Form1] ❌ Logout failed: {response?.Message}");
+                    HideLoading();
 
                     CustomMessageBox.ShowError(
                         response?.Message ?? Properties.Resources.Message_LogoutFailed,
@@ -1282,7 +1792,7 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Form1] ❌ Exception: {ex.Message}");
+                HideLoading();
 
                 CustomMessageBox.ShowError(
                     $"{Properties.Resources.Message_LogoutError}: {ex.Message}",
@@ -1291,10 +1801,6 @@ namespace GestPipePowerPonit
 
                 btnLogout.Enabled = true;
                 btnProfile.Enabled = true;
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
             }
         }
 
@@ -1330,10 +1836,58 @@ namespace GestPipePowerPonit
         }
 
         // ✅ THÊM METHOD CLEANUP RESOURCES
+        //private void CleanupResources()
+        //{
+        //    try
+        //    {
+        //        // Stop camera receiver
+        //        StopCameraReceiver();
+
+        //        // Stop Python process
+        //        if (pythonProcess != null && !pythonProcess.HasExited)
+        //        {
+        //            pythonProcess.Kill();
+        //            pythonProcess.Dispose();
+        //        }
+
+        //        // Close PowerPoint
+        //        if (oPPT != null && oPPT.SlideShowWindows.Count > 0)
+        //        {
+        //            oPPT.SlideShowWindows[1].View.Exit();
+        //        }
+
+        //        if (oPres != null)
+        //        {
+        //            oPres.Close();
+        //            Marshal.FinalReleaseComObject(oPres);
+        //            oPres = null;
+        //        }
+
+        //        if (oPPT != null)
+        //        {
+        //            oPPT.Quit();
+        //            Marshal.FinalReleaseComObject(oPPT);
+        //            oPPT = null;
+        //        }
+
+        //        // Stop socket server
+        //        server?.Stop();
+
+        //        GC.Collect();
+        //        GC.WaitForPendingFinalizers();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine($"Error cleaning up resources: {ex.Message}");
+        //    }
+        //}
         private void CleanupResources()
         {
             try
             {
+                // ✅ Stop loading animation
+                spinnerTimer?.Stop();
+
                 // Stop camera receiver
                 StopCameraReceiver();
 
@@ -1382,6 +1936,158 @@ namespace GestPipePowerPonit
             uGestureForm.Show();
             this.Hide();
 
+        }
+
+        private void SpinnerTimer_Tick(object sender, EventArgs e)
+        {
+            spinnerAngle += 15;
+            if (spinnerAngle >= 360) spinnerAngle = 0;
+            DrawSpinner();
+        }
+
+        // ✅ THÊM: Draw spinner
+        private void DrawSpinner()
+        {
+            Bitmap oldBitmap = loadingSpinner.Image as Bitmap;
+
+            try
+            {
+                Bitmap spinnerBitmap = new Bitmap(loadingSpinner.Width, loadingSpinner.Height);
+                using (Graphics g = Graphics.FromImage(spinnerBitmap))
+                {
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    g.Clear(Color.Transparent);
+
+                    int centerX = loadingSpinner.Width / 2;
+                    int centerY = loadingSpinner.Height / 2;
+                    int radius = 20;
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        double angle = (spinnerAngle + i * 45) * Math.PI / 180;
+                        int x = centerX + (int)(Math.Cos(angle) * radius);
+                        int y = centerY + (int)(Math.Sin(angle) * radius);
+
+                        int alpha = 255 - (i * 30);
+                        if (alpha < 0) alpha = 0;
+
+                        using (SolidBrush brush = new SolidBrush(Color.FromArgb(alpha, Color.White)))
+                        {
+                            g.FillEllipse(brush, x - 3, y - 3, 6, 6);
+                        }
+                    }
+                }
+
+                loadingSpinner.Image = spinnerBitmap;
+                oldBitmap?.Dispose();
+            }
+            catch
+            {
+                oldBitmap?.Dispose();
+            }
+        }
+
+        // ✅ THÊM: Update loading text (bilingual support)
+        private void UpdateLoadingText(string message = null)
+        {
+            if (message == null)
+            {
+                message = CultureManager.CurrentCultureCode.Contains("vi")
+                    ? "Đang tải...\nVui lòng đợi..."
+                    : "Loading...\nPlease wait...";
+            }
+
+            loadingLabel.Text = message;
+
+            // Center the label
+            if (loadingPanel.IsHandleCreated && !loadingPanel.IsDisposed)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    loadingLabel.Location = new Point(
+                        (loadingPanel.Width - loadingLabel.Width) / 2,
+                        loadingSpinner.Bottom + 20
+                    );
+                }));
+            }
+        }
+
+        // ✅ THÊM: Show loading
+        private void ShowLoading(string message = null)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => ShowLoading(message)));
+                return;
+            }
+
+            isLoading = true;
+            UpdateLoadingText(message);
+            loadingPanel.Visible = true;
+            loadingPanel.BringToFront();
+            spinnerTimer.Start();
+
+            Debug.WriteLine("🔄 Loading screen shown");
+        }
+
+        private void HideLoading()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(HideLoading));
+                return;
+            }
+
+            isLoading = false;
+            loadingPanel.Visible = false;
+            spinnerTimer.Stop();
+
+            Debug.WriteLine("✅ Loading screen hidden");
+        }
+
+        /// <summary>
+        /// ✅ Đợi camera kết nối và nhận frame đầu tiên
+        /// </summary>
+        private async Task WaitForCameraConnectionAsync()
+        {
+            int timeout = 15000; // 15 seconds timeout
+            int elapsed = 0;
+            int checkInterval = 200;
+
+            while (elapsed < timeout)
+            {
+                // ✅ Kiểm tra xem đã nhận frame đầu tiên chưa
+                if (firstCameraFrameReceived)
+                {
+                    Debug.WriteLine("✅ Camera connected and first frame received!");
+                    return;
+                }
+
+                await Task.Delay(checkInterval);
+                elapsed += checkInterval;
+
+                // ✅ Cập nhật progress
+                if (elapsed % 2000 == 0) // Mỗi 2 giây
+                {
+                    string waitMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                        ? $"🎥 Đang chờ camera... ({elapsed / 1000}s)"
+                        : $"🎥 Waiting for camera... ({elapsed / 1000}s)";
+                    UpdateLoadingText(waitMsg);
+                }
+            }
+
+            // ✅ Timeout - Hiển thị warning nhưng vẫn tiếp tục
+            string timeoutMsg = CultureManager.CurrentCultureCode.Contains("vi")
+                ? "⚠️ Không thể kết nối camera sau 15 giây.\nVui lòng kiểm tra lại."
+                : "⚠️ Camera connection timeout after 15 seconds.\nPlease check your camera.";
+
+            Debug.WriteLine("⚠️ Camera connection timeout!");
+
+            // Hiển thị warning trong UI
+            this.Invoke(new Action(() =>
+            {
+                CustomMessageBox.ShowWarning(timeoutMsg, "Camera Warning");
+            }));
         }
     }
 }

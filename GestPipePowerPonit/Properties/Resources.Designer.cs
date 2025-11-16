@@ -190,11 +190,29 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string BtnBack {
+            get {
+                return ResourceManager.GetString("BtnBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to    Default Gesture.
         /// </summary>
         public static string BtnDefaultGesture {
             get {
                 return ResourceManager.GetString("BtnDefaultGesture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🚀Start Recording.
+        /// </summary>
+        public static string BtnStartRecord {
+            get {
+                return ResourceManager.GetString("BtnStartRecord", resourceCulture);
             }
         }
         

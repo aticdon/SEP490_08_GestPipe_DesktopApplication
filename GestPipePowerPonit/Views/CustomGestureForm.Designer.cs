@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace GestPipePowerPonit
 {
-    partial class FormCustomGesture
+    partial class CustomGestureForm
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -56,7 +56,7 @@ namespace GestPipePowerPonit
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCustomGesture));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomGestureForm));
             this.lblCustomInfo = new System.Windows.Forms.Label();
             this.lblCustomCount = new System.Windows.Forms.Label();
             this.lblCustomStatus = new System.Windows.Forms.Label();

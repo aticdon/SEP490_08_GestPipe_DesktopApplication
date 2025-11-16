@@ -267,9 +267,9 @@ namespace GestPipePowerPonit.Views
             this.lblRequestNumberTitle.Text = Properties.Resources.lblRequestNumber;
 
         }
-        private async Task ReloadRequests()
-        {
-            FormRequestGestures_Load(this, EventArgs.Empty);
-        }
+        //private async Task ReloadRequests()
+        //{
+        //    FormRequestGestures_Load(this, EventArgs.Empty);
+        //}
     }
 }

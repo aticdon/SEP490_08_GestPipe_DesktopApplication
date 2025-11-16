@@ -537,4 +537,10 @@
   <data name="List_Loading" xml:space="preserve">
     <value>Đang tải danh sách cử chỉ...</value>
   </data>
+  <data name="BtnStartRecord" xml:space="preserve">
+    <value>🚀Bắt đầu ghi</value>
+  </data>
+  <data name="BtnBack" xml:space="preserve">
+    <value>Quay lại</value>
+  </data>
 </root>

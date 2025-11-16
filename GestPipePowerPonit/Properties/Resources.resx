@@ -537,4 +537,10 @@ recording</value>
   <data name="List_Loading" xml:space="preserve">
     <value>Loading list gesture...</value>
   </data>
+  <data name="BtnStartRecord" xml:space="preserve">
+    <value>🚀Start Recording</value>
+  </data>
+  <data name="BtnBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>

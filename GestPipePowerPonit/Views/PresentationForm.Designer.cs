@@ -1,4 +1,4 @@
-﻿using GestPipePowerPonit.Properties;
+﻿    using GestPipePowerPonit.Properties;
 using Guna.UI2.WinForms;
 using Guna.UI2.WinForms.Enums;
 using System;
@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace GestPipePowerPonit
 {
-    partial class Form1
+    partial class PresentationForm
     {   
         private System.ComponentModel.IContainer components = null;
 
@@ -50,16 +50,42 @@ namespace GestPipePowerPonit
         private Guna2Elipse guna2Elipse1;
         private Guna2DragControl guna2DragControl1;
 
+        // ✅ THÊM: Loading screen components
+        private Guna.UI2.WinForms.Guna2Panel loadingPanel;
+        private System.Windows.Forms.Label loadingLabel;
+        private System.Windows.Forms.PictureBox loadingSpinner;
+        private System.Windows.Forms.Timer spinnerTimer;
+
+        // ✅ THÊM: Loading state
+        private int spinnerAngle = 0;
+        private bool isLoading = false;
+
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing && (components != null)) components.Dispose();
+        //    base.Dispose(disposing);
+        //}
+
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null)) components.Dispose();
+            if (disposing)
+            {
+                // ✅ THÊM cleanup
+                spinnerTimer?.Stop();
+                spinnerTimer?.Dispose();
+                loadingSpinner?.Image?.Dispose();
+
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
             base.Dispose(disposing);
         }
-
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PresentationForm));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
@@ -110,6 +136,10 @@ namespace GestPipePowerPonit
             this.btnZoomOutTop = new System.Windows.Forms.Button();
             this.btnZoomInSlide = new System.Windows.Forms.Button();
             this.btnZoomOutSlide = new System.Windows.Forms.Button();
+            this.loadingPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.loadingSpinner = new System.Windows.Forms.PictureBox();
+            this.loadingLabel = new System.Windows.Forms.Label();
+            this.spinnerTimer = new System.Windows.Forms.Timer(this.components);
             this.overlayTimer = new System.Windows.Forms.Timer(this.components);
             this.pnlHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).BeginInit();
@@ -120,6 +150,8 @@ namespace GestPipePowerPonit
             this.pnlMain.SuspendLayout();
             this.panelPreview.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCamera)).BeginInit();
+            this.loadingPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2Elipse1
@@ -693,8 +725,90 @@ namespace GestPipePowerPonit
             this.btnZoomOutSlide.Name = "btnZoomOutSlide";
             this.btnZoomOutSlide.Size = new System.Drawing.Size(75, 23);
             this.btnZoomOutSlide.TabIndex = 0;
+            // loadingPanel
             // 
-            // Form1
+            this.loadingPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.loadingPanel.Controls.Add(this.loadingSpinner);
+            this.loadingPanel.Controls.Add(this.loadingLabel);
+            this.loadingPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.loadingPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.loadingPanel.Location = new System.Drawing.Point(0, 0);
+            this.loadingPanel.Name = "loadingPanel";
+            this.loadingPanel.Size = new System.Drawing.Size(1366, 768);
+            this.loadingPanel.TabIndex = 100;
+            this.loadingPanel.Visible = false;
+
+            // loadingSpinner - ✅ GIỮA MÀN HÌNH
+            // 
+            this.loadingSpinner.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.loadingSpinner.BackColor = System.Drawing.Color.Transparent;
+            //this.loadingSpinner.Location = new System.Drawing.Point(653, 354); // ✅ Center (1366/2 - 30, 768/2 - 30)
+            this.loadingSpinner.Location = new System.Drawing.Point(653, 324);
+            this.loadingSpinner.Name = "loadingSpinner";
+            this.loadingSpinner.Size = new System.Drawing.Size(60, 60);
+            this.loadingSpinner.TabIndex = 0;
+            this.loadingSpinner.TabStop = false;
+
+            // loadingLabel - ✅ DƯỚI SPINNER
+            // 
+            this.loadingLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.loadingLabel.AutoSize = false; // ✅ Fixed width để center dễ hơn
+            this.loadingLabel.BackColor = System.Drawing.Color.Transparent;
+            this.loadingLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.loadingLabel.ForeColor = System.Drawing.Color.White;
+            //this.loadingLabel.Location = new System.Drawing.Point(533, 430); // ✅ Center với width 300
+            this.loadingLabel.Location = new System.Drawing.Point(533, 400); // ✅ Center với width 300
+            this.loadingLabel.Name = "loadingLabel";
+            this.loadingLabel.Size = new System.Drawing.Size(300, 64); // ✅ Fixed size
+            this.loadingLabel.TabIndex = 1;
+            this.loadingLabel.Text = "Loading...\nPlease wait...";
+            this.loadingLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            //// 
+            //// loadingPanel
+            //// 
+            //this.loadingPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            //this.loadingPanel.Controls.Add(this.loadingSpinner);
+            //this.loadingPanel.Controls.Add(this.loadingLabel);
+            //this.loadingPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            //this.loadingPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            //this.loadingPanel.Location = new System.Drawing.Point(0, 0);
+            //this.loadingPanel.Name = "loadingPanel";
+            //this.loadingPanel.Size = new System.Drawing.Size(1366, 768);
+            //this.loadingPanel.TabIndex = 100;
+            //this.loadingPanel.Visible = false;
+            //// 
+            //// loadingSpinner
+            //// 
+            //this.loadingSpinner.Anchor = System.Windows.Forms.AnchorStyles.None;
+            //this.loadingSpinner.BackColor = System.Drawing.Color.Transparent;
+            ////this.loadingSpinner.Location = new System.Drawing.Point(1153, 694);
+            //this.loadingSpinner.Location = new System.Drawing.Point(550, 324);
+            //this.loadingSpinner.Name = "loadingSpinner";
+            //this.loadingSpinner.Size = new System.Drawing.Size(60, 60);
+            //this.loadingSpinner.TabIndex = 0;
+            //this.loadingSpinner.TabStop = false;
+            //// 
+            //// loadingLabel
+            //// 
+            //this.loadingLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            //this.loadingLabel.AutoSize = true;
+            //this.loadingLabel.BackColor = System.Drawing.Color.Transparent;
+            //this.loadingLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            //this.loadingLabel.ForeColor = System.Drawing.Color.White;
+            ////this.loadingLabel.Location = new System.Drawing.Point(1083, 769);
+            //this.loadingLabel.Location = new System.Drawing.Point(350, 399);
+            //this.loadingLabel.Name = "loadingLabel";
+            //this.loadingLabel.Size = new System.Drawing.Size(127, 32);
+            //this.loadingLabel.TabIndex = 1;
+            //this.loadingLabel.Text = "Loading...";
+            //this.loadingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // spinnerTimer
+            // 
+            this.spinnerTimer.Interval = 50;
+            this.spinnerTimer.Tick += new System.EventHandler(this.SpinnerTimer_Tick);
+            // 
+            // PresentationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -704,9 +818,10 @@ namespace GestPipePowerPonit
             this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.pnlSidebar);
             this.Controls.Add(this.panelSlide);
+            this.Controls.Add(this.loadingPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "PresentationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GestPipe - Presentation";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -719,6 +834,9 @@ namespace GestPipePowerPonit
             this.pnlMain.ResumeLayout(false);
             this.panelPreview.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCamera)).EndInit();
+            this.loadingPanel.ResumeLayout(false);
+            this.loadingPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).EndInit();
             this.ResumeLayout(false);
 
         }

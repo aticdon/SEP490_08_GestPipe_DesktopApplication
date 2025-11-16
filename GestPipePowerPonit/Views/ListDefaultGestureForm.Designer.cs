@@ -269,7 +269,7 @@ namespace GestPipePowerPonit
             this.guna2ControlBoxClose.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBoxClose.HoverState.FillColor = System.Drawing.Color.Red;
             this.guna2ControlBoxClose.IconColor = System.Drawing.Color.White;
-            this.guna2ControlBoxClose.Location = new System.Drawing.Point(1046, 10);
+            this.guna2ControlBoxClose.Location = new System.Drawing.Point(1029, 11);
             this.guna2ControlBoxClose.Name = "guna2ControlBoxClose";
             this.guna2ControlBoxClose.Size = new System.Drawing.Size(50, 30);
             this.guna2ControlBoxClose.TabIndex = 10;
@@ -281,7 +281,7 @@ namespace GestPipePowerPonit
             this.guna2ControlBoxMinimize.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
             this.guna2ControlBoxMinimize.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBoxMinimize.IconColor = System.Drawing.Color.White;
-            this.guna2ControlBoxMinimize.Location = new System.Drawing.Point(996, 10);
+            this.guna2ControlBoxMinimize.Location = new System.Drawing.Point(979, 11);
             this.guna2ControlBoxMinimize.Name = "guna2ControlBoxMinimize";
             this.guna2ControlBoxMinimize.Size = new System.Drawing.Size(50, 30);
             this.guna2ControlBoxMinimize.TabIndex = 12;
@@ -326,7 +326,7 @@ namespace GestPipePowerPonit
             this.btnUserGesture.Image = global::GestPipePowerPonit.Properties.Resources.icon_user;
             this.btnUserGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnUserGesture.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnUserGesture.Location = new System.Drawing.Point(291, 25);
+            this.btnUserGesture.Location = new System.Drawing.Point(265, 25);
             this.btnUserGesture.Name = "btnUserGesture";
             this.btnUserGesture.Size = new System.Drawing.Size(184, 61);
             this.btnUserGesture.TabIndex = 0;
@@ -343,7 +343,7 @@ namespace GestPipePowerPonit
             this.btnDefaultGesture.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
             this.btnDefaultGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDefaultGesture.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnDefaultGesture.Location = new System.Drawing.Point(60, 25);
+            this.btnDefaultGesture.Location = new System.Drawing.Point(40, 25);
             this.btnDefaultGesture.Name = "btnDefaultGesture";
             this.btnDefaultGesture.Size = new System.Drawing.Size(184, 61);
             this.btnDefaultGesture.TabIndex = 1;
@@ -498,7 +498,7 @@ namespace GestPipePowerPonit
             this.guna2DragControl1.TargetControl = this.guna2HeaderPanel;
             this.guna2DragControl1.UseTransparentDrag = true;
             // 
-            // FormDefaultGesture
+            // ListDefaultGestureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -509,7 +509,7 @@ namespace GestPipePowerPonit
             this.Controls.Add(this.guna2Panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormDefaultGesture";
+            this.Name = "ListDefaultGestureForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GestPipe - Gesture Control";
             this.guna2Panel1.ResumeLayout(false);

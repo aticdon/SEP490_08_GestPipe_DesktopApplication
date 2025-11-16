@@ -305,15 +305,15 @@ namespace GestPipePowerPonit
                 ResourceHelper.SetCulture(CultureManager.CurrentCultureCode, this);
 
                 lblInstructionTitle.Text = Properties.Resources.CustomGesture_Title;
-                //lblInstructionTitle.Text = GetLocalizedText("instruction_title",
-                //    " 📋 Custom Gesture Instructions",
-                //    "   📋 Hướng dẫn thực hiện      ");
                 lblInstruction1.Text = Properties.Resources.CustomGesture_Instruction_01;
                 lblInstruction2.Text = Properties.Resources.CustomGesture_Instruction_02;
                 lblInstruction3.Text = Properties.Resources.CustomGesture_Instruction_03;
                 lblInstruction4.Text = Properties.Resources.CustomGesture_Instruction_04;
                 lblInstruction5.Text = Properties.Resources.CustomGesture_Instruction_05;
                 lblInstruction6.Text = Properties.Resources.CustomGesture_Instruction_06;
+
+                btnStartRecording.Text = Properties.Resources.BtnStartRecord;
+                btnHome.Text = Properties.Resources.BtnBack;
             }
             catch (Exception ex)
             {
