@@ -1,6 +1,6 @@
 ﻿namespace GestPipePowerPonit
 {
-    partial class FormTrainingResult
+    partial class TraingResultForm
     {
         /// <summary>
         /// Required designer variable.
@@ -39,7 +39,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTrainingResult));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TraingResultForm));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.pnlMain = new Guna.UI2.WinForms.Guna2GradientPanel();
             this.lblTitle = new System.Windows.Forms.Label();

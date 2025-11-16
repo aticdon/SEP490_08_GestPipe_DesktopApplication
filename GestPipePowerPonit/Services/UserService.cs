@@ -15,27 +15,6 @@ namespace GestPipePowerPonit.Services
             client = new HttpClient();
             client.BaseAddress = new Uri("https://localhost:7219/");
         }
-
-        // Kiểm tra trạng thái request của user
-        //public async Task<bool> CheckCanRequestAsync(string userId)
-        //{
-        //    try
-        //    {
-        //        var response = await client.GetAsync($"/api/User/{userId}");
-        //        if (!response.IsSuccessStatusCode)
-        //            return false;
-
-        //        var userJson = await response.Content.ReadAsStringAsync();
-        //        var userDto = JsonConvert.DeserializeObject<UserRequestDto>(userJson);
-        //        return userDto != null &&
-        //            string.Equals(userDto.GestureRequestStatus, "enabled", StringComparison.OrdinalIgnoreCase);
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
-        //}
-
         public async Task<bool> CheckCanRequestAsync(string userId)
         {
             try

@@ -31,11 +31,21 @@ namespace GestPipePowerPonit
         private System.Windows.Forms.Label lblInstruction6;
         private Guna.UI2.WinForms.Guna2Button btnStartRecording;
 
+        private Guna.UI2.WinForms.Guna2Panel loadingPanel;
+        private System.Windows.Forms.Label loadingLabel;
+        private System.Windows.Forms.PictureBox loadingSpinner;
+        private System.Windows.Forms.Timer spinnerTimer;
+
 
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
             {
+                // ✅ THÊM cleanup cho loading components
+                spinnerTimer?.Stop();
+                spinnerTimer?.Dispose();
+                loadingSpinner?.Image?.Dispose();
+
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -64,9 +74,15 @@ namespace GestPipePowerPonit
             this.lblInstruction4 = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.btnHome = new Guna.UI2.WinForms.Guna2Button();
+            this.loadingPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.loadingSpinner = new System.Windows.Forms.PictureBox();
+            this.loadingLabel = new System.Windows.Forms.Label();
+            this.spinnerTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCustomCamera)).BeginInit();
             this.pnlMain.SuspendLayout();
             this.pnlInstructions.SuspendLayout();
+            this.loadingPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // lblCustomInfo
@@ -90,19 +106,18 @@ namespace GestPipePowerPonit
             this.lblCustomCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.lblCustomCount.Location = new System.Drawing.Point(893, 40);
             this.lblCustomCount.Name = "lblCustomCount";
-            this.lblCustomCount.Size = new System.Drawing.Size(131, 31);
+            this.lblCustomCount.Size = new System.Drawing.Size(0, 31);
             this.lblCustomCount.TabIndex = 1;
-            this.lblCustomCount.Text = "0 / 5 (mẫu)";
             // 
             // lblCustomStatus
             // 
             this.lblCustomStatus.AutoSize = true;
             this.lblCustomStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblCustomStatus.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblCustomStatus.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCustomStatus.ForeColor = System.Drawing.Color.White;
-            this.lblCustomStatus.Location = new System.Drawing.Point(30, 640);
+            this.lblCustomStatus.Location = new System.Drawing.Point(30, 643);
             this.lblCustomStatus.Name = "lblCustomStatus";
-            this.lblCustomStatus.Size = new System.Drawing.Size(117, 25);
+            this.lblCustomStatus.Size = new System.Drawing.Size(152, 31);
             this.lblCustomStatus.TabIndex = 2;
             this.lblCustomStatus.Text = "Trạng thái: ...";
             // 
@@ -132,6 +147,7 @@ namespace GestPipePowerPonit
             this.pnlMain.Controls.Add(this.lblCustomInfo);
             this.pnlMain.Controls.Add(this.lblCustomStatus);
             this.pnlMain.Controls.Add(this.pictureBoxCustomCamera);
+            this.pnlMain.Controls.Add(this.loadingPanel);
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMain.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(40)))), ((int)(((byte)(80)))));
             this.pnlMain.FillColor2 = System.Drawing.Color.Black;
@@ -183,11 +199,11 @@ namespace GestPipePowerPonit
             // 
             this.lblInstructionTitle.AutoSize = true;
             this.lblInstructionTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblInstructionTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.lblInstructionTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblInstructionTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
-            this.lblInstructionTitle.Location = new System.Drawing.Point(46, 30);
+            this.lblInstructionTitle.Location = new System.Drawing.Point(37, 26);
             this.lblInstructionTitle.Name = "lblInstructionTitle";
-            this.lblInstructionTitle.Size = new System.Drawing.Size(298, 32);
+            this.lblInstructionTitle.Size = new System.Drawing.Size(248, 28);
             this.lblInstructionTitle.TabIndex = 0;
             this.lblInstructionTitle.Text = "📋 Hướng dẫn thực hiện";
             // 
@@ -291,8 +307,50 @@ namespace GestPipePowerPonit
             this.btnHome.Name = "btnHome";
             this.btnHome.Size = new System.Drawing.Size(175, 40);
             this.btnHome.TabIndex = 4;
-            this.btnHome.Text = "Về Trang Chủ";
+            this.btnHome.Text = "Quay Lại";
             this.btnHome.Click += new System.EventHandler(this.btnHome_Click);
+            // 
+            // loadingPanel
+            // 
+            this.loadingPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.loadingPanel.Controls.Add(this.loadingSpinner);
+            this.loadingPanel.Controls.Add(this.loadingLabel);
+            this.loadingPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.loadingPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.loadingPanel.Location = new System.Drawing.Point(0, 0);
+            this.loadingPanel.Name = "loadingPanel";
+            this.loadingPanel.Size = new System.Drawing.Size(1100, 750);
+            this.loadingPanel.TabIndex = 8;
+            this.loadingPanel.Visible = false;
+            // 
+            // loadingSpinner
+            // 
+            this.loadingSpinner.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.loadingSpinner.BackColor = System.Drawing.Color.Transparent;
+            this.loadingSpinner.Location = new System.Drawing.Point(520, 335);
+            this.loadingSpinner.Name = "loadingSpinner";
+            this.loadingSpinner.Size = new System.Drawing.Size(60, 60);
+            this.loadingSpinner.TabIndex = 0;
+            this.loadingSpinner.TabStop = false;
+            // 
+            // loadingLabel
+            // 
+            this.loadingLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.loadingLabel.AutoSize = true;
+            this.loadingLabel.BackColor = System.Drawing.Color.Transparent;
+            this.loadingLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.loadingLabel.ForeColor = System.Drawing.Color.White;
+            this.loadingLabel.Location = new System.Drawing.Point(450, 410);
+            this.loadingLabel.Name = "loadingLabel";
+            this.loadingLabel.Size = new System.Drawing.Size(127, 32);
+            this.loadingLabel.TabIndex = 1;
+            this.loadingLabel.Text = "Loading...";
+            this.loadingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // spinnerTimer
+            // 
+            this.spinnerTimer.Interval = 50;
+            this.spinnerTimer.Tick += new System.EventHandler(this.SpinnerTimer_Tick);
             // 
             // FormCustomGesture
             // 
@@ -310,6 +368,9 @@ namespace GestPipePowerPonit
             this.pnlMain.PerformLayout();
             this.pnlInstructions.ResumeLayout(false);
             this.pnlInstructions.PerformLayout();
+            this.loadingPanel.ResumeLayout(false);
+            this.loadingPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).EndInit();
             this.ResumeLayout(false);
 
         }

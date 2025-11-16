@@ -72,7 +72,7 @@ namespace GestPipePowerPonit
 
         private void BtnPresent_Click(object sender, EventArgs e)
         {
-            Form1 form1 = new Form1(this);
+            PresentationForm form1 = new PresentationForm(this);
             form1.Show();
             this.Hide();
         }
@@ -87,7 +87,7 @@ namespace GestPipePowerPonit
 
         private void BtnGestureControl_Click(object sender, EventArgs e)
         {
-            FormDefaultGesture defaultGesture = new FormDefaultGesture(this);
+            ListDefaultGestureForm defaultGesture = new ListDefaultGestureForm(this);
             defaultGesture.Show();
             this.Hide();
         }
@@ -112,15 +112,31 @@ namespace GestPipePowerPonit
         {
             try
             {
-                await _apiClient.SetUserLanguageAsync(_currentUserId, cultureCode);
+                //await _apiClient.SetUserLanguageAsync(_currentUserId, cultureCode);
+                //_currentCultureCode = cultureCode;
+                //CultureManager.CurrentCultureCode = _currentCultureCode;
+                //ResourceHelper.SetCulture(_currentCultureCode, this);
+                //ApplyResourceToControls();
+                // ✅ SET CULTURE TRƯỚC (như Form1)
                 _currentCultureCode = cultureCode;
                 CultureManager.CurrentCultureCode = _currentCultureCode;
                 ResourceHelper.SetCulture(_currentCultureCode, this);
                 ApplyResourceToControls();
+
+                // ✅ API call SAU
+                await _apiClient.SetUserLanguageAsync(_currentUserId, cultureCode);
+
+                CustomMessageBox.ShowSuccess(
+                    Properties.Resources.Message_ChangeLanguageSuccess,
+                    Properties.Resources.Title_Success
+                );
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Không thể đổi ngôn ngữ: " + ex.Message + "\n" + ex.StackTrace);
+                CustomMessageBox.ShowError(
+                    Properties.Resources.Message_ChangeLanguageFailed,
+                    Properties.Resources.Title_Error
+                );
             }
         }
 
@@ -128,11 +144,9 @@ namespace GestPipePowerPonit
         {
             btnHome.Text = Properties.Resources.Btn_Home;
             btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
-            btnVersion.Text = Properties.Resources.Btn_Version;
             btnInstruction.Text = Properties.Resources.Btn_Instruction;
             btnPresent.Text = Properties.Resources.Btn_Present;
             btnCustomGesture.Text = Properties.Resources.Btn_CustomGesture;
-            btnTrainingGesture.Text = Properties.Resources.Btn_Training;
             btnTraining.Text = Properties.Resources.Btn_Training;
             lblWelcome.Text = Properties.Resources.Home_Welcome;
             lblSubtitle.Text = Properties.Resources.LblSubtitle;
@@ -149,7 +163,7 @@ namespace GestPipePowerPonit
 
         private void btnPresentation_Click(object sender, EventArgs e)
         {
-            Form1 form1 = new Form1(this);
+            PresentationForm form1 = new PresentationForm(this);
             form1.Show();
             this.Hide();
         }
@@ -272,7 +286,7 @@ namespace GestPipePowerPonit
 
         private void btnCustomGesture_Click(object sender, EventArgs e)
         {
-            FormUserGestureCustom usergestureForm = new FormUserGestureCustom(this);
+            ListRequestGestureForm usergestureForm = new ListRequestGestureForm(this);
             usergestureForm.Show();
             this.Hide();
         }

@@ -2,7 +2,7 @@
 
 namespace GestPipePowerPonit
 {
-    partial class FormUserGestureCustom
+    partial class ListDefaultGestureForm
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -20,19 +20,18 @@ namespace GestPipePowerPonit
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListDefaultGestureForm));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.btnCustomGesture = new Guna.UI2.WinForms.Guna2Button();
             this.btnPresentation = new Guna.UI2.WinForms.Guna2Button();
-            this.btnTrainingGesture = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
             this.btnLanguageEN = new Guna.UI2.WinForms.Guna2Button();
             this.btnLanguageVN = new Guna.UI2.WinForms.Guna2Button();
             this.btnInstruction = new Guna.UI2.WinForms.Guna2Button();
-            this.btnVersion = new Guna.UI2.WinForms.Guna2Button();
             this.btnGestureControl = new Guna.UI2.WinForms.Guna2Button();
             this.btnHome = new Guna.UI2.WinForms.Guna2Button();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
@@ -41,8 +40,9 @@ namespace GestPipePowerPonit
             this.guna2ControlBoxMinimize = new Guna.UI2.WinForms.Guna2ControlBox();
             this.btnLogout = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.btnProfile = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            this.btnUserGesture = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnDefaultGesture = new Guna.UI2.WinForms.Guna2GradientButton();
             this.panelMain = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnRequest = new Guna.UI2.WinForms.Guna2GradientButton();
             this.guna2DataGridView1 = new Guna.UI2.WinForms.Guna2DataGridView();
             this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnAction = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,7 +50,7 @@ namespace GestPipePowerPonit
             this.ColumnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnView = new System.Windows.Forms.DataGridViewImageColumn();
-            this.ColumnCustom = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ColumnTraining = new System.Windows.Forms.DataGridViewImageColumn();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.guna2Panel1.SuspendLayout();
             this.guna2Panel3.SuspendLayout();
@@ -72,10 +72,8 @@ namespace GestPipePowerPonit
             this.guna2Panel1.BackColor = System.Drawing.Color.Black;
             this.guna2Panel1.Controls.Add(this.btnCustomGesture);
             this.guna2Panel1.Controls.Add(this.btnPresentation);
-            this.guna2Panel1.Controls.Add(this.btnTrainingGesture);
             this.guna2Panel1.Controls.Add(this.guna2Panel3);
             this.guna2Panel1.Controls.Add(this.btnInstruction);
-            this.guna2Panel1.Controls.Add(this.btnVersion);
             this.guna2Panel1.Controls.Add(this.btnGestureControl);
             this.guna2Panel1.Controls.Add(this.btnHome);
             this.guna2Panel1.Controls.Add(this.pictureBoxLogo);
@@ -93,19 +91,20 @@ namespace GestPipePowerPonit
             this.btnCustomGesture.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnCustomGesture.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnCustomGesture.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnCustomGesture.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
-            this.btnCustomGesture.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCustomGesture.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnCustomGesture.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCustomGesture.ForeColor = System.Drawing.Color.White;
             this.btnCustomGesture.Image = global::GestPipePowerPonit.Properties.Resources.CustomCamera;
             this.btnCustomGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnCustomGesture.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnCustomGesture.Location = new System.Drawing.Point(16, 568);
+            this.btnCustomGesture.Location = new System.Drawing.Point(16, 263);
             this.btnCustomGesture.Margin = new System.Windows.Forms.Padding(4);
             this.btnCustomGesture.Name = "btnCustomGesture";
             this.btnCustomGesture.Size = new System.Drawing.Size(233, 55);
             this.btnCustomGesture.TabIndex = 12;
             this.btnCustomGesture.Text = "Custom Gesture";
             this.btnCustomGesture.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnCustomGesture.Click += new System.EventHandler(this.btnCustomGesture_Click);
             // 
             // btnPresentation
             // 
@@ -120,7 +119,7 @@ namespace GestPipePowerPonit
             this.btnPresentation.Image = global::GestPipePowerPonit.Properties.Resources.icon_search;
             this.btnPresentation.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnPresentation.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnPresentation.Location = new System.Drawing.Point(16, 493);
+            this.btnPresentation.Location = new System.Drawing.Point(16, 333);
             this.btnPresentation.Margin = new System.Windows.Forms.Padding(4);
             this.btnPresentation.Name = "btnPresentation";
             this.btnPresentation.Size = new System.Drawing.Size(233, 55);
@@ -128,28 +127,6 @@ namespace GestPipePowerPonit
             this.btnPresentation.Text = "Presentation";
             this.btnPresentation.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnPresentation.Click += new System.EventHandler(this.btnPresentation_Click);
-            // 
-            // btnTrainingGesture
-            // 
-            this.btnTrainingGesture.BorderRadius = 10;
-            this.btnTrainingGesture.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnTrainingGesture.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnTrainingGesture.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnTrainingGesture.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnTrainingGesture.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.btnTrainingGesture.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTrainingGesture.ForeColor = System.Drawing.Color.White;
-            this.btnTrainingGesture.Image = global::GestPipePowerPonit.Properties.Resources.icon_traininggesture;
-            this.btnTrainingGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnTrainingGesture.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnTrainingGesture.Location = new System.Drawing.Point(16, 419);
-            this.btnTrainingGesture.Margin = new System.Windows.Forms.Padding(4);
-            this.btnTrainingGesture.Name = "btnTrainingGesture";
-            this.btnTrainingGesture.Size = new System.Drawing.Size(233, 55);
-            this.btnTrainingGesture.TabIndex = 7;
-            this.btnTrainingGesture.Text = "Training Gesture";
-            this.btnTrainingGesture.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnTrainingGesture.Click += new System.EventHandler(this.btnTrainingGesture_Click);
             // 
             // guna2Panel3
             // 
@@ -211,34 +188,13 @@ namespace GestPipePowerPonit
             this.btnInstruction.Image = global::GestPipePowerPonit.Properties.Resources.icon_instruction;
             this.btnInstruction.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnInstruction.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnInstruction.Location = new System.Drawing.Point(16, 345);
+            this.btnInstruction.Location = new System.Drawing.Point(13, 403);
             this.btnInstruction.Margin = new System.Windows.Forms.Padding(4);
             this.btnInstruction.Name = "btnInstruction";
             this.btnInstruction.Size = new System.Drawing.Size(233, 55);
             this.btnInstruction.TabIndex = 4;
             this.btnInstruction.Text = "Instruction";
             this.btnInstruction.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            // 
-            // btnVersion
-            // 
-            this.btnVersion.BorderRadius = 10;
-            this.btnVersion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnVersion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnVersion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnVersion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnVersion.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.btnVersion.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnVersion.ForeColor = System.Drawing.Color.White;
-            this.btnVersion.Image = global::GestPipePowerPonit.Properties.Resources.icon_version;
-            this.btnVersion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnVersion.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnVersion.Location = new System.Drawing.Point(16, 271);
-            this.btnVersion.Margin = new System.Windows.Forms.Padding(4);
-            this.btnVersion.Name = "btnVersion";
-            this.btnVersion.Size = new System.Drawing.Size(233, 55);
-            this.btnVersion.TabIndex = 3;
-            this.btnVersion.Text = "Version";
-            this.btnVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // btnGestureControl
             // 
@@ -247,20 +203,19 @@ namespace GestPipePowerPonit
             this.btnGestureControl.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnGestureControl.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnGestureControl.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnGestureControl.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.btnGestureControl.Font = new System.Drawing.Font("Segoe UI Light", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGestureControl.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
+            this.btnGestureControl.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnGestureControl.ForeColor = System.Drawing.Color.White;
             this.btnGestureControl.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
             this.btnGestureControl.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnGestureControl.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnGestureControl.Location = new System.Drawing.Point(16, 197);
+            this.btnGestureControl.Location = new System.Drawing.Point(16, 193);
             this.btnGestureControl.Margin = new System.Windows.Forms.Padding(4);
             this.btnGestureControl.Name = "btnGestureControl";
             this.btnGestureControl.Size = new System.Drawing.Size(233, 55);
             this.btnGestureControl.TabIndex = 2;
             this.btnGestureControl.Text = "Gesture Control";
             this.btnGestureControl.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnGestureControl.Click += new System.EventHandler(this.btnGestureControl_Click);
             // 
             // btnHome
             // 
@@ -272,7 +227,7 @@ namespace GestPipePowerPonit
             this.btnHome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.btnHome.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnHome.ForeColor = System.Drawing.Color.White;
-            this.btnHome.Image = global::GestPipePowerPonit.Properties.Resources.icon_home;
+            this.btnHome.Image = ((System.Drawing.Image)(resources.GetObject("btnHome.Image")));
             this.btnHome.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnHome.ImageSize = new System.Drawing.Size(24, 24);
             this.btnHome.Location = new System.Drawing.Point(16, 123);
@@ -361,6 +316,40 @@ namespace GestPipePowerPonit
             this.btnProfile.TabIndex = 6;
             this.btnProfile.TabStop = false;
             // 
+            // btnUserGesture
+            // 
+            this.btnUserGesture.BorderRadius = 12;
+            this.btnUserGesture.FillColor = System.Drawing.Color.Silver;
+            this.btnUserGesture.FillColor2 = System.Drawing.Color.Black;
+            this.btnUserGesture.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnUserGesture.ForeColor = System.Drawing.Color.White;
+            this.btnUserGesture.Image = global::GestPipePowerPonit.Properties.Resources.icon_user;
+            this.btnUserGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnUserGesture.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnUserGesture.Location = new System.Drawing.Point(291, 25);
+            this.btnUserGesture.Name = "btnUserGesture";
+            this.btnUserGesture.Size = new System.Drawing.Size(184, 61);
+            this.btnUserGesture.TabIndex = 0;
+            this.btnUserGesture.Text = "  User Gesture";
+            this.btnUserGesture.Click += new System.EventHandler(this.btnUserGesture_Click);
+            // 
+            // btnDefaultGesture
+            // 
+            this.btnDefaultGesture.BorderRadius = 12;
+            this.btnDefaultGesture.FillColor = System.Drawing.Color.Silver;
+            this.btnDefaultGesture.FillColor2 = System.Drawing.Color.Black;
+            this.btnDefaultGesture.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnDefaultGesture.ForeColor = System.Drawing.Color.White;
+            this.btnDefaultGesture.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
+            this.btnDefaultGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDefaultGesture.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnDefaultGesture.Location = new System.Drawing.Point(60, 25);
+            this.btnDefaultGesture.Name = "btnDefaultGesture";
+            this.btnDefaultGesture.Size = new System.Drawing.Size(184, 61);
+            this.btnDefaultGesture.TabIndex = 1;
+            this.btnDefaultGesture.Text = "     Default Gesture";
+            this.btnDefaultGesture.Click += new System.EventHandler(this.btnDefaultGesture_Click);
+            // 
             // panelMain
             // 
             this.panelMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -370,65 +359,39 @@ namespace GestPipePowerPonit
             this.panelMain.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
             this.panelMain.BorderRadius = 15;
             this.panelMain.BorderThickness = 1;
-            this.panelMain.Controls.Add(this.btnRequest);
+            this.panelMain.Controls.Add(this.btnUserGesture);
             this.panelMain.Controls.Add(this.guna2DataGridView1);
+            this.panelMain.Controls.Add(this.btnDefaultGesture);
             this.panelMain.Location = new System.Drawing.Point(297, 118);
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(1049, 601);
             this.panelMain.TabIndex = 3;
-            // 
-            // btnRequest
-            // 
-            this.btnRequest.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnRequest.BorderRadius = 10;
-            this.btnRequest.BorderThickness = 2;
-            this.btnRequest.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnRequest.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnRequest.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnRequest.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnRequest.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.btnRequest.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(45)))));
-            this.btnRequest.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
-            this.btnRequest.ForeColor = System.Drawing.Color.White;
-            this.btnRequest.Image = global::GestPipePowerPonit.Properties.Resources.icon_traininggesture;
-            this.btnRequest.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnRequest.ImageOffset = new System.Drawing.Point(5, 0);
-            this.btnRequest.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnRequest.Location = new System.Drawing.Point(40, 24);
-            this.btnRequest.Margin = new System.Windows.Forms.Padding(4);
-            this.btnRequest.Name = "btnRequest";
-            this.btnRequest.Size = new System.Drawing.Size(165, 61);
-            this.btnRequest.TabIndex = 6;
-            this.btnRequest.Text = "Request";
-            this.btnRequest.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnRequest.TextOffset = new System.Drawing.Point(20, 0);
-            this.btnRequest.Click += new System.EventHandler(this.btnRequest_Click);
             // 
             // guna2DataGridView1
             // 
             this.guna2DataGridView1.AllowUserToAddRows = false;
             this.guna2DataGridView1.AllowUserToDeleteRows = false;
             this.guna2DataGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.guna2DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.guna2DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.guna2DataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.guna2DataGridView1.BackgroundColor = System.Drawing.Color.Black;
             this.guna2DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.guna2DataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            this.guna2DataGridView1.ColumnHeadersHeight = 38;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.guna2DataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.guna2DataGridView1.ColumnHeadersHeight = 40;
             this.guna2DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             this.guna2DataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnName,
@@ -437,15 +400,15 @@ namespace GestPipePowerPonit
             this.ColumnStatus,
             this.ColumnLastUpdate,
             this.ColumnView,
-            this.ColumnCustom});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.guna2DataGridView1.DefaultCellStyle = dataGridViewCellStyle6;
+            this.ColumnTraining});
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.guna2DataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
             this.guna2DataGridView1.GridColor = System.Drawing.Color.Silver;
             this.guna2DataGridView1.Location = new System.Drawing.Point(40, 107);
             this.guna2DataGridView1.Name = "guna2DataGridView1";
@@ -453,8 +416,7 @@ namespace GestPipePowerPonit
             this.guna2DataGridView1.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.guna2DataGridView1.RowHeadersVisible = false;
             this.guna2DataGridView1.RowHeadersWidth = 51;
-            this.guna2DataGridView1.RowTemplate.Height = 42;
-            this.guna2DataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.guna2DataGridView1.RowTemplate.Height = 50;
             this.guna2DataGridView1.Size = new System.Drawing.Size(976, 458);
             this.guna2DataGridView1.TabIndex = 4;
             this.guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(30)))), ((int)(((byte)(50)))));
@@ -469,13 +431,13 @@ namespace GestPipePowerPonit
             this.guna2DataGridView1.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.guna2DataGridView1.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.Black;
             this.guna2DataGridView1.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            this.guna2DataGridView1.ThemeStyle.HeaderStyle.Height = 38;
+            this.guna2DataGridView1.ThemeStyle.HeaderStyle.Height = 40;
             this.guna2DataGridView1.ThemeStyle.ReadOnly = true;
             this.guna2DataGridView1.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(30)))), ((int)(((byte)(50)))));
             this.guna2DataGridView1.ThemeStyle.RowsStyle.BorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.guna2DataGridView1.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.guna2DataGridView1.ThemeStyle.RowsStyle.ForeColor = System.Drawing.Color.White;
-            this.guna2DataGridView1.ThemeStyle.RowsStyle.Height = 42;
+            this.guna2DataGridView1.ThemeStyle.RowsStyle.Height = 50;
             this.guna2DataGridView1.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(25)))), ((int)(((byte)(40)))));
             this.guna2DataGridView1.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             // 
@@ -510,7 +472,7 @@ namespace GestPipePowerPonit
             // ColumnLastUpdate
             // 
             this.ColumnLastUpdate.HeaderText = "Last Update";
-            this.ColumnLastUpdate.MinimumWidth = 10;
+            this.ColumnLastUpdate.MinimumWidth = 6;
             this.ColumnLastUpdate.Name = "ColumnLastUpdate";
             this.ColumnLastUpdate.ReadOnly = true;
             // 
@@ -522,13 +484,13 @@ namespace GestPipePowerPonit
             this.ColumnView.Name = "ColumnView";
             this.ColumnView.ReadOnly = true;
             // 
-            // ColumnCustom
+            // ColumnTraining
             // 
-            this.ColumnCustom.FillWeight = 50F;
-            this.ColumnCustom.HeaderText = "";
-            this.ColumnCustom.MinimumWidth = 6;
-            this.ColumnCustom.Name = "ColumnCustom";
-            this.ColumnCustom.ReadOnly = true;
+            this.ColumnTraining.FillWeight = 50F;
+            this.ColumnTraining.HeaderText = "";
+            this.ColumnTraining.MinimumWidth = 6;
+            this.ColumnTraining.Name = "ColumnTraining";
+            this.ColumnTraining.ReadOnly = true;
             // 
             // guna2DragControl1
             // 
@@ -536,7 +498,7 @@ namespace GestPipePowerPonit
             this.guna2DragControl1.TargetControl = this.guna2HeaderPanel;
             this.guna2DragControl1.UseTransparentDrag = true;
             // 
-            // FormUserGestureCustom
+            // FormDefaultGesture
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -546,7 +508,8 @@ namespace GestPipePowerPonit
             this.Controls.Add(this.guna2HeaderPanel);
             this.Controls.Add(this.guna2Panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "FormUserGestureCustom";
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "FormDefaultGesture";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GestPipe - Gesture Control";
             this.guna2Panel1.ResumeLayout(false);
@@ -570,7 +533,6 @@ namespace GestPipePowerPonit
         private System.Windows.Forms.PictureBox pictureBoxLogo;
         private Guna.UI2.WinForms.Guna2Button btnHome;
         private Guna.UI2.WinForms.Guna2Button btnGestureControl;
-        private Guna.UI2.WinForms.Guna2Button btnVersion;
         private Guna.UI2.WinForms.Guna2Button btnInstruction;
         private Guna.UI2.WinForms.Guna2CirclePictureBox btnLogout;
         private Guna.UI2.WinForms.Guna2CirclePictureBox btnProfile;
@@ -587,10 +549,13 @@ namespace GestPipePowerPonit
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnLastUpdate;
         private System.Windows.Forms.DataGridViewImageColumn ColumnView;
-        private Guna.UI2.WinForms.Guna2Button btnTrainingGesture;
-        private System.Windows.Forms.DataGridViewImageColumn ColumnCustom;
         private Guna.UI2.WinForms.Guna2Button btnPresentation;
         private Guna.UI2.WinForms.Guna2Button btnCustomGesture;
-        private Guna.UI2.WinForms.Guna2GradientButton btnRequest;
+        //private System.Windows.Forms.Button btnUserGesture;
+        //private System.Windows.Forms.Button btnDefaultGesture;
+        private Guna.UI2.WinForms.Guna2GradientButton btnUserGesture;
+        private Guna.UI2.WinForms.Guna2GradientButton btnDefaultGesture;
+        private System.Windows.Forms.DataGridViewImageColumn ColumnTraining;
+
     }
 }

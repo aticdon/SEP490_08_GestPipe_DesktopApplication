@@ -23,12 +23,10 @@
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             this.btnCustomGesture = new Guna.UI2.WinForms.Guna2Button();
             this.btnPresentation = new Guna.UI2.WinForms.Guna2Button();
-            this.btnTrainingGesture = new Guna.UI2.WinForms.Guna2Button();
             this.pnlFooter = new Guna.UI2.WinForms.Guna2Panel();
             this.btnLanguageEN = new Guna.UI2.WinForms.Guna2Button();
             this.btnLanguageVN = new Guna.UI2.WinForms.Guna2Button();
             this.btnInstruction = new Guna.UI2.WinForms.Guna2Button();
-            this.btnVersion = new Guna.UI2.WinForms.Guna2Button();
             this.btnGestureControl = new Guna.UI2.WinForms.Guna2Button();
             this.btnHome = new Guna.UI2.WinForms.Guna2Button();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
@@ -64,10 +62,8 @@
             this.pnlSidebar.BackColor = System.Drawing.Color.Black;
             this.pnlSidebar.Controls.Add(this.btnCustomGesture);
             this.pnlSidebar.Controls.Add(this.btnPresentation);
-            this.pnlSidebar.Controls.Add(this.btnTrainingGesture);
             this.pnlSidebar.Controls.Add(this.pnlFooter);
             this.pnlSidebar.Controls.Add(this.btnInstruction);
-            this.pnlSidebar.Controls.Add(this.btnVersion);
             this.pnlSidebar.Controls.Add(this.btnGestureControl);
             this.pnlSidebar.Controls.Add(this.btnHome);
             this.pnlSidebar.Controls.Add(this.pictureBoxLogo);
@@ -91,7 +87,7 @@
             this.btnCustomGesture.Image = global::GestPipePowerPonit.Properties.Resources.CustomCamera;
             this.btnCustomGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnCustomGesture.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnCustomGesture.Location = new System.Drawing.Point(13, 567);
+            this.btnCustomGesture.Location = new System.Drawing.Point(16, 263);
             this.btnCustomGesture.Margin = new System.Windows.Forms.Padding(4);
             this.btnCustomGesture.Name = "btnCustomGesture";
             this.btnCustomGesture.Size = new System.Drawing.Size(233, 55);
@@ -113,7 +109,7 @@
             this.btnPresentation.Image = global::GestPipePowerPonit.Properties.Resources.icon_search;
             this.btnPresentation.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnPresentation.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnPresentation.Location = new System.Drawing.Point(16, 493);
+            this.btnPresentation.Location = new System.Drawing.Point(16, 333);
             this.btnPresentation.Margin = new System.Windows.Forms.Padding(4);
             this.btnPresentation.Name = "btnPresentation";
             this.btnPresentation.Size = new System.Drawing.Size(233, 55);
@@ -121,28 +117,6 @@
             this.btnPresentation.Text = "Presentation";
             this.btnPresentation.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnPresentation.Click += new System.EventHandler(this.btnPresentation_Click);
-            // 
-            // btnTrainingGesture
-            // 
-            this.btnTrainingGesture.BorderRadius = 10;
-            this.btnTrainingGesture.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnTrainingGesture.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnTrainingGesture.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnTrainingGesture.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnTrainingGesture.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.btnTrainingGesture.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnTrainingGesture.ForeColor = System.Drawing.Color.White;
-            this.btnTrainingGesture.Image = global::GestPipePowerPonit.Properties.Resources.icon_traininggesture;
-            this.btnTrainingGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnTrainingGesture.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnTrainingGesture.Location = new System.Drawing.Point(16, 419);
-            this.btnTrainingGesture.Margin = new System.Windows.Forms.Padding(4);
-            this.btnTrainingGesture.Name = "btnTrainingGesture";
-            this.btnTrainingGesture.Size = new System.Drawing.Size(233, 55);
-            this.btnTrainingGesture.TabIndex = 6;
-            this.btnTrainingGesture.Text = "Training Gesture";
-            this.btnTrainingGesture.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnTrainingGesture.Click += new System.EventHandler(this.btnTrainingGesture_Click);
             // 
             // pnlFooter
             // 
@@ -204,34 +178,13 @@
             this.btnInstruction.Image = global::GestPipePowerPonit.Properties.Resources.icon_instruction;
             this.btnInstruction.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnInstruction.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnInstruction.Location = new System.Drawing.Point(16, 345);
+            this.btnInstruction.Location = new System.Drawing.Point(16, 403);
             this.btnInstruction.Margin = new System.Windows.Forms.Padding(4);
             this.btnInstruction.Name = "btnInstruction";
             this.btnInstruction.Size = new System.Drawing.Size(233, 55);
             this.btnInstruction.TabIndex = 4;
             this.btnInstruction.Text = "Instruction";
             this.btnInstruction.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            // 
-            // btnVersion
-            // 
-            this.btnVersion.BorderRadius = 10;
-            this.btnVersion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnVersion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnVersion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnVersion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnVersion.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.btnVersion.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnVersion.ForeColor = System.Drawing.Color.White;
-            this.btnVersion.Image = global::GestPipePowerPonit.Properties.Resources.icon_version;
-            this.btnVersion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnVersion.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnVersion.Location = new System.Drawing.Point(16, 271);
-            this.btnVersion.Margin = new System.Windows.Forms.Padding(4);
-            this.btnVersion.Name = "btnVersion";
-            this.btnVersion.Size = new System.Drawing.Size(233, 55);
-            this.btnVersion.TabIndex = 3;
-            this.btnVersion.Text = "Version";
-            this.btnVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // btnGestureControl
             // 
@@ -246,7 +199,7 @@
             this.btnGestureControl.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
             this.btnGestureControl.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnGestureControl.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnGestureControl.Location = new System.Drawing.Point(16, 197);
+            this.btnGestureControl.Location = new System.Drawing.Point(16, 193);
             this.btnGestureControl.Margin = new System.Windows.Forms.Padding(4);
             this.btnGestureControl.Name = "btnGestureControl";
             this.btnGestureControl.Size = new System.Drawing.Size(233, 55);
@@ -468,8 +421,6 @@
             // 
             // HomeUser
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1366, 768);
@@ -504,7 +455,6 @@
         private System.Windows.Forms.PictureBox pictureBoxLogo;
         private Guna.UI2.WinForms.Guna2Button btnHome;
         private Guna.UI2.WinForms.Guna2Button btnGestureControl;
-        private Guna.UI2.WinForms.Guna2Button btnVersion;
         private Guna.UI2.WinForms.Guna2Button btnInstruction;
         private System.Windows.Forms.Label lblWelcome;
         private System.Windows.Forms.Label lblSubtitle;
@@ -519,7 +469,6 @@
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBoxClose;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBoxMinimize;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
-        private Guna.UI2.WinForms.Guna2Button btnTrainingGesture;
         private Guna.UI2.WinForms.Guna2Button btnPresentation;
         private Guna.UI2.WinForms.Guna2Button btnCustomGesture;
     }

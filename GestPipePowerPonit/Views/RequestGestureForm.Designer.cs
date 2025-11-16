@@ -4,7 +4,7 @@ using Guna.UI2.WinForms;
 
 namespace GestPipePowerPonit.Views
 {
-    partial class FormRequestGestures
+    partial class RequestGestureForm
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -58,7 +58,7 @@ namespace GestPipePowerPonit.Views
             // 
             // mainPanel
             // 
-            this.mainPanel.BackColor = System.Drawing.Color.Black;
+            this.mainPanel.BackColor = System.Drawing.Color.Transparent;
             this.mainPanel.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.mainPanel.BorderRadius = 15;
             this.mainPanel.Controls.Add(this.lblTitle);
@@ -162,11 +162,11 @@ namespace GestPipePowerPonit.Views
             // lblDescriptionValue
             // 
             this.lblDescriptionValue.BackColor = System.Drawing.Color.Transparent;
-            this.lblDescriptionValue.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblDescriptionValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblDescriptionValue.ForeColor = System.Drawing.Color.White;
             this.lblDescriptionValue.Location = new System.Drawing.Point(50, 233);
             this.lblDescriptionValue.Name = "lblDescriptionValue";
-            this.lblDescriptionValue.Size = new System.Drawing.Size(86, 27);
+            this.lblDescriptionValue.Size = new System.Drawing.Size(83, 25);
             this.lblDescriptionValue.TabIndex = 5;
             this.lblDescriptionValue.Text = "Loading...";
             // 
@@ -175,7 +175,7 @@ namespace GestPipePowerPonit.Views
             this.lblRequestDateTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblRequestDateTitle.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.lblRequestDateTitle.ForeColor = System.Drawing.Color.Silver;
-            this.lblRequestDateTitle.Location = new System.Drawing.Point(50, 330);
+            this.lblRequestDateTitle.Location = new System.Drawing.Point(50, 340);
             this.lblRequestDateTitle.Name = "lblRequestDateTitle";
             this.lblRequestDateTitle.Size = new System.Drawing.Size(109, 27);
             this.lblRequestDateTitle.TabIndex = 6;
@@ -186,7 +186,7 @@ namespace GestPipePowerPonit.Views
             this.lblRequestDateValue.BackColor = System.Drawing.Color.Transparent;
             this.lblRequestDateValue.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblRequestDateValue.ForeColor = System.Drawing.Color.White;
-            this.lblRequestDateValue.Location = new System.Drawing.Point(250, 330);
+            this.lblRequestDateValue.Location = new System.Drawing.Point(250, 340);
             this.lblRequestDateValue.Name = "lblRequestDateValue";
             this.lblRequestDateValue.Size = new System.Drawing.Size(38, 27);
             this.lblRequestDateValue.TabIndex = 7;
@@ -245,8 +245,8 @@ namespace GestPipePowerPonit.Views
             this.ClientSize = new System.Drawing.Size(700, 700);
             this.Controls.Add(this.mainPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Name = "FormRequestGestures";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Request Gesture Detail";
             this.mainPanel.ResumeLayout(false);
             this.mainPanel.PerformLayout();

@@ -1,16 +1,17 @@
-﻿using System;
+﻿using GestPipePowerPonit.I18n;
+using Guna.UI2.WinForms;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
-using Guna.UI2.WinForms;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace GestPipePowerPonit
 {
-    public partial class FormGestureDetails : Form
+    public partial class DetailGestureForm : Form
     {
         // Constructor nhận 7 tham số string
-        public FormGestureDetails(string name, string action, string accuracy, string status, string lastUpdate, string description, string instruction)
+        public DetailGestureForm(string name, string action, string accuracy, string status, string lastUpdate, string description, string instruction)
         {
             InitializeComponent();
             ApplyLanguage();
@@ -44,8 +45,6 @@ namespace GestPipePowerPonit
 
             if (lines.Count < 1) return;
 
-            // Xóa các controls cũ (chỉ giữ lại hàng tiêu đề)
-            // Hàng tiêu đề (Left Hands/Right Hands) đã có sẵn ở rowIndex 0
             if (tableLayoutPanelHands.Controls.Count > 2)
             {
                 for (int i = tableLayoutPanelHands.Controls.Count - 1; i >= 2; i--)
@@ -57,23 +56,15 @@ namespace GestPipePowerPonit
                 {
                     tableLayoutPanelHands.RowStyles.RemoveAt(tableLayoutPanelHands.RowStyles.Count - 1);
                 }
-                tableLayoutPanelHands.RowCount = 1; // Đặt lại số hàng
+                tableLayoutPanelHands.RowCount = 1; 
             }
 
-            int rowIndex = 0; // Bắt đầu từ dòng dữ liệu đầu tiên (sau tiêu đề cột)
+            int rowIndex = 0;
 
             foreach (var line in lines)
             {
-                // Dòng đầu tiên là tiêu đề cột, ta bỏ qua vì đã có sẵn trong designer
                 if (line.Contains("Left Hands")) continue;
 
-                //if (line.Contains("Direction:"))
-                //{
-                //    // Xử lý dòng Direction
-                //    string direction = line.Replace("Direction:", "").Trim();
-                //    lblDirectionValue.Text = direction;
-                //    continue;
-                //}
                 if (line.TrimStart().StartsWith("Direction:") || line.TrimStart().StartsWith("Hướng di chuyển:"))
                 {
                     string direction = line.Contains(":") ? line.Split(':')[1].Trim() : line.Trim();
@@ -81,8 +72,6 @@ namespace GestPipePowerPonit
                     continue; // KHÔNG add vào bảng
                 }
 
-                // Tách các giá trị (Ngón tay, Tay trái, Tay phải)
-                // Sử dụng Substring/Split dựa trên padding (cần thiết lập padding trong Service)
                 try
                 {
                     string fingerName = line.Substring(0, 16).Trim().Replace(":", "");
@@ -122,6 +111,7 @@ namespace GestPipePowerPonit
         }
         private void ApplyLanguage()
         {
+            ResourceHelper.SetCulture(CultureManager.CurrentCultureCode, this);
             lblNameLabel.Text = Properties.Resources.Col_Name;
             lblActionLabel.Text = Properties.Resources.Col_Type;
             lblAccuracyLabel.Text = Properties.Resources.Col_Accuracy;

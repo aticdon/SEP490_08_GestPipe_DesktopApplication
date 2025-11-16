@@ -459,35 +459,13 @@
   </data>
   <data name="Message_ChangeLanguageFailed" xml:space="preserve">
     <value>Không thể đổi ngôn ngữ</value>
-  <data name="Message_LogoutConfirm_VI" xml:space="preserve">
-    <value>Bạn có chắc chắn muốn đăng xuất?</value>
-  </data>
-  <data name="Message_LogoutSuccess_VI" xml:space="preserve">
-    <value>Đăng xuất thành công!</value>
-  </data>
-  <data name="Message_LogoutFailed_VI" xml:space="preserve">
-    <value>Đăng xuất thất bại.</value>
-  </data>
-  <data name="Message_LogoutError_VI" xml:space="preserve">
-    <value>Lỗi khi đăng xuất</value>
-  </data>
-  <data name="Title_Confirmation_VI" xml:space="preserve">
-    <value>Xác nhận</value>
-  </data>
-  <data name="Title_Success_VI" xml:space="preserve">
-    <value>Thành công</value>
-  </data>
-  <data name="Title_Error_VI" xml:space="preserve">
-    <value>Lỗi</value>
-  </data>
-  <data name="Title_ConnectionError_VI" xml:space="preserve">
-    <value>Lỗi Kết Nối</value>
   </data>
   <data name="CustomGesture_Title" xml:space="preserve">
-    <value>Hướng Dẫn Tùy Chỉnh Cử Chỉ</value>
+    <value>📋 Hướng Dẫn Thực Hiện</value>
   </data>
   <data name="CustomGesture_Instruction_01" xml:space="preserve">
-    <value>🎯 Giữ tay trong khung hình, cách camera 40–60 cm</value>
+    <value>🎯 Giữ tay trong khung hình, cách camera
+40–60 cm</value>
   </data>
   <data name="CustomGesture_Instruction_02" xml:space="preserve">
     <value>✋ Không để tay ra ngoài mép khung</value>
@@ -499,9 +477,64 @@
     <value>📵 Không để vật thể khác che tay</value>
   </data>
   <data name="CustomGesture_Instruction_05" xml:space="preserve">
-    <value>⏱ Giữ tư thế trong 0.8–1.0 giây để mẫu được ghi</value>
+    <value>⏱ Giữ tư thế trong 0.8–1.0 giây để mẫu
+được ghi</value>
   </data>
   <data name="CustomGesture_Instruction_06" xml:space="preserve">
     <value>🔄 Lặp lại 5 lần để đảm bảo chất lượng mẫu</value>
+  </data>
+  <data name="CustomCameraGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Camera_Gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eye_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eye_Gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Btn_RequestGesture" xml:space="preserve">
+    <value>Gửi</value>
+  </data>
+  <data name="Btn_Back" xml:space="preserve">
+    <value>Quay lại</value>
+  </data>
+  <data name="lblRequest" xml:space="preserve">
+    <value>Gửi Yêu Cầu</value>
+  </data>
+  <data name="lblDesRequest" xml:space="preserve">
+    <value>Mô tả yêu cầu</value>
+  </data>
+  <data name="lblRequestDate" xml:space="preserve">
+    <value>Ngày Yêu Cầu</value>
+  </data>
+  <data name="lblStatus" xml:space="preserve">
+    <value>Trạng Thái</value>
+  </data>
+  <data name="BtnStartRequest" xml:space="preserve">
+    <value>🚀 Bắt đầu gửi</value>
+  </data>
+  <data name="lblRequestNumber" xml:space="preserve">
+    <value>Số Cử Chỉ</value>
+  </data>
+  <data name="lblDescriptionRequestPrefix" xml:space="preserve">
+    <value>Yêu cầu cập nhật các cử chỉ:</value>
+  </data>
+  <data name="RequestSuccessDetail" xml:space="preserve">
+    <value>Yêu câu sẽ được gửi đến Quản trị viên</value>
+  </data>
+  <data name="RequestSuccessTitle" xml:space="preserve">
+    <value>Gửi Thành Công</value>
+  </data>
+  <data name="RequestErrorDetail" xml:space="preserve">
+    <value>Đã xảy ra lỗi khi gửi yêu cầu.</value>
+  </data>
+  <data name="RequestErrorTitle" xml:space="preserve">
+    <value>Gửi yêu cầu thất bại!</value>
+  </data>
+  <data name="BtnUserGesture" xml:space="preserve">
+    <value>   Cử chỉ cá nhân</value>
+  </data>
+  <data name="BtnDefaultGesture" xml:space="preserve">
+    <value>   Cử chỉ mặc định</value>
+  </data>
+  <data name="List_Loading" xml:space="preserve">
+    <value>Đang tải danh sách cử chỉ...</value>
   </data>
 </root>

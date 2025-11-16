@@ -95,7 +95,7 @@ namespace GestPipePowerPonit
                 string description = _gestureService.GetGestureDescription(detail);
                 string instruction = _gestureService.GetInstructionTable(detail);
 
-                var detailForm = new FormGestureDetails(
+                var detailForm = new DetailGestureForm(
                     I18nHelper.GetLocalized(detail.Name),
                     I18nHelper.GetLocalized(detail.Type),
                     $"{detail.Accuracy * 100:F1}%",
@@ -117,75 +117,101 @@ namespace GestPipePowerPonit
             //    customForm.Show();
             //    this.Hide();
             //}
-            else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnTraining"].Index && e.RowIndex >= 0)
-            {
-                var basic = gestures[e.RowIndex];
-                var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
-                // ... Sau khi lấy detail xong
-                Bitmap arrowImg = null;
-                string directionStr = "";
-                string typeName = I18nHelper.GetLocalized(detail.Type);
-                if (typeName == I18nHelper.GetString("Static", "Tĩnh"))
-                {
-                    arrowImg = Properties.Resources.handlestaticImg;
-                    directionStr = I18nHelper.GetString("Stand Still", "Đứng yên");
-                }
-                else
-                {
-                    if (detail.VectorData.MainAxisX == 1)
-                    {
-                        if (detail.VectorData.DeltaX > 0)
-                        {
-                            arrowImg = Properties.Resources.Left_to_right;
-                            directionStr = I18nHelper.GetString("Left to Right", "Trái sang phải");
-                        }
-                        else
-                        {
-                            arrowImg = Properties.Resources.Right_to_left;
-                            directionStr = I18nHelper.GetString("Right to Left", "Phải sang trái");
-                        }
-                    }
-                    else if (detail.VectorData.MainAxisY == 1)
-                    {
-                        if (detail.VectorData.DeltaY > 0)
-                        {
-                            arrowImg = Properties.Resources.Top_to_bottom;
-                            directionStr = I18nHelper.GetString("Top to Bottom", "Trên xuống dưới");
-                        }
-                        else
-                        {
-                            arrowImg = Properties.Resources.Bottom_to_top;
-                            directionStr = I18nHelper.GetString("Bottom to Top", "Dưới lên trên");
-                        }
-                    }
-                }
+            //else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnTraining"].Index && e.RowIndex >= 0)
+            //{
+            //    var basic = gestures[e.RowIndex];
+            //    var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
+            //    // ... Sau khi lấy detail xong
+            //    Bitmap arrowImg = null;
+            //    string directionStr = "";
+            //    string typeName = I18nHelper.GetLocalized(detail.Type);
+            //    if (typeName == I18nHelper.GetString("Static", "Tĩnh"))
+            //    {
+            //        arrowImg = Properties.Resources.handlestaticImg;
+            //        directionStr = I18nHelper.GetString("Stand Still", "Đứng yên");
+            //    }
+            //    else
+            //    {
+            //        if (detail.VectorData.MainAxisX == 1)
+            //        {
+            //            if (detail.VectorData.DeltaX > 0)
+            //            {
+            //                arrowImg = Properties.Resources.Left_to_right;
+            //                directionStr = I18nHelper.GetString("Left to Right", "Trái sang phải");
+            //            }
+            //            else
+            //            {
+            //                arrowImg = Properties.Resources.Right_to_left;
+            //                directionStr = I18nHelper.GetString("Right to Left", "Phải sang trái");
+            //            }
+            //        }
+            //        else if (detail.VectorData.MainAxisY == 1)
+            //        {
+            //            if (detail.VectorData.DeltaY > 0)
+            //            {
+            //                arrowImg = Properties.Resources.Top_to_bottom;
+            //                directionStr = I18nHelper.GetString("Top to Bottom", "Trên xuống dưới");
+            //            }
+            //            else
+            //            {
+            //                arrowImg = Properties.Resources.Bottom_to_top;
+            //                directionStr = I18nHelper.GetString("Bottom to Top", "Dưới lên trên");
+            //            }
+            //        }
+            //    }
 
-                // Truyền tất cả sang form instruction, cùng một nguồn!
-                var trainingForm = new FormInstructionTraining(
-                    detail.VectorData.Fingers,
-                    arrowImg,
-                    I18nHelper.GetLocalized(detail.Name),
-                    detail.PoseLabel,
-                    I18nHelper.GetLocalized(detail.Type),
-                    directionStr, // truyền string direction
-                    this
-                );
+            //    // Truyền tất cả sang form instruction, cùng một nguồn!
+            //    var trainingForm = new FormInstructionTraining(
+            //        detail.VectorData.Fingers,
+            //        arrowImg,
+            //        I18nHelper.GetLocalized(detail.Name),
+            //        detail.PoseLabel,
+            //        I18nHelper.GetLocalized(detail.Type),
+            //        directionStr, // truyền string direction
+            //        this
+            //    );
 
-                trainingForm.GestureDetail = detail;
-                trainingForm.SetDirectionText(directionStr); // -> bạn thêm hàm public void SetDirectionText(string txt) { lblDirectionValue.Text = txt; }
+            //    trainingForm.GestureDetail = detail;
+            //    trainingForm.SetDirectionText(directionStr); // -> bạn thêm hàm public void SetDirectionText(string txt) { lblDirectionValue.Text = txt; }
 
-                trainingForm.Show();
-            }
+            //    trainingForm.Show();
+            //}
         }
         private void btnHome_Click(object sender, EventArgs e)
         {
             _homeForm.Show();
             this.Hide();
         }
-        private void UpdateCultureAndApply(string cultureCode)
+        private async void UpdateCultureAndApply(string cultureCode)
         {
-            CultureManager.CurrentCultureCode = cultureCode;
-            _apiClient.SetUserLanguageAsync(userId, cultureCode);
+            try
+            {
+                //if (CultureManager.CurrentCultureCode == cultureCode)
+                //{
+                //    return; // Không làm gì cả
+                //}
+
+                CultureManager.CurrentCultureCode = cultureCode;
+                ResourceHelper.SetCulture(cultureCode, this);
+
+                await _apiClient.SetUserLanguageAsync(userId, cultureCode);
+                //CultureManager.CurrentCultureCode = cultureCode;
+                //ResourceHelper.SetCulture(cultureCode, this);
+                //_apiClient.SetUserLanguageAsync(userId, cultureCode);
+
+                CustomMessageBox.ShowSuccess(
+                    Properties.Resources.Message_ChangeLanguageSuccess,
+                    Properties.Resources.Title_Success
+                );
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.ShowError(
+                    Properties.Resources.Message_ChangeLanguageFailed,
+                    Properties.Resources.Title_Error
+                );
+            }
+                
         }
         private void ApplyLanguage(string cultureCode)
         {
@@ -291,7 +317,7 @@ namespace GestPipePowerPonit
         {
             try
             {
-                ProfileForm profileForm = new ProfileForm(userId, this);
+                ProfileForm profileForm = new ProfileForm(userId, _homeForm);
 
                 this.Hide();
 
@@ -321,21 +347,21 @@ namespace GestPipePowerPonit
 
         private void btnGestureControl_Click(object sender, EventArgs e)
         {
-            FormDefaultGesture dGestureForm = new FormDefaultGesture(_homeForm);
+            ListDefaultGestureForm dGestureForm = new ListDefaultGestureForm(_homeForm);
             dGestureForm.Show();
             this.Hide();
         }
 
         private void btnPresentation_Click(object sender, EventArgs e)
         {
-            Form1 form1 = new Form1(_homeForm);
+            PresentationForm form1 = new PresentationForm(_homeForm);
             form1.Show();
             this.Hide();
         }
 
         private void btnCustomGesture_Click(object sender, EventArgs e)
         {
-            FormUserGestureCustom uGestureForm = new FormUserGestureCustom(_homeForm);
+            ListRequestGestureForm uGestureForm = new ListRequestGestureForm(_homeForm);
             uGestureForm.Show();
             this.Hide();
         }

@@ -265,6 +265,7 @@
     <Compile Include="CultureManager.cs" />
     <Compile Include="Languages\LoginFormStrings.Designer.cs" />
     <Compile Include="Languages\RegisterFormStrings.Designer.cs" />
+    <Compile Include="Models\DefaultGesture.cs" />
     <Compile Include="Models\DTOs\AuthResponseDto.cs" />
     <Compile Include="Models\DTOs\ChangePasswordDto.cs" />
     <Compile Include="Models\DTOs\EmailRequestDto.cs" />
@@ -386,11 +387,11 @@
     <Compile Include="Views\FormUserGesture.Designer.cs">
       <DependentUpon>FormUserGesture.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FormUserGestureCustom.cs">
+    <Compile Include="Views\ListRequestGestureForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormUserGestureCustom.Designer.cs">
-      <DependentUpon>FormUserGestureCustom.cs</DependentUpon>
+    <Compile Include="Views\ListRequestGestureForm.Designer.cs">
+      <DependentUpon>ListRequestGestureForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\HomeUser.cs">
       <SubType>Form</SubType>
@@ -421,11 +422,11 @@
     <Compile Include="Services\TrainingGestureService.cs" />
     <Compile Include="Services\UserGestureConfigService.cs" />
     <Compile Include="SocketServer.cs" />
-    <Compile Include="Views\FormTrainingGesture.cs">
+    <Compile Include="Views\TrainingDefaultGestureForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\FormTrainingGesture.Designer.cs">
-      <DependentUpon>FormTrainingGesture.cs</DependentUpon>
+    <Compile Include="Views\TrainingDefaultGestureForm.Designer.cs">
+      <DependentUpon>TrainingDefaultGestureForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ProfileUser\ChangePasswordForm.cs">
       <SubType>Form</SubType>
@@ -438,6 +439,17 @@
     </Compile>
     <Compile Include="Views\ProfileUser\ProfileForm.Designer.cs">
       <DependentUpon>ProfileForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TrainingUserGestureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\TrainingUserGestureForm.Designer.cs">
+      <DependentUpon>TrainingUserGestureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TrainingUserGestureForm1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrainingUserGestureForm.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Languages\LoginFormStrings.resx">
       <SubType>Designer</SubType>
@@ -488,8 +500,8 @@
     <EmbeddedResource Include="Views\FormUserGesture.resx">
       <DependentUpon>FormUserGesture.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormUserGestureCustom.resx">
-      <DependentUpon>FormUserGestureCustom.cs</DependentUpon>
+    <EmbeddedResource Include="Views\ListRequestGestureForm.resx">
+      <DependentUpon>ListRequestGestureForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\HomeUser.resx">
       <DependentUpon>HomeUser.cs</DependentUpon>
@@ -504,14 +516,19 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\FormTrainingGesture.resx">
-      <DependentUpon>FormTrainingGesture.cs</DependentUpon>
+    <EmbeddedResource Include="Views\TrainingDefaultGestureForm.resx">
+      <DependentUpon>TrainingDefaultGestureForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ProfileUser\ChangePasswordForm.resx">
       <DependentUpon>ChangePasswordForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\ProfileUser\ProfileForm.resx">
       <DependentUpon>ProfileForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\TrainingUserGestureForm.resx">
+      <DependentUpon>TrainingUserGestureForm.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TrainingUserGestureForm1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="packages.config" />

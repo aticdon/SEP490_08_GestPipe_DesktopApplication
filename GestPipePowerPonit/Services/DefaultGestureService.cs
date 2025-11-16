@@ -25,6 +25,11 @@ namespace GestPipePowerPonit.Services
             // Nếu backend có API riêng cho display, hãy dùng URL phù hợp
             return await _httpClient.GetFromJsonAsync<List<DefaultGestureDto>>("/api/defaultgesture/display");
         }
+
+        public async Task<DefaultGesture> GetDefaultGestureByid(string Id)
+        {
+            return await _httpClient.GetFromJsonAsync<DefaultGesture>($"/api/DefaultGesture/{Id}");
+        }
         // Hàm mô tả động tác đa ngôn ngữ
         public string GetGestureDescription(GestureDetailsDto gesture)
         {

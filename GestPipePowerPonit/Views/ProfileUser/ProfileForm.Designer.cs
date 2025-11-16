@@ -28,7 +28,6 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnLanguageEN = new Guna.UI2.WinForms.Guna2Button();
             this.btnLanguageVN = new Guna.UI2.WinForms.Guna2Button();
             this.btnInstruction = new Guna.UI2.WinForms.Guna2Button();
-            this.btnVersion = new Guna.UI2.WinForms.Guna2Button();
             this.btnGestureControl = new Guna.UI2.WinForms.Guna2Button();
             this.btnHome = new Guna.UI2.WinForms.Guna2Button();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
@@ -111,15 +110,14 @@ namespace GestPipePowerPonit.Views.Profile
             this.pnlSidebar.Controls.Add(this.btnCustomGesture);
             this.pnlSidebar.Controls.Add(this.pnlFooter);
             this.pnlSidebar.Controls.Add(this.btnInstruction);
-            this.pnlSidebar.Controls.Add(this.btnVersion);
             this.pnlSidebar.Controls.Add(this.btnGestureControl);
             this.pnlSidebar.Controls.Add(this.btnHome);
             this.pnlSidebar.Controls.Add(this.pictureBoxLogo);
             this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
-            this.pnlSidebar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlSidebar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlSidebar.Name = "pnlSidebar";
-            this.pnlSidebar.Size = new System.Drawing.Size(300, 960);
+            this.pnlSidebar.Size = new System.Drawing.Size(267, 768);
             this.pnlSidebar.TabIndex = 0;
             // 
             // btnPresentation
@@ -135,13 +133,14 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnPresentation.Image = global::GestPipePowerPonit.Properties.Resources.icon_search;
             this.btnPresentation.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnPresentation.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnPresentation.Location = new System.Drawing.Point(18, 616);
-            this.btnPresentation.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnPresentation.Location = new System.Drawing.Point(16, 333);
+            this.btnPresentation.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnPresentation.Name = "btnPresentation";
-            this.btnPresentation.Size = new System.Drawing.Size(262, 69);
+            this.btnPresentation.Size = new System.Drawing.Size(233, 55);
             this.btnPresentation.TabIndex = 10;
             this.btnPresentation.Text = "Presentation";
             this.btnPresentation.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnPresentation.Click += new System.EventHandler(this.BtnPresentation_Click);
             // 
             // btnCustomGesture
             // 
@@ -156,23 +155,24 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnCustomGesture.Image = global::GestPipePowerPonit.Properties.Resources.icon_add;
             this.btnCustomGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnCustomGesture.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnCustomGesture.Location = new System.Drawing.Point(18, 524);
-            this.btnCustomGesture.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnCustomGesture.Location = new System.Drawing.Point(16, 269);
+            this.btnCustomGesture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCustomGesture.Name = "btnCustomGesture";
-            this.btnCustomGesture.Size = new System.Drawing.Size(262, 69);
+            this.btnCustomGesture.Size = new System.Drawing.Size(233, 55);
             this.btnCustomGesture.TabIndex = 6;
             this.btnCustomGesture.Text = "Custom Gesture";
             this.btnCustomGesture.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnCustomGesture.Click += new System.EventHandler(this.BtnCustomGesture_Click);
             // 
             // pnlFooter
             // 
             this.pnlFooter.Controls.Add(this.btnLanguageEN);
             this.pnlFooter.Controls.Add(this.btnLanguageVN);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlFooter.Location = new System.Drawing.Point(0, 882);
-            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlFooter.Location = new System.Drawing.Point(0, 706);
+            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlFooter.Name = "pnlFooter";
-            this.pnlFooter.Size = new System.Drawing.Size(300, 78);
+            this.pnlFooter.Size = new System.Drawing.Size(267, 62);
             this.pnlFooter.TabIndex = 5;
             // 
             // btnLanguageEN
@@ -187,10 +187,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnLanguageEN.ForeColor = System.Drawing.Color.White;
             this.btnLanguageEN.Image = global::GestPipePowerPonit.Properties.Resources.English;
             this.btnLanguageEN.ImageSize = new System.Drawing.Size(24, 16);
-            this.btnLanguageEN.Location = new System.Drawing.Point(80, 15);
-            this.btnLanguageEN.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLanguageEN.Location = new System.Drawing.Point(71, 12);
+            this.btnLanguageEN.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnLanguageEN.Name = "btnLanguageEN";
-            this.btnLanguageEN.Size = new System.Drawing.Size(53, 46);
+            this.btnLanguageEN.Size = new System.Drawing.Size(47, 37);
             this.btnLanguageEN.TabIndex = 1;
             // 
             // btnLanguageVN
@@ -205,10 +205,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnLanguageVN.ForeColor = System.Drawing.Color.White;
             this.btnLanguageVN.Image = global::GestPipePowerPonit.Properties.Resources.Vietnamese;
             this.btnLanguageVN.ImageSize = new System.Drawing.Size(24, 16);
-            this.btnLanguageVN.Location = new System.Drawing.Point(18, 15);
-            this.btnLanguageVN.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLanguageVN.Location = new System.Drawing.Point(16, 12);
+            this.btnLanguageVN.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnLanguageVN.Name = "btnLanguageVN";
-            this.btnLanguageVN.Size = new System.Drawing.Size(53, 46);
+            this.btnLanguageVN.Size = new System.Drawing.Size(47, 37);
             this.btnLanguageVN.TabIndex = 0;
             // 
             // btnInstruction
@@ -224,34 +224,13 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnInstruction.Image = global::GestPipePowerPonit.Properties.Resources.icon_instruction;
             this.btnInstruction.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnInstruction.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnInstruction.Location = new System.Drawing.Point(18, 431);
-            this.btnInstruction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnInstruction.Location = new System.Drawing.Point(16, 403);
+            this.btnInstruction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnInstruction.Name = "btnInstruction";
-            this.btnInstruction.Size = new System.Drawing.Size(262, 69);
+            this.btnInstruction.Size = new System.Drawing.Size(233, 55);
             this.btnInstruction.TabIndex = 4;
             this.btnInstruction.Text = "Instruction";
             this.btnInstruction.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            // 
-            // btnVersion
-            // 
-            this.btnVersion.BorderRadius = 10;
-            this.btnVersion.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnVersion.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnVersion.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnVersion.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnVersion.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.btnVersion.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnVersion.ForeColor = System.Drawing.Color.White;
-            this.btnVersion.Image = global::GestPipePowerPonit.Properties.Resources.icon_version;
-            this.btnVersion.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnVersion.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnVersion.Location = new System.Drawing.Point(18, 339);
-            this.btnVersion.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnVersion.Name = "btnVersion";
-            this.btnVersion.Size = new System.Drawing.Size(262, 69);
-            this.btnVersion.TabIndex = 3;
-            this.btnVersion.Text = "Version";
-            this.btnVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // btnGestureControl
             // 
@@ -266,13 +245,14 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnGestureControl.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
             this.btnGestureControl.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnGestureControl.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnGestureControl.Location = new System.Drawing.Point(18, 246);
-            this.btnGestureControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnGestureControl.Location = new System.Drawing.Point(16, 193);
+            this.btnGestureControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGestureControl.Name = "btnGestureControl";
-            this.btnGestureControl.Size = new System.Drawing.Size(262, 69);
+            this.btnGestureControl.Size = new System.Drawing.Size(233, 55);
             this.btnGestureControl.TabIndex = 2;
             this.btnGestureControl.Text = "Gesture Control";
             this.btnGestureControl.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnGestureControl.Click += new System.EventHandler(this.BtnGestureControl_Click);
             // 
             // btnHome
             // 
@@ -287,21 +267,22 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnHome.Image = global::GestPipePowerPonit.Properties.Resources.icon_home;
             this.btnHome.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnHome.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnHome.Location = new System.Drawing.Point(18, 154);
-            this.btnHome.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnHome.Location = new System.Drawing.Point(16, 123);
+            this.btnHome.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnHome.Name = "btnHome";
-            this.btnHome.Size = new System.Drawing.Size(262, 69);
+            this.btnHome.Size = new System.Drawing.Size(233, 55);
             this.btnHome.TabIndex = 1;
             this.btnHome.Text = "Home";
             this.btnHome.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnHome.Click += new System.EventHandler(this.BtnHome_Click);
             // 
             // pictureBoxLogo
             // 
             this.pictureBoxLogo.Image = global::GestPipePowerPonit.Properties.Resources.Logo;
-            this.pictureBoxLogo.Location = new System.Drawing.Point(18, 19);
-            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pictureBoxLogo.Location = new System.Drawing.Point(16, 15);
+            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
-            this.pictureBoxLogo.Size = new System.Drawing.Size(262, 92);
+            this.pictureBoxLogo.Size = new System.Drawing.Size(233, 74);
             this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxLogo.TabIndex = 0;
             this.pictureBoxLogo.TabStop = false;
@@ -313,9 +294,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.pnlHeader.Controls.Add(this.guna2ControlBoxMinimize);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.FillColor = System.Drawing.Color.Black;
-            this.pnlHeader.Location = new System.Drawing.Point(300, 0);
+            this.pnlHeader.Location = new System.Drawing.Point(267, 0);
+            this.pnlHeader.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1237, 150);
+            this.pnlHeader.Size = new System.Drawing.Size(1099, 120);
             this.pnlHeader.TabIndex = 1;
             // 
             // guna2Panel1
@@ -328,9 +310,8 @@ namespace GestPipePowerPonit.Views.Profile
             this.guna2Panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.guna2Panel1.FillColor = System.Drawing.Color.Black;
             this.guna2Panel1.Location = new System.Drawing.Point(0, 0);
-            this.guna2Panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(1237, 150);
+            this.guna2Panel1.Size = new System.Drawing.Size(1099, 120);
             this.guna2Panel1.TabIndex = 3;
             // 
             // lblWelcome
@@ -338,10 +319,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblWelcome.AutoSize = true;
             this.lblWelcome.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblWelcome.ForeColor = System.Drawing.Color.White;
-            this.lblWelcome.Location = new System.Drawing.Point(45, 46);
+            this.lblWelcome.Location = new System.Drawing.Point(40, 37);
             this.lblWelcome.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(158, 45);
+            this.lblWelcome.Size = new System.Drawing.Size(136, 37);
             this.lblWelcome.TabIndex = 0;
             this.lblWelcome.Text = "Welcome";
             // 
@@ -350,10 +331,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblSubtitle.AutoSize = true;
             this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(47, 106);
+            this.lblSubtitle.Location = new System.Drawing.Point(42, 85);
             this.lblSubtitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSubtitle.Name = "lblSubtitle";
-            this.lblSubtitle.Size = new System.Drawing.Size(217, 32);
+            this.lblSubtitle.Size = new System.Drawing.Size(177, 28);
             this.lblSubtitle.TabIndex = 1;
             this.lblSubtitle.Text = "Here\'s your profile.";
             // 
@@ -363,11 +344,11 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnLogout.FillColor = System.Drawing.Color.Transparent;
             this.btnLogout.Image = global::GestPipePowerPonit.Properties.Resources.icon_logout;
             this.btnLogout.ImageRotate = 0F;
-            this.btnLogout.Location = new System.Drawing.Point(1157, 60);
-            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnLogout.Location = new System.Drawing.Point(1027, 48);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.btnLogout.Size = new System.Drawing.Size(53, 54);
+            this.btnLogout.Size = new System.Drawing.Size(47, 43);
             this.btnLogout.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLogout.TabIndex = 5;
             this.btnLogout.TabStop = false;
@@ -378,10 +359,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.guna2ControlBox1.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox1.HoverState.FillColor = System.Drawing.Color.Red;
             this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
-            this.guna2ControlBox1.Location = new System.Drawing.Point(1168, 15);
-            this.guna2ControlBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.guna2ControlBox1.Location = new System.Drawing.Point(1037, 12);
             this.guna2ControlBox1.Name = "guna2ControlBox1";
-            this.guna2ControlBox1.Size = new System.Drawing.Size(56, 36);
+            this.guna2ControlBox1.Size = new System.Drawing.Size(50, 29);
             this.guna2ControlBox1.TabIndex = 6;
             // 
             // guna2ControlBox2
@@ -390,10 +370,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.guna2ControlBox2.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
             this.guna2ControlBox2.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox2.IconColor = System.Drawing.Color.White;
-            this.guna2ControlBox2.Location = new System.Drawing.Point(1105, 15);
-            this.guna2ControlBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.guna2ControlBox2.Location = new System.Drawing.Point(981, 12);
             this.guna2ControlBox2.Name = "guna2ControlBox2";
-            this.guna2ControlBox2.Size = new System.Drawing.Size(56, 36);
+            this.guna2ControlBox2.Size = new System.Drawing.Size(50, 29);
             this.guna2ControlBox2.TabIndex = 8;
             // 
             // guna2ControlBoxClose
@@ -402,9 +381,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.guna2ControlBoxClose.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBoxClose.HoverState.FillColor = System.Drawing.Color.Red;
             this.guna2ControlBoxClose.IconColor = System.Drawing.Color.White;
-            this.guna2ControlBoxClose.Location = new System.Drawing.Point(1168, 15);
+            this.guna2ControlBoxClose.Location = new System.Drawing.Point(1037, 12);
+            this.guna2ControlBoxClose.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2ControlBoxClose.Name = "guna2ControlBoxClose";
-            this.guna2ControlBoxClose.Size = new System.Drawing.Size(56, 36);
+            this.guna2ControlBoxClose.Size = new System.Drawing.Size(50, 29);
             this.guna2ControlBoxClose.TabIndex = 0;
             this.guna2ControlBoxClose.Click += new System.EventHandler(this.guna2ControlBoxClose_Click);
             // 
@@ -414,9 +394,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.guna2ControlBoxMinimize.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
             this.guna2ControlBoxMinimize.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBoxMinimize.IconColor = System.Drawing.Color.White;
-            this.guna2ControlBoxMinimize.Location = new System.Drawing.Point(1105, 15);
+            this.guna2ControlBoxMinimize.Location = new System.Drawing.Point(981, 12);
+            this.guna2ControlBoxMinimize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.guna2ControlBoxMinimize.Name = "guna2ControlBoxMinimize";
-            this.guna2ControlBoxMinimize.Size = new System.Drawing.Size(56, 36);
+            this.guna2ControlBoxMinimize.Size = new System.Drawing.Size(50, 29);
             this.guna2ControlBoxMinimize.TabIndex = 1;
             // 
             // guna2DragControl1
@@ -434,9 +415,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.panelMain.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
             this.panelMain.FillColor2 = System.Drawing.Color.Black;
             this.panelMain.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
-            this.panelMain.Location = new System.Drawing.Point(300, 150);
+            this.panelMain.Location = new System.Drawing.Point(267, 120);
+            this.panelMain.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(1237, 810);
+            this.panelMain.Size = new System.Drawing.Size(1099, 648);
             this.panelMain.TabIndex = 2;
             // 
             // lblLoading
@@ -446,9 +428,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblLoading.BackColor = System.Drawing.Color.Transparent;
             this.lblLoading.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lblLoading.ForeColor = System.Drawing.Color.White;
-            this.lblLoading.Location = new System.Drawing.Point(523, 389);
+            this.lblLoading.Location = new System.Drawing.Point(464, 311);
             this.lblLoading.Name = "lblLoading";
-            this.lblLoading.Size = new System.Drawing.Size(190, 32);
+            this.lblLoading.Size = new System.Drawing.Size(157, 28);
             this.lblLoading.TabIndex = 0;
             this.lblLoading.Text = "Loading profile...";
             this.lblLoading.Visible = false;
@@ -493,8 +475,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.panelContent.Controls.Add(this.txtFullName);
             this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelContent.Location = new System.Drawing.Point(0, 0);
+            this.panelContent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelContent.Name = "panelContent";
-            this.panelContent.Size = new System.Drawing.Size(1237, 810);
+            this.panelContent.Size = new System.Drawing.Size(1099, 648);
             this.panelContent.TabIndex = 1;
             // 
             // panelBanner
@@ -508,9 +491,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.panelBanner.Controls.Add(this.btnBannerAdd);
             this.panelBanner.Controls.Add(this.btnBannerClose);
             this.panelBanner.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
-            this.panelBanner.Location = new System.Drawing.Point(80, 190);
+            this.panelBanner.Location = new System.Drawing.Point(71, 152);
+            this.panelBanner.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelBanner.Name = "panelBanner";
-            this.panelBanner.Size = new System.Drawing.Size(1100, 65);
+            this.panelBanner.Size = new System.Drawing.Size(978, 52);
             this.panelBanner.TabIndex = 32;
             this.panelBanner.Visible = false;
             // 
@@ -519,9 +503,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblBannerIcon.AutoSize = true;
             this.lblBannerIcon.BackColor = System.Drawing.Color.Transparent;
             this.lblBannerIcon.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.lblBannerIcon.Location = new System.Drawing.Point(3, 14);
+            this.lblBannerIcon.Location = new System.Drawing.Point(3, 11);
             this.lblBannerIcon.Name = "lblBannerIcon";
-            this.lblBannerIcon.Size = new System.Drawing.Size(64, 45);
+            this.lblBannerIcon.Size = new System.Drawing.Size(54, 37);
             this.lblBannerIcon.TabIndex = 0;
             this.lblBannerIcon.Text = "💡";
             // 
@@ -530,9 +514,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblBannerMessage.BackColor = System.Drawing.Color.Transparent;
             this.lblBannerMessage.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblBannerMessage.ForeColor = System.Drawing.Color.White;
-            this.lblBannerMessage.Location = new System.Drawing.Point(60, 20);
+            this.lblBannerMessage.Location = new System.Drawing.Point(53, 16);
             this.lblBannerMessage.Name = "lblBannerMessage";
-            this.lblBannerMessage.Size = new System.Drawing.Size(700, 25);
+            this.lblBannerMessage.Size = new System.Drawing.Size(622, 20);
             this.lblBannerMessage.TabIndex = 1;
             this.lblBannerMessage.Text = "Your profile is loading...";
             // 
@@ -546,9 +530,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnBannerAdd.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
             this.btnBannerAdd.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnBannerAdd.ForeColor = System.Drawing.Color.White;
-            this.btnBannerAdd.Location = new System.Drawing.Point(850, 13);
+            this.btnBannerAdd.Location = new System.Drawing.Point(756, 10);
+            this.btnBannerAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBannerAdd.Name = "btnBannerAdd";
-            this.btnBannerAdd.Size = new System.Drawing.Size(120, 38);
+            this.btnBannerAdd.Size = new System.Drawing.Size(107, 30);
             this.btnBannerAdd.TabIndex = 2;
             this.btnBannerAdd.Text = "Add Info";
             this.btnBannerAdd.Click += new System.EventHandler(this.btnBannerAdd_Click);
@@ -564,9 +549,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnBannerClose.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnBannerClose.ForeColor = System.Drawing.Color.White;
             this.btnBannerClose.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.btnBannerClose.Location = new System.Drawing.Point(1055, 16);
+            this.btnBannerClose.Location = new System.Drawing.Point(938, 13);
+            this.btnBannerClose.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBannerClose.Name = "btnBannerClose";
-            this.btnBannerClose.Size = new System.Drawing.Size(32, 32);
+            this.btnBannerClose.Size = new System.Drawing.Size(28, 26);
             this.btnBannerClose.TabIndex = 3;
             this.btnBannerClose.Text = "✕";
             this.btnBannerClose.Click += new System.EventHandler(this.btnBannerClose_Click);
@@ -574,10 +560,11 @@ namespace GestPipePowerPonit.Views.Profile
             // picAvatar
             // 
             this.picAvatar.ImageRotate = 0F;
-            this.picAvatar.Location = new System.Drawing.Point(79, 25);
+            this.picAvatar.Location = new System.Drawing.Point(70, 20);
+            this.picAvatar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.picAvatar.Name = "picAvatar";
             this.picAvatar.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.picAvatar.Size = new System.Drawing.Size(150, 150);
+            this.picAvatar.Size = new System.Drawing.Size(133, 120);
             this.picAvatar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picAvatar.TabIndex = 0;
             this.picAvatar.TabStop = false;
@@ -587,9 +574,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblFullNameValue.BackColor = System.Drawing.Color.Transparent;
             this.lblFullNameValue.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblFullNameValue.ForeColor = System.Drawing.Color.White;
-            this.lblFullNameValue.Location = new System.Drawing.Point(253, 57);
+            this.lblFullNameValue.Location = new System.Drawing.Point(225, 46);
             this.lblFullNameValue.Name = "lblFullNameValue";
-            this.lblFullNameValue.Size = new System.Drawing.Size(741, 45);
+            this.lblFullNameValue.Size = new System.Drawing.Size(659, 36);
             this.lblFullNameValue.TabIndex = 1;
             this.lblFullNameValue.Text = "User";
             this.lblFullNameValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -599,9 +586,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblCreateDate.BackColor = System.Drawing.Color.Transparent;
             this.lblCreateDate.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblCreateDate.ForeColor = System.Drawing.Color.LightGray;
-            this.lblCreateDate.Location = new System.Drawing.Point(235, 136);
+            this.lblCreateDate.Location = new System.Drawing.Point(209, 109);
             this.lblCreateDate.Name = "lblCreateDate";
-            this.lblCreateDate.Size = new System.Drawing.Size(437, 20);
+            this.lblCreateDate.Size = new System.Drawing.Size(388, 16);
             this.lblCreateDate.TabIndex = 2;
             this.lblCreateDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -611,9 +598,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblFullNameError.BackColor = System.Drawing.Color.Transparent;
             this.lblFullNameError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblFullNameError.ForeColor = System.Drawing.Color.Orange;
-            this.lblFullNameError.Location = new System.Drawing.Point(302, 103);
+            this.lblFullNameError.Location = new System.Drawing.Point(268, 82);
             this.lblFullNameError.Name = "lblFullNameError";
-            this.lblFullNameError.Size = new System.Drawing.Size(0, 21);
+            this.lblFullNameError.Size = new System.Drawing.Size(0, 19);
             this.lblFullNameError.TabIndex = 4;
             this.lblFullNameError.Visible = false;
             // 
@@ -623,9 +610,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblEmail.BackColor = System.Drawing.Color.Transparent;
             this.lblEmail.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblEmail.ForeColor = System.Drawing.Color.White;
-            this.lblEmail.Location = new System.Drawing.Point(125, 266);
+            this.lblEmail.Location = new System.Drawing.Point(111, 213);
             this.lblEmail.Name = "lblEmail";
-            this.lblEmail.Size = new System.Drawing.Size(64, 28);
+            this.lblEmail.Size = new System.Drawing.Size(54, 23);
             this.lblEmail.TabIndex = 5;
             this.lblEmail.Text = "Email";
             // 
@@ -634,9 +621,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblEmailValue.BackColor = System.Drawing.Color.Transparent;
             this.lblEmailValue.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblEmailValue.ForeColor = System.Drawing.Color.White;
-            this.lblEmailValue.Location = new System.Drawing.Point(125, 296);
+            this.lblEmailValue.Location = new System.Drawing.Point(111, 237);
             this.lblEmailValue.Name = "lblEmailValue";
-            this.lblEmailValue.Size = new System.Drawing.Size(450, 40);
+            this.lblEmailValue.Size = new System.Drawing.Size(400, 32);
             this.lblEmailValue.TabIndex = 6;
             this.lblEmailValue.Text = "-";
             this.lblEmailValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -648,13 +635,13 @@ namespace GestPipePowerPonit.Views.Profile
             this.txtEmail.DefaultText = "";
             this.txtEmail.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtEmail.ForeColor = System.Drawing.Color.Gray;
-            this.txtEmail.Location = new System.Drawing.Point(125, 296);
-            this.txtEmail.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.txtEmail.Location = new System.Drawing.Point(111, 237);
+            this.txtEmail.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.PlaceholderText = "";
             this.txtEmail.ReadOnly = true;
             this.txtEmail.SelectedText = "";
-            this.txtEmail.Size = new System.Drawing.Size(450, 40);
+            this.txtEmail.Size = new System.Drawing.Size(400, 32);
             this.txtEmail.TabIndex = 7;
             this.txtEmail.Visible = false;
             // 
@@ -664,9 +651,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblPhone.BackColor = System.Drawing.Color.Transparent;
             this.lblPhone.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblPhone.ForeColor = System.Drawing.Color.White;
-            this.lblPhone.Location = new System.Drawing.Point(125, 356);
+            this.lblPhone.Location = new System.Drawing.Point(111, 285);
             this.lblPhone.Name = "lblPhone";
-            this.lblPhone.Size = new System.Drawing.Size(154, 28);
+            this.lblPhone.Size = new System.Drawing.Size(130, 23);
             this.lblPhone.TabIndex = 8;
             this.lblPhone.Text = "Phone Number";
             // 
@@ -675,9 +662,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblPhoneValue.BackColor = System.Drawing.Color.Transparent;
             this.lblPhoneValue.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblPhoneValue.ForeColor = System.Drawing.Color.White;
-            this.lblPhoneValue.Location = new System.Drawing.Point(125, 386);
+            this.lblPhoneValue.Location = new System.Drawing.Point(111, 309);
             this.lblPhoneValue.Name = "lblPhoneValue";
-            this.lblPhoneValue.Size = new System.Drawing.Size(450, 40);
+            this.lblPhoneValue.Size = new System.Drawing.Size(400, 32);
             this.lblPhoneValue.TabIndex = 9;
             this.lblPhoneValue.Text = "-";
             this.lblPhoneValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -688,12 +675,12 @@ namespace GestPipePowerPonit.Views.Profile
             this.txtPhone.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtPhone.DefaultText = "";
             this.txtPhone.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtPhone.Location = new System.Drawing.Point(125, 386);
-            this.txtPhone.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.txtPhone.Location = new System.Drawing.Point(111, 309);
+            this.txtPhone.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.PlaceholderText = "";
             this.txtPhone.SelectedText = "";
-            this.txtPhone.Size = new System.Drawing.Size(450, 40);
+            this.txtPhone.Size = new System.Drawing.Size(400, 32);
             this.txtPhone.TabIndex = 10;
             this.txtPhone.Visible = false;
             this.txtPhone.TextChanged += new System.EventHandler(this.txtPhone_TextChanged);
@@ -704,9 +691,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblPhoneError.BackColor = System.Drawing.Color.Transparent;
             this.lblPhoneError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblPhoneError.ForeColor = System.Drawing.Color.Orange;
-            this.lblPhoneError.Location = new System.Drawing.Point(125, 432);
+            this.lblPhoneError.Location = new System.Drawing.Point(111, 346);
             this.lblPhoneError.Name = "lblPhoneError";
-            this.lblPhoneError.Size = new System.Drawing.Size(0, 21);
+            this.lblPhoneError.Size = new System.Drawing.Size(0, 19);
             this.lblPhoneError.TabIndex = 11;
             this.lblPhoneError.Visible = false;
             // 
@@ -716,9 +703,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblGender.BackColor = System.Drawing.Color.Transparent;
             this.lblGender.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblGender.ForeColor = System.Drawing.Color.White;
-            this.lblGender.Location = new System.Drawing.Point(125, 569);
+            this.lblGender.Location = new System.Drawing.Point(111, 455);
             this.lblGender.Name = "lblGender";
-            this.lblGender.Size = new System.Drawing.Size(80, 28);
+            this.lblGender.Size = new System.Drawing.Size(68, 23);
             this.lblGender.TabIndex = 15;
             this.lblGender.Text = "Gender";
             // 
@@ -727,9 +714,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblGenderValue.BackColor = System.Drawing.Color.Transparent;
             this.lblGenderValue.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblGenderValue.ForeColor = System.Drawing.Color.White;
-            this.lblGenderValue.Location = new System.Drawing.Point(125, 599);
+            this.lblGenderValue.Location = new System.Drawing.Point(111, 479);
             this.lblGenderValue.Name = "lblGenderValue";
-            this.lblGenderValue.Size = new System.Drawing.Size(450, 40);
+            this.lblGenderValue.Size = new System.Drawing.Size(400, 32);
             this.lblGenderValue.TabIndex = 16;
             this.lblGenderValue.Text = "-";
             this.lblGenderValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -744,9 +731,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.cmbGender.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbGender.ForeColor = System.Drawing.Color.Black;
             this.cmbGender.ItemHeight = 30;
-            this.cmbGender.Location = new System.Drawing.Point(125, 599);
+            this.cmbGender.Location = new System.Drawing.Point(111, 479);
+            this.cmbGender.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmbGender.Name = "cmbGender";
-            this.cmbGender.Size = new System.Drawing.Size(450, 36);
+            this.cmbGender.Size = new System.Drawing.Size(400, 36);
             this.cmbGender.TabIndex = 17;
             this.cmbGender.Visible = false;
             this.cmbGender.SelectedIndexChanged += new System.EventHandler(this.cmbGender_SelectedIndexChanged);
@@ -757,9 +745,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblBirthDate.BackColor = System.Drawing.Color.Transparent;
             this.lblBirthDate.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblBirthDate.ForeColor = System.Drawing.Color.White;
-            this.lblBirthDate.Location = new System.Drawing.Point(125, 456);
+            this.lblBirthDate.Location = new System.Drawing.Point(111, 365);
             this.lblBirthDate.Name = "lblBirthDate";
-            this.lblBirthDate.Size = new System.Drawing.Size(111, 28);
+            this.lblBirthDate.Size = new System.Drawing.Size(93, 23);
             this.lblBirthDate.TabIndex = 12;
             this.lblBirthDate.Text = "Birth Date";
             // 
@@ -768,9 +756,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblBirthDateValue.BackColor = System.Drawing.Color.Transparent;
             this.lblBirthDateValue.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblBirthDateValue.ForeColor = System.Drawing.Color.White;
-            this.lblBirthDateValue.Location = new System.Drawing.Point(125, 486);
+            this.lblBirthDateValue.Location = new System.Drawing.Point(111, 389);
             this.lblBirthDateValue.Name = "lblBirthDateValue";
-            this.lblBirthDateValue.Size = new System.Drawing.Size(450, 40);
+            this.lblBirthDateValue.Size = new System.Drawing.Size(400, 32);
             this.lblBirthDateValue.TabIndex = 13;
             this.lblBirthDateValue.Text = "-";
             this.lblBirthDateValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -783,11 +771,12 @@ namespace GestPipePowerPonit.Views.Profile
             this.dtpBirthDate.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.dtpBirthDate.ForeColor = System.Drawing.Color.Black;
             this.dtpBirthDate.Format = System.Windows.Forms.DateTimePickerFormat.Long;
-            this.dtpBirthDate.Location = new System.Drawing.Point(125, 486);
+            this.dtpBirthDate.Location = new System.Drawing.Point(111, 389);
+            this.dtpBirthDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dtpBirthDate.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpBirthDate.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpBirthDate.Name = "dtpBirthDate";
-            this.dtpBirthDate.Size = new System.Drawing.Size(450, 40);
+            this.dtpBirthDate.Size = new System.Drawing.Size(400, 32);
             this.dtpBirthDate.TabIndex = 14;
             this.dtpBirthDate.Value = new System.DateTime(2025, 1, 13, 0, 0, 0, 0);
             this.dtpBirthDate.Visible = false;
@@ -799,9 +788,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblAddress.BackColor = System.Drawing.Color.Transparent;
             this.lblAddress.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblAddress.ForeColor = System.Drawing.Color.White;
-            this.lblAddress.Location = new System.Drawing.Point(700, 266);
+            this.lblAddress.Location = new System.Drawing.Point(622, 213);
             this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(164, 28);
+            this.lblAddress.Size = new System.Drawing.Size(138, 23);
             this.lblAddress.TabIndex = 18;
             this.lblAddress.Text = "Tỉnh/Thành phố";
             // 
@@ -810,9 +799,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblAddressValue.BackColor = System.Drawing.Color.Transparent;
             this.lblAddressValue.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblAddressValue.ForeColor = System.Drawing.Color.White;
-            this.lblAddressValue.Location = new System.Drawing.Point(700, 296);
+            this.lblAddressValue.Location = new System.Drawing.Point(622, 237);
             this.lblAddressValue.Name = "lblAddressValue";
-            this.lblAddressValue.Size = new System.Drawing.Size(450, 40);
+            this.lblAddressValue.Size = new System.Drawing.Size(400, 32);
             this.lblAddressValue.TabIndex = 19;
             this.lblAddressValue.Text = "-";
             this.lblAddressValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -863,9 +852,10 @@ namespace GestPipePowerPonit.Views.Profile
             "Thành phố Cần Thơ",
             "Tỉnh An Giang",
             "Tỉnh Cà Mau"});
-            this.cmbAddress.Location = new System.Drawing.Point(700, 296);
+            this.cmbAddress.Location = new System.Drawing.Point(622, 237);
+            this.cmbAddress.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmbAddress.Name = "cmbAddress";
-            this.cmbAddress.Size = new System.Drawing.Size(450, 36);
+            this.cmbAddress.Size = new System.Drawing.Size(400, 36);
             this.cmbAddress.StartIndex = 0;
             this.cmbAddress.TabIndex = 20;
             this.cmbAddress.Visible = false;
@@ -877,9 +867,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblEducation.BackColor = System.Drawing.Color.Transparent;
             this.lblEducation.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblEducation.ForeColor = System.Drawing.Color.White;
-            this.lblEducation.Location = new System.Drawing.Point(700, 356);
+            this.lblEducation.Location = new System.Drawing.Point(622, 285);
             this.lblEducation.Name = "lblEducation";
-            this.lblEducation.Size = new System.Drawing.Size(161, 28);
+            this.lblEducation.Size = new System.Drawing.Size(135, 23);
             this.lblEducation.TabIndex = 21;
             this.lblEducation.Text = "Education Level";
             // 
@@ -888,9 +878,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblEducationValue.BackColor = System.Drawing.Color.Transparent;
             this.lblEducationValue.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblEducationValue.ForeColor = System.Drawing.Color.White;
-            this.lblEducationValue.Location = new System.Drawing.Point(700, 386);
+            this.lblEducationValue.Location = new System.Drawing.Point(622, 309);
             this.lblEducationValue.Name = "lblEducationValue";
-            this.lblEducationValue.Size = new System.Drawing.Size(450, 40);
+            this.lblEducationValue.Size = new System.Drawing.Size(400, 32);
             this.lblEducationValue.TabIndex = 22;
             this.lblEducationValue.Text = "-";
             this.lblEducationValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -912,9 +902,10 @@ namespace GestPipePowerPonit.Views.Profile
             "Bachelor",
             "Master",
             "PhD"});
-            this.cmbEducation.Location = new System.Drawing.Point(700, 386);
+            this.cmbEducation.Location = new System.Drawing.Point(622, 309);
+            this.cmbEducation.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmbEducation.Name = "cmbEducation";
-            this.cmbEducation.Size = new System.Drawing.Size(450, 36);
+            this.cmbEducation.Size = new System.Drawing.Size(400, 36);
             this.cmbEducation.StartIndex = 0;
             this.cmbEducation.TabIndex = 23;
             this.cmbEducation.Visible = false;
@@ -926,9 +917,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblCompany.BackColor = System.Drawing.Color.Transparent;
             this.lblCompany.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblCompany.ForeColor = System.Drawing.Color.White;
-            this.lblCompany.Location = new System.Drawing.Point(700, 580);
+            this.lblCompany.Location = new System.Drawing.Point(622, 464);
             this.lblCompany.Name = "lblCompany";
-            this.lblCompany.Size = new System.Drawing.Size(100, 28);
+            this.lblCompany.Size = new System.Drawing.Size(86, 23);
             this.lblCompany.TabIndex = 28;
             this.lblCompany.Text = "Company";
             // 
@@ -937,9 +928,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblCompanyValue.BackColor = System.Drawing.Color.Transparent;
             this.lblCompanyValue.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblCompanyValue.ForeColor = System.Drawing.Color.White;
-            this.lblCompanyValue.Location = new System.Drawing.Point(700, 610);
+            this.lblCompanyValue.Location = new System.Drawing.Point(622, 488);
             this.lblCompanyValue.Name = "lblCompanyValue";
-            this.lblCompanyValue.Size = new System.Drawing.Size(450, 40);
+            this.lblCompanyValue.Size = new System.Drawing.Size(400, 32);
             this.lblCompanyValue.TabIndex = 29;
             this.lblCompanyValue.Text = "-";
             this.lblCompanyValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -950,12 +941,12 @@ namespace GestPipePowerPonit.Views.Profile
             this.txtCompany.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtCompany.DefaultText = "";
             this.txtCompany.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtCompany.Location = new System.Drawing.Point(700, 610);
-            this.txtCompany.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.txtCompany.Location = new System.Drawing.Point(622, 488);
+            this.txtCompany.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtCompany.Name = "txtCompany";
             this.txtCompany.PlaceholderText = "";
             this.txtCompany.SelectedText = "";
-            this.txtCompany.Size = new System.Drawing.Size(450, 40);
+            this.txtCompany.Size = new System.Drawing.Size(400, 32);
             this.txtCompany.TabIndex = 30;
             this.txtCompany.Visible = false;
             this.txtCompany.TextChanged += new System.EventHandler(this.txtCompany_TextChanged);
@@ -966,9 +957,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblOccupation.BackColor = System.Drawing.Color.Transparent;
             this.lblOccupation.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblOccupation.ForeColor = System.Drawing.Color.White;
-            this.lblOccupation.Location = new System.Drawing.Point(700, 456);
+            this.lblOccupation.Location = new System.Drawing.Point(622, 365);
             this.lblOccupation.Name = "lblOccupation";
-            this.lblOccupation.Size = new System.Drawing.Size(120, 28);
+            this.lblOccupation.Size = new System.Drawing.Size(101, 23);
             this.lblOccupation.TabIndex = 24;
             this.lblOccupation.Text = "Occupation";
             // 
@@ -977,9 +968,9 @@ namespace GestPipePowerPonit.Views.Profile
             this.lblOccupationValue.BackColor = System.Drawing.Color.Transparent;
             this.lblOccupationValue.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblOccupationValue.ForeColor = System.Drawing.Color.White;
-            this.lblOccupationValue.Location = new System.Drawing.Point(700, 486);
+            this.lblOccupationValue.Location = new System.Drawing.Point(622, 389);
             this.lblOccupationValue.Name = "lblOccupationValue";
-            this.lblOccupationValue.Size = new System.Drawing.Size(450, 40);
+            this.lblOccupationValue.Size = new System.Drawing.Size(400, 32);
             this.lblOccupationValue.TabIndex = 25;
             this.lblOccupationValue.Text = "-";
             this.lblOccupationValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1011,9 +1002,10 @@ namespace GestPipePowerPonit.Views.Profile
             "Administrative/Clerical",
             "Student",
             "Other (specify below)"});
-            this.cmbOccupation.Location = new System.Drawing.Point(700, 486);
+            this.cmbOccupation.Location = new System.Drawing.Point(622, 389);
+            this.cmbOccupation.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmbOccupation.Name = "cmbOccupation";
-            this.cmbOccupation.Size = new System.Drawing.Size(450, 36);
+            this.cmbOccupation.Size = new System.Drawing.Size(400, 36);
             this.cmbOccupation.StartIndex = 0;
             this.cmbOccupation.TabIndex = 26;
             this.cmbOccupation.Visible = false;
@@ -1026,12 +1018,12 @@ namespace GestPipePowerPonit.Views.Profile
             this.txtOccupationOther.DefaultText = "";
             this.txtOccupationOther.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
             this.txtOccupationOther.ForeColor = System.Drawing.Color.Black;
-            this.txtOccupationOther.Location = new System.Drawing.Point(700, 528);
-            this.txtOccupationOther.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.txtOccupationOther.Location = new System.Drawing.Point(622, 422);
+            this.txtOccupationOther.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtOccupationOther.Name = "txtOccupationOther";
             this.txtOccupationOther.PlaceholderText = "Please specify your occupation...";
             this.txtOccupationOther.SelectedText = "";
-            this.txtOccupationOther.Size = new System.Drawing.Size(450, 36);
+            this.txtOccupationOther.Size = new System.Drawing.Size(400, 29);
             this.txtOccupationOther.TabIndex = 27;
             this.txtOccupationOther.Visible = false;
             this.txtOccupationOther.TextChanged += new System.EventHandler(this.txtOccupationOther_TextChanged);
@@ -1042,9 +1034,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnChangePassword.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
             this.btnChangePassword.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnChangePassword.ForeColor = System.Drawing.Color.White;
-            this.btnChangePassword.Location = new System.Drawing.Point(79, 695);
+            this.btnChangePassword.Location = new System.Drawing.Point(70, 556);
+            this.btnChangePassword.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnChangePassword.Name = "btnChangePassword";
-            this.btnChangePassword.Size = new System.Drawing.Size(200, 50);
+            this.btnChangePassword.Size = new System.Drawing.Size(178, 40);
             this.btnChangePassword.TabIndex = 31;
             this.btnChangePassword.Text = "Change Password";
             this.btnChangePassword.Click += new System.EventHandler(this.btnChangePassword_Click);
@@ -1054,9 +1047,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.panelButtons.Controls.Add(this.btnEdit);
             this.panelButtons.Controls.Add(this.btnSave);
             this.panelButtons.Controls.Add(this.btnCancel);
-            this.panelButtons.Location = new System.Drawing.Point(849, 695);
+            this.panelButtons.Location = new System.Drawing.Point(755, 556);
+            this.panelButtons.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(300, 60);
+            this.panelButtons.Size = new System.Drawing.Size(267, 48);
             this.panelButtons.TabIndex = 32;
             // 
             // btnEdit
@@ -1065,9 +1059,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnEdit.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
-            this.btnEdit.Location = new System.Drawing.Point(150, 5);
+            this.btnEdit.Location = new System.Drawing.Point(133, 4);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(140, 50);
+            this.btnEdit.Size = new System.Drawing.Size(124, 40);
             this.btnEdit.TabIndex = 0;
             this.btnEdit.Text = "Edit";
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
@@ -1078,9 +1073,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnSave.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(150, 5);
+            this.btnSave.Location = new System.Drawing.Point(133, 4);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(140, 50);
+            this.btnSave.Size = new System.Drawing.Size(124, 40);
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Save";
             this.btnSave.Visible = false;
@@ -1092,9 +1088,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnCancel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(5, 5);
+            this.btnCancel.Location = new System.Drawing.Point(4, 4);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(140, 50);
+            this.btnCancel.Size = new System.Drawing.Size(124, 40);
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.Visible = false;
@@ -1107,26 +1104,27 @@ namespace GestPipePowerPonit.Views.Profile
             this.txtFullName.DefaultText = "";
             this.txtFullName.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtFullName.ForeColor = System.Drawing.Color.Black;
-            this.txtFullName.Location = new System.Drawing.Point(302, 57);
-            this.txtFullName.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.txtFullName.Location = new System.Drawing.Point(268, 46);
+            this.txtFullName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtFullName.Name = "txtFullName";
             this.txtFullName.PlaceholderText = "";
             this.txtFullName.SelectedText = "";
-            this.txtFullName.Size = new System.Drawing.Size(337, 40);
+            this.txtFullName.Size = new System.Drawing.Size(300, 32);
             this.txtFullName.TabIndex = 3;
             this.txtFullName.Visible = false;
             this.txtFullName.TextChanged += new System.EventHandler(this.txtFullName_TextChanged);
             // 
             // ProfileForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(1537, 960);
+            this.ClientSize = new System.Drawing.Size(1366, 768);
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.pnlSidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "ProfileForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GestPipe - Profile";
@@ -1156,7 +1154,6 @@ namespace GestPipePowerPonit.Views.Profile
         private System.Windows.Forms.PictureBox pictureBoxLogo;
         private Guna.UI2.WinForms.Guna2Button btnHome;
         private Guna.UI2.WinForms.Guna2Button btnGestureControl;
-        private Guna.UI2.WinForms.Guna2Button btnVersion;
         private Guna.UI2.WinForms.Guna2Button btnInstruction;
         private Guna.UI2.WinForms.Guna2Button btnCustomGesture;
         private Guna.UI2.WinForms.Guna2Button btnPresentation;

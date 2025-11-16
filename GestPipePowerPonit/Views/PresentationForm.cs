@@ -996,8 +996,8 @@ namespace GestPipePowerPonit
             {
                 //case "zoom_in": btnZoomInTop_Click(null, null); break;
                 //case "zoom_out": btnZoomOutTop_Click(null, null); break;
-                case "zoom_in": btnZoomInSlide_Click(null, null); break;
-                case "zoom_out": btnZoomOutSlide_Click(null, null); break;
+                case "zoom_in": btnZoomInTop_Click(null, null); break;
+                case "zoom_out": btnZoomOutTop_Click(null, null); break;
                 case "next_slide": btnNext_Click(null, null); break;
                 case "previous_slide": btnSlideShow_Click(null, null); break;
                 case "Slide_show": btnSlideShow_Click(null, null); break;
@@ -1146,30 +1146,42 @@ namespace GestPipePowerPonit
             // Gán lại text cho từng button từ Properties.Resources
             btnHome.Text = Properties.Resources.Btn_Home;
             btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
-            btnVersion.Text = Properties.Resources.Btn_Version;
             btnInstruction.Text = Properties.Resources.Btn_Instruction;
             lblPresentationFile.Text = Properties.Resources.Lbl_PresentiontationFile;
             // ... Gán cho các label/button khác tương tự
         }
         private async void UpdateCultureAndApply(string cultureCode)
         {
-            CultureManager.CurrentCultureCode = cultureCode;
-            var categories = await categoryService.GetCategoriesAsync();
-            cmbCategory.DataSource = null;
-            cmbCategory.DataSource = categories;
-            cmbCategory.DisplayMember = "DisplayName";
-            cmbCategory.ValueMember = "Id";
-            _apiClient.SetUserLanguageAsync(userId, cultureCode);
+            try {
+                CultureManager.CurrentCultureCode = cultureCode;
+                ResourceHelper.SetCulture(cultureCode, this);
+                var categories = await categoryService.GetCategoriesAsync();
+                cmbCategory.DataSource = null;
+                cmbCategory.DataSource = categories;
+                cmbCategory.DisplayMember = "DisplayName";
+                cmbCategory.ValueMember = "Id";
+                 await _apiClient.SetUserLanguageAsync(userId, cultureCode);
+                CustomMessageBox.ShowSuccess(
+                    Properties.Resources.Message_ChangeLanguageSuccess,
+                    Properties.Resources.Title_Success
+                );
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.ShowError(
+                    Properties.Resources.Message_ChangeLanguageFailed,
+                    Properties.Resources.Title_Error
+                );
+            }
+            
         }
         public void ApplyLanguage(string cultureCode)
         {
             ResourceHelper.SetCulture(cultureCode, this);
             btnHome.Text = Properties.Resources.Btn_Home;
             btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
-            btnVersion.Text = Properties.Resources.Btn_Version;
             btnInstruction.Text = Properties.Resources.Btn_Instruction;
             btnCustomGesture.Text = Properties.Resources.Btn_CustomGesture;
-            btnTrainingGesture.Text = Properties.Resources.Btn_Training;
             btnPresentation.Text = Properties.Resources.Btn_Present;
             lblPresentationFile.Text = Properties.Resources.Lbl_PresentiontationFile;
             lblOpenFile.Text = Properties.Resources.LblOpenFile;
@@ -1292,7 +1304,7 @@ namespace GestPipePowerPonit
             try
             {
                 // ✅ Cách 2: Truyền this (Form) thay vì _homeForm (HomeUser)
-                ProfileForm profileForm = new ProfileForm(userId, this);
+                ProfileForm profileForm = new ProfileForm(userId, _homeForm);
 
                 this.Hide();
 
@@ -1362,10 +1374,11 @@ namespace GestPipePowerPonit
             {
                 Debug.WriteLine($"Error cleaning up resources: {ex.Message}");
             }
+        }
 
         private void btnCustomGesture_Click(object sender, EventArgs e)
         {
-            FormUserGestureCustom uGestureForm = new FormUserGestureCustom(_homeForm);
+            ListRequestGestureForm uGestureForm = new ListRequestGestureForm(_homeForm);
             uGestureForm.Show();
             this.Hide();
 

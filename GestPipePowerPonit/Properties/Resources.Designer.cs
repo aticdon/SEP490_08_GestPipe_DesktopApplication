@@ -91,6 +91,15 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string Btn_Back {
+            get {
+                return ResourceManager.GetString("Btn_Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse File....
         /// </summary>
         public static string Btn_Browse {
@@ -145,6 +154,15 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Submit.
+        /// </summary>
+        public static string Btn_RequestGesture {
+            get {
+                return ResourceManager.GetString("Btn_RequestGesture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Slide Show.
         /// </summary>
         public static string Btn_SlideShow {
@@ -168,6 +186,33 @@ namespace GestPipePowerPonit.Properties {
         public static string Btn_Version {
             get {
                 return ResourceManager.GetString("Btn_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to    Default Gesture.
+        /// </summary>
+        public static string BtnDefaultGesture {
+            get {
+                return ResourceManager.GetString("BtnDefaultGesture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🚀 Start Request.
+        /// </summary>
+        public static string BtnStartRequest {
+            get {
+                return ResourceManager.GetString("BtnStartRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to     User Gesture.
+        /// </summary>
+        public static string BtnUserGesture {
+            get {
+                return ResourceManager.GetString("BtnUserGesture", resourceCulture);
             }
         }
         
@@ -247,7 +292,18 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🎯 Keep hands within frame, 40–60 cm from camera.
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap CustomCameraGray {
+            get {
+                object obj = ResourceManager.GetObject("CustomCameraGray", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🎯 Keep hands within frame, 40–60 cm 
+        ///from camera.
         /// </summary>
         public static string CustomGesture_Instruction_01 {
             get {
@@ -283,7 +339,8 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ⏱ Hold pose for 0.8–1.0 seconds for sample recording.
+        ///   Looks up a localized string similar to ⏱ Hold pose for 0.8–1.0 seconds for sample
+        ///recording.
         /// </summary>
         public static string CustomGesture_Instruction_05 {
             get {
@@ -301,7 +358,7 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Custom Gesture Instructions.
+        ///   Looks up a localized string similar to 📋 Custom Gesture Instructions.
         /// </summary>
         public static string CustomGesture_Title {
             get {
@@ -325,6 +382,16 @@ namespace GestPipePowerPonit.Properties {
         public static System.Drawing.Bitmap eye {
             get {
                 object obj = ResourceManager.GetObject("eye", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap eye_gray {
+            get {
+                object obj = ResourceManager.GetObject("eye_gray", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -672,6 +739,24 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This request to update gestures:.
+        /// </summary>
+        public static string lblDescriptionRequestPrefix {
+            get {
+                return ResourceManager.GetString("lblDescriptionRequestPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description Request.
+        /// </summary>
+        public static string lblDesRequest {
+            get {
+                return ResourceManager.GetString("lblDesRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direction.
         /// </summary>
         public static string LblDirection {
@@ -717,11 +802,47 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Request Gesture.
+        /// </summary>
+        public static string lblRequest {
+            get {
+                return ResourceManager.GetString("lblRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request Date.
+        /// </summary>
+        public static string lblRequestDate {
+            get {
+                return ResourceManager.GetString("lblRequestDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number Gesture.
+        /// </summary>
+        public static string lblRequestNumber {
+            get {
+                return ResourceManager.GetString("lblRequestNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Right hand.
         /// </summary>
         public static string LblRightHand {
             get {
                 return ResourceManager.GetString("LblRightHand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string lblStatus {
+            get {
+                return ResourceManager.GetString("lblStatus", resourceCulture);
             }
         }
         
@@ -741,6 +862,15 @@ namespace GestPipePowerPonit.Properties {
             get {
                 object obj = ResourceManager.GetObject("Left_to_right", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading list gesture....
+        /// </summary>
+        public static string List_Loading {
+            get {
+                return ResourceManager.GetString("List_Loading", resourceCulture);
             }
         }
         
@@ -1095,6 +1225,42 @@ namespace GestPipePowerPonit.Properties {
         public static string Reason_WrongDirection {
             get {
                 return ResourceManager.GetString("Reason_WrongDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while making the request..
+        /// </summary>
+        public static string RequestErrorDetail {
+            get {
+                return ResourceManager.GetString("RequestErrorDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request failed!.
+        /// </summary>
+        public static string RequestErrorTitle {
+            get {
+                return ResourceManager.GetString("RequestErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request will send to Admin.
+        /// </summary>
+        public static string RequestSuccessDetail {
+            get {
+                return ResourceManager.GetString("RequestSuccessDetail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request Successful!.
+        /// </summary>
+        public static string RequestSuccessTitle {
+            get {
+                return ResourceManager.GetString("RequestSuccessTitle", resourceCulture);
             }
         }
         

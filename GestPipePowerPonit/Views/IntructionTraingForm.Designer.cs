@@ -1,6 +1,6 @@
 ﻿namespace GestPipePowerPonit
 {
-    partial class FormInstructionTraining
+    partial class IntructionTraingForm
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -37,7 +37,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormInstructionTraining));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IntructionTraingForm));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.panelMain = new Guna.UI2.WinForms.Guna2Panel();
             this.lblTitleName = new System.Windows.Forms.Label();

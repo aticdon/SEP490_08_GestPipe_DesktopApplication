@@ -10,11 +10,13 @@ using System.Windows.Forms;
 
 namespace GestPipePowerPonit
 {
-    public partial class FormTrainingResult : Form
+    public partial class TraingResultForm : Form
     {
-        private FormUserGesture _userGestureForm;
+        //private FormUserGesture _userGestureForm;
+        private ListDefaultGestureForm _dfgestureForm;
 
-        public FormTrainingResult(string gestureName, string action, double accuracy, DateTime trainingDay, FormUserGesture userGestureForm)
+        //public FormTrainingResult(string gestureName, string action, double accuracy, DateTime trainingDay, FormUserGesture userGestureForm)
+        public TraingResultForm(string gestureName, string action, double accuracy, DateTime trainingDay, ListDefaultGestureForm dfgestureForm)
         {
             InitializeComponent();
             ApplyLanguage();
@@ -30,12 +32,13 @@ namespace GestPipePowerPonit
 
             // Thiết lập DialogResult là Unknown ban đầu
             this.DialogResult = DialogResult.None;
-            _userGestureForm = userGestureForm;
+            //_userGestureForm = userGestureForm;
+            _dfgestureForm = dfgestureForm;
         }
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
-            _userGestureForm.Show();
+            _dfgestureForm.Show();
         }
         private void ApplyLanguage()
         {

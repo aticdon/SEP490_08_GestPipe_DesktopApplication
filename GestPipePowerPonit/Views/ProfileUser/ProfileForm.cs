@@ -23,9 +23,9 @@ namespace GestPipePowerPonit.Views.Profile
         private UserResponseDto _currentUser;
         private bool _isEditMode = false;
         private HomeUser _homeForm;
-        private string _currentCultureCode = "en-US";
+        private string _currentCultureCode;
 
-        public ProfileForm(string userId, Form parentForm)
+        public ProfileForm(string userId, HomeUser homeForm)
         {
             InitializeComponent();
             this.Load += ProfileForm_Load;
@@ -34,16 +34,16 @@ namespace GestPipePowerPonit.Views.Profile
             _profileService = new ProfileService();
             _apiClient = new ApiClient("https://localhost:7219");
             _userId = userId;
-            _parentForm = parentForm;
+            _homeForm = homeForm;
 
             InitializeSidebarEvents();
         }
 
         private void InitializeSidebarEvents()
         {
-            btnHome.Click += BtnHome_Click;
-            btnGestureControl.Click += BtnGestureControl_Click;
-            btnPresentation.Click += BtnPresentation_Click;
+            //btnHome.Click += BtnHome_Click;
+            //btnGestureControl.Click += BtnGestureControl_Click;
+            //btnPresentation.Click += BtnPresentation_Click;
             btnCustomGesture.Click += BtnCustomGesture_Click;
             btnLanguageEN.Click += async (s, e) => await ChangeLanguageAsync("en-US");
             btnLanguageVN.Click += async (s, e) => await ChangeLanguageAsync("vi-VN");
@@ -53,24 +53,25 @@ namespace GestPipePowerPonit.Views.Profile
 
             CultureManager.CultureChanged += (s, e) =>
             {
-                ResourceHelper.SetCulture(CultureManager.CurrentCultureCode, this);
-                ApplyLanguage();
+                _currentCultureCode = CultureManager.CurrentCultureCode; // cập nhật lại code
+                ResourceHelper.SetCulture(_currentCultureCode, this);    // set lại UI
+                ApplyLanguage();                                         // gán lại text toàn bộ UI
             };
         }
 
         private void BtnHome_Click(object sender, EventArgs e)
         {
             _homeForm?.Show();
-            this.Close();
+            this.Hide();
         }
 
         private void BtnGestureControl_Click(object sender, EventArgs e)
         {
             try
             {
-                FormDefaultGesture defaultGesture = new FormDefaultGesture(_homeForm);
+                ListDefaultGestureForm defaultGesture = new ListDefaultGestureForm(_homeForm);
                 defaultGesture.Show();
-                this.Close();
+                this.Hide();
             }
             catch (Exception ex)
             {
@@ -82,9 +83,9 @@ namespace GestPipePowerPonit.Views.Profile
         {
             try
             {
-                Form1 form1 = new Form1(_homeForm);
+                PresentationForm form1 = new PresentationForm(_homeForm);
                 form1.Show();
-                this.Close();
+                this.Hide();
             }
             catch (Exception ex)
             {
@@ -98,7 +99,7 @@ namespace GestPipePowerPonit.Views.Profile
             {
                 FormUserGesture usergestureForm = new FormUserGesture(_homeForm);
                 usergestureForm.Show();
-                this.Close();
+                this.Hide();
             }
             catch (Exception ex)
             {
@@ -120,12 +121,12 @@ namespace GestPipePowerPonit.Views.Profile
             {
                 var user = await _apiClient.GetUserAsync(_userId);
 
-                _currentCultureCode = (user != null && !string.IsNullOrWhiteSpace(user.Language))
-                    ? user.Language
+                _currentCultureCode = (user != null && !string.IsNullOrWhiteSpace(user.UiLanguage))
+                    ? user.UiLanguage
                     : "en-US";
 
                 CultureManager.CurrentCultureCode = _currentCultureCode;
-                ResourceHelper.SetCulture(_currentCultureCode, this);
+                //ResourceHelper.SetCulture(_currentCultureCode, this);
             }
             catch (Exception ex)
             {
@@ -137,13 +138,10 @@ namespace GestPipePowerPonit.Views.Profile
         {
             try
             {
+                CultureManager.CurrentCultureCode = cultureCode;
+                ResourceHelper.SetCulture(cultureCode, this);
+
                 await _apiClient.SetUserLanguageAsync(_userId, cultureCode);
-
-                _currentCultureCode = cultureCode;
-                CultureManager.CurrentCultureCode = _currentCultureCode;
-                ResourceHelper.SetCulture(_currentCultureCode, this);
-
-                ApplyLanguage();
 
                 CustomMessageBox.ShowSuccess(
                     Properties.Resources.Message_ChangeLanguageSuccess,
@@ -153,7 +151,7 @@ namespace GestPipePowerPonit.Views.Profile
             catch (Exception ex)
             {
                 CustomMessageBox.ShowError(
-                    $"{Properties.Resources.Message_ChangeLanguageFailed}: {ex.Message}",
+                    Properties.Resources.Message_ChangeLanguageFailed,
                     Properties.Resources.Title_Error
                 );
             }
@@ -163,10 +161,10 @@ namespace GestPipePowerPonit.Views.Profile
         {
             try
             {
+                ResourceHelper.SetCulture(_currentCultureCode, this);
                 // Sidebar
                 btnHome.Text = Properties.Resources.Btn_Home;
                 btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
-                btnVersion.Text = Properties.Resources.Btn_Version;
                 btnInstruction.Text = Properties.Resources.Btn_Instruction;
                 btnPresentation.Text = Properties.Resources.Btn_Present;
                 btnCustomGesture.Text = Properties.Resources.Btn_CustomGesture;
