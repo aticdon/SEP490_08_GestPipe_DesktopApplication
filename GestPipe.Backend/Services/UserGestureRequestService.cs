@@ -25,7 +25,7 @@ namespace GestPipe.Backend.Services
                 .Find(x => x.UserId == userId
                     && x.Status != null
                     && x.Status.ContainsKey("main")
-                    && x.Status["main"] == "pending")
+                    && x.Status["main"] == "customed")
                 .ToListAsync();
         }
 
@@ -33,20 +33,24 @@ namespace GestPipe.Backend.Services
         {
             return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync();
         }
-        public async Task<UserGestureRequest> GetLatestRequestByConfigIdAsync(string configId)
+        public async Task<UserGestureRequest> GetLatestRequestByConfigIdAsync(string configId, string userId)
         {
+            //return await _collection
+            //    .Find(x => x.UserGestureConfigId == configId && x.UserId = userId)
+            //    .SortByDescending(x => x.CreatedAt)
+            //    .FirstOrDefaultAsync();
             return await _collection
-                .Find(x => x.UserGestureConfigId == configId)
+                .Find(x => x.UserGestureConfigId == configId && x.UserId == userId)
                 .SortByDescending(x => x.CreatedAt)
                 .FirstOrDefaultAsync();
-        }
+                }
 
         public bool SetPendingToTraining(string requestId)
         {
             var filter = Builders<UserGestureRequest>.Filter.Eq(r => r.UserGestureConfigId, requestId);
             var update = Builders<UserGestureRequest>.Update
-                .Set("status.en", "Training")
-                .Set("status.vi", "Huấn luyện");
+                .Set("status.en", "Submit")
+                .Set("status.vi", "Gửi");
             var res = _collection.UpdateOne(filter, update);
             return res.ModifiedCount > 0;
         }

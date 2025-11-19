@@ -493,6 +493,16 @@ namespace GestPipePowerPonit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap icon_cameraUpload {
+            get {
+                object obj = ResourceManager.GetObject("icon_cameraUpload", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap icon_down_arrow {
             get {
                 object obj = ResourceManager.GetObject("icon_down_arrow", resourceCulture);
@@ -1298,6 +1308,16 @@ namespace GestPipePowerPonit.Properties {
         public static System.Drawing.Bitmap ringImg {
             get {
                 object obj = ResourceManager.GetObject("ringImg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap staticImg {
+            get {
+                object obj = ResourceManager.GetObject("staticImg", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

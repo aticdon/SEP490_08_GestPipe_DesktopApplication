@@ -15,17 +15,18 @@ namespace GestPipePowerPonit.Views
     {
         private string userId;
         private List<UserGestureRequestDto> pendingRequests = new List<UserGestureRequestDto>();
+        private bool isShowingUserGesture;
 
-        public RequestGestureForm(string userId)
+        public RequestGestureForm(string userId, bool isShowingUserGesture = false)
         {
             InitializeComponent();
             this.userId = userId;
+            this.isShowingUserGesture = isShowingUserGesture;
             this.Load += RequestGestureForm_Load;
             ApplyLanguage();
 
-            // Gán sự kiện cho nút Guna.UI2
-            //this.btnStartRequest.Click += new System.EventHandler(this.btnStartRequest_Click);
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            this.isShowingUserGesture = isShowingUserGesture;
         }
 
         private async void RequestGestureForm_Load(object sender, EventArgs e)
@@ -34,6 +35,7 @@ namespace GestPipePowerPonit.Views
 
             //var configService = new UserGestureConfigService();
             var defaultGestureService = new DefaultGestureService();
+            var userGestureService = new UserGestureConfigService();
             var requestService = new UserGestureRequestService();
             var userService = new UserService();
             var profileService = new ProfileService();
@@ -58,40 +60,48 @@ namespace GestPipePowerPonit.Views
                 else
                 {
                     Console.WriteLine($"⚠️ [FormRequestGestures] Failed to load profile: {profileResponse.Message}");
-                    // Fallback: Có thể lấy từ UserService nếu có method GetUser
                     username = $"User {userId.Substring(0, Math.Min(8, userId.Length))}";
                 }
 
-                var configs = await defaultGestureService.GetDefaultGesturesAsync();
-                List<string> gestureNames = new List<string>();
 
-                foreach (var config in configs)
+                List<string> gestureNames = new List<string>();
+                if (isShowingUserGesture)
                 {
-                    var request = await requestService.GetLatestRequestByConfigAsync(config.Id);
-                    if (request != null && request.Status != null &&
-                       (request.Status.ContainsKey("en") && request.Status["en"] == "Pending" ||
-                        request.Status.ContainsKey("vi") && request.Status["vi"].Contains("Đang xử")))
+                    var userGesture = await userGestureService.GetUserGesturesAsync(userId);
+                    foreach (var config in userGesture)
                     {
-                        gestureNames.Add(I18nHelper.GetLocalized(config.Name));
-                        pendingRequests.Add(request);
+                        var request = await requestService.GetLatestRequestByConfigAsync(config.Id, userId);
+                        if (request != null && request.Status != null &&
+                           (request.Status.ContainsKey("en") && request.Status["en"] == "Customed" ||
+                            request.Status.ContainsKey("vi") && request.Status["vi"].Contains("Đã chỉnh")))
+                        {
+                            gestureNames.Add(I18nHelper.GetLocalized(config.Name));
+                            pendingRequests.Add(request);
+                        }
                     }
                 }
+                else
+                {
+                    var configs = await defaultGestureService.GetDefaultGesturesAsync();
+                    foreach (var config in configs)
+                    {
+                        var request = await requestService.GetLatestRequestByConfigAsync(config.Id, userId);
+                        if (request != null && request.Status != null &&
+                           (request.Status.ContainsKey("en") && request.Status["en"] == "Customed" ||
+                            request.Status.ContainsKey("vi") && request.Status["vi"].Contains("Đã chỉnh")))
+                        {
+                            gestureNames.Add(I18nHelper.GetLocalized(config.Name));
+                            pendingRequests.Add(request);
+                        }
+                    }
+                }
+                    
                 int actualRequestCount = pendingRequests.Count;
 
                 if (pendingRequests.Count > 0)
                 {
                     var firstRequest = pendingRequests[0];
-                    //string descriptionList = string.Join(", ", gestureNames);
                     string currentLang = GestPipePowerPonit.CultureManager.CurrentCultureCode;
-                    //string descriptionPrefix = currentLang == "vi"
-                    //    ? "Yêu cầu cập nhật các cử chỉ:\n"
-                    //    : "This request to update gestures:\n";
-                    //string descriptionPrefix = Properties.Resources.lblDescriptionRequestPrefix;
-                    //string descriptionPrefix = Properties.Resources.lblDescriptionRequestPrefix;
-                    //string descriptionList = string.Join("\n- ", gestureNames);
-                    //string allDescriptions = $"{descriptionPrefix}\n- {descriptionList}";
-
-                    //string allDescriptions = descriptionPrefix + descriptionList;
                     string descriptionPrefix = Properties.Resources.lblDescriptionRequestPrefix;
                     var gestures = gestureNames; // List<string> các tên cử chỉ
 
@@ -114,31 +124,26 @@ namespace GestPipePowerPonit.Views
                     string descriptionBody = string.Join("<br>", lines);
 
                     lblUserValue.Text = username;
-                    //lblDescriptionValue.Text = allDescriptions;
-                    //lblDescriptionValue.Text = allDescriptions.Replace("\n", "<br>");
                     lblDescriptionValue.Text = descriptionPrefix + "<br>" + descriptionBody;
                     lblRequestDateValue.Text = firstRequest.CreatedAt.ToString("dd-MM-yyyy");
 
-                    // Hiển thị số request thực tế từ API, không phải số gesture pending
                     lblRequestNumberValue.Text = actualRequestCount.ToString();
 
                     string status = GetLocalizedStatus(firstRequest.Status);
                     lblStatusValue.Text = status;
 
                     btnStartRequest.Enabled = true;
-                    //btnStartRequest.FillColor = System.Drawing.Color.FromArgb(0, 188, 212);
-                    //btnStartRequest.Text = "🚀 Start Training";
                 }
                 else
                 {
                     lblUserValue.Text = username;
-                    lblDescriptionValue.Text = "No pending gesture requests found.";
+                    lblDescriptionValue.Text = I18nHelper.GetString("No custom gesture request found.", "Không tìm thấy cử chỉ tùy chỉnh");
                     lblRequestDateValue.Text = DateTime.Now.ToString("dd-MM-yyyy");
                     lblRequestNumberValue.Text = actualRequestCount.ToString();
                     lblStatusValue.Text = "N/A";
                     btnStartRequest.Enabled = false;
                     btnStartRequest.FillColor = System.Drawing.Color.Gray;
-                    btnStartRequest.Text = "No Training Available";
+                    btnStartRequest.Text = I18nHelper.GetString("Error request", "Lỗi gửi");
                 }
             }
             catch (Exception ex)

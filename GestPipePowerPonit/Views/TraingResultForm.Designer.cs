@@ -133,7 +133,7 @@
             this.lblValueAction.ForeColor = System.Drawing.Color.White;
             this.lblValueAction.Location = new System.Drawing.Point(353, 180);
             this.lblValueAction.Name = "lblValueAction";
-            this.lblValueAction.Size = new System.Drawing.Size(244, 23);
+            this.lblValueAction.Size = new System.Drawing.Size(244, 60);
             this.lblValueAction.TabIndex = 4;
             this.lblValueAction.Text = "next_slide";
             // 
@@ -155,7 +155,7 @@
             this.lblValueAccuracy.ForeColor = System.Drawing.Color.Cyan;
             this.lblValueAccuracy.Location = new System.Drawing.Point(353, 240);
             this.lblValueAccuracy.Name = "lblValueAccuracy";
-            this.lblValueAccuracy.Size = new System.Drawing.Size(247, 23);
+            this.lblValueAccuracy.Size = new System.Drawing.Size(247, 60);
             this.lblValueAccuracy.TabIndex = 6;
             this.lblValueAccuracy.Text = "96.8%";
             // 
@@ -194,7 +194,7 @@
             this.btnClose.Text = "Close";
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // FormTrainingResult
+            // TraingResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -203,7 +203,7 @@
             this.Controls.Add(this.pnlMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormTrainingResult";
+            this.Name = "TraingResultForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormTrainingResult";
             this.pnlMain.ResumeLayout(false);

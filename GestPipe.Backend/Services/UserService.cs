@@ -62,5 +62,15 @@ namespace GestPipe.Backend.Services
             var res = _users.UpdateOne(filter, update);
             return res.ModifiedCount > 0;
         }
+        public bool SetUseCustomModel(string userId, bool useCustomModel)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+                return false;
+
+            var filter = Builders<User>.Filter.Eq(u => u.Id, userId);
+            var update = Builders<User>.Update.Set(u => u.UseCustomModel, useCustomModel);
+            var res = _users.UpdateOne(filter, update);
+            return res.ModifiedCount > 0;
+        }
     }
 }

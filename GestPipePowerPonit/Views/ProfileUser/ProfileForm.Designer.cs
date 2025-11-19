@@ -44,13 +44,14 @@ namespace GestPipePowerPonit.Views.Profile
             this.panelMain = new Guna.UI2.WinForms.Guna2GradientPanel();
             this.lblLoading = new System.Windows.Forms.Label();
             this.panelContent = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2CirclePictureBox1 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.panelBanner = new Guna.UI2.WinForms.Guna2Panel();
             this.lblBannerIcon = new System.Windows.Forms.Label();
             this.lblBannerMessage = new System.Windows.Forms.Label();
             this.btnBannerAdd = new Guna.UI2.WinForms.Guna2Button();
             this.btnBannerClose = new Guna.UI2.WinForms.Guna2Button();
             this.picAvatar = new Guna.UI2.WinForms.Guna2CirclePictureBox();
-            this.lblFullNameValue = new System.Windows.Forms.Label();
+            this.btnChangeAvatar = new System.Windows.Forms.Label();
             this.lblCreateDate = new System.Windows.Forms.Label();
             this.lblFullNameError = new System.Windows.Forms.Label();
             this.lblEmail = new System.Windows.Forms.Label();
@@ -93,6 +94,7 @@ namespace GestPipePowerPonit.Views.Profile
             ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).BeginInit();
             this.panelMain.SuspendLayout();
             this.panelContent.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).BeginInit();
             this.panelBanner.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picAvatar)).BeginInit();
             this.panelButtons.SuspendLayout();
@@ -115,7 +117,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.pnlSidebar.Controls.Add(this.pictureBoxLogo);
             this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
-            this.pnlSidebar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlSidebar.Margin = new System.Windows.Forms.Padding(4);
             this.pnlSidebar.Name = "pnlSidebar";
             this.pnlSidebar.Size = new System.Drawing.Size(267, 768);
             this.pnlSidebar.TabIndex = 0;
@@ -134,7 +136,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnPresentation.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnPresentation.ImageSize = new System.Drawing.Size(24, 24);
             this.btnPresentation.Location = new System.Drawing.Point(16, 333);
-            this.btnPresentation.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPresentation.Margin = new System.Windows.Forms.Padding(4);
             this.btnPresentation.Name = "btnPresentation";
             this.btnPresentation.Size = new System.Drawing.Size(233, 55);
             this.btnPresentation.TabIndex = 10;
@@ -152,11 +154,11 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnCustomGesture.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.btnCustomGesture.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnCustomGesture.ForeColor = System.Drawing.Color.White;
-            this.btnCustomGesture.Image = global::GestPipePowerPonit.Properties.Resources.icon_add;
+            this.btnCustomGesture.Image = global::GestPipePowerPonit.Properties.Resources.CustomCamera;
             this.btnCustomGesture.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnCustomGesture.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnCustomGesture.Location = new System.Drawing.Point(16, 269);
-            this.btnCustomGesture.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCustomGesture.Location = new System.Drawing.Point(16, 263);
+            this.btnCustomGesture.Margin = new System.Windows.Forms.Padding(4);
             this.btnCustomGesture.Name = "btnCustomGesture";
             this.btnCustomGesture.Size = new System.Drawing.Size(233, 55);
             this.btnCustomGesture.TabIndex = 6;
@@ -170,7 +172,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.pnlFooter.Controls.Add(this.btnLanguageVN);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlFooter.Location = new System.Drawing.Point(0, 706);
-            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4);
             this.pnlFooter.Name = "pnlFooter";
             this.pnlFooter.Size = new System.Drawing.Size(267, 62);
             this.pnlFooter.TabIndex = 5;
@@ -188,7 +190,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnLanguageEN.Image = global::GestPipePowerPonit.Properties.Resources.English;
             this.btnLanguageEN.ImageSize = new System.Drawing.Size(24, 16);
             this.btnLanguageEN.Location = new System.Drawing.Point(71, 12);
-            this.btnLanguageEN.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnLanguageEN.Margin = new System.Windows.Forms.Padding(4);
             this.btnLanguageEN.Name = "btnLanguageEN";
             this.btnLanguageEN.Size = new System.Drawing.Size(47, 37);
             this.btnLanguageEN.TabIndex = 1;
@@ -206,7 +208,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnLanguageVN.Image = global::GestPipePowerPonit.Properties.Resources.Vietnamese;
             this.btnLanguageVN.ImageSize = new System.Drawing.Size(24, 16);
             this.btnLanguageVN.Location = new System.Drawing.Point(16, 12);
-            this.btnLanguageVN.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnLanguageVN.Margin = new System.Windows.Forms.Padding(4);
             this.btnLanguageVN.Name = "btnLanguageVN";
             this.btnLanguageVN.Size = new System.Drawing.Size(47, 37);
             this.btnLanguageVN.TabIndex = 0;
@@ -225,7 +227,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnInstruction.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnInstruction.ImageSize = new System.Drawing.Size(24, 24);
             this.btnInstruction.Location = new System.Drawing.Point(16, 403);
-            this.btnInstruction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnInstruction.Margin = new System.Windows.Forms.Padding(4);
             this.btnInstruction.Name = "btnInstruction";
             this.btnInstruction.Size = new System.Drawing.Size(233, 55);
             this.btnInstruction.TabIndex = 4;
@@ -246,7 +248,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnGestureControl.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnGestureControl.ImageSize = new System.Drawing.Size(24, 24);
             this.btnGestureControl.Location = new System.Drawing.Point(16, 193);
-            this.btnGestureControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGestureControl.Margin = new System.Windows.Forms.Padding(4);
             this.btnGestureControl.Name = "btnGestureControl";
             this.btnGestureControl.Size = new System.Drawing.Size(233, 55);
             this.btnGestureControl.TabIndex = 2;
@@ -268,7 +270,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnHome.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnHome.ImageSize = new System.Drawing.Size(24, 24);
             this.btnHome.Location = new System.Drawing.Point(16, 123);
-            this.btnHome.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnHome.Margin = new System.Windows.Forms.Padding(4);
             this.btnHome.Name = "btnHome";
             this.btnHome.Size = new System.Drawing.Size(233, 55);
             this.btnHome.TabIndex = 1;
@@ -280,7 +282,7 @@ namespace GestPipePowerPonit.Views.Profile
             // 
             this.pictureBoxLogo.Image = global::GestPipePowerPonit.Properties.Resources.Logo;
             this.pictureBoxLogo.Location = new System.Drawing.Point(16, 15);
-            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
             this.pictureBoxLogo.Size = new System.Drawing.Size(233, 74);
             this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -345,7 +347,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnLogout.Image = global::GestPipePowerPonit.Properties.Resources.icon_logout;
             this.btnLogout.ImageRotate = 0F;
             this.btnLogout.Location = new System.Drawing.Point(1027, 48);
-            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             this.btnLogout.Size = new System.Drawing.Size(47, 43);
@@ -439,9 +441,10 @@ namespace GestPipePowerPonit.Views.Profile
             // 
             this.panelContent.AutoScroll = true;
             this.panelContent.BackColor = System.Drawing.Color.Transparent;
+            this.panelContent.Controls.Add(this.guna2CirclePictureBox1);
             this.panelContent.Controls.Add(this.panelBanner);
             this.panelContent.Controls.Add(this.picAvatar);
-            this.panelContent.Controls.Add(this.lblFullNameValue);
+            this.panelContent.Controls.Add(this.btnChangeAvatar);
             this.panelContent.Controls.Add(this.lblCreateDate);
             this.panelContent.Controls.Add(this.lblFullNameError);
             this.panelContent.Controls.Add(this.lblEmail);
@@ -479,6 +482,23 @@ namespace GestPipePowerPonit.Views.Profile
             this.panelContent.Name = "panelContent";
             this.panelContent.Size = new System.Drawing.Size(1099, 648);
             this.panelContent.TabIndex = 1;
+            // 
+            // guna2CirclePictureBox1
+            // 
+            this.guna2CirclePictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2CirclePictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.guna2CirclePictureBox1.FillColor = System.Drawing.Color.Transparent;
+            this.guna2CirclePictureBox1.Image = global::GestPipePowerPonit.Properties.Resources.icon_cameraUpload;
+            this.guna2CirclePictureBox1.ImageRotate = 0F;
+            this.guna2CirclePictureBox1.Location = new System.Drawing.Point(213, 54);
+            this.guna2CirclePictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2CirclePictureBox1.Name = "guna2CirclePictureBox1";
+            this.guna2CirclePictureBox1.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.guna2CirclePictureBox1.Size = new System.Drawing.Size(29, 28);
+            this.guna2CirclePictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.guna2CirclePictureBox1.TabIndex = 9;
+            this.guna2CirclePictureBox1.TabStop = false;
+            this.guna2CirclePictureBox1.Click += new System.EventHandler(this.btnChangeAvatar_Click);
             // 
             // panelBanner
             // 
@@ -569,17 +589,17 @@ namespace GestPipePowerPonit.Views.Profile
             this.picAvatar.TabIndex = 0;
             this.picAvatar.TabStop = false;
             // 
-            // lblFullNameValue
+            // btnChangeAvatar
             // 
-            this.lblFullNameValue.BackColor = System.Drawing.Color.Transparent;
-            this.lblFullNameValue.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblFullNameValue.ForeColor = System.Drawing.Color.White;
-            this.lblFullNameValue.Location = new System.Drawing.Point(225, 46);
-            this.lblFullNameValue.Name = "lblFullNameValue";
-            this.lblFullNameValue.Size = new System.Drawing.Size(659, 36);
-            this.lblFullNameValue.TabIndex = 1;
-            this.lblFullNameValue.Text = "User";
-            this.lblFullNameValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnChangeAvatar.BackColor = System.Drawing.Color.Transparent;
+            this.btnChangeAvatar.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.btnChangeAvatar.ForeColor = System.Drawing.Color.White;
+            this.btnChangeAvatar.Location = new System.Drawing.Point(249, 46);
+            this.btnChangeAvatar.Name = "btnChangeAvatar";
+            this.btnChangeAvatar.Size = new System.Drawing.Size(659, 36);
+            this.btnChangeAvatar.TabIndex = 1;
+            this.btnChangeAvatar.Text = "User";
+            this.btnChangeAvatar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblCreateDate
             // 
@@ -1139,6 +1159,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.panelMain.PerformLayout();
             this.panelContent.ResumeLayout(false);
             this.panelContent.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).EndInit();
             this.panelBanner.ResumeLayout(false);
             this.panelBanner.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picAvatar)).EndInit();
@@ -1186,7 +1207,7 @@ namespace GestPipePowerPonit.Views.Profile
         private Guna.UI2.WinForms.Guna2Button btnBannerClose;
 
         // Value labels (Read-only display)
-        private System.Windows.Forms.Label lblFullNameValue;
+        private System.Windows.Forms.Label btnChangeAvatar;
         private System.Windows.Forms.Label lblEmailValue;
         private System.Windows.Forms.Label lblPhoneValue;
         private System.Windows.Forms.Label lblGenderValue;
@@ -1224,5 +1245,6 @@ namespace GestPipePowerPonit.Views.Profile
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox2;
         private System.Windows.Forms.Label lblWelcome;
         private System.Windows.Forms.Label lblSubtitle;
+        private Guna.UI2.WinForms.Guna2CirclePictureBox guna2CirclePictureBox1;
     }
 }

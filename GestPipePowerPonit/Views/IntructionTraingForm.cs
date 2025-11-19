@@ -22,70 +22,6 @@ namespace GestPipePowerPonit
         private ListDefaultGestureForm dfGestureForm;
         private bool isUserGesture;
         public GestureDetailsDto GestureDetail { get; set; }
-        //public FormInstructionTraining(int[] fingers, Bitmap arrowImg, string gestureName, string gestureAction, string gestureType, string direction, FormUserGesture parentForm)
-        //public FormInstructionTraining(int[] fingers, Bitmap arrowImg, string gestureName, string gestureAction, string gestureType, string direction, FormDefaultGesture parentForm)
-        //{
-        //    InitializeComponent();
-        //    ApplyLanguage();
-        //    this.gestureAction = gestureAction;
-        //    this.gestureName = gestureName;
-        //    this.gestureType = gestureType;
-        //    this.dfGestureForm = parentForm;
-
-        //    // 🐛 Sửa lỗi 1: Đổi lblDirectionValue -> lblValueDirection
-        //    lblValueDirection.Text = direction;
-        //    lblValueName.Text = gestureName;
-        //    lblValueType.Text = gestureType;
-
-        //    string noteText = "";
-        //    if (gestureType.ToLower() == "dynamic")
-        //    {
-        //        noteText = "Close the left hand to start the gesture. " + Environment.NewLine +
-        //            "The right hand moves as required."+ Environment.NewLine
-        //            +"Open the left hand to end the movement.";
-        //    }
-        //    else if (gestureType.ToLower() == "động")
-        //    {
-        //        noteText = "Hãy nắm chặt tay trái để bắt đầu động tác." + Environment.NewLine +
-        //            "Tay phải giữ nguyên vị trí trong 1 giây." + Environment.NewLine +
-        //            "Mở tay trái ra để kết thúc động tác.";
-        //    }
-        //    else if (gestureType.ToLower() == "static")
-        //    {
-        //        noteText = "Close the left hand to start the gesture." + Environment.NewLine +
-        //            "The right hand remains still for 1 second." + Environment.NewLine +
-        //            "Open the left hand to end the movement.";
-        //    }
-        //    else if (gestureType.ToLower() == "tĩnh")
-        //    {
-        //        noteText = "Hãy nắm chặt tay trái để bắt đầu động tác." + Environment.NewLine+
-        //            "Tay phải giữ nguyên vị trí trong 1 giây." + Environment.NewLine+
-        //            "Mở tay trái ra để kết thúc động tác.";
-        //    }
-        //    else
-        //    {
-        //        noteText = "N/A or Unknown gesture type.";
-        //    }
-
-        //    // Gán Lưu ý vào Label
-        //    lblValueNote.Text = noteText;
-
-        //    // Load ảnh từ resource (đổi tên cho đúng nếu cần)
-        //    leftClenchedImg = Properties.Resources.clenchLeftImg;
-        //    rightClenchedImg = Properties.Resources.clenchedImg;
-        //    rightFingerImgs = new Bitmap[] {
-        //        Properties.Resources.thumbImg,
-        //        Properties.Resources.indexImg,
-        //        Properties.Resources.middleImg,
-        //        Properties.Resources.ringImg,
-        //        Properties.Resources.pinkyImg
-        //    };
-        //    //StartPythonProcess();
-        //    ShowInstruction(fingers, arrowImg);
-        //    // ShowInstructionTable(fingers); // Hàm này không còn dùng khi bỏ bảng
-
-        //}
-
         public IntructionTraingForm(int[] fingers, Bitmap arrowImg, string gestureName,
         string gestureAction, string gestureType, string direction,
         ListDefaultGestureForm parentForm, bool isUserGesture = false)
@@ -296,29 +232,7 @@ namespace GestPipePowerPonit
             }
             pictureBoxHandLayer.Image = layered;
         }
-        //private void btnTraining_Click(object sender, EventArgs e)
-        //{
-        //    var detail = this.GestureDetail;
-        //    string userId = "68fa3209582c17a482c5b11e";
-        //    var homeForm = new HomeUser(userId);
-        //    var trainForm = new TrainingDefaultGestureForm(
-        //        homeForm, 
-        //        dfGestureForm,
-        //        detail.PoseLabel,
-        //        detail.VectorData,
-        //        this.gestureName);
-        //    trainForm.StartTrainingWithAction(this.gestureAction);
-        //    trainForm.Show();
 
-        //    // Đóng form hướng dẫn hiện tại
-        //    this.Close();
-
-        //    // Đóng form FormUserGesture nếu còn mở, dùng tham chiếu vừa lưu
-        //    //if (formUserGesture != null && !formUserGesture.IsDisposed)
-        //    //    formUserGesture.Hide();
-        //    if (dfGestureForm != null && !dfGestureForm.IsDisposed)
-        //        dfGestureForm.Hide();
-        //}
         private void btnTraining_Click(object sender, EventArgs e)
         {
             var detail = this.GestureDetail;

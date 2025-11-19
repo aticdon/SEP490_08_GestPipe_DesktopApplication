@@ -172,10 +172,6 @@ namespace GestPipePowerPonit
         {
             AppSettings.ExitAll();
         }
-
-        // ✅ LOGOUT BUTTON IMPLEMENTATION - FIXED
-        // ✅ LOGOUT BUTTON IMPLEMENTATION - Test Case 1
-        // ✅ LOGOUT BUTTON IMPLEMENTATION - FIXED
         private async void btnLogout_Click(object sender, EventArgs e)
         {
             try
@@ -266,10 +262,10 @@ namespace GestPipePowerPonit
 
                 profileForm.Show();
 
-                profileForm.FormClosed += (s, args) =>
-                {
-                    this.Show();
-                };
+                //profileForm.FormClosed += (s, args) =>
+                //{
+                //    this.Show();
+                //};
             }
             catch (Exception ex)
             {

@@ -275,6 +275,7 @@
     <Compile Include="Models\DTOs\ProfileResponseDto.cs" />
     <Compile Include="Models\DTOs\RegisterDto.cs" />
     <Compile Include="Models\DTOs\ResetPasswordDto.cs" />
+    <Compile Include="Models\DTOs\UpdateAvatarDto.cs" />
     <Compile Include="Models\DTOs\UpdateProfileDto.cs" />
     <Compile Include="Models\DTOs\UserResponseDto.cs" />
     <Compile Include="Models\DTOs\UserProfileDto.cs" />

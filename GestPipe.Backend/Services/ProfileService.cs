@@ -167,5 +167,48 @@ namespace GestPipe.Backend.Services
                 return new AuthResponseDto { Success = false, Message = "Error changing password." };
             }
         }
+        // ✅ THÊM METHOD UPDATE AVATAR
+        public async Task<ProfileResponseDto> UpdateAvatarAsync(string userId, string avatarUrl)
+        {
+            try
+            {
+                if (!ObjectId.TryParse(userId, out _))
+                    return new ProfileResponseDto { Success = false, Message = "Invalid user ID." };
+
+                if (string.IsNullOrWhiteSpace(avatarUrl))
+                    return new ProfileResponseDto { Success = false, Message = "Avatar URL is required." };
+
+                var user = await _usersCollection.Find(u => u.Id == userId).FirstOrDefaultAsync();
+                if (user == null)
+                    return new ProfileResponseDto { Success = false, Message = "User not found." };
+
+                // ✅ CHỈ CẬP NHẬT AVATAR
+                user.AvatarUrl = avatarUrl;
+                await _usersCollection.ReplaceOneAsync(u => u.Id == userId, user);
+
+                _logger.LogInformation("✅ Avatar updated successfully: {UserId} → {AvatarUrl}", userId, avatarUrl);
+
+                // ✅ Lấy lại profile để trả về
+                var profile = await _profilesCollection.Find(p => p.UserId == userId).FirstOrDefaultAsync();
+
+                return new ProfileResponseDto
+                {
+                    Success = true,
+                    Message = "Avatar updated successfully.",
+                    UserId = userId,
+                    Email = user.Email,
+                    Data = new ProfileDataDto
+                    {
+                        Profile = _mapper.Map<UserProfileDto>(profile),
+                        User = _mapper.Map<UserResponseDto>(user)
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "❌ Error updating avatar: {UserId}", userId);
+                return new ProfileResponseDto { Success = false, Message = "Error updating avatar." };
+            }
+        }
     }
 }

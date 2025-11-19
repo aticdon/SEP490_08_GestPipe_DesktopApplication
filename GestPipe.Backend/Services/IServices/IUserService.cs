@@ -10,5 +10,6 @@ namespace GestPipe.Backend.Services.IServices
         bool SetLanguage(string userId, string language);
         bool IncrementRequestCount(string userId);
         bool UpdateGestureRequestStatus(string userId, string status);
+        bool SetUseCustomModel(string userId, bool useCustomModel);
     }
 }

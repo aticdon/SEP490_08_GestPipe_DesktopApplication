@@ -54,5 +54,12 @@ namespace GestPipe.Backend.Controllers
             if (!ok) return BadRequest("Update status failed");
             return NoContent();
         }
+        [HttpPost("{id}/use-custom-model")]
+        public IActionResult SetUseCustomModel(string id, [FromBody] bool useCustomModel)
+        {
+            var ok = _userService.SetUseCustomModel(id, useCustomModel);
+            if (!ok) return BadRequest("Update use_custom_model failed");
+            return NoContent();
+        }
     }
 }

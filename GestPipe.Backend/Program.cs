@@ -143,7 +143,15 @@ namespace GestPipe.Backend
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseStaticFiles();
 
+            //// ✅ THÊM (Optional): Custom static file serving cho avatars
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+                Path.Combine(app.Environment.WebRootPath, "avatars")),
+                RequestPath = "/avatars"
+            });
             app.UseHttpsRedirection();
 
             // ✅ CORS PHẢI ĐẶT SỚM TRƯỚC Authentication

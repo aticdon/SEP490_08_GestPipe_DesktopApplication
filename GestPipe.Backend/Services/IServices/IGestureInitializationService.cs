@@ -8,8 +8,7 @@ namespace GestPipe.Backend.Services.IServices
         /// <summary>
         /// Initialize user gestures from default gestures
         /// </summary>
-        Task<bool> InitializeUserGesturesAsync(string userId);
-
+        Task<bool> CreateUserDataFolderAsync(string userId);
         /// <summary>
         /// Get gesture statistics for user
         /// </summary>

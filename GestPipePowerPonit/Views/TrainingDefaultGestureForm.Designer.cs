@@ -68,62 +68,14 @@ namespace GestPipePowerPonit
             this.lblAccuracy = new System.Windows.Forms.Label();
             this.lblReason = new System.Windows.Forms.Label();
             this.loadingPanel = new Guna.UI2.WinForms.Guna2Panel();
-            this.loadingLabel = new System.Windows.Forms.Label();
             this.loadingSpinner = new System.Windows.Forms.PictureBox();
+            this.loadingLabel = new System.Windows.Forms.Label();
             this.spinnerTimer = new System.Windows.Forms.Timer(this.components);
             this.pnlMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCamera)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).BeginInit();
             this.loadingPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).BeginInit();
             this.SuspendLayout();
-            // ✅ THÊM loading panel setup
-            // 
-            // loadingPanel
-            // 
-            this.loadingPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.loadingPanel.BorderRadius = 0;
-            this.loadingPanel.Controls.Add(this.loadingSpinner);
-            this.loadingPanel.Controls.Add(this.loadingLabel);
-            this.loadingPanel.Dock = System.Windows.Forms.DockStyle.None;
-            this.loadingPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            this.loadingPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.loadingPanel.Location = new System.Drawing.Point(0, 0);
-            this.loadingPanel.Name = "loadingPanel";
-            this.loadingPanel.Size = new System.Drawing.Size(1100, 750);
-            this.loadingPanel.TabIndex = 999;
-            this.loadingPanel.Visible = false;
-            // 
-            // loadingSpinner
-            // 
-            this.loadingSpinner.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.loadingSpinner.BackColor = System.Drawing.Color.Transparent;
-            this.loadingSpinner.Location = new System.Drawing.Point(520, 335);
-            this.loadingSpinner.Name = "loadingSpinner";
-            this.loadingSpinner.Size = new System.Drawing.Size(60, 60);
-            this.loadingSpinner.TabIndex = 0;
-            this.loadingSpinner.TabStop = false;
-            // 
-            // loadingLabel
-            // 
-            this.loadingLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.loadingLabel.AutoSize = true;
-            this.loadingLabel.BackColor = System.Drawing.Color.Transparent;
-            this.loadingLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.loadingLabel.ForeColor = System.Drawing.Color.White;
-            this.loadingLabel.Location = new System.Drawing.Point(450, 410);
-            this.loadingLabel.Name = "loadingLabel";
-            this.loadingLabel.Size = new System.Drawing.Size(200, 32);
-            this.loadingLabel.TabIndex = 1;
-            this.loadingLabel.Text = "Loading...";
-            this.loadingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // spinnerTimer
-            // 
-            this.spinnerTimer.Interval = 50;
-            this.spinnerTimer.Tick += new System.EventHandler(this.SpinnerTimer_Tick);
-
-            // ✅ THÊM loadingPanel vào pnlMain CUỐI CÙNG
-            this.pnlMain.Controls.Add(this.loadingPanel);
             // 
             // guna2Elipse1
             // 
@@ -170,6 +122,7 @@ namespace GestPipePowerPonit
             // pnlMain
             // 
             this.pnlMain.BackColor = System.Drawing.Color.Transparent;
+            this.pnlMain.Controls.Add(this.loadingPanel);
             this.pnlMain.Controls.Add(this.lblTraining);
             this.pnlMain.Controls.Add(this.lblGestureName);
             this.pnlMain.Controls.Add(this.btnEndTraining);
@@ -240,10 +193,10 @@ namespace GestPipePowerPonit
             // lblPose
             // 
             this.lblPose.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblPose.ForeColor = System.Drawing.Color.White;
+            this.lblPose.ForeColor = System.Drawing.Color.Aqua;
             this.lblPose.Location = new System.Drawing.Point(702, 232);
             this.lblPose.Name = "lblPose";
-            this.lblPose.Size = new System.Drawing.Size(359, 24);
+            this.lblPose.Size = new System.Drawing.Size(386, 24);
             this.lblPose.TabIndex = 1;
             this.lblPose.Text = "🎯 Pose Target: [Gesture]";
             // 
@@ -253,33 +206,33 @@ namespace GestPipePowerPonit
             this.lblResult.ForeColor = System.Drawing.Color.White;
             this.lblResult.Location = new System.Drawing.Point(702, 292);
             this.lblResult.Name = "lblResult";
-            this.lblResult.Size = new System.Drawing.Size(220, 24);
+            this.lblResult.Size = new System.Drawing.Size(282, 24);
             this.lblResult.TabIndex = 2;
             this.lblResult.Text = "✅ Last Result: ";
             // 
             // lblCorrect
             // 
-            this.lblCorrect.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblCorrect.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCorrect.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(200)))), ((int)(((byte)(0)))));
             this.lblCorrect.Location = new System.Drawing.Point(703, 352);
             this.lblCorrect.Name = "lblCorrect";
-            this.lblCorrect.Size = new System.Drawing.Size(150, 24);
+            this.lblCorrect.Size = new System.Drawing.Size(187, 24);
             this.lblCorrect.TabIndex = 3;
             this.lblCorrect.Text = "✅ Correct: ";
             // 
             // lblWrong
             // 
-            this.lblWrong.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblWrong.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblWrong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.lblWrong.Location = new System.Drawing.Point(703, 412);
             this.lblWrong.Name = "lblWrong";
-            this.lblWrong.Size = new System.Drawing.Size(150, 24);
+            this.lblWrong.Size = new System.Drawing.Size(187, 24);
             this.lblWrong.TabIndex = 4;
             this.lblWrong.Text = "❌ Wrong: ";
             // 
             // lblAccuracy
             // 
-            this.lblAccuracy.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblAccuracy.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAccuracy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.lblAccuracy.Location = new System.Drawing.Point(703, 472);
             this.lblAccuracy.Name = "lblAccuracy";
@@ -291,13 +244,57 @@ namespace GestPipePowerPonit
             // 
             this.lblReason.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblReason.ForeColor = System.Drawing.Color.Wheat;
-            this.lblReason.Location = new System.Drawing.Point(701, 553);
+            this.lblReason.Location = new System.Drawing.Point(701, 526);
             this.lblReason.Name = "lblReason";
-            this.lblReason.Size = new System.Drawing.Size(350, 90);
+            this.lblReason.Size = new System.Drawing.Size(350, 130);
             this.lblReason.TabIndex = 6;
             this.lblReason.Text = "Reason:";
             // 
-            // FormTrainingGesture
+            // loadingPanel
+            // 
+            this.loadingPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.loadingPanel.BackColor = System.Drawing.Color.Transparent;
+            this.loadingPanel.Controls.Add(this.loadingSpinner);
+            this.loadingPanel.Controls.Add(this.loadingLabel);
+            this.loadingPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.loadingPanel.Location = new System.Drawing.Point(0, 0);
+            this.loadingPanel.Name = "loadingPanel";
+            this.loadingPanel.Size = new System.Drawing.Size(1100, 750);
+            this.loadingPanel.TabIndex = 999;
+            this.loadingPanel.Visible = false;
+            // 
+            // loadingSpinner
+            // 
+            this.loadingSpinner.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.loadingSpinner.BackColor = System.Drawing.Color.Transparent;
+            this.loadingSpinner.Location = new System.Drawing.Point(520, 335);
+            this.loadingSpinner.Name = "loadingSpinner";
+            this.loadingSpinner.Size = new System.Drawing.Size(60, 60);
+            this.loadingSpinner.TabIndex = 0;
+            this.loadingSpinner.TabStop = false;
+            // 
+            // loadingLabel
+            // 
+            this.loadingLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.loadingLabel.AutoSize = true;
+            this.loadingLabel.BackColor = System.Drawing.Color.Transparent;
+            this.loadingLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.loadingLabel.ForeColor = System.Drawing.Color.White;
+            this.loadingLabel.Location = new System.Drawing.Point(450, 410);
+            this.loadingLabel.Name = "loadingLabel";
+            this.loadingLabel.Size = new System.Drawing.Size(127, 32);
+            this.loadingLabel.TabIndex = 1;
+            this.loadingLabel.Text = "Loading...";
+            this.loadingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // spinnerTimer
+            // 
+            this.spinnerTimer.Interval = 50;
+            this.spinnerTimer.Tick += new System.EventHandler(this.SpinnerTimer_Tick);
+            // 
+            // TrainingDefaultGestureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -306,13 +303,13 @@ namespace GestPipePowerPonit
             this.Controls.Add(this.pnlMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormTrainingGesture";
+            this.Name = "TrainingDefaultGestureForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.pnlMain.ResumeLayout(false);
             this.pnlMain.PerformLayout();
-            this.loadingPanel.ResumeLayout(false); // ✅ THÊM
-            this.loadingPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCamera)).EndInit();
+            this.loadingPanel.ResumeLayout(false);
+            this.loadingPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).EndInit();
             this.ResumeLayout(false);
 

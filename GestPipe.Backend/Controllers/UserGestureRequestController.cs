@@ -53,10 +53,11 @@ namespace GestPipe.Backend.Controllers
             if (req == null) return NotFound();
             return Ok(req);
         }
-        [HttpGet("config/{configId}")]
-        public async Task<ActionResult<UserGestureRequest>> GetLatestRequestByConfig(string configId)
+        //[HttpGet("config/{configId}")]
+        [HttpGet("user/{userId}/config/{configId}")]
+        public async Task<ActionResult<UserGestureRequest>> GetLatestRequestByConfig(string configId, string userId)
         {
-            var request = await _service.GetLatestRequestByConfigIdAsync(configId);
+            var request = await _service.GetLatestRequestByConfigIdAsync(configId, userId);
             if (request == null) return NotFound();
             return Ok(request);
         }

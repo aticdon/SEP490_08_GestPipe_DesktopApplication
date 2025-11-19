@@ -12,5 +12,6 @@ namespace GestPipe.Backend.Services.IServices
 
         // ✅ GIỮ NGUYÊN: ChangePassword vẫn dùng AuthResponseDto
         Task<AuthResponseDto> ChangePasswordAsync(string userId, ChangePasswordDto changePasswordDto);
+        Task<ProfileResponseDto> UpdateAvatarAsync(string userId, string avatarUrl);
     }
 }

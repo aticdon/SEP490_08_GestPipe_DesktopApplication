@@ -53,14 +53,14 @@ namespace GestPipe.Backend.Controllers
                     return BadRequest(response);
                 }
 
-                // ✅ INITIALIZE DEFAULT GESTURES (async, don't wait)
+                 //✅ INITIALIZE DEFAULT GESTURES(async, don't wait)
                 if (!string.IsNullOrEmpty(response.UserId))
                 {
                     _ = Task.Run(async () =>
                     {
                         try
                         {
-                            await _gestureInitService.InitializeUserGesturesAsync(response.UserId);
+                            await _gestureInitService.CreateUserDataFolderAsync(response.UserId);
                         }
                         catch (Exception ex)
                         {
@@ -255,7 +255,7 @@ namespace GestPipe.Backend.Controllers
                     {
                         try
                         {
-                            await _gestureInitService.InitializeUserGesturesAsync(response.UserId);
+                            await _gestureInitService.CreateUserDataFolderAsync(response.UserId);
                         }
                         catch (Exception ex)
                         {

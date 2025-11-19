@@ -274,7 +274,7 @@ namespace GestPipePowerPonit.Views.Profile
             if (_currentProfile == null || _currentUser == null) return;
 
             // FullName
-            lblFullNameValue.Text = _currentProfile.FullName ?? "User";
+            btnChangeAvatar.Text = _currentProfile.FullName ?? "User";
             txtFullName.Text = _currentProfile.FullName ?? "";
 
             // Email
@@ -480,7 +480,7 @@ namespace GestPipePowerPonit.Views.Profile
             _isEditMode = false;
 
             // Show value labels
-            lblFullNameValue.Visible = true;
+            btnChangeAvatar.Visible = true;
             lblEmailValue.Visible = true;
             lblPhoneValue.Visible = true;
             lblGenderValue.Visible = true;
@@ -519,7 +519,7 @@ namespace GestPipePowerPonit.Views.Profile
         {
             _isEditMode = true;
 
-            lblFullNameValue.Visible = false;
+            btnChangeAvatar.Visible = false;
             lblEmailValue.Visible = false;
             lblPhoneValue.Visible = false;
             lblGenderValue.Visible = false;
@@ -967,6 +967,61 @@ namespace GestPipePowerPonit.Views.Profile
             {
                 lblPhoneError.Visible = false;
                 txtPhone.BorderColor = Color.FromArgb(94, 148, 255);
+            }
+        }
+
+       
+        private async void btnChangeAvatar_Click(object sender, EventArgs e)
+        {
+            var dlg = new OpenFileDialog();
+            dlg.Filter = "Image files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
+            dlg.Title = "Chọn ảnh đại diện mới";
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = dlg.FileName;
+
+                try
+                {
+                    // 1. Hiển thị lên UI trước
+                    picAvatar.Image = Image.FromFile(filePath);
+
+                    // 2. Upload ảnh lên server và nhận về URL
+                    Console.WriteLine("[ProfileForm] Uploading avatar...");
+                    string avatarUrl = await _profileService.UploadAvatarAsync(filePath);
+
+                    if (!string.IsNullOrWhiteSpace(avatarUrl))
+                    {
+                        Console.WriteLine($"[ProfileForm] Upload success, URL: {avatarUrl}");
+
+                        // 3. ✅ CHỈ CẬP NHẬT AVATAR (DÙNG ENDPOINT PATCH)
+                        Console.WriteLine("[ProfileForm] Updating avatar only...");
+                        var response = await _profileService.UpdateAvatarOnlyAsync(_userId, avatarUrl);
+
+                        if (response?.Success == true)
+                        {
+                            Console.WriteLine("[ProfileForm] ✅ Avatar updated successfully in database!");
+                            _currentUser.AvatarUrl = avatarUrl; // Cập nhật local
+                            CustomMessageBox.ShowSuccess("Cập nhật ảnh đại diện thành công!", "Thành công");
+                            await LoadAvatar(); // Load lại avatar từ URL mới
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[ProfileForm] ❌ Failed to update avatar: {response?.Message}");
+                            CustomMessageBox.ShowError("Cập nhật ảnh đại diện thất bại!", "Lỗi");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("[ProfileForm] ❌ Upload failed, no URL returned");
+                        CustomMessageBox.ShowError("Không upload được ảnh đại diện!", "Lỗi");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[ProfileForm] ❌ Exception: {ex.Message}");
+                    CustomMessageBox.ShowError($"Lỗi: {ex.Message}", "Lỗi");
+                }
             }
         }
 

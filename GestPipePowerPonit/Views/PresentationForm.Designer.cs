@@ -725,6 +725,7 @@ namespace GestPipePowerPonit
             this.btnZoomOutSlide.Name = "btnZoomOutSlide";
             this.btnZoomOutSlide.Size = new System.Drawing.Size(75, 23);
             this.btnZoomOutSlide.TabIndex = 0;
+            // 
             // loadingPanel
             // 
             this.loadingPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -737,71 +738,29 @@ namespace GestPipePowerPonit
             this.loadingPanel.Size = new System.Drawing.Size(1366, 768);
             this.loadingPanel.TabIndex = 100;
             this.loadingPanel.Visible = false;
-
-            // loadingSpinner - ✅ GIỮA MÀN HÌNH
+            // 
+            // loadingSpinner
             // 
             this.loadingSpinner.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.loadingSpinner.BackColor = System.Drawing.Color.Transparent;
-            //this.loadingSpinner.Location = new System.Drawing.Point(653, 354); // ✅ Center (1366/2 - 30, 768/2 - 30)
             this.loadingSpinner.Location = new System.Drawing.Point(653, 324);
             this.loadingSpinner.Name = "loadingSpinner";
             this.loadingSpinner.Size = new System.Drawing.Size(60, 60);
             this.loadingSpinner.TabIndex = 0;
             this.loadingSpinner.TabStop = false;
-
-            // loadingLabel - ✅ DƯỚI SPINNER
+            // 
+            // loadingLabel
             // 
             this.loadingLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.loadingLabel.AutoSize = false; // ✅ Fixed width để center dễ hơn
             this.loadingLabel.BackColor = System.Drawing.Color.Transparent;
             this.loadingLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.loadingLabel.ForeColor = System.Drawing.Color.White;
-            //this.loadingLabel.Location = new System.Drawing.Point(533, 430); // ✅ Center với width 300
-            this.loadingLabel.Location = new System.Drawing.Point(533, 400); // ✅ Center với width 300
+            this.loadingLabel.Location = new System.Drawing.Point(533, 400);
             this.loadingLabel.Name = "loadingLabel";
-            this.loadingLabel.Size = new System.Drawing.Size(300, 64); // ✅ Fixed size
+            this.loadingLabel.Size = new System.Drawing.Size(300, 64);
             this.loadingLabel.TabIndex = 1;
             this.loadingLabel.Text = "Loading...\nPlease wait...";
             this.loadingLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            //// 
-            //// loadingPanel
-            //// 
-            //this.loadingPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            //this.loadingPanel.Controls.Add(this.loadingSpinner);
-            //this.loadingPanel.Controls.Add(this.loadingLabel);
-            //this.loadingPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            //this.loadingPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            //this.loadingPanel.Location = new System.Drawing.Point(0, 0);
-            //this.loadingPanel.Name = "loadingPanel";
-            //this.loadingPanel.Size = new System.Drawing.Size(1366, 768);
-            //this.loadingPanel.TabIndex = 100;
-            //this.loadingPanel.Visible = false;
-            //// 
-            //// loadingSpinner
-            //// 
-            //this.loadingSpinner.Anchor = System.Windows.Forms.AnchorStyles.None;
-            //this.loadingSpinner.BackColor = System.Drawing.Color.Transparent;
-            ////this.loadingSpinner.Location = new System.Drawing.Point(1153, 694);
-            //this.loadingSpinner.Location = new System.Drawing.Point(550, 324);
-            //this.loadingSpinner.Name = "loadingSpinner";
-            //this.loadingSpinner.Size = new System.Drawing.Size(60, 60);
-            //this.loadingSpinner.TabIndex = 0;
-            //this.loadingSpinner.TabStop = false;
-            //// 
-            //// loadingLabel
-            //// 
-            //this.loadingLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            //this.loadingLabel.AutoSize = true;
-            //this.loadingLabel.BackColor = System.Drawing.Color.Transparent;
-            //this.loadingLabel.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            //this.loadingLabel.ForeColor = System.Drawing.Color.White;
-            ////this.loadingLabel.Location = new System.Drawing.Point(1083, 769);
-            //this.loadingLabel.Location = new System.Drawing.Point(350, 399);
-            //this.loadingLabel.Name = "loadingLabel";
-            //this.loadingLabel.Size = new System.Drawing.Size(127, 32);
-            //this.loadingLabel.TabIndex = 1;
-            //this.loadingLabel.Text = "Loading...";
-            //this.loadingLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // spinnerTimer
             // 
@@ -835,7 +794,6 @@ namespace GestPipePowerPonit
             this.panelPreview.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCamera)).EndInit();
             this.loadingPanel.ResumeLayout(false);
-            this.loadingPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).EndInit();
             this.ResumeLayout(false);
 

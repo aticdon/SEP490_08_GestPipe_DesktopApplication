@@ -16,12 +16,14 @@ namespace GestPipePowerPonit.Views.Auth
                       lblPhoneNumberError, lblGenderError, lblBirthDateError, lblAddressError,
                       lblEduError, lblCompanyError, lblOccupationError;
         private Guna2TextBox txtEmail, txtFullName, txtPassword, txtConfirmPassword,
-                                    txtPhoneNumber, txtCompany, txtOccupation;
-        private Guna2ComboBox cmbGender, cmbAddress, cmbEdu;
+                                    txtPhoneNumber, txtCompany, txtOccupationOther;  // ✅ Đã xóa txtOccupation
+        private Guna2ComboBox cmbGender, cmbAddress, cmbEdu, cmbOccupation;  // ✅ Đã thêm cmbOccupation
         private Guna2DateTimePicker dtpBirthDate;
         private Guna2GradientButton btnRegister;
         private LinkLabel lnkLogin;
         private Guna2Button btnGoogle;
+        private Guna2ControlBox guna2ControlBoxClose;
+        private Guna2ControlBox guna2ControlBoxMinimize;
 
         protected override void Dispose(bool disposing)
         {
@@ -65,7 +67,8 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtCompany = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblCompanyError = new System.Windows.Forms.Label();
             this.lblOccupation = new System.Windows.Forms.Label();
-            this.txtOccupation = new Guna.UI2.WinForms.Guna2TextBox();
+            this.cmbOccupation = new Guna.UI2.WinForms.Guna2ComboBox();  // ✅ ComboBox
+            this.txtOccupationOther = new Guna.UI2.WinForms.Guna2TextBox();  // ✅ TextBox Other
             this.lblOccupationError = new System.Windows.Forms.Label();
             this.btnRegister = new Guna.UI2.WinForms.Guna2GradientButton();
             this.lnkLogin = new System.Windows.Forms.LinkLabel();
@@ -111,7 +114,8 @@ namespace GestPipePowerPonit.Views.Auth
             this.pnlCard.Controls.Add(this.txtCompany);
             this.pnlCard.Controls.Add(this.lblCompanyError);
             this.pnlCard.Controls.Add(this.lblOccupation);
-            this.pnlCard.Controls.Add(this.txtOccupation);
+            this.pnlCard.Controls.Add(this.cmbOccupation);  // ✅ Thêm ComboBox
+            this.pnlCard.Controls.Add(this.txtOccupationOther);  // ✅ Thêm TextBox Other
             this.pnlCard.Controls.Add(this.lblOccupationError);
             this.pnlCard.Controls.Add(this.btnRegister);
             this.pnlCard.Controls.Add(this.lnkLogin);
@@ -120,7 +124,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.pnlCard.Location = new System.Drawing.Point(133, 68);
             this.pnlCard.Name = "pnlCard";
             this.pnlCard.Padding = new System.Windows.Forms.Padding(40);
-            this.pnlCard.Size = new System.Drawing.Size(1100, 842);
+            this.pnlCard.Size = new System.Drawing.Size(1100, 880);  // ✅ Tăng chiều cao
             this.pnlCard.TabIndex = 0;
             // 
             // lblTitle
@@ -605,30 +609,62 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblOccupation.TabIndex = 21;
             this.lblOccupation.Text = "Occupation:";
             // 
-            // txtOccupation
+            // cmbOccupation
             // 
-            this.txtOccupation.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.txtOccupation.BorderRadius = 10;
-            this.txtOccupation.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtOccupation.DefaultText = "";
-            this.txtOccupation.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
-            this.txtOccupation.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtOccupation.ForeColor = System.Drawing.Color.Black;
-            this.txtOccupation.Location = new System.Drawing.Point(591, 474);
-            this.txtOccupation.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
-            this.txtOccupation.Name = "txtOccupation";
-            this.txtOccupation.PlaceholderText = "Enter occupation";
-            this.txtOccupation.SelectedText = "";
-            this.txtOccupation.Size = new System.Drawing.Size(360, 34);
-            this.txtOccupation.TabIndex = 10;
-            this.txtOccupation.TextChanged += new System.EventHandler(this.txtOccupation_TextChanged);
+            this.cmbOccupation.BackColor = System.Drawing.Color.Transparent;
+            this.cmbOccupation.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.cmbOccupation.BorderRadius = 10;
+            this.cmbOccupation.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbOccupation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOccupation.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
+            this.cmbOccupation.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
+            this.cmbOccupation.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.cmbOccupation.ForeColor = System.Drawing.Color.Black;
+            this.cmbOccupation.ItemHeight = 30;
+            this.cmbOccupation.Items.AddRange(new object[] {
+            "Select occupation",
+            "Student",
+            "Teacher/Professor",
+            "Engineer",
+            "Doctor",
+            "Nurse",
+            "Developer",
+            "Designer",
+            "Manager",
+            "Entrepreneur",
+            "Freelancer",
+            "Other (specify below)"});
+            this.cmbOccupation.Location = new System.Drawing.Point(591, 474);
+            this.cmbOccupation.Name = "cmbOccupation";
+            this.cmbOccupation.Size = new System.Drawing.Size(360, 36);
+            this.cmbOccupation.TabIndex = 10;
+            this.cmbOccupation.SelectedIndexChanged += new System.EventHandler(this.cmbOccupation_SelectedIndexChanged);
+            // 
+            // txtOccupationOther
+            // 
+            this.txtOccupationOther.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.txtOccupationOther.BorderRadius = 10;
+            this.txtOccupationOther.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtOccupationOther.DefaultText = "";
+            this.txtOccupationOther.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
+            this.txtOccupationOther.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.txtOccupationOther.ForeColor = System.Drawing.Color.Black;
+            this.txtOccupationOther.Location = new System.Drawing.Point(591, 516);
+            this.txtOccupationOther.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.txtOccupationOther.Name = "txtOccupationOther";
+            this.txtOccupationOther.PlaceholderText = "Specify your occupation";
+            this.txtOccupationOther.SelectedText = "";
+            this.txtOccupationOther.Size = new System.Drawing.Size(360, 34);
+            this.txtOccupationOther.TabIndex = 11;
+            this.txtOccupationOther.Visible = false;
+            this.txtOccupationOther.TextChanged += new System.EventHandler(this.txtOccupationOther_TextChanged);
             // 
             // lblOccupationError
             // 
             this.lblOccupationError.AutoSize = true;
             this.lblOccupationError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblOccupationError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblOccupationError.Location = new System.Drawing.Point(591, 518);
+            this.lblOccupationError.Location = new System.Drawing.Point(591, 556);
             this.lblOccupationError.Name = "lblOccupationError";
             this.lblOccupationError.Size = new System.Drawing.Size(0, 19);
             this.lblOccupationError.TabIndex = 22;
@@ -642,10 +678,10 @@ namespace GestPipePowerPonit.Views.Auth
             this.btnRegister.FillColor2 = System.Drawing.SystemColors.Highlight;
             this.btnRegister.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnRegister.ForeColor = System.Drawing.Color.White;
-            this.btnRegister.Location = new System.Drawing.Point(439, 631);
+            this.btnRegister.Location = new System.Drawing.Point(439, 670);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(222, 42);
-            this.btnRegister.TabIndex = 11;
+            this.btnRegister.TabIndex = 12;
             this.btnRegister.Text = "Register";
             this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
@@ -654,10 +690,10 @@ namespace GestPipePowerPonit.Views.Auth
             this.lnkLogin.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lnkLogin.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lnkLogin.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(180)))), ((int)(((byte)(218)))));
-            this.lnkLogin.Location = new System.Drawing.Point(0, 678);
+            this.lnkLogin.Location = new System.Drawing.Point(0, 717);
             this.lnkLogin.Name = "lnkLogin";
             this.lnkLogin.Size = new System.Drawing.Size(1100, 25);
-            this.lnkLogin.TabIndex = 12;
+            this.lnkLogin.TabIndex = 13;
             this.lnkLogin.TabStop = true;
             this.lnkLogin.Text = "Login?";
             this.lnkLogin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -679,7 +715,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.btnGoogle.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnGoogle.ImageOffset = new System.Drawing.Point(15, 0);
             this.btnGoogle.ImageSize = new System.Drawing.Size(18, 18);
-            this.btnGoogle.Location = new System.Drawing.Point(398, 709);
+            this.btnGoogle.Location = new System.Drawing.Point(398, 748);
             this.btnGoogle.Name = "btnGoogle";
             this.btnGoogle.Size = new System.Drawing.Size(300, 38);
             this.btnGoogle.TabIndex = 14;
@@ -734,10 +770,6 @@ namespace GestPipePowerPonit.Views.Auth
             this.pnlCard.ResumeLayout(false);
             this.pnlCard.PerformLayout();
             this.ResumeLayout(false);
-
         }
-
-        private Guna2ControlBox guna2ControlBoxClose;
-        private Guna2ControlBox guna2ControlBoxMinimize;
     }
 }

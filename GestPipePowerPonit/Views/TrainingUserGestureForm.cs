@@ -48,40 +48,6 @@ namespace GestPipePowerPonit
         private volatile bool _isClosing = false;
         private CancellationTokenSource _cancellationTokenSource;
 
-        //public TrainingUserGestureForm(HomeUser homeForm, ListDefaultGestureForm defaultGesture,
-        //                              string actionName, VectorData vectorData, string gestureName)
-        //{
-        //    InitializeComponent();
-
-        //    // ✅ VALIDATE USER_ID
-        //    if (string.IsNullOrEmpty(Properties.Settings.Default.UserId))
-        //    {
-        //        Debug.WriteLine("⚠️ Warning: UserId is empty, will use general models");
-        //        _currentUserId = ""; // Will fallback to general models in Python
-        //    }
-        //    else
-        //    {
-        //        _currentUserId = Properties.Settings.Default.UserId;
-        //        Debug.WriteLine($"✅ User ID: {_currentUserId}");
-        //    }
-
-        //    StartPythonProcess();
-        //    InitCustomControls();
-
-        //    _homeForm = homeForm;
-        //    _defaultGesture = defaultGesture;
-        //    this.gestureName = gestureName;
-        //    this.poseLabel = actionName;
-        //    this.vectorData = vectorData;
-
-        //    ApplyLanguage();
-
-        //    Debug.WriteLine($"📋 Training Session Info:");
-        //    Debug.WriteLine($"   - Gesture: {gestureName}");
-        //    Debug.WriteLine($"   - Action: {actionName}");
-        //    Debug.WriteLine($"   - User: {_currentUserId}");
-        //}
-
         public TrainingUserGestureForm(HomeUser homeForm, ListDefaultGestureForm defaultGesture,
                               string actionName, VectorData vectorData, string gestureName)
         {
@@ -299,73 +265,7 @@ namespace GestPipePowerPonit
         #endregion
 
         #region Socket Communication
-
-        /// <summary>
-        /// ✅ NEW: Send pose name AND user_id to Python
-        /// Format: pose_name|user_id
-        /// </summary>
-        //private void SendPoseAndUserToPython(string poseName, string userId)
-        //{
-        //    int retry = 0;
-        //    int maxRetries = 10;
-
-        //    while (retry < maxRetries)
-        //    {
-        //        try
-        //        {
-        //            using (var client = new TcpClient())
-        //            {
-        //                client.ReceiveTimeout = 5000;
-        //                client.SendTimeout = 5000;
-
-        //                Debug.WriteLine($"[Attempt {retry + 1}/{maxRetries}] Connecting to Python on port 7000...");
-        //                client.Connect("127.0.0.1", 7000);
-
-        //                using (var stream = client.GetStream())
-        //                {
-        //                    // ✅ SEND NEW FORMAT: pose_name|user_id
-        //                    string message = $"{poseName}|{userId}";
-        //                    byte[] data = Encoding.UTF8.GetBytes(message);
-
-        //                    stream.Write(data, 0, data.Length);
-        //                    Debug.WriteLine($"✅ Sent to Python: {message}");
-
-        //                    // Wait for response
-        //                    byte[] resp = new byte[32];
-        //                    int len = stream.Read(resp, 0, resp.Length);
-        //                    string response = Encoding.UTF8.GetString(resp, 0, len);
-
-        //                    Debug.WriteLine($"✅ Python response: {response}");
-        //                }
-
-        //                return; // Success
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            retry++;
-        //            Debug.WriteLine($"❌ Connection failed (attempt {retry}/{maxRetries}): {ex.Message}");
-
-        //            if (retry >= maxRetries)
-        //            {
-        //                string errorMsg = GetLocalizedText("python_connection_error",
-        //                    $"Failed to connect to Python server after {maxRetries} attempts.\n\nError: {ex.Message}",
-        //                    $"Không thể kết nối tới Python server sau {maxRetries} lần thử.\n\nLỗi: {ex.Message}");
-
-        //                this.Invoke(new Action(() =>
-        //                {
-        //                    MessageBox.Show(errorMsg, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //                    this.Close();
-        //                }));
-
-        //                return;
-        //            }
-
-        //            Thread.Sleep(500);
-        //        }
-        //    }
-        //}
-        private void SendPoseAndUserToPython(string poseName, string userId)
+        private void SendPoseAndUserToPython(string poseName)
         {
             int retry = 0;
             int maxRetries = 10;
@@ -384,7 +284,7 @@ namespace GestPipePowerPonit
 
                         using (var stream = client.GetStream())
                         {
-                            string message = $"{poseName}|{userId}";
+                            string message = $"{poseName}";
                             byte[] data = Encoding.UTF8.GetBytes(message);
 
                             stream.Write(data, 0, data.Length);
@@ -425,146 +325,6 @@ namespace GestPipePowerPonit
                 }
             }
         }
-
-        /// <summary>
-        /// ✅ IMPROVED: Start receiving camera frames with retry logic
-        /// </summary>
-        //private void StartReceivingCameraFrames(int port)
-        //{
-        //    if (cameraThread != null && cameraThread.IsAlive)
-        //    {
-        //        Debug.WriteLine("⚠️ Camera thread already running");
-        //        return;
-        //    }
-
-        //    cameraThread = new Thread(() =>
-        //    {
-        //        int reconnectAttempts = 0;
-        //        const int maxReconnects = 3;
-
-        //        while (reconnectAttempts < maxReconnects)
-        //        {
-        //            try
-        //            {
-        //                Debug.WriteLine($"[Camera] Connecting to port {port}... (attempt {reconnectAttempts + 1})");
-
-        //                cameraClient = new TcpClient("127.0.0.1", port);
-        //                cameraStream = cameraClient.GetStream();
-
-        //                Debug.WriteLine("✅ Camera connected successfully!");
-        //                reconnectAttempts = 0;
-
-        //                while (true)
-        //                {
-        //                    // Read frame length (4 bytes, big-endian)
-        //                    byte[] lenBuf = new byte[4];
-        //                    int read = 0;
-        //                    while (read < 4)
-        //                    {
-        //                        int r = cameraStream.Read(lenBuf, read, 4 - read);
-        //                        if (r <= 0)
-        //                        {
-        //                            Debug.WriteLine("❌ Camera stream closed by server");
-        //                            throw new Exception("Stream closed");
-        //                        }
-        //                        read += r;
-        //                    }
-
-        //                    int length = BitConverter.ToInt32(lenBuf.Reverse().ToArray(), 0);
-
-        //                    if (length < 1000 || length > 2000000)
-        //                    {
-        //                        Debug.WriteLine($"⚠️ Invalid frame size: {length}");
-        //                        continue;
-        //                    }
-
-        //                    // Read frame data
-        //                    byte[] imgBuf = new byte[length];
-        //                    read = 0;
-        //                    while (read < length)
-        //                    {
-        //                        int r = cameraStream.Read(imgBuf, read, length - read);
-        //                        if (r <= 0)
-        //                        {
-        //                            Debug.WriteLine("❌ Camera stream closed while reading frame");
-        //                            throw new Exception("Stream closed");
-        //                        }
-        //                        read += r;
-        //                    }
-
-        //                    // Decode and display image
-        //                    using (var ms = new MemoryStream(imgBuf))
-        //                    {
-        //                        try
-        //                        {
-        //                            var img = Image.FromStream(ms);
-
-        //                            this.Invoke(new Action(() =>
-        //                            {
-        //                                var oldImage = picCamera.Image;
-        //                                picCamera.Image = img;
-        //                                oldImage?.Dispose();
-
-        //                                if (!firstFrameReceived)
-        //                                {
-        //                                    firstFrameReceived = true;
-        //                                    HideLoading();
-        //                                    Debug.WriteLine("✅ First frame received!");
-        //                                }
-        //                            }));
-        //                        }
-        //                        catch (Exception ex)
-        //                        {
-        //                            Debug.WriteLine($"❌ Failed to decode frame: {ex.Message}");
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                reconnectAttempts++;
-        //                Debug.WriteLine($"❌ Camera connection error: {ex.Message}");
-
-        //                try
-        //                {
-        //                    cameraStream?.Close();
-        //                    cameraClient?.Close();
-        //                }
-        //                catch { }
-
-        //                if (reconnectAttempts < maxReconnects)
-        //                {
-        //                    Debug.WriteLine($"🔄 Reconnecting camera... ({reconnectAttempts}/{maxReconnects})");
-        //                    Thread.Sleep(2000);
-        //                }
-        //                else
-        //                {
-        //                    Debug.WriteLine("❌ Camera connection failed after max retries");
-
-        //                    this.Invoke(new Action(() =>
-        //                    {
-        //                        HideLoading();
-
-        //                        string errorMsg = GetLocalizedText("camera_connection_lost",
-        //                            "Camera connection lost. Please restart training.",
-        //                            "Mất kết nối camera. Vui lòng khởi động lại.");
-
-        //                        MessageBox.Show(errorMsg, "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //                    }));
-
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    })
-        //    {
-        //        IsBackground = true,
-        //        Name = "CameraReceiverThread"
-        //    };
-
-        //    cameraThread.Start();
-        //}
-
         private void StartReceivingCameraFrames(int port)
         {
             if (cameraThread != null && cameraThread.IsAlive)
@@ -714,86 +474,6 @@ namespace GestPipePowerPonit
 
             cameraThread.Start();
         }
-
-        /// <summary>
-        /// Start receiving training status with bilingual support
-        /// </summary>
-        //private void StartReceivingTrainingStatus(int port)
-        //{
-        //    if (statusThread != null && statusThread.IsAlive)
-        //        return;
-
-        //    statusThread = new Thread(() =>
-        //    {
-        //        try
-        //        {
-        //            statusClient = new TcpClient("127.0.0.1", port);
-        //            statusStream = statusClient.GetStream();
-        //            byte[] buffer = new byte[1024];
-
-        //            while (true)
-        //            {
-        //                int received = statusStream.Read(buffer, 0, buffer.Length);
-        //                if (received > 0)
-        //                {
-        //                    string text = Encoding.UTF8.GetString(buffer, 0, received);
-        //                    Debug.WriteLine($"[TrainingGesture] Status received: {text}");
-        //                    var parts = text.Split('|');
-
-        //                    if (parts.Length >= 6)
-        //                    {
-        //                        string result = parts[0];
-        //                        string pose = parts[1];
-        //                        string correct = parts[2];
-        //                        string wrong = parts[3];
-        //                        string accuracy = parts[4];
-
-        //                        string reasonMessage;
-
-        //                        if (parts.Length >= 7)
-        //                        {
-        //                            string englishReason = parts[5];
-        //                            string vietnameseReason = parts[6];
-        //                            reasonMessage = IsVietnamese() ? vietnameseReason : englishReason;
-        //                        }
-        //                        else
-        //                        {
-        //                            reasonMessage = parts[5];
-        //                        }
-
-        //                        this.Invoke(new Action(() =>
-        //                        {
-        //                            lblResult.Text = "✅ " + Properties.Resources.Lbl_LastResult + ": " + TranslateResult(result);
-        //                            lblPose.Text = "🎯 " + Properties.Resources.Lbl_PoseTarget + ": " + pose;
-        //                            lblCorrect.Text = "✅ " + Properties.Resources.Lbl_Result_Correct + ": " + correct;
-        //                            lblWrong.Text = "❌ " + Properties.Resources.Lbl_Result_Wrong + ": " + wrong;
-        //                            lblAccuracy.Text = "📊 " + Properties.Resources.Lbl_Accuracy + ": " + accuracy + "%";
-        //                            lblReason.Text = Properties.Resources.Lbl_Reason + ": " + reasonMessage;
-
-        //                            poseLabel = pose;
-
-        //                            int cTrain = 0, wTrain = 0;
-        //                            int.TryParse(correct, out cTrain);
-        //                            int.TryParse(wrong, out wTrain);
-        //                            correctTrain = cTrain;
-        //                            totalTrain = cTrain + wTrain;
-        //                        }));
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Debug.WriteLine($"[TrainingGesture] Error in status thread: {e.Message}");
-        //        }
-        //    })
-        //    {
-        //        IsBackground = true,
-        //        Name = "StatusReceiverThread"
-        //    };
-
-        //    statusThread.Start();
-        //}
         private void StartReceivingTrainingStatus(int port)
         {
             if (statusThread != null && statusThread.IsAlive)
@@ -894,9 +574,9 @@ namespace GestPipePowerPonit
             try
             {
                 string pythonExePath = @"C:\Users\Admin\AppData\Local\Programs\Python\Python311\python.exe";
-
+                string userFolder = $"user_{_currentUserId}";
                 // ✅ CHANGE: Use custom_training_session_socket.py
-                string scriptFile = @"D:\Semester9\codepython\hybrid_realtime_pipeline\code\practice_session.py";
+                string scriptFile = $@"D:\Semester9\codepython\hybrid_realtime_pipeline\code\{userFolder}\training_session_ml.py";
 
                 if (!File.Exists(scriptFile))
                 {
@@ -988,7 +668,7 @@ namespace GestPipePowerPonit
                 await Task.Run(() =>
                 {
                     // ✅ SEND POSE NAME AND USER_ID
-                    SendPoseAndUserToPython(actionName, _currentUserId);
+                    SendPoseAndUserToPython(actionName);
                     Thread.Sleep(2000);
                 });
 
@@ -1126,80 +806,6 @@ namespace GestPipePowerPonit
 
         #region Form Lifecycle
 
-        //protected override void OnFormClosing(FormClosingEventArgs e)
-        //{
-        //    try
-        //    {
-        //        Debug.WriteLine("🛑 Closing training form...");
-
-        //        // Stop spinner
-        //        spinnerTimer?.Stop();
-        //        spinnerTimer?.Dispose();
-
-        //        // Close camera connection
-        //        try
-        //        {
-        //            cameraStream?.Close();
-        //            cameraClient?.Close();
-
-        //            if (cameraThread != null && cameraThread.IsAlive)
-        //            {
-        //                cameraThread.Join(1000);
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Debug.WriteLine($"Error closing camera: {ex.Message}");
-        //        }
-
-        //        // Close status connection
-        //        try
-        //        {
-        //            statusStream?.Close();
-        //            statusClient?.Close();
-
-        //            if (statusThread != null && statusThread.IsAlive)
-        //            {
-        //                statusThread.Join(1000);
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Debug.WriteLine($"Error closing status: {ex.Message}");
-        //        }
-
-        //        // Kill Python process
-        //        try
-        //        {
-        //            if (pythonProcess != null && !pythonProcess.HasExited)
-        //            {
-        //                Debug.WriteLine("🔪 Killing Python process...");
-        //                pythonProcess.Kill();
-        //                pythonProcess.WaitForExit(2000);
-        //                pythonProcess.Dispose();
-        //                Debug.WriteLine("✅ Python process terminated");
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Debug.WriteLine($"Error killing Python: {ex.Message}");
-        //        }
-
-        //        // Dispose spinner image
-        //        if (loadingSpinner.Image != null)
-        //        {
-        //            loadingSpinner.Image.Dispose();
-        //        }
-
-        //        Debug.WriteLine("✅ Training form closed");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine($"❌ Error in OnFormClosing: {ex}");
-        //    }
-
-        //    base.OnFormClosing(e);
-        //}
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             try

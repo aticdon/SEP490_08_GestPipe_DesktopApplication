@@ -1,6 +1,8 @@
-﻿using GestPipePowerPonit.Models.DTOs;
+﻿using GestPipePowerPonit.Models;
+using GestPipePowerPonit.Models.DTOs;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,34 @@ namespace GestPipePowerPonit.Services
         {
             client = new HttpClient();
             client.BaseAddress = new Uri("https://localhost:7219/");
+        }
+
+        public async Task<UserDto> GetUserAsync(string userId)
+        {
+            try
+            {
+                Debug.WriteLine($"[UserService] GetUserAsync: {userId}");
+
+                var response = await client.GetAsync($"/api/User/{userId}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine($"[UserService] GetUserAsync failed: {response.StatusCode}");
+                    return null;
+                }
+
+                var userJson = await response.Content.ReadAsStringAsync();
+                var userDto = JsonConvert.DeserializeObject<UserDto>(userJson);
+
+                Debug.WriteLine($"[UserService] GetUserAsync success: {userDto?.Email}");
+
+                return userDto;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[UserService] GetUserAsync error: {ex.Message}");
+                return null;
+            }
         }
         public async Task<bool> CheckCanRequestAsync(string userId)
         {
@@ -70,5 +100,22 @@ namespace GestPipePowerPonit.Services
                 return false;
             }
         }
+
+        public async Task<bool> SetUseCustomModelAsync(string userId, bool useCustomModel)
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(useCustomModel);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync($"/api/User/{userId}/use-custom-model", content);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[UserService] SetUseCustomModelAsync error: {ex.Message}");
+                return false;
+            }
+        }
+
     }
 }

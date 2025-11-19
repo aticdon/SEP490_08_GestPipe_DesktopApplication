@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using GestPipePowerPonit.Services;
 
 namespace GestPipePowerPonit
 {
@@ -143,8 +144,17 @@ namespace GestPipePowerPonit
             public DateTime LastLogin { get; set; }
         }
 
-        public static void ExitAll()
+        public async static void ExitAll()
         {
+            //try
+            //{
+            //    var authService = new AuthService();
+            //    await authService.LogoutAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    System.Diagnostics.Debug.WriteLine($"[AppSettings] Error during logout: {ex.Message}");
+            //}
             Application.Exit();
         }
     }

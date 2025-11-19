@@ -29,6 +29,8 @@ namespace GestPipePowerPonit
         private enum GestureListType { Default, User }
         private GestureListType currentListType = GestureListType.Default;
 
+        private bool isShowingUserGestures = false;
+
         // ✅ THÊM AuthService
         private readonly AuthService _authService;
 
@@ -63,7 +65,7 @@ namespace GestPipePowerPonit
         private async void ListDefaultGestureForm_Load(object sender, EventArgs e)
         {
             ApplyLanguage(GestPipePowerPonit.CultureManager.CurrentCultureCode);
-            await LoadDefaultGesturesAsync();
+            await LoadGesturesAsync();
         }
 
         private async Task LoadDefaultGesturesAsync()
@@ -93,7 +95,7 @@ namespace GestPipePowerPonit
             }
         }
 
-        private async Task LoadGesturesAsync()
+        private async Task LoadUserGesturesAsync()
         {
             try
             {
@@ -119,106 +121,63 @@ namespace GestPipePowerPonit
                 MessageBox.Show("Không thể tải danh sách gesture!\n" + ex.Message);
             }
         }
-        private async void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private async Task LoadGesturesAsync()
         {
-            // Nếu đang hiển thị Default Gesture
-            if (currentListType == GestureListType.Default)
+            try
             {
-                // Xử lý nút View
-                if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnView"].Index && e.RowIndex >= 0)
+                // Kiểm tra xem user có gesture config không
+                uGestures = await _uGestureService.GetUserGesturesAsync(_currentUserId);
+
+                if (uGestures != null && uGestures.Count > 0)
                 {
-                    var basic = gestures[e.RowIndex];
-                    var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
-
-                    if (detail == null)
-                    {
-                        MessageBox.Show("Cannot get gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-
-                    string description = _gestureService.GetGestureDescription(detail);
-                    string instruction = _gestureService.GetInstructionTable(detail);
-
-                    var detailForm = new DetailGestureForm(
-                        I18nHelper.GetLocalized(detail.Name),
-                        I18nHelper.GetLocalized(detail.Type),
-                        $"{detail.Accuracy * 100:F1}%",
-                        I18nHelper.GetLocalized(detail.Status),
-                        detail.LastUpdate.ToString("dd-MM-yyyy"),
-                        description,
-                        instruction
-                    );
-                    detailForm.ShowDialog();
+                    // Có user gestures -> hiển thị user gestures
+                    isShowingUserGestures = true;
+                    await LoadUserGesturesAsync();
+                    Console.WriteLine($"[LoadGestures] Hiển thị User Gestures ({uGestures.Count} items)");
                 }
-                // Xử lý nút Training
-                else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnTraining"].Index && e.RowIndex >= 0)
+                else
                 {
-                    var basic = gestures[e.RowIndex];
-                    var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
-                    Bitmap arrowImg = null;
-                    string directionStr = "";
-                    string typeName = I18nHelper.GetLocalized(detail.Type);
-                    if (typeName == I18nHelper.GetString("Static", "Tĩnh"))
-                    {
-                        arrowImg = Properties.Resources.handlestaticImg;
-                        directionStr = I18nHelper.GetString("Stand Still", "Đứng yên");
-                    }
-                    else
-                    {
-                        if (detail.VectorData.MainAxisX == 1)
-                        {
-                            if (detail.VectorData.DeltaX > 0)
-                            {
-                                arrowImg = Properties.Resources.Left_to_right;
-                                directionStr = I18nHelper.GetString("Left to Right", "Trái sang phải");
-                            }
-                            else
-                            {
-                                arrowImg = Properties.Resources.Right_to_left;
-                                directionStr = I18nHelper.GetString("Right to Left", "Phải sang trái");
-                            }
-                        }
-                        else if (detail.VectorData.MainAxisY == 1)
-                        {
-                            if (detail.VectorData.DeltaY > 0)
-                            {
-                                arrowImg = Properties.Resources.Top_to_bottom;
-                                directionStr = I18nHelper.GetString("Top to Bottom", "Trên xuống dưới");
-                            }
-                            else
-                            {
-                                arrowImg = Properties.Resources.Bottom_to_top;
-                                directionStr = I18nHelper.GetString("Bottom to Top", "Dưới lên trên");
-                            }
-                        }
-                    }
-
-                    var trainingForm = new IntructionTraingForm(
-                        detail.VectorData.Fingers,
-                        arrowImg,
-                        I18nHelper.GetLocalized(detail.Name),
-                        detail.PoseLabel,
-                        I18nHelper.GetLocalized(detail.Type),
-                        directionStr,
-                        this
-                    );
-
-                    trainingForm.GestureDetail = detail;
-                    trainingForm.SetDirectionText(directionStr);
-                    trainingForm.Show();
+                    // Không có user gestures -> hiển thị default gestures
+                    isShowingUserGestures = false;
+                    await LoadDefaultGesturesAsync();
+                    Console.WriteLine("[LoadGestures] Hiển thị Default Gestures");
                 }
             }
-            // Nếu đang hiển thị User Gesture
-            else if (currentListType == GestureListType.User)
+            catch (Exception ex)
             {
-                // Xử lý nút View
-                if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnView"].Index && e.RowIndex >= 0)
+                Console.WriteLine($"[LoadGestures] Lỗi: {ex.Message}");
+                // Nếu có lỗi, fallback về default gestures
+                isShowingUserGestures = false;
+                await LoadDefaultGesturesAsync();
+            }
+        }
+        private async void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            // Xử lý nút View
+            if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnView"].Index)
+            {
+                await HandleViewClick(e.RowIndex);
+            }
+            // Xử lý nút Training
+            else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnTraining"].Index)
+            {
+                await HandleTrainingClick(e.RowIndex);
+            }
+        }
+
+        private async Task HandleViewClick(int rowIndex)
+        {
+            try
+            {
+                if (isShowingUserGestures)
                 {
-                    var basic = uGestures[e.RowIndex];
+                    var basic = uGestures[rowIndex];
                     var detail = await _uGestureService.GetGestureDetailAsync(basic.Id);
                     if (detail == null)
                     {
-                        MessageBox.Show("Cannot get gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Cannot get user gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     string description = _uGestureService.GetGestureDescription(detail);
@@ -235,163 +194,120 @@ namespace GestPipePowerPonit
                     );
                     detailForm.ShowDialog();
                 }
-                // Xử lý nút Training
-                else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnTraining"].Index && e.RowIndex >= 0)
+                else
                 {
-                    var basic = uGestures[e.RowIndex];
-                    var detail = await _uGestureService.GetGestureDetailAsync(basic.Id);
-                    Bitmap arrowImg = null;
-                    string directionStr = "";
-                    string typeName = I18nHelper.GetLocalized(detail.Type);
-                    if (typeName == I18nHelper.GetString("Static", "Tĩnh"))
+                    var basic = gestures[rowIndex];
+                    var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
+                    if (detail == null)
                     {
-                        arrowImg = Properties.Resources.handlestaticImg;
-                        directionStr = I18nHelper.GetString("Stand Still", "Đứng yên");
+                        MessageBox.Show("Cannot get gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
-                    else
-                    {
-                        if (detail.VectorData.MainAxisX == 1)
-                        {
-                            if (detail.VectorData.DeltaX > 0)
-                            {
-                                arrowImg = Properties.Resources.Left_to_right;
-                                directionStr = I18nHelper.GetString("Left to Right", "Trái sang phải");
-                            }
-                            else
-                            {
-                                arrowImg = Properties.Resources.Right_to_left;
-                                directionStr = I18nHelper.GetString("Right to Left", "Phải sang trái");
-                            }
-                        }
-                        else if (detail.VectorData.MainAxisY == 1)
-                        {
-                            if (detail.VectorData.DeltaY > 0)
-                            {
-                                arrowImg = Properties.Resources.Top_to_bottom;
-                                directionStr = I18nHelper.GetString("Top to Bottom", "Trên xuống dưới");
-                            }
-                            else
-                            {
-                                arrowImg = Properties.Resources.Bottom_to_top;
-                                directionStr = I18nHelper.GetString("Bottom to Top", "Dưới lên trên");
-                            }
-                        }
-                    }
+                    string description = _gestureService.GetGestureDescription(detail);
+                    string instruction = _gestureService.GetInstructionTable(detail);
 
-                    //var trainingForm = new FormInstructionTraining(
-                    //    detail.VectorData.Fingers,
-                    //    arrowImg,
-                    //    I18nHelper.GetLocalized(detail.Name),
-                    //    detail.PoseLabel,
-                    //    I18nHelper.GetLocalized(detail.Type),
-                    //    directionStr,
-                    //    this
-                    //);
-                    var trainingForm = new IntructionTraingForm(
-                        detail.VectorData.Fingers,
-                        arrowImg,
+                    var detailForm = new DetailGestureForm(
                         I18nHelper.GetLocalized(detail.Name),
-                        detail.PoseLabel,
                         I18nHelper.GetLocalized(detail.Type),
-                        directionStr,
-                        this,
-                        true // ✅ isUserGesture = true
+                        $"{detail.Accuracy * 100:F1}%",
+                        I18nHelper.GetLocalized(detail.Status),
+                        detail.LastUpdate.ToString("dd-MM-yyyy"),
+                        description,
+                        instruction
                     );
-
-                    trainingForm.GestureDetail = detail;
-                    trainingForm.SetDirectionText(directionStr);
-                    trainingForm.Show();
+                    detailForm.ShowDialog();
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error viewing gesture details: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+        private async Task HandleTrainingClick(int rowIndex)
+        {
+            try
+            {
+                object detail = null;
 
-        //private async void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnView"].Index && e.RowIndex >= 0)
-        //    {
-        //        var basic = gestures[e.RowIndex];
-        //        var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
+                if (isShowingUserGestures)
+                {
+                    var basic = uGestures[rowIndex];
+                    detail = await _uGestureService.GetGestureDetailAsync(basic.Id);
+                }
+                else
+                {
+                    var basic = gestures[rowIndex];
+                    detail = await _gestureService.GetGestureDetailAsync(basic.Id);
+                }
 
-        //        if (detail == null)
-        //        {
-        //            MessageBox.Show("Cannot get gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //            return;
-        //        }
+                if (detail == null)
+                {
+                    MessageBox.Show("Cannot get gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-        //        string description = _gestureService.GetGestureDescription(detail);
-        //        string instruction = _gestureService.GetInstructionTable(detail);
+                // ✅ Xử lý chung cho cả hai loại gesture
+                var gestureDetail = detail as dynamic;
 
-        //        var detailForm = new FormGestureDetails(
-        //            I18nHelper.GetLocalized(detail.Name),
-        //            I18nHelper.GetLocalized(detail.Type),
-        //            $"{detail.Accuracy * 100:F1}%",
-        //            I18nHelper.GetLocalized(detail.Status),
-        //            detail.LastUpdate.ToString("dd-MM-yyyy"),
-        //            description,
-        //            instruction
-        //        );
-        //        detailForm.ShowDialog();
-        //    }
-        //    else if (e.ColumnIndex == guna2DataGridView1.Columns["ColumnTraining"].Index && e.RowIndex >= 0)
-        //    {
-        //        var basic = gestures[e.RowIndex];
-        //        var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
-        //        // ... Sau khi lấy detail xong
-        //        Bitmap arrowImg = null;
-        //        string directionStr = "";
-        //        string typeName = I18nHelper.GetLocalized(detail.Type);
-        //        if (typeName == I18nHelper.GetString("Static", "Tĩnh"))
-        //        {
-        //            arrowImg = Properties.Resources.handlestaticImg;
-        //            directionStr = I18nHelper.GetString("Stand Still", "Đứng yên");
-        //        }
-        //        else
-        //        {
-        //            if (detail.VectorData.MainAxisX == 1)
-        //            {
-        //                if (detail.VectorData.DeltaX > 0)
-        //                {
-        //                    arrowImg = Properties.Resources.Left_to_right;
-        //                    directionStr = I18nHelper.GetString("Left to Right", "Trái sang phải");
-        //                }
-        //                else
-        //                {
-        //                    arrowImg = Properties.Resources.Right_to_left;
-        //                    directionStr = I18nHelper.GetString("Right to Left", "Phải sang trái");
-        //                }
-        //            }
-        //            else if (detail.VectorData.MainAxisY == 1)
-        //            {
-        //                if (detail.VectorData.DeltaY > 0)
-        //                {
-        //                    arrowImg = Properties.Resources.Top_to_bottom;
-        //                    directionStr = I18nHelper.GetString("Top to Bottom", "Trên xuống dưới");
-        //                }
-        //                else
-        //                {
-        //                    arrowImg = Properties.Resources.Bottom_to_top;
-        //                    directionStr = I18nHelper.GetString("Bottom to Top", "Dưới lên trên");
-        //                }
-        //            }
-        //        }
+                Bitmap arrowImg = null;
+                string directionStr = "";
+                string typeName = I18nHelper.GetLocalized(gestureDetail.Type);
 
-        //        // Truyền tất cả sang form instruction, cùng một nguồn!
-        //        var trainingForm = new FormInstructionTraining(
-        //            detail.VectorData.Fingers,
-        //            arrowImg,
-        //            I18nHelper.GetLocalized(detail.Name),
-        //            detail.PoseLabel,
-        //            I18nHelper.GetLocalized(detail.Type),
-        //            directionStr, // truyền string direction
-        //            this
-        //        );
+                if (typeName == I18nHelper.GetString("Static", "Tĩnh"))
+                {
+                    arrowImg = Properties.Resources.staticImg;
+                    directionStr = I18nHelper.GetString("Stand Still", "Đứng yên");
+                }
+                else
+                {
+                    if (gestureDetail.VectorData.MainAxisX == 1)
+                    {
+                        if (gestureDetail.VectorData.DeltaX > 0)
+                        {
+                            arrowImg = Properties.Resources.Left_to_right;
+                            directionStr = I18nHelper.GetString("Left to Right", "Trái sang phải");
+                        }
+                        else
+                        {
+                            arrowImg = Properties.Resources.Right_to_left;
+                            directionStr = I18nHelper.GetString("Right to Left", "Phải sang trái");
+                        }
+                    }
+                    else if (gestureDetail.VectorData.MainAxisY == 1)
+                    {
+                        if (gestureDetail.VectorData.DeltaY > 0)
+                        {
+                            arrowImg = Properties.Resources.Top_to_bottom;
+                            directionStr = I18nHelper.GetString("Top to Bottom", "Trên xuống dưới");
+                        }
+                        else
+                        {
+                            arrowImg = Properties.Resources.Bottom_to_top;
+                            directionStr = I18nHelper.GetString("Bottom to Top", "Dưới lên trên");
+                        }
+                    }
+                }
 
-        //        trainingForm.GestureDetail = detail;
-        //        trainingForm.SetDirectionText(directionStr); // -> bạn thêm hàm public void SetDirectionText(string txt) { lblDirectionValue.Text = txt; }
+                var trainingForm = new IntructionTraingForm(
+                    gestureDetail.VectorData.Fingers,
+                    arrowImg,
+                    I18nHelper.GetLocalized(gestureDetail.Name),
+                    gestureDetail.PoseLabel,
+                    I18nHelper.GetLocalized(gestureDetail.Type),
+                    directionStr,
+                    this,
+                    isShowingUserGestures // ✅ Truyền flag để biết đang xử lý loại nào
+                );
 
-        //        trainingForm.Show();
-        //    }
-        //}
+                trainingForm.GestureDetail = gestureDetail;
+                trainingForm.SetDirectionText(directionStr);
+                trainingForm.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening training form: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void btnHome_Click(object sender, EventArgs e)
         {
@@ -431,9 +347,6 @@ namespace GestPipePowerPonit
             btnInstruction.Text = Properties.Resources.Btn_Instruction;
             btnCustomGesture.Text = Properties.Resources.Btn_CustomGesture;
             btnPresentation.Text = Properties.Resources.Btn_Present;
-            btnUserGesture.Text = Properties.Resources.BtnUserGesture;
-            btnDefaultGesture.Text = Properties.Resources.BtnDefaultGesture;
-            // Add any extra controls below if needed
             guna2DataGridView1.Columns["ColumnName"].HeaderText = Properties.Resources.Col_Name;
             guna2DataGridView1.Columns["ColumnAction"].HeaderText = Properties.Resources.Col_Type;
             guna2DataGridView1.Columns["ColumnAccuracy"].HeaderText = Properties.Resources.Col_Accuracy;
@@ -460,7 +373,6 @@ namespace GestPipePowerPonit
             this.Hide();
         }
 
-        // ✅ THÊM LOGOUT HANDLER
         private async void btnLogout_Click(object sender, EventArgs e)
         {
             try
@@ -578,18 +490,8 @@ namespace GestPipePowerPonit
             uGestureForm.Show();
             this.Hide();
         }
-
-        private async void btnDefaultGesture_Click(object sender, EventArgs e)
+        public async Task RefreshGesturesAsync()
         {
-            btnDefaultGesture.Enabled = false;
-            btnUserGesture.Enabled = true;
-            await LoadDefaultGesturesAsync();
-        }
-
-        private async void btnUserGesture_Click(object sender, EventArgs e)
-        {
-            btnDefaultGesture.Enabled = true;
-            btnUserGesture.Enabled = false;
             await LoadGesturesAsync();
         }
     }

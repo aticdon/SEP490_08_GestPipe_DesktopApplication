@@ -92,5 +92,28 @@ namespace GestPipe.Backend.Controllers
                 return StatusCode(500, new { Success = false, Message = "Error changing password." });
             }
         }
+        [HttpPatch("avatar")]
+        public async Task<IActionResult> UpdateAvatar([FromBody] UpdateAvatarDto avatarDto)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(avatarDto?.AvatarUrl))
+                    return BadRequest(new { Success = false, Message = "Avatar URL is required." });
+
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized(new { Success = false, Message = "User not found in token." });
+
+                _logger.LogInformation("Updating avatar for user: {UserId}", userId);
+                var response = await _profileService.UpdateAvatarAsync(userId, avatarDto.AvatarUrl);
+
+                return response.Success ? Ok(response) : BadRequest(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating avatar");
+                return StatusCode(500, new { Success = false, Message = "Error updating avatar." });
+            }
+        }
     }
 }

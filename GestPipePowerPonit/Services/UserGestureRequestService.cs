@@ -32,12 +32,12 @@ namespace GestPipePowerPonit.Services
             }
         }
 
-        public async Task<UserGestureRequestDto> GetLatestRequestByConfigAsync(string configId)
+        public async Task<UserGestureRequestDto> GetLatestRequestByConfigAsync(string configId, string userId)
         {
             try
             {
                 // Gọi API lấy request mới nhất cho UserGestureConfigId
-                var response = await client.GetAsync($"/api/UserGestureRequest/config/{configId}");
+                var response = await client.GetAsync($"/api/UserGestureRequest/user/{userId}/config/{configId}");
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<UserGestureRequestDto>();

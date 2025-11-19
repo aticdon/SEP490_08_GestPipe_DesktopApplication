@@ -329,7 +329,7 @@ namespace GestPipePowerPonit
                                             }
                                         }));
 
-                                        Debug.WriteLine($"[Camera] Frame displayed ({length} bytes)");
+                                        //Debug.WriteLine($"[Camera] Frame displayed ({length} bytes)");
                                     }
                                     catch (Exception ex)
                                     {
@@ -483,16 +483,12 @@ namespace GestPipePowerPonit
             }
             return titles;
         }
+
         private async void btnOpen_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "PowerPoint Files|*.pptx";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                string loadingMsg = CultureManager.CurrentCultureCode.Contains("vi")
-                    ? "Đang mở file và khởi động camera...\nVui lòng đợi..."
-                    : "Opening file and starting camera...\nPlease wait...";
-                ShowLoading(loadingMsg);
-
                 try
                 {
                     // Cleanup PowerPoint
@@ -519,7 +515,6 @@ namespace GestPipePowerPonit
                     txtFile.Text = openFileDialog1.FileName;
                     string ext = System.IO.Path.GetExtension(txtFile.Text).ToLower();
 
-                    // ✅ Reset camera state
                     firstCameraFrameReceived = false;
 
                     // Start Python process
@@ -532,7 +527,12 @@ namespace GestPipePowerPonit
                     server = new SocketServer(5006, this, HandleGestureCommand);
                     server.Start();
 
-                    // ✅ Start camera receiver
+                    // -- Đến bước này bạn chỉ show loading khi chờ CAMERA --
+                    ShowLoading(
+                        CultureManager.CurrentCultureCode.Contains("vi")
+                            ? "🎥 Đang kết nối camera..." : "🎥 Connecting camera..."
+                    );
+                    // Start camera receiver
                     StartCameraReceiver(6000);
                     pictureBoxCamera.Visible = true;
 
@@ -541,7 +541,6 @@ namespace GestPipePowerPonit
                         webView2_3D.Visible = false;
                         SetButtonsEnabled(true, false);
 
-                        // Detect 3D slides
                         await Task.Run(() =>
                         {
                             slidesWith3D = Detect3DSlides(txtFile.Text);
@@ -558,185 +557,35 @@ namespace GestPipePowerPonit
                             oPPT.SlideShowNextSlide += O_PPT_SlideShowNextSlide;
                             btnSlideShow.Enabled = true;
 
-                            // ✅ Cập nhật thông báo đang chờ camera
-                            string waitingCameraMsg = CultureManager.CurrentCultureCode.Contains("vi")
-                                ? "✅ File đã mở!\n🎥 Đang kết nối camera..."
-                                : "✅ File opened!\n🎥 Connecting camera...";
-                            UpdateLoadingText(waitingCameraMsg);
-
-                            // ✅ ĐỢI CAMERA KẾT NỐI
-                            await WaitForCameraConnectionAsync();
-
-                            // ✅ Success - Camera đã sẵn sàng
-                            string successMsg = CultureManager.CurrentCultureCode.Contains("vi")
-                                ? "✅ Tất cả đã sẵn sàng!"
-                                : "✅ Everything is ready!";
-                            UpdateLoadingText(successMsg);
-
-                            await Task.Delay(1000);
+                            // *** KHÔNG update lại loading hoặc success nữa ***
                         }
-                        catch (System.Runtime.InteropServices.COMException ex)
+                        catch (Exception ex)
                         {
                             string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
                                 ? $"Không thể mở PowerPoint: {ex.Message}"
                                 : $"Cannot open PowerPoint: {ex.Message}";
-
                             MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             oPPT = null;
                             oPres = null;
                             btnSlideShow.Enabled = false;
                         }
-                        catch (Exception ex)
-                        {
-                            string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
-                                ? $"Lỗi khi mở file: {ex.Message}"
-                                : $"Error opening file: {ex.Message}";
-
-                            MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
                     }
+
+                    // *** CHỈ update loading panel nội dung trong WaitForCameraConnectionAsync ***
+                    // *** CHỈ ẩn loading tại đây sau khi camera đã xong ***
+                    await WaitForCameraConnectionAsync();
+                    HideLoading();
                 }
                 catch (Exception ex)
                 {
                     string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
                         ? $"Lỗi: {ex.Message}"
                         : $"Error: {ex.Message}";
-
                     MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    // ✅ Chỉ ẩn loading sau khi camera đã sẵn sàng
-                    HideLoading();
+                    HideLoading(); // dù lỗi cũng ẩn loading
                 }
             }
         }
-
-        //private async void btnOpen_Click(object sender, EventArgs e)
-        //{
-        //    openFileDialog1.Filter = "PowerPoint Files|*.pptx";
-        //    if (openFileDialog1.ShowDialog() == DialogResult.OK)
-        //    {
-        //        string loadingMsg = CultureManager.CurrentCultureCode.Contains("vi")
-        //            ? "Đang mở file PowerPoint...\nVui lòng đợi..."
-        //            : "Opening PowerPoint file...\nPlease wait...";
-        //                ShowLoading(loadingMsg);
-        //        try
-        //        {
-        //            if (oPres != null)
-        //            {
-        //                oPres.Close();
-        //                Marshal.FinalReleaseComObject(oPres);
-        //                oPres = null;
-        //            }
-        //        }
-        //        catch { oPres = null; }
-        //        try
-        //        {
-        //            if (oPPT != null)
-        //            {
-        //                oPPT.Quit();
-        //                Marshal.FinalReleaseComObject(oPPT);
-        //                oPPT = null;
-        //            }
-        //        }
-        //        catch { oPPT = null; }
-
-        //        GC.Collect();
-        //        GC.WaitForPendingFinalizers();
-        //        foreach (var process in System.Diagnostics.Process.GetProcessesByName("POWERPNT"))
-        //        {
-        //            process.Kill();
-        //        }
-
-        //        txtFile.Text = openFileDialog1.FileName;
-        //        string ext = System.IO.Path.GetExtension(txtFile.Text).ToLower();
-
-        //        firstCameraFrameReceived = false;
-        //        //StartPythonProcess();
-        //        await Task.Run(() =>
-        //        {
-        //            StartPythonProcess();
-        //        });
-        //        RegisterKeys();
-        //        server = new SocketServer(5006, this, HandleGestureCommand);
-        //        server.Start();
-        //        StartCameraReceiver(6000);
-        //        pictureBoxCamera.Visible = true;
-
-        //        if (ext == ".pptx")
-        //        {
-        //            webView2_3D.Visible = false;
-        //            SetButtonsEnabled(true, false);
-        //            await Task.Run(() =>
-        //            {
-        //                slidesWith3D = Detect3DSlides(txtFile.Text);
-        //                pptxFolderPath = System.IO.Path.GetDirectoryName(txtFile.Text);
-        //                slideTitles = GetSlideTitles(txtFile.Text);
-        //            });
-        //            //slidesWith3D = Detect3DSlides(txtFile.Text);
-        //            //pptxFolderPath = System.IO.Path.GetDirectoryName(txtFile.Text);
-        //            //slideTitles = GetSlideTitles(txtFile.Text);
-
-        //            try
-        //            {
-        //                oPPT = new PowerPoint.Application();
-        //                oPres = oPPT.Presentations.Open(txtFile.Text,
-        //                    MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
-
-        //                oPPT.SlideShowNextSlide += O_PPT_SlideShowNextSlide;
-        //                btnSlideShow.Enabled = true;
-
-        //                string waitingCameraMsg = CultureManager.CurrentCultureCode.Contains("vi")
-        //                ? "✅ File đã mở!\n🎥 Đang kết nối camera..."
-        //                : "✅ File opened!\n🎥 Connecting camera...";
-        //                UpdateLoadingText(waitingCameraMsg);
-
-        //                // ✅ ĐỢI CAMERA KẾT NỐI
-        //                await WaitForCameraConnectionAsync();
-
-        //                string successMsg = CultureManager.CurrentCultureCode.Contains("vi")
-        //                ? "✅ Mở file thành công!"
-        //                : "✅ File opened successfully!";
-        //                UpdateLoadingText(successMsg);
-
-        //                await Task.Delay(1000);
-        //            }
-        //            catch (System.Runtime.InteropServices.COMException ex)
-        //            {
-        //                //MessageBox.Show("Không thể mở PowerPoint: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //                //oPPT = null;
-        //                //oPres = null;
-        //                //btnSlideShow.Enabled = false;
-        //                string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
-        //                ? $"Không thể mở PowerPoint: {ex.Message}"
-        //                : $"Cannot open PowerPoint: {ex.Message}";
-
-        //                MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //                oPPT = null;
-        //                oPres = null;
-        //                btnSlideShow.Enabled = false;
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                //MessageBox.Show("Lỗi khi mở file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //                //oPPT = null;
-        //                //oPres = null;
-        //                //btnSlideShow.Enabled = false;
-        //                string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
-        //                ? $"Lỗi khi mở file: {ex.Message}"
-        //                : $"Error opening file: {ex.Message}";
-
-        //                MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //            }
-        //            finally
-        //            {
-        //                HideLoading();
-        //            }
-        //        }
-        //    }
-        //}
-
         protected override void WndProc(ref Message m)
         {
             const int WM_HOTKEY = 0x0312;
@@ -793,95 +642,12 @@ namespace GestPipePowerPonit
             for (int i = 1; i <= 14; i++)
                 UnregisterHotKey(this.Handle, i);
         }
-
-        //private async void ShowGLBModel(string glbPath)
-        //{
-        //    webView2_3D.Visible = true;
-        //    if (!File.Exists(glbPath))
-        //    {
-        //        MessageBox.Show("Không tìm thấy file GLB: " + glbPath);
-        //        return;
-        //    }
-
-        //    if (webView2_3D.Parent != panelSlide)
-        //    {
-        //        MessageBox.Show("WebView2 không nằm trong panelSlide!");
-        //    }
-        //    string folderPath = System.IO.Path.GetDirectoryName(glbPath);
-        //    string fileName = System.IO.Path.GetFileName(glbPath);
-        //    string virtualHostName = "http://virtualhost.local/";
-
-        //    string html = $@"
-        //                <html>
-        //                  <head>
-        //                    <meta charset='UTF-8'>
-        //                    <script type='module' src='https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js'></script>
-        //                    <style>
-        //                      html, body {{ width: 100%; height: 100%; margin: 0; background: #222; }}
-        //                      model-viewer {{ width: 100vw; height: 100vh; background: #222; }}
-        //                    </style>
-        //                    <script>
-        //                      window.mvReady = false;
-        //                      window.addEventListener('DOMContentLoaded', () => {{
-        //                        const mv = document.getElementById('mv');
-        //                        mv.addEventListener('load', () => {{
-        //                          window.mvReady = true;
-        //                        }});
-        //                        setTimeout(() => {{ window.mvReady = true; }}, 1000);
-        //                      }});
-        //                    </script>
-        //                  </head>
-        //                  <body>
-        //                    <model-viewer id='mv' src='{virtualHostName}{fileName}'
-        //                      camera-controls
-        //                      interaction-prompt='none'
-        //                      background-color='#222' ></model-viewer>
-        //                  </body>
-        //                </html>";
-
-        //    if (webView2_3D.CoreWebView2 == null)
-        //    {
-        //        await webView2_3D.EnsureCoreWebView2Async();
-        //        webView2_3D.CoreWebView2.SetVirtualHostNameToFolderMapping(
-        //            "virtualhost.local",
-        //            folderPath,
-        //            Microsoft.Web.WebView2.Core.CoreWebView2HostResourceAccessKind.Allow);
-        //    }
-
-        //    webView2_3D.NavigateToString(html);
-
-        //    await Task.Delay(1500);
-
-        //    var result = await webView2_3D.ExecuteScriptAsync(@"
-        //        (function() {
-        //            let el = document.getElementById('mv');
-        //            if (el && el.getCameraOrbit) {
-        //                let orbit = el.getCameraOrbit();
-        //                return orbit.radius;
-        //            }
-        //            return '';
-        //        })();
-        //    ");
-        //    result = result.Trim('"');
-        //    if (double.TryParse(result, out double radius))
-        //    {
-        //        initialRadius = radius;
-        //    }
-        //    else
-        //    {
-        //        initialRadius = 2.5;
-        //    }
-        //    zoomPercent = 100;
-        //    modelAzimuth = 0;
-        //    modelPolar = Math.PI / 2;
-        //    UpdateZoomOverlay();
-        //}
         private async void ShowGLBModel(string glbPath)
         {
-            string loadingMsg = CultureManager.CurrentCultureCode.Contains("vi")
-                ? "Đang tải mô hình 3D...\nVui lòng đợi..."
-                : "Loading 3D model...\nPlease wait...";
-            ShowLoading(loadingMsg);
+            //string loadingMsg = CultureManager.CurrentCultureCode.Contains("vi")
+            //    ? "Đang tải mô hình 3D...\nVui lòng đợi..."
+            //    : "Loading 3D model...\nPlease wait...";
+            //ShowLoading(loadingMsg);
 
             try
             {
@@ -889,15 +655,15 @@ namespace GestPipePowerPonit
 
                 if (!File.Exists(glbPath))
                 {
-                    HideLoading();
-                    MessageBox.Show("Không tìm thấy file GLB: " + glbPath);
+                    //HideLoading();
+                    //MessageBox.Show("Không tìm thấy file GLB: " + glbPath);
                     return;
                 }
 
                 if (webView2_3D.Parent != panelSlide)
                 {
-                    HideLoading();
-                    MessageBox.Show("WebView2 không nằm trong panelSlide!");
+                    //HideLoading();
+                    //MessageBox.Show("WebView2 không nằm trong panelSlide!");
                     return;
                 }
 
@@ -986,7 +752,6 @@ namespace GestPipePowerPonit
                 HideLoading();
             }
         }
-
         private void CheckAndShowGLBForCurrentSlide()
         {
             if (oPPT == null || oPres == null || slideTitles.Count == 0) return;
@@ -1018,7 +783,6 @@ namespace GestPipePowerPonit
                     ExitFullScreenGLB();
             }
         }
-
         private void btnSlideShow_Click(object sender, EventArgs e)
         {
             webView2_3D.Visible = false;
@@ -1038,13 +802,6 @@ namespace GestPipePowerPonit
                     SetForegroundWindow(pptHandle);
                 }
             }
-
-            //btnFirst.Enabled = true;
-            //btnPrev.Enabled = true;
-            //btnNext.Enabled = true;
-            //btnLast.Enabled = true;
-            //btnPause.Enabled = true;
-            //btnClose.Enabled = true;
             SetButtonsEnabled(true, true);
             zoomSlideCount = 0;
 
@@ -1093,7 +850,6 @@ namespace GestPipePowerPonit
                 }
             }
         }
-
         private void btnLast_Click(object sender, EventArgs e)
         {
             if (oPPT != null && oPPT.SlideShowWindows.Count > 0)
@@ -1104,7 +860,6 @@ namespace GestPipePowerPonit
                 zoomSlideCount = 0;
             }
         }
-
         private void btnPause_Click(object sender, EventArgs e)
         {
             if (autoSlideTimer.Enabled)
@@ -1118,9 +873,9 @@ namespace GestPipePowerPonit
                 btnPause.Text = "Pause";
             }
         }
-
         private async void btnClose_Click(object sender, EventArgs e)
         {
+            HideLoading();
             DateTime endTime = DateTime.UtcNow;
             double duration = 0;
             if (_startTime.HasValue)
@@ -1129,7 +884,7 @@ namespace GestPipePowerPonit
             var session = new Session
             {
                 Id = "",
-                UserId = "68fa3209582c17a482c5b11e",
+                UserId = userId,
                 CategoryId = cmbCategory.SelectedValue?.ToString(),
                 TopicId = cmbTopic.SelectedValue?.ToString(),
                 Records = gestureCounts,
@@ -1198,11 +953,6 @@ namespace GestPipePowerPonit
         private async void Form1_Load(object sender, EventArgs e)
         {
             ApplyLanguage(GestPipePowerPonit.CultureManager.CurrentCultureCode);
-            //StartPythonProcess();
-            //RegisterKeys();
-            //server = new SocketServer(5006, this, HandleGestureCommand);
-            //server.Start();
-            //StartCameraReceiver(6000);
             pictureBoxCamera.Visible = false;
             SetButtonsEnabled(false, false);
             var categories = await categoryService.GetCategoriesAsync();
@@ -1303,6 +1053,8 @@ namespace GestPipePowerPonit
             fullScreenForm.KeyPreview = true;
             fullScreenForm.StartPosition = FormStartPosition.Manual;
 
+            fullScreenForm.KeyDown += Form1_KeyDown;
+
             panelSlide.Parent = fullScreenForm;
             panelSlide.Dock = DockStyle.Fill;
 
@@ -1329,7 +1081,8 @@ namespace GestPipePowerPonit
                 ctl.Visible = false;
 
             fullScreenForm.Show();
-            fullScreenForm.ActiveControl = null;
+            fullScreenForm.Activate();
+            //fullScreenForm.ActiveControl = null;
         }
 
         private void SwitchToPowerPointFromGLB()
@@ -1380,17 +1133,22 @@ namespace GestPipePowerPonit
                 CheckAndShowGLBForCurrentSlide();
             }
         }
-
         private void UpdateModelView()
         {
             webView2_3D.ExecuteScriptAsync($@"
-            if(window.mvReady){{
-                let el = document.getElementById('mv');
-                let orbit = el.getCameraOrbit();
-                let radius = parseFloat(orbit.radius||2.5);
-                el.cameraOrbit = '{modelAzimuth}rad {modelPolar}rad ' + radius + 'm';
-            }}
-            ");
+        if(window.mvReady){{
+            let el = document.getElementById('mv');
+            let orbit = el.getCameraOrbit();
+            let radius = parseFloat(orbit.radius||2.5);
+            el.cameraOrbit = '{modelAzimuth}rad {modelPolar}rad ' + radius + 'm';
+        }}
+    ");
+
+            if (fullScreenForm != null && fullScreenForm.Visible)
+            {
+                fullScreenForm.Focus();
+                fullScreenForm.Activate();
+            }
         }
 
         private void ShowZoomOverlay()
@@ -1411,19 +1169,30 @@ namespace GestPipePowerPonit
 
         private void HandleGestureCommand(string command)
         {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => HandleGestureCommand(command)));
+                return;
+            }
+
+            Debug.WriteLine($"[HandleGestureCommand] Received: {command}");
             if (gestureCounts.ContainsKey(command))
                 gestureCounts[command]++;
             else
                 gestureCounts[command] = 1;
             switch (command)
             {
-                //case "zoom_in": btnZoomInTop_Click(null, null); break;
-                //case "zoom_out": btnZoomOutTop_Click(null, null); break;
-                case "zoom_in": btnZoomInTop_Click(null, null); break;
-                case "zoom_out": btnZoomOutTop_Click(null, null); break;
-                case "next_slide": btnNext_Click(null, null); break;
-                case "previous_slide": btnSlideShow_Click(null, null); break;
-                case "Slide_show": btnSlideShow_Click(null, null); break;
+                case "zoom_in": btnZoomInTop_Click(null, null); Console.WriteLine("Zoom in"); break;
+                case "zoom_out": btnZoomOutTop_Click(null, null); Console.WriteLine("Zoom out"); break;
+                case "next_slide": btnNext_Click(null, null); Console.WriteLine("Next Slide"); break;
+                case "previous_slide": btnPrev_Click(null, null); Console.WriteLine("Previous Slide"); break;
+                case "home": btnFirst_Click(null, null); Console.WriteLine("Home"); break;
+                case "end": btnLast_Click(null, null); Console.WriteLine("End"); break;
+                case "rotate_left": btnViewRight_Click(null, null); Console.WriteLine("Rotate Left"); break;
+                case "rotate_right": btnViewLeft_Click(null, null); Console.WriteLine("Rotate Right"); break;
+                case "rotate_up": btnViewBottom_Click(null, null); Console.WriteLine("Rotate Up"); break;
+                case "rotate_down": btnViewTop_Click(null, null); Console.WriteLine("Rotate Down"); break;
+                //case "Slide_show": btnSlideShow_Click(null, null); break;
                 default: MessageBox.Show($"Nhận lệnh không xác định: {command}"); break;
             }
         }
@@ -1494,8 +1263,9 @@ namespace GestPipePowerPonit
             try
             {
                 string pythonExePath = "python"; // hoặc @"C:\Users\THUCLTCE171961\AppData\Local\Programs\Python\Python39\python.exe"
-
-                string scriptFile = @"D:\Semester9\codepython\hybrid_realtime_pipeline\test_gesture_recognition.py";
+                string userFolder = $"user_{userId}";
+                string scriptFile = $@"D:\Semester9\codepython\hybrid_realtime_pipeline\code\{userFolder}\test_gesture_recognition.py";
+                //string userArgument = $"user_{userId}";
 
                 Debug.WriteLine("Python exe path: " + pythonExePath);
                 Debug.WriteLine("Python script path: " + scriptFile);
@@ -1516,6 +1286,7 @@ namespace GestPipePowerPonit
                 pythonProcess = new Process();
                 pythonProcess.StartInfo.FileName = pythonExePath;
                 pythonProcess.StartInfo.Arguments = $"\"{scriptFile}\"";
+                //pythonProcess.StartInfo.Arguments = $"\"{scriptFile}\" {userArgument}";
                 pythonProcess.StartInfo.WorkingDirectory = Path.GetDirectoryName(scriptFile);
                 pythonProcess.StartInfo.UseShellExecute = false;
                 pythonProcess.StartInfo.RedirectStandardOutput = true;
@@ -1547,13 +1318,11 @@ namespace GestPipePowerPonit
                 Debug.WriteLine("Lỗi chạy Python: " + ex.ToString());
             }
         }
-
         private void btnHome_Click(object sender, EventArgs e)
         {
             _homeForm.Show();
             this.Close();
         }
-
         private async void cmbCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             string categoryId = cmbCategory.SelectedValue?.ToString();
@@ -1575,7 +1344,8 @@ namespace GestPipePowerPonit
         }
         private async void UpdateCultureAndApply(string cultureCode)
         {
-            try {
+            try
+            {
                 CultureManager.CurrentCultureCode = cultureCode;
                 ResourceHelper.SetCulture(cultureCode, this);
                 var categories = await categoryService.GetCategoriesAsync();
@@ -1583,7 +1353,7 @@ namespace GestPipePowerPonit
                 cmbCategory.DataSource = categories;
                 cmbCategory.DisplayMember = "DisplayName";
                 cmbCategory.ValueMember = "Id";
-                 await _apiClient.SetUserLanguageAsync(userId, cultureCode);
+                await _apiClient.SetUserLanguageAsync(userId, cultureCode);
                 CustomMessageBox.ShowSuccess(
                     Properties.Resources.Message_ChangeLanguageSuccess,
                     Properties.Resources.Title_Success
@@ -1596,7 +1366,7 @@ namespace GestPipePowerPonit
                     Properties.Resources.Title_Error
                 );
             }
-            
+
         }
         public void ApplyLanguage(string cultureCode)
         {
@@ -1614,7 +1384,7 @@ namespace GestPipePowerPonit
             //btnExit.Text = Properties.Resources.Btn_Exit;
             lblPresentationPreview.Text = Properties.Resources.Lbl_PresentationPreview;
             //btnClose.Text = Properties.Resources.LblClose;
-            btnOpen.Text= Properties.Resources.Btn_Browse;
+            btnOpen.Text = Properties.Resources.Btn_Browse;
             btnExit.Text = Properties.Resources.LblClose;
         }
 
@@ -1631,95 +1401,10 @@ namespace GestPipePowerPonit
             uGestureForm.Show();
             this.Hide();
         }
-
         private void guna2ControlBoxClose_Click(object sender, EventArgs e)
         {
             AppSettings.ExitAll();
         }
-        // ✅ THÊM LOGOUT HANDLER
-        //private async void btnLogout_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        var result = CustomMessageBox.ShowQuestion(
-        //            Properties.Resources.Message_LogoutConfirm,
-        //            Properties.Resources.Title_Confirmation
-        //        );
-
-        //        if (result != DialogResult.Yes)
-        //        {
-        //            return;
-        //        }
-
-        //        btnLogout.Enabled = false;
-        //        btnProfile.Enabled = false;
-        //        Cursor = Cursors.WaitCursor;
-
-        //        Console.WriteLine("\n" + new string('=', 60));
-        //        Console.WriteLine("[Form1] LOGOUT PROCESS STARTED");
-        //        Console.WriteLine(new string('=', 60));
-
-        //        // ✅ Cleanup PowerPoint và Python process trước khi logout
-        //        CleanupResources();
-
-        //        var response = await _authService.LogoutAsync();
-
-        //        if (response?.Success == true)
-        //        {
-        //            Console.WriteLine("[Form1] ✅ Logout successful");
-
-        //            CustomMessageBox.ShowSuccess(
-        //                Properties.Resources.Message_LogoutSuccess,
-        //                Properties.Resources.Title_Success
-        //            );
-
-        //            var loginForm = new LoginForm();
-
-        //            // Đóng HomeUser nếu đang mở
-        //            _homeForm?.Close();
-
-        //            // Đóng form hiện tại
-        //            this.Hide();
-
-        //            // Show LoginForm
-        //            loginForm.Show();
-
-        //            // Dispose form hiện tại
-        //            this.Dispose();
-
-        //            Console.WriteLine("[Form1] ✅ Returned to LoginForm");
-        //            Console.WriteLine(new string('=', 60) + "\n");
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine($"[Form1] ❌ Logout failed: {response?.Message}");
-
-        //            CustomMessageBox.ShowError(
-        //                response?.Message ?? Properties.Resources.Message_LogoutFailed,
-        //                Properties.Resources.Title_Error
-        //            );
-
-        //            btnLogout.Enabled = true;
-        //            btnProfile.Enabled = true;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"[Form1] ❌ Exception: {ex.Message}");
-
-        //        CustomMessageBox.ShowError(
-        //            $"{Properties.Resources.Message_LogoutError}: {ex.Message}",
-        //            Properties.Resources.Title_ConnectionError
-        //        );
-
-        //        btnLogout.Enabled = true;
-        //        btnProfile.Enabled = true;
-        //    }
-        //    finally
-        //    {
-        //        Cursor = Cursors.Default;
-        //    }
-        //}
         private async void btnLogout_Click(object sender, EventArgs e)
         {
             try
@@ -1733,12 +1418,6 @@ namespace GestPipePowerPonit
                 {
                     return;
                 }
-
-                // ✅ Show loading
-                string loadingMsg = CultureManager.CurrentCultureCode.Contains("vi")
-                    ? "Đang đăng xuất...\nVui lòng đợi..."
-                    : "Logging out...\nPlease wait...";
-                ShowLoading(loadingMsg);
 
                 btnLogout.Enabled = false;
                 btnProfile.Enabled = false;
@@ -1834,53 +1513,6 @@ namespace GestPipePowerPonit
                 );
             }
         }
-
-        // ✅ THÊM METHOD CLEANUP RESOURCES
-        //private void CleanupResources()
-        //{
-        //    try
-        //    {
-        //        // Stop camera receiver
-        //        StopCameraReceiver();
-
-        //        // Stop Python process
-        //        if (pythonProcess != null && !pythonProcess.HasExited)
-        //        {
-        //            pythonProcess.Kill();
-        //            pythonProcess.Dispose();
-        //        }
-
-        //        // Close PowerPoint
-        //        if (oPPT != null && oPPT.SlideShowWindows.Count > 0)
-        //        {
-        //            oPPT.SlideShowWindows[1].View.Exit();
-        //        }
-
-        //        if (oPres != null)
-        //        {
-        //            oPres.Close();
-        //            Marshal.FinalReleaseComObject(oPres);
-        //            oPres = null;
-        //        }
-
-        //        if (oPPT != null)
-        //        {
-        //            oPPT.Quit();
-        //            Marshal.FinalReleaseComObject(oPPT);
-        //            oPPT = null;
-        //        }
-
-        //        // Stop socket server
-        //        server?.Stop();
-
-        //        GC.Collect();
-        //        GC.WaitForPendingFinalizers();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine($"Error cleaning up resources: {ex.Message}");
-        //    }
-        //}
         private void CleanupResources()
         {
             try

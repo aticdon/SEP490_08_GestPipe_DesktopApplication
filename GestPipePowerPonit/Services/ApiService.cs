@@ -203,6 +203,50 @@ namespace GestPipePowerPonit.Services
                 throw;
             }
         }
+        public async Task<T> PatchAsync<T>(string endpoint, object data) where T : class
+        {
+            try
+            {
+                Console.WriteLine($"[ApiService] PATCH {BaseUrl}{endpoint}");
+
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                Console.WriteLine($"[ApiService] Request Body: {json}");
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), endpoint)
+                {
+                    Content = content
+                };
+
+                var response = await _httpClient.SendAsync(request);
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"[ApiService] Response Status: {(int)response.StatusCode}");
+                Console.WriteLine($"[ApiService] Response Body: {responseContent}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return JsonConvert.DeserializeObject<T>(responseContent);
+                }
+                else
+                {
+                    try
+                    {
+                        return JsonConvert.DeserializeObject<T>(responseContent);
+                    }
+                    catch
+                    {
+                        throw new Exception($"API Error: {(int)response.StatusCode}\n{responseContent}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ApiService] PATCH Exception: {ex.Message}");
+                throw;
+            }
+        }
     }
 
 }

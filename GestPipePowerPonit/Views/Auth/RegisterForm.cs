@@ -46,6 +46,12 @@ namespace GestPipePowerPonit.Views.Auth
 
             LoadLanguage();
             CenterControls();
+
+            cmbGender.SelectedIndex = 0;
+            cmbAddress.SelectedIndex = 0;
+            cmbEdu.SelectedIndex = 0;
+            cmbOccupation.SelectedIndex = 0;  // ✅ Thêm dòng này
+            dtpBirthDate.Value = DateTime.Now.AddYears(-18);
         }
 
         private void LoadLanguage()
@@ -73,10 +79,36 @@ namespace GestPipePowerPonit.Views.Auth
             txtPassword.PlaceholderText = AppSettings.GetText("RegisterForm_Placeholder_Password");
             txtPhoneNumber.PlaceholderText = AppSettings.GetText("RegisterForm_Placeholder_Phone");
             txtCompany.PlaceholderText = AppSettings.GetText("RegisterForm_Placeholder_Company");
-            txtOccupation.PlaceholderText = AppSettings.GetText("RegisterForm_Placeholder_Occupation");
+            //txtOccupation.PlaceholderText = AppSettings.GetText("RegisterForm_Placeholder_Occupation");
         }
 
         // ===== Validation =====
+        //private void ClearErrors()
+        //{
+        //    lblEmailError.Visible = false;
+        //    lblFullNameError.Visible = false;
+        //    lblPasswordError.Visible = false;
+        //    lblConfirmPasswordError.Visible = false;
+        //    lblPhoneNumberError.Visible = false;
+        //    lblGenderError.Visible = false;
+        //    lblBirthDateError.Visible = false;
+        //    lblAddressError.Visible = false;
+        //    lblEduError.Visible = false;
+        //    lblCompanyError.Visible = false;
+        //    lblOccupationError.Visible = false;
+
+        //    txtEmail.BorderColor = Color.FromArgb(220, 220, 220);
+        //    txtFullName.BorderColor = Color.FromArgb(220, 220, 220);
+        //    txtPassword.BorderColor = Color.FromArgb(220, 220, 220);
+        //    txtConfirmPassword.BorderColor = Color.FromArgb(220, 220, 220);
+        //    txtPhoneNumber.BorderColor = Color.FromArgb(220, 220, 220);
+        //    cmbGender.BorderColor = Color.FromArgb(220, 220, 220);
+        //    dtpBirthDate.BorderColor = Color.FromArgb(220, 220, 220);
+        //    cmbAddress.BorderColor = Color.FromArgb(220, 220, 220);
+        //    cmbEdu.BorderColor = Color.FromArgb(220, 220, 220);
+        //    txtCompany.BorderColor = Color.FromArgb(220, 220, 220);
+        //    txtOccupation.BorderColor = Color.FromArgb(220, 220, 220);
+        //}
         private void ClearErrors()
         {
             lblEmailError.Visible = false;
@@ -101,9 +133,162 @@ namespace GestPipePowerPonit.Views.Auth
             cmbAddress.BorderColor = Color.FromArgb(220, 220, 220);
             cmbEdu.BorderColor = Color.FromArgb(220, 220, 220);
             txtCompany.BorderColor = Color.FromArgb(220, 220, 220);
-            txtOccupation.BorderColor = Color.FromArgb(220, 220, 220);
+            cmbOccupation.BorderColor = Color.FromArgb(220, 220, 220);  // ✅ Thay đổi từ txtOccupation
+            txtOccupationOther.BorderColor = Color.FromArgb(220, 220, 220);  // ✅ Thêm mới
         }
 
+        //private bool ValidateInputs(out List<string> errors)
+        //{
+        //    errors = new List<string>();
+        //    ClearErrors();
+
+        //    var registerDto = new RegisterDto
+        //    {
+        //        Email = txtEmail.Text.Trim(),
+        //        Password = txtPassword.Text,
+        //        ReEnterPassword = txtConfirmPassword.Text,
+        //        FullName = txtFullName.Text.Trim(),
+        //        PhoneNumber = txtPhoneNumber.Text?.Trim() ?? "",
+        //        Gender = cmbGender.SelectedIndex > 0 ? cmbGender.SelectedItem.ToString() : "",
+        //        DateOfBirth = dtpBirthDate.Value,
+        //        Address = cmbAddress.SelectedIndex > 0 ? cmbAddress.SelectedItem.ToString() : "",
+        //        EducationLevel = cmbEdu.SelectedIndex > 0 ? cmbEdu.SelectedItem.ToString() : "",
+        //        Company = txtCompany.Text?.Trim() ?? "",
+        //        Occupation = GetOccupationValue() ?? ""
+        //    };
+
+        //    var context = new ValidationContext(registerDto);
+        //    var validationResults = new List<ValidationResult>();
+        //    bool isValid = Validator.TryValidateObject(registerDto, context, validationResults, true);
+
+        //    System.Diagnostics.Debug.WriteLine($"[Validation] Valid={isValid}, Errors={validationResults.Count}");
+
+        //    foreach (var result in validationResults)
+        //    {
+        //        foreach (var memberName in result.MemberNames)
+        //        {
+        //            switch (memberName)
+        //            {
+        //                case nameof(RegisterDto.Email):
+        //                    if (string.IsNullOrWhiteSpace(txtEmail.Text))
+        //                        lblEmailError.Text = AppSettings.GetText("Validation_EmailRequired");
+        //                    else
+        //                        lblEmailError.Text = AppSettings.GetText("Validation_InvalidEmail");
+        //                    lblEmailError.Visible = true;
+        //                    txtEmail.BorderColor = Color.OrangeRed;
+        //                    break;
+
+        //                case nameof(RegisterDto.FullName):
+        //                    lblFullNameError.Text = AppSettings.GetText("Validation_FullNameRequired");
+        //                    lblFullNameError.Visible = true;
+        //                    txtFullName.BorderColor = Color.OrangeRed;
+        //                    break;
+
+        //                case nameof(RegisterDto.Password):
+        //                    if (string.IsNullOrWhiteSpace(txtPassword.Text))
+        //                        lblPasswordError.Text = AppSettings.GetText("Validation_PasswordRequired");
+        //                    else
+        //                        lblPasswordError.Text = AppSettings.GetText("Validation_PasswordTooShort");
+        //                    lblPasswordError.Visible = true;
+        //                    txtPassword.BorderColor = Color.OrangeRed;
+        //                    break;
+
+        //                case nameof(RegisterDto.ReEnterPassword):
+        //                    lblConfirmPasswordError.Text = AppSettings.GetText("Validation_ConfirmPasswordRequired");
+        //                    lblConfirmPasswordError.Visible = true;
+        //                    txtConfirmPassword.BorderColor = Color.OrangeRed;
+        //                    break;
+
+        //                case nameof(RegisterDto.PhoneNumber):
+        //                    if (result.ErrorMessage.Contains("digits"))
+        //                        lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneOnlyDigits");
+        //                    else if (result.ErrorMessage.Contains("10"))
+        //                        lblPhoneNumberError.Text = AppSettings.GetText("Validation_Phone10Digits");
+        //                    else if (result.ErrorMessage.Contains("0"))
+        //                        lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneStartWith0");
+        //                    else
+        //                        lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneOnlyDigits");
+
+        //                    lblPhoneNumberError.Visible = true;
+        //                    txtPhoneNumber.BorderColor = Color.OrangeRed;
+        //                    break;
+
+        //                case nameof(RegisterDto.Gender):
+        //                    lblGenderError.Text = AppSettings.GetText("Validation_SelectGender");
+        //                    lblGenderError.Visible = true;
+        //                    cmbGender.BorderColor = Color.OrangeRed;
+        //                    break;
+
+        //                case nameof(RegisterDto.DateOfBirth):
+        //                    lblBirthDateError.Text = AppSettings.GetText("Validation_DateOfBirthRequired");
+        //                    lblBirthDateError.Visible = true;
+        //                    dtpBirthDate.BorderColor = Color.OrangeRed;
+        //                    break;
+
+        //                case nameof(RegisterDto.Address):
+        //                    lblAddressError.Text = AppSettings.GetText("Validation_SelectAddress");
+        //                    lblAddressError.Visible = true;
+        //                    cmbAddress.BorderColor = Color.OrangeRed;
+        //                    break;
+
+        //                case nameof(RegisterDto.EducationLevel):
+        //                    lblEduError.Text = AppSettings.GetText("Validation_SelectEdu");
+        //                    lblEduError.Visible = true;
+        //                    cmbEdu.BorderColor = Color.OrangeRed;
+        //                    break;
+
+        //                case nameof(RegisterDto.Company):
+        //                    lblCompanyError.Text = AppSettings.GetText("Validation_CompanyRequired");
+        //                    lblCompanyError.Visible = true;
+        //                    txtCompany.BorderColor = Color.OrangeRed;
+        //                    break;
+
+        //                case nameof(RegisterDto.Occupation):
+        //                    // ✅ Kiểm tra nếu chưa chọn occupation
+        //                    if (cmbOccupation.SelectedIndex == 0)
+        //                    {
+        //                        lblOccupationError.Text = AppSettings.GetText("Validation_OccupationRequired");
+        //                        lblOccupationError.Visible = true;
+        //                        cmbOccupation.BorderColor = Color.OrangeRed;
+        //                    }
+        //                    // ✅ Nếu chọn "Other" nhưng không điền vào txtOccupationOther
+        //                    else if (cmbOccupation.SelectedIndex == cmbOccupation.Items.Count - 1)
+        //                    {
+        //                        string customOccupation = txtOccupationOther.Text?.Trim() ?? "";
+        //                        if (string.IsNullOrWhiteSpace(customOccupation))
+        //                        {
+        //                            lblOccupationError.Text = AppSettings.GetText("Validation_OccupationSpecifyRequired") ?? "Please specify your occupation";
+        //                            lblOccupationError.Visible = true;
+        //                            txtOccupationOther.BorderColor = Color.OrangeRed;
+        //                        }
+        //                        else if (customOccupation.Length < 2 || customOccupation.Length > 50)
+        //                        {
+        //                            lblOccupationError.Text = AppSettings.GetText("Validation_OccupationLength") ?? "Occupation must be 2-50 characters";
+        //                            lblOccupationError.Visible = true;
+        //                            txtOccupationOther.BorderColor = Color.OrangeRed;
+        //                        }
+        //                    }
+        //                    break;
+        //            }
+
+        //            errors.Add(lblEmailError.Text);
+        //        }
+        //    }
+
+        //    // ✅ CUSTOM VALIDATION: Password match
+        //    if (!string.IsNullOrEmpty(txtPassword.Text) &&
+        //        !string.IsNullOrEmpty(txtConfirmPassword.Text) &&
+        //        txtPassword.Text != txtConfirmPassword.Text)
+        //    {
+        //        string errorMsg = AppSettings.GetText("Validation_PasswordMismatch");
+        //        lblConfirmPasswordError.Text = errorMsg;
+        //        lblConfirmPasswordError.Visible = true;
+        //        txtConfirmPassword.BorderColor = Color.OrangeRed;
+        //        errors.Add(errorMsg);
+        //    }
+
+        //    return errors.Count == 0;
+        //}
         private bool ValidateInputs(out List<string> errors)
         {
             errors = new List<string>();
@@ -121,7 +306,7 @@ namespace GestPipePowerPonit.Views.Auth
                 Address = cmbAddress.SelectedIndex > 0 ? cmbAddress.SelectedItem.ToString() : "",
                 EducationLevel = cmbEdu.SelectedIndex > 0 ? cmbEdu.SelectedItem.ToString() : "",
                 Company = txtCompany.Text?.Trim() ?? "",
-                Occupation = txtOccupation.Text?.Trim() ?? ""
+                Occupation = GetOccupationValue() ?? ""
             };
 
             var context = new ValidationContext(registerDto);
@@ -143,12 +328,14 @@ namespace GestPipePowerPonit.Views.Auth
                                 lblEmailError.Text = AppSettings.GetText("Validation_InvalidEmail");
                             lblEmailError.Visible = true;
                             txtEmail.BorderColor = Color.OrangeRed;
+                            errors.Add(lblEmailError.Text);
                             break;
 
                         case nameof(RegisterDto.FullName):
                             lblFullNameError.Text = AppSettings.GetText("Validation_FullNameRequired");
                             lblFullNameError.Visible = true;
                             txtFullName.BorderColor = Color.OrangeRed;
+                            errors.Add(lblFullNameError.Text);
                             break;
 
                         case nameof(RegisterDto.Password):
@@ -158,12 +345,14 @@ namespace GestPipePowerPonit.Views.Auth
                                 lblPasswordError.Text = AppSettings.GetText("Validation_PasswordTooShort");
                             lblPasswordError.Visible = true;
                             txtPassword.BorderColor = Color.OrangeRed;
+                            errors.Add(lblPasswordError.Text);
                             break;
 
                         case nameof(RegisterDto.ReEnterPassword):
                             lblConfirmPasswordError.Text = AppSettings.GetText("Validation_ConfirmPasswordRequired");
                             lblConfirmPasswordError.Visible = true;
                             txtConfirmPassword.BorderColor = Color.OrangeRed;
+                            errors.Add(lblConfirmPasswordError.Text);
                             break;
 
                         case nameof(RegisterDto.PhoneNumber):
@@ -178,46 +367,51 @@ namespace GestPipePowerPonit.Views.Auth
 
                             lblPhoneNumberError.Visible = true;
                             txtPhoneNumber.BorderColor = Color.OrangeRed;
+                            errors.Add(lblPhoneNumberError.Text);
                             break;
 
                         case nameof(RegisterDto.Gender):
                             lblGenderError.Text = AppSettings.GetText("Validation_SelectGender");
                             lblGenderError.Visible = true;
                             cmbGender.BorderColor = Color.OrangeRed;
+                            errors.Add(lblGenderError.Text);
                             break;
 
                         case nameof(RegisterDto.DateOfBirth):
                             lblBirthDateError.Text = AppSettings.GetText("Validation_DateOfBirthRequired");
                             lblBirthDateError.Visible = true;
                             dtpBirthDate.BorderColor = Color.OrangeRed;
+                            errors.Add(lblBirthDateError.Text);
                             break;
 
                         case nameof(RegisterDto.Address):
                             lblAddressError.Text = AppSettings.GetText("Validation_SelectAddress");
                             lblAddressError.Visible = true;
                             cmbAddress.BorderColor = Color.OrangeRed;
+                            errors.Add(lblAddressError.Text);
                             break;
 
                         case nameof(RegisterDto.EducationLevel):
                             lblEduError.Text = AppSettings.GetText("Validation_SelectEdu");
                             lblEduError.Visible = true;
                             cmbEdu.BorderColor = Color.OrangeRed;
+                            errors.Add(lblEduError.Text);
                             break;
 
                         case nameof(RegisterDto.Company):
                             lblCompanyError.Text = AppSettings.GetText("Validation_CompanyRequired");
                             lblCompanyError.Visible = true;
                             txtCompany.BorderColor = Color.OrangeRed;
+                            errors.Add(lblCompanyError.Text);
                             break;
 
                         case nameof(RegisterDto.Occupation):
                             lblOccupationError.Text = AppSettings.GetText("Validation_OccupationRequired");
                             lblOccupationError.Visible = true;
-                            txtOccupation.BorderColor = Color.OrangeRed;
+                            cmbOccupation.BorderColor = Color.OrangeRed;
+                            errors.Add(lblOccupationError.Text);
                             break;
                     }
-
-                    errors.Add(lblEmailError.Text);
                 }
             }
 
@@ -231,6 +425,33 @@ namespace GestPipePowerPonit.Views.Auth
                 lblConfirmPasswordError.Visible = true;
                 txtConfirmPassword.BorderColor = Color.OrangeRed;
                 errors.Add(errorMsg);
+            }
+
+            // ✅ CUSTOM VALIDATION: Occupation "Other" field
+            if (cmbOccupation.SelectedIndex == 0)
+            {
+                lblOccupationError.Text = AppSettings.GetText("Validation_OccupationRequired") ?? "Please select an occupation";
+                lblOccupationError.Visible = true;
+                cmbOccupation.BorderColor = Color.OrangeRed;
+                errors.Add(lblOccupationError.Text);
+            }
+            else if (cmbOccupation.SelectedIndex == cmbOccupation.Items.Count - 1) // "Other"
+            {
+                string customOccupation = txtOccupationOther.Text?.Trim() ?? "";
+                if (string.IsNullOrWhiteSpace(customOccupation))
+                {
+                    lblOccupationError.Text = AppSettings.GetText("Validation_OccupationSpecifyRequired") ?? "Please specify your occupation";
+                    lblOccupationError.Visible = true;
+                    txtOccupationOther.BorderColor = Color.OrangeRed;
+                    errors.Add(lblOccupationError.Text);
+                }
+                else if (customOccupation.Length < 2 || customOccupation.Length > 50)
+                {
+                    lblOccupationError.Text = AppSettings.GetText("Validation_OccupationLength") ?? "Occupation must be 2-50 characters";
+                    lblOccupationError.Visible = true;
+                    txtOccupationOther.BorderColor = Color.OrangeRed;
+                    errors.Add(lblOccupationError.Text);
+                }
             }
 
             return errors.Count == 0;
@@ -258,7 +479,8 @@ namespace GestPipePowerPonit.Views.Auth
                 Address = cmbAddress.SelectedItem?.ToString() ?? "",
                 EducationLevel = cmbEdu.SelectedItem?.ToString() ?? "",
                 Company = txtCompany.Text?.Trim(),
-                Occupation = txtOccupation.Text?.Trim()
+                //Occupation = txtOccupation.Text?.Trim()
+                Occupation = GetOccupationValue()
             };
 
             // ✅ Step 3: Show Terms (pass DTO and AuthService to Terms)
@@ -368,6 +590,42 @@ namespace GestPipePowerPonit.Views.Auth
             txtConfirmPassword.PasswordChar = txtConfirmPassword.PasswordChar == '\0' ? '●' : '\0';
         }
 
+        private void cmbOccupation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Show txtOccupationOther nếu chọn "Other (specify below)"
+            if (cmbOccupation.SelectedIndex == cmbOccupation.Items.Count - 1)
+            {
+                txtOccupationOther.Visible = true;
+                txtOccupationOther.Focus();
+            }
+            else
+            {
+                txtOccupationOther.Visible = false;
+                txtOccupationOther.Text = "";
+            }
+
+            ClearErrors();
+        }
+
+        // ✅ TextBox OccupationOther event
+        private void txtOccupationOther_TextChanged(object sender, EventArgs e)
+        {
+            ClearErrors();
+        }
+        private string GetOccupationValue()
+        {
+            if (cmbOccupation.SelectedIndex <= 0)
+                return "";
+
+            // Nếu chọn "Other (specify below)"
+            if (cmbOccupation.SelectedIndex == cmbOccupation.Items.Count - 1)
+            {
+                return txtOccupationOther.Text?.Trim() ?? "";
+            }
+
+            return cmbOccupation.SelectedItem?.ToString() ?? "";
+        }
+
         // ===== TextChanged Events =====
         private void txtEmail_TextChanged(object sender, EventArgs e) => ClearErrors();
         private void txtFullName_TextChanged(object sender, EventArgs e) => ClearErrors();
@@ -379,7 +637,7 @@ namespace GestPipePowerPonit.Views.Auth
         private void cmbAddress_SelectedIndexChanged(object sender, EventArgs e) => ClearErrors();
         private void cmbEdu_SelectedIndexChanged(object sender, EventArgs e) => ClearErrors();
         private void txtCompany_TextChanged(object sender, EventArgs e) => ClearErrors();
-        private void txtOccupation_TextChanged(object sender, EventArgs e) => ClearErrors();
+        //private void txtOccupation_TextChanged(object sender, EventArgs e) => ClearErrors();
 
         public string GetUserEmail()
         {

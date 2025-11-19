@@ -59,5 +59,35 @@ namespace GestPipePowerPonit.Views {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Point similar to {X=161,Y=17}.
+        /// </summary>
+        internal static System.Drawing.Point guna2DragControl1_TrayLocation {
+            get {
+                object obj = ResourceManager.GetObject("guna2DragControl1.TrayLocation", resourceCulture);
+                return ((System.Drawing.Point)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Point similar to {X=17,Y=17}.
+        /// </summary>
+        internal static System.Drawing.Point guna2Elipse1_TrayLocation {
+            get {
+                object obj = ResourceManager.GetObject("guna2Elipse1.TrayLocation", resourceCulture);
+                return ((System.Drawing.Point)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Point similar to {X=348,Y=17}.
+        /// </summary>
+        internal static System.Drawing.Point spinnerTimer_TrayLocation {
+            get {
+                object obj = ResourceManager.GetObject("spinnerTimer.TrayLocation", resourceCulture);
+                return ((System.Drawing.Point)(obj));
+            }
+        }
     }
 }

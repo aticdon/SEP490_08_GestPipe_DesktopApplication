@@ -44,8 +44,9 @@ namespace GestPipePowerPonit
         // ✅ Loading components fields
         private int spinnerAngle = 0;
         private bool firstFrameReceived = false;
+        private bool isUserGesture = false;
 
-        public CustomGestureForm(HomeUser homeForm, string gestureId, string userName, string poseLabel, string gestureName)
+        public CustomGestureForm(HomeUser homeForm, string gestureId, string userName, string poseLabel, string gestureName, bool isUserGesture  = false)
         {
             InitializeComponent();
             _homeForm = homeForm;
@@ -53,6 +54,7 @@ namespace GestPipePowerPonit
             this.poseLabel = poseLabel;
             this.gestureName = gestureName;
             this.gestureId = gestureId;
+            this.isUserGesture = isUserGesture;
 
             this.Load += CustomGestureForm_Load;
             lblName.Text = gestureName;
@@ -100,17 +102,35 @@ namespace GestPipePowerPonit
                 UpdateInitialStatus();
                 CreateInstructionIcon();
 
-                var defaultGestureService = new DefaultGestureService();
-                //var gestureDetail = await defaultGestureService.GetGestureDetailAsync(gestureId);
-                var gestureDetail = await defaultGestureService.GetDefaultGestureByid(gestureId);
-
-                if (gestureDetail != null)
+                if (isUserGesture)
                 {
-                    gestureTypeId = gestureDetail.GestureTypeId;
+                    // Nếu là UserGestureConfig
+                    var userGestureService = new UserGestureConfigService();
+                    var gestureDetail = await userGestureService.GetUserGestureByid(gestureId);
+
+                    if (gestureDetail != null)
+                    {
+                        gestureTypeId = gestureDetail.GestureTypeId;
+                    }
+                    else
+                    {
+                        throw new Exception("Cannot load user gesture details - gesture not found");
+                    }
                 }
                 else
                 {
-                    throw new Exception("Cannot load gesture details - gesture not found");
+                    // Nếu là DefaultGesture
+                    var defaultGestureService = new DefaultGestureService();
+                    var gestureDetail = await defaultGestureService.GetDefaultGestureByid(gestureId);
+
+                    if (gestureDetail != null)
+                    {
+                        gestureTypeId = gestureDetail.GestureTypeId;
+                    }
+                    else
+                    {
+                        throw new Exception("Cannot load default gesture details - gesture not found");
+                    }
                 }
 
                 //var gestureDetail = await new UserGestureConfigService().GetUserGestureByid(gestureId);
@@ -638,8 +658,8 @@ namespace GestPipePowerPonit
                     UserGestureConfigId = gestureId,
                     GestureTypeId = gestureTypeId,
                     PoseLabel = poseLabel,
-                    Status = new Dictionary<string, string> { { "en", "Pending" },
-                    { "vi", "Đang xử lý" }}
+                    Status = new Dictionary<string, string> { { "en", "Customed" },
+                    { "vi", "Đã chỉnh sửa" }}
                 };
 
                 var service = new UserGestureRequestService();

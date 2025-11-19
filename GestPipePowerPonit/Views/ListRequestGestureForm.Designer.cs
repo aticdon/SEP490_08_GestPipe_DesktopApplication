@@ -50,6 +50,7 @@ namespace GestPipePowerPonit
             this.ColumnLastUpdate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnView = new System.Windows.Forms.DataGridViewImageColumn();
             this.ColumnCustom = new System.Windows.Forms.DataGridViewImageColumn();
+            this.lblRequestStatus = new System.Windows.Forms.Label();
             this.panelLoading = new System.Windows.Forms.Panel();
             this.lblLoading = new System.Windows.Forms.Label();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
@@ -302,6 +303,7 @@ namespace GestPipePowerPonit
             this.btnLogout.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLogout.TabIndex = 5;
             this.btnLogout.TabStop = false;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // btnProfile
             // 
@@ -317,6 +319,7 @@ namespace GestPipePowerPonit
             this.btnProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnProfile.TabIndex = 6;
             this.btnProfile.TabStop = false;
+            this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
             // 
             // panelMain
             // 
@@ -329,6 +332,7 @@ namespace GestPipePowerPonit
             this.panelMain.BorderThickness = 1;
             this.panelMain.Controls.Add(this.btnRequest);
             this.panelMain.Controls.Add(this.guna2DataGridView1);
+            this.panelMain.Controls.Add(this.lblRequestStatus);
             this.panelMain.Location = new System.Drawing.Point(297, 118);
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(1049, 601);
@@ -487,6 +491,16 @@ namespace GestPipePowerPonit
             this.ColumnCustom.Name = "ColumnCustom";
             this.ColumnCustom.ReadOnly = true;
             // 
+            // lblRequestStatus
+            // 
+            this.lblRequestStatus.AutoSize = true;
+            this.lblRequestStatus.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblRequestStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.lblRequestStatus.Location = new System.Drawing.Point(244, 62);
+            this.lblRequestStatus.Name = "lblRequestStatus";
+            this.lblRequestStatus.Size = new System.Drawing.Size(0, 23);
+            this.lblRequestStatus.TabIndex = 7;
+            // 
             // panelLoading
             // 
             this.panelLoading.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -536,6 +550,7 @@ namespace GestPipePowerPonit
             ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnProfile)).EndInit();
             this.panelMain.ResumeLayout(false);
+            this.panelMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2DataGridView1)).EndInit();
             this.panelLoading.ResumeLayout(false);
             this.panelLoading.PerformLayout();
@@ -574,5 +589,6 @@ namespace GestPipePowerPonit
         private Guna.UI2.WinForms.Guna2GradientButton btnRequest;
         private Panel panelLoading;
         private Label lblLoading;
+        private System.Windows.Forms.Label lblRequestStatus;
     }
 }

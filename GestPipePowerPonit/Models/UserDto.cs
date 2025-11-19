@@ -15,5 +15,6 @@ namespace GestPipePowerPonit.Models
         public DateTime? LastLogin { get; set; }
         public string CurrentVer { get; set; }
         public string UiLanguage { get; set; }
+        public bool UseCustomModel { get; set; }
     }
 }

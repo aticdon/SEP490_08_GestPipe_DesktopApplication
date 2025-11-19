@@ -50,5 +50,8 @@ namespace GestPipe.Backend.Models
 
         [BsonElement("email_verified")]
         public bool EmailVerified { get; set; } = false;
+
+        [BsonElement("use_custom_model")]
+        public bool UseCustomModel { get; set; } = false;
     }
 }
