@@ -26,30 +26,30 @@ public class DefaultGestureController : ControllerBase
         return gesture;
     }
 
-    [HttpPost]
-    public ActionResult<DefaultGesture> Create(DefaultGesture gesture)
-    {
-        _defaultGestureService.Create(gesture);
-        return CreatedAtAction(nameof(Get), new { id = gesture.Id }, gesture);
-    }
+    //[HttpPost]
+    //public ActionResult<DefaultGesture> Create(DefaultGesture gesture)
+    //{
+    //    _defaultGestureService.Create(gesture);
+    //    return CreatedAtAction(nameof(Get), new { id = gesture.Id }, gesture);
+    //}
 
-    [HttpPut("{id:length(24)}")]
-    public IActionResult Update(string id, DefaultGesture gestureIn)
-    {
-        var gesture = _defaultGestureService.GetById(id);
-        if (gesture == null) return NotFound();
-        _defaultGestureService.Update(id, gestureIn);
-        return NoContent();
-    }
+    //[HttpPut("{id:length(24)}")]
+    //public IActionResult Update(string id, DefaultGesture gestureIn)
+    //{
+    //    var gesture = _defaultGestureService.GetById(id);
+    //    if (gesture == null) return NotFound();
+    //    _defaultGestureService.Update(id, gestureIn);
+    //    return NoContent();
+    //}
 
-    [HttpDelete("{id:length(24)}")]
-    public IActionResult Delete(string id)
-    {
-        var gesture = _defaultGestureService.GetById(id);
-        if (gesture == null) return NotFound();
-        _defaultGestureService.Delete(id);
-        return NoContent();
-    }
+        //[HttpDelete("{id:length(24)}")]
+        //public IActionResult Delete(string id)
+        //{
+        //    var gesture = _defaultGestureService.GetById(id);
+        //    if (gesture == null) return NotFound();
+        //    _defaultGestureService.Delete(id);
+        //    return NoContent();
+        //}
 
     [HttpGet("display")]
     public async Task<ActionResult<List<DefaultGestureDto>>> GetDisplay()

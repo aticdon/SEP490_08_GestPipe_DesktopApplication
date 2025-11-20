@@ -18,7 +18,7 @@ namespace GestPipe.Backend.Services
         }
 
         public List<Category> GetAll() => _categories.Find(cat => true).ToList();
-        public Category Get(string id) => _categories.Find(cat => cat.Id == id).FirstOrDefault();
-        public void Create(Category cat) => _categories.InsertOne(cat);
+        //public Category Get(string id) => _categories.Find(cat => cat.Id == id).FirstOrDefault();
+        //public void Create(Category cat) => _categories.InsertOne(cat);
     }
 }

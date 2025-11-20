@@ -19,8 +19,8 @@ namespace GestPipe.Backend.Services
 
         public List<Topic> GetAll() => _topics.Find(topic => true).ToList();
 
-        public Topic Get(string id) => _topics.Find(topic => topic.Id == id).FirstOrDefault();
+        //public Topic Get(string id) => _topics.Find(topic => topic.Id == id).FirstOrDefault();
 
-        public void Create(Topic topic) => _topics.InsertOne(topic);
+        //public void Create(Topic topic) => _topics.InsertOne(topic);
     }
 }

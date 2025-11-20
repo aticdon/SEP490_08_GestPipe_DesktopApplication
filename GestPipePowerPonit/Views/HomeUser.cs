@@ -286,5 +286,12 @@ namespace GestPipePowerPonit
             usergestureForm.Show();
             this.Hide();
         }
+
+        private void btnInstruction_Click(object sender, EventArgs e)
+        {
+            InstructionForm instructionForm = new InstructionForm(this);
+            instructionForm.Show();
+            this.Hide();
+        }
     }
 }

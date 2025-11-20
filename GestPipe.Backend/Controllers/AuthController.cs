@@ -1,11 +1,12 @@
 ﻿using GestPipe.Backend.Models.DTOs;
+using GestPipe.Backend.Models.DTOs.Auth;
 using GestPipe.Backend.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using GestPipe.Backend.Models.DTOs.Auth;
-using Microsoft.AspNetCore.Authorization;
+
 
 namespace GestPipe.Backend.Controllers
 {
@@ -16,22 +17,24 @@ namespace GestPipe.Backend.Controllers
         private readonly IAuthService _authService;
         private readonly IOtpService _otpService;
         private readonly IEmailService _emailService;
-        private readonly IGestureInitializationService _gestureInitService; // ✅ ADD
+        private readonly IGestureInitializationService _gestureInitService;
         private readonly ILogger<AuthController> _logger;
+
 
         public AuthController(
             IAuthService authService,
             IOtpService otpService,
             IEmailService emailService,
-            IGestureInitializationService gestureInitService, // ✅ ADD
+            IGestureInitializationService gestureInitService,
             ILogger<AuthController> logger)
         {
             _authService = authService;
             _otpService = otpService;
             _emailService = emailService;
-            _gestureInitService = gestureInitService; // ✅ ADD
+            _gestureInitService = gestureInitService;
             _logger = logger;
         }
+
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
@@ -39,21 +42,21 @@ namespace GestPipe.Backend.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return BadRequest(ModelState);
-                }
+
 
                 _logger.LogInformation("Đăng ký tài khoản mới: Email={Email}, FullName={FullName}",
                     registerDto.Email, registerDto.FullName);
 
+
                 var response = await _authService.RegisterAsync(registerDto);
 
-                if (!response.Success)
-                {
-                    return BadRequest(response);
-                }
 
-                 //✅ INITIALIZE DEFAULT GESTURES(async, don't wait)
+                if (!response.Success)
+                    return BadRequest(response);
+
+
+                // ✅ Initialize default gesture folder async (fire and forget)
                 if (!string.IsNullOrEmpty(response.UserId))
                 {
                     _ = Task.Run(async () =>
@@ -69,6 +72,7 @@ namespace GestPipe.Backend.Controllers
                     });
                 }
 
+
                 return Ok(response);
             }
             catch (Exception ex)
@@ -82,25 +86,30 @@ namespace GestPipe.Backend.Controllers
             }
         }
 
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return BadRequest(ModelState);
-                }
+
 
                 var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
                 var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
-                var response = await _authService.LoginAsync(loginDto, ipAddress, userAgent);
+
+                _logger.LogInformation("Đăng nhập: Email={Email}, IP={IP}, UA={UA}",
+                    loginDto.Email, ipAddress, userAgent);
+
+
+                var response = await _authService.LoginAsync(loginDto);
+
 
                 if (!response.Success)
-                {
                     return BadRequest(response);
-                }
+
 
                 return Ok(response);
             }
@@ -115,9 +124,10 @@ namespace GestPipe.Backend.Controllers
             }
         }
 
+
         /// <summary>
-        /// 👇 ENDPOINT CHUNG - Xác thực OTP cho cả registration và reset password
-        /// Query parameter: purpose = "registration" hoặc "resetpassword"
+        /// Endpoint chung: validate OTP cho cả registration & reset password
+        /// Query parameter: purpose = "registration" | "resetpassword"
         /// </summary>
         [HttpPost("validate-otp")]
         public async Task<IActionResult> ValidateOtp([FromBody] VerifyOtpDto verifyDto, [FromQuery] string purpose = "registration")
@@ -127,9 +137,11 @@ namespace GestPipe.Backend.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
+
                 _logger.LogInformation("Xác thực OTP: Email={Email}, Purpose={Purpose}", verifyDto.Email, purpose);
 
-                // 👇 KIỂM TRA OTP CÓ HỢP LỆ KHÔNG
+
+                // 1️⃣ Validate OTP
                 var isValid = await _otpService.ValidateOtpAsync(verifyDto.Email, verifyDto.OtpCode, purpose);
                 if (!isValid)
                 {
@@ -140,12 +152,6 @@ namespace GestPipe.Backend.Controllers
                     });
                 }
 
-                // 👇 MARK OTP AS VERIFIED
-                var marked = await _otpService.MarkOtpAsVerifiedAsync(verifyDto.Email, verifyDto.OtpCode);
-                if (!marked)
-                {
-                    _logger.LogWarning("Failed to mark OTP as verified for email: {Email}", verifyDto.Email);
-                }
 
                 var user = await _authService.GetUserByEmailAsync(verifyDto.Email);
                 if (user == null)
@@ -157,7 +163,8 @@ namespace GestPipe.Backend.Controllers
                     });
                 }
 
-                // 👇 NẾU LÀ REGISTRATION - CẬP NHẬT TRẠNG THÁI NGƯỜI DÙNG
+
+                // 2️⃣ Nếu là registration: update trạng thái user + xóa OTP trong AuthService
                 if (purpose == "registration")
                 {
                     var updateRes = await _authService.VerifyOtpAsync(new VerifyOtpDto
@@ -166,9 +173,10 @@ namespace GestPipe.Backend.Controllers
                         OtpCode = verifyDto.OtpCode
                     });
 
+
                     if (updateRes?.Success == true)
                     {
-                        _logger.LogInformation("Đăng ký thành công: Email={Email}", verifyDto.Email);
+                        _logger.LogInformation("Đăng ký thành công sau OTP: Email={Email}", verifyDto.Email);
                         return Ok(new AuthResponseDto
                         {
                             Success = true,
@@ -179,10 +187,26 @@ namespace GestPipe.Backend.Controllers
                             RequiresVerification = false
                         });
                     }
+
+
+                    return BadRequest(updateRes);
                 }
 
-                // 👇 NẾU LÀ RESET PASSWORD - CHỈ CONFIRM OTP HỢP LỆ
-                _logger.LogInformation("OTP được xác thực cho reset password: Email={Email}", verifyDto.Email);
+
+                // 3️⃣ Nếu là reset password: chỉ confirm OTP hợp lệ + xóa OTP luôn
+                _logger.LogInformation("OTP valid cho reset password: Email={Email}", verifyDto.Email);
+
+
+                try
+                {
+                    await _otpService.DeleteOtpAsync(verifyDto.Email);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Không xóa được OTP sau khi verify reset password: Email={Email}", verifyDto.Email);
+                }
+
+
                 return Ok(new AuthResponseDto
                 {
                     Success = true,
@@ -204,51 +228,85 @@ namespace GestPipe.Backend.Controllers
             }
         }
 
+
         [HttpPost("resend-otp")]
         public async Task<IActionResult> ResendOtp([FromBody] EmailRequestDto resendOtpDto)
         {
             try
             {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
 
                 var user = await _authService.GetUserByEmailAsync(resendOtpDto.Email);
                 if (user == null)
                 {
-                    return BadRequest(new AuthResponseDto { Success = false, Message = "Không tìm thấy tài khoản với email này." });
+                    return BadRequest(new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Không tìm thấy tài khoản với email này."
+                    });
                 }
+
 
                 if (await _otpService.IsOtpLimitExceededAsync(resendOtpDto.Email))
                 {
-                    return BadRequest(new AuthResponseDto { Success = false, Message = "Bạn đã yêu cầu gửi lại OTP quá nhiều lần. Vui lòng thử lại sau." });
+                    return BadRequest(new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Bạn đã yêu cầu gửi lại OTP quá nhiều lần. Vui lòng thử lại sau."
+                    });
                 }
+
 
                 var otp = await _otpService.GenerateOtpAsync(user.Id, user.Email, "registration");
                 await _emailService.SendVerificationEmailAsync(user.Email, otp);
 
-                return Ok(new AuthResponseDto { Success = true, Message = "Mã xác thực đã được gửi đến email của bạn.", UserId = user.Id, RequiresVerification = true });
+
+                return Ok(new AuthResponseDto
+                {
+                    Success = true,
+                    Message = "Mã xác thực đã được gửi đến email của bạn.",
+                    UserId = user.Id,
+                    RequiresVerification = true
+                });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Lỗi khi gửi lại OTP: {Message}", ex.Message);
-                return StatusCode(500, new AuthResponseDto { Success = false, Message = "Đã xảy ra lỗi khi gửi lại OTP. Vui lòng thử lại sau." });
+                return StatusCode(500, new AuthResponseDto
+                {
+                    Success = false,
+                    Message = "Đã xảy ra lỗi khi gửi lại OTP. Vui lòng thử lại sau."
+                });
             }
         }
+
 
         [HttpPost("google-login")]
         public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginDto googleLoginDto)
         {
             try
             {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
 
                 var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
                 var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
-                var response = await _authService.GoogleLoginAsync(googleLoginDto.IdToken, ipAddress, userAgent);
 
-                if (!response.Success) return BadRequest(response);
+                _logger.LogInformation("Đăng nhập Google: IP={IP}, UA={UA}", ipAddress, userAgent);
 
-                // ✅ INITIALIZE DEFAULT GESTURES FOR NEW GOOGLE USER
+
+                var response = await _authService.GoogleLoginAsync(googleLoginDto.IdToken);
+
+
+                if (!response.Success)
+                    return BadRequest(response);
+
+
+                // ✅ Initialize default gestures for Google user
                 if (!string.IsNullOrEmpty(response.UserId))
                 {
                     _ = Task.Run(async () =>
@@ -264,15 +322,22 @@ namespace GestPipe.Backend.Controllers
                     });
                 }
 
+
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Lỗi khi đăng nhập bằng Google: {Message}", ex.Message);
-                return StatusCode(500, new AuthResponseDto { Success = false, Message = "Đã xảy ra lỗi khi đăng nhập bằng Google. Vui lòng thử lại sau." });
+                return StatusCode(500, new AuthResponseDto
+                {
+                    Success = false,
+                    Message = "Đã xảy ra lỗi khi đăng nhập bằng Google. Vui lòng thử lại sau."
+                });
             }
         }
-        // ✅ NEW ENDPOINT: Get gesture statistics
+
+
+        // ✅ Thống kê gesture (đã có sẵn)
         [HttpGet("gestures/stats")]
         [Authorize]
         public async Task<IActionResult> GetGestureStats()
@@ -285,8 +350,10 @@ namespace GestPipe.Backend.Controllers
                     return Unauthorized(new { message = "User not authenticated" });
                 }
 
+
                 var userId = userIdClaim.Value;
                 var stats = await _gestureInitService.GetUserGestureStatsAsync(userId);
+
 
                 return Ok(new
                 {
@@ -301,79 +368,127 @@ namespace GestPipe.Backend.Controllers
             }
         }
 
+
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] EmailRequestDto emailRequestDto)
         {
             try
             {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
 
                 var response = await _authService.ForgotPasswordAsync(emailRequestDto.Email);
 
-                if (!response.Success) return BadRequest(response);
+
+                if (!response.Success)
+                    return BadRequest(response);
+
 
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Lỗi khi yêu cầu đặt lại mật khẩu: {Message}", ex.Message);
-                return StatusCode(500, new AuthResponseDto { Success = false, Message = "Đã xảy ra lỗi khi yêu cầu đặt lại mật khẩu. Vui lòng thử lại sau." });
+                return StatusCode(500, new AuthResponseDto
+                {
+                    Success = false,
+                    Message = "Đã xảy ra lỗi khi yêu cầu đặt lại mật khẩu. Vui lòng thử lại sau."
+                });
             }
         }
+
 
         [HttpPost("resend-reset-otp")]
         public async Task<IActionResult> ResendResetOtp([FromBody] EmailRequestDto emailRequestDto)
         {
             try
             {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
 
                 var user = await _authService.GetUserByEmailAsync(emailRequestDto.Email);
-                if (user == null) return BadRequest(new AuthResponseDto { Success = false, Message = "Không tìm thấy tài khoản với email này." });
+                if (user == null)
+                {
+                    return BadRequest(new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Không tìm thấy tài khoản với email này."
+                    });
+                }
+
 
                 if (await _otpService.IsOtpLimitExceededAsync(emailRequestDto.Email))
                 {
-                    return BadRequest(new AuthResponseDto { Success = false, Message = "Bạn đã yêu cầu gửi lại mã quá nhiều lần. Vui lòng thử lại sau." });
+                    return BadRequest(new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Bạn đã yêu cầu gửi lại mã quá nhiều lần. Vui lòng thử lại sau."
+                    });
                 }
+
 
                 var otp = await _otpService.GenerateOtpAsync(user.Id, user.Email, "resetpassword");
                 await _emailService.SendPasswordResetEmailAsync(user.Email, otp);
 
-                return Ok(new AuthResponseDto { Success = true, Message = "Mã OTP đã được gửi lại đến email của bạn.", UserId = user.Id, RequiresVerification = true });
+
+                return Ok(new AuthResponseDto
+                {
+                    Success = true,
+                    Message = "Mã OTP đã được gửi lại đến email của bạn.",
+                    UserId = user.Id,
+                    RequiresVerification = true
+                });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Lỗi khi gửi lại OTP reset: {Message}", ex.Message);
-                return StatusCode(500, new AuthResponseDto { Success = false, Message = "Đã xảy ra lỗi khi gửi lại mã OTP. Vui lòng thử lại sau." });
+                return StatusCode(500, new AuthResponseDto
+                {
+                    Success = false,
+                    Message = "Đã xảy ra lỗi khi gửi lại mã OTP. Vui lòng thử lại sau."
+                });
             }
         }
+
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetDto)
         {
             try
             {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
 
                 var response = await _authService.ResetPasswordAsync(resetDto);
 
-                if (!response.Success) return BadRequest(response);
+
+                if (!response.Success)
+                    return BadRequest(response);
+
 
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Lỗi khi đặt lại mật khẩu: {Message}", ex.Message);
-                return StatusCode(500, new AuthResponseDto { Success = false, Message = "Đã xảy ra lỗi khi đặt lại mật khẩu. Vui lòng thử lại sau." });
+                return StatusCode(500, new AuthResponseDto
+                {
+                    Success = false,
+                    Message = "Đã xảy ra lỗi khi đặt lại mật khẩu. Vui lòng thử lại sau."
+                });
             }
         }
+
+
         [HttpPost("logout")]
-        [Authorize] // ✅ REQUIRE JWT TOKEN
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             try
             {
-                // 👇 LẤY USER ID TỪ JWT CLAIMS
                 var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
                 if (userIdClaim == null)
                 {
@@ -384,16 +499,19 @@ namespace GestPipe.Backend.Controllers
                     });
                 }
 
+
                 var userId = userIdClaim.Value;
+
 
                 _logger.LogInformation("Người dùng đăng xuất: UserId={UserId}", userId);
 
+
                 var response = await _authService.LogoutAsync(userId);
 
+
                 if (!response.Success)
-                {
                     return BadRequest(response);
-                }
+
 
                 return Ok(response);
             }
@@ -409,3 +527,8 @@ namespace GestPipe.Backend.Controllers
         }
     }
 }
+
+
+
+
+

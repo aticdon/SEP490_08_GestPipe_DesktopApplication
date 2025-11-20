@@ -1,4 +1,5 @@
 ﻿using GestPipe.Backend.Models;
+using GestPipe.Backend.Models.DTOs;
 using GestPipe.Backend.Services;
 using GestPipe.Backend.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +20,6 @@ namespace GestPipe.Backend.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRequest([FromBody] UserGestureRequestDto dto)
         {
-            //// Nên set status là pending nếu client không truyền
-            //if (dto.Status == null || !dto.Status.ContainsKey("main"))
-            //    dto.Status = new Dictionary<string, string> { { "main", "pending" } };
-
             var entity = new UserGestureRequest
             {
                 UserId = dto.UserId,
@@ -78,6 +75,13 @@ namespace GestPipe.Backend.Controllers
             var ok = _service.SetTrainingToSuccessful(id);
             if (!ok) return BadRequest("Update failed");
             return NoContent();
+        }
+
+        [HttpPost("batch/latest-requests")]
+        public async Task<ActionResult<List<UserGestureRequest>>> GetLatestRequestsBatch([FromBody] LatestRequestBatchDto dto)
+        {
+            var latestRequests = await _service.GetLatestRequestsByConfigIdsAsync(dto.GestureConfigIds, dto.UserId);
+            return Ok(latestRequests);
         }
     }
 }

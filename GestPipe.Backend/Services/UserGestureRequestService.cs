@@ -45,6 +45,23 @@ namespace GestPipe.Backend.Services
                 .FirstOrDefaultAsync();
                 }
 
+        public async Task<List<UserGestureRequest>> GetLatestRequestsByConfigIdsAsync(List<string> configIds, string userId)
+        {
+            var filter = Builders<UserGestureRequest>.Filter.In(x => x.UserGestureConfigId, configIds)
+                & Builders<UserGestureRequest>.Filter.Eq(x => x.UserId, userId);
+
+            var requests = await _collection.Find(filter)
+                .SortByDescending(x => x.CreatedAt)
+                .ToListAsync();
+
+            // Group mỗi config lấy request mới nhất
+            var latestByConfig = requests
+                .GroupBy(r => r.UserGestureConfigId)
+                .Select(g => g.First())
+                .ToList();
+
+            return latestByConfig;
+        }
         public bool SetPendingToTraining(string requestId)
         {
             var filter = Builders<UserGestureRequest>.Filter.Eq(r => r.UserGestureConfigId, requestId);

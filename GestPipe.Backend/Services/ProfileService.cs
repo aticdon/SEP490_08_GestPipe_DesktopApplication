@@ -11,6 +11,7 @@ using MongoDB.Driver;
 using System;
 using System.Threading.Tasks;
 
+
 namespace GestPipe.Backend.Services
 {
     public class ProfileService : IProfileService
@@ -19,6 +20,7 @@ namespace GestPipe.Backend.Services
         private readonly IMongoCollection<UserProfile> _profilesCollection;
         private readonly IMapper _mapper;
         private readonly ILogger<ProfileService> _logger;
+
 
         public ProfileService(
             IMongoClient mongoClient,
@@ -33,6 +35,7 @@ namespace GestPipe.Backend.Services
             _logger = logger;
         }
 
+
         // ✅ THAY ĐỔI: Return type AuthResponseDto → ProfileResponseDto
         public async Task<ProfileResponseDto> GetUserProfileAsync(string userId)
         {
@@ -41,13 +44,16 @@ namespace GestPipe.Backend.Services
                 if (!ObjectId.TryParse(userId, out _))
                     return new ProfileResponseDto { Success = false, Message = "Invalid user ID." };
 
+
                 var user = await _usersCollection.Find(u => u.Id == userId).FirstOrDefaultAsync();
                 if (user == null)
                     return new ProfileResponseDto { Success = false, Message = "User not found." };
 
+
                 var profile = await _profilesCollection.Find(p => p.UserId == userId).FirstOrDefaultAsync();
                 if (profile == null)
                     return new ProfileResponseDto { Success = false, Message = "Profile not found." };
+
 
                 // ✅ THAY ĐỔI: Dùng ProfileResponseDto với ProfileDataDto
                 return new ProfileResponseDto
@@ -70,6 +76,7 @@ namespace GestPipe.Backend.Services
             }
         }
 
+
         // ✅ THAY ĐỔI: Return type AuthResponseDto → ProfileResponseDto
         public async Task<ProfileResponseDto> UpdateProfileAsync(string userId, UpdateProfileDto updateDto)
         {
@@ -78,17 +85,21 @@ namespace GestPipe.Backend.Services
                 if (!ObjectId.TryParse(userId, out _))
                     return new ProfileResponseDto { Success = false, Message = "Invalid user ID." };
 
+
                 var user = await _usersCollection.Find(u => u.Id == userId).FirstOrDefaultAsync();
                 if (user == null)
                     return new ProfileResponseDto { Success = false, Message = "User not found." };
+
 
                 var profile = await _profilesCollection.Find(p => p.UserId == userId).FirstOrDefaultAsync();
                 if (profile == null)
                     return new ProfileResponseDto { Success = false, Message = "Profile not found." };
 
+
                 // ✅ Map using AutoMapper
                 _mapper.Map(updateDto, profile);
                 profile.UpdatedAt = DateTime.UtcNow;
+
 
                 // ✅ UPDATE AVATAR CHỈ Ở USER MODEL
                 if (!string.IsNullOrEmpty(updateDto.AvatarUrl))
@@ -97,12 +108,16 @@ namespace GestPipe.Backend.Services
                     await _usersCollection.ReplaceOneAsync(u => u.Id == userId, user);
                 }
 
+
                 var result = await _profilesCollection.ReplaceOneAsync(p => p.Id == profile.Id, profile);
+
 
                 if (result.ModifiedCount == 0)
                     return new ProfileResponseDto { Success = false, Message = "Failed to update profile." };
 
+
                 _logger.LogInformation("Profile updated: {UserId}", userId);
+
 
                 return new ProfileResponseDto
                 {
@@ -124,6 +139,7 @@ namespace GestPipe.Backend.Services
             }
         }
 
+
         // ✅ GIỮ NGUYÊN: ChangePassword vẫn dùng AuthResponseDto
         public async Task<AuthResponseDto> ChangePasswordAsync(string userId, ChangePasswordDto changePasswordDto)
         {
@@ -132,27 +148,62 @@ namespace GestPipe.Backend.Services
                 if (!ObjectId.TryParse(userId, out _))
                     return new AuthResponseDto { Success = false, Message = "Invalid user ID." };
 
+
                 var user = await _usersCollection.Find(u => u.Id == userId).FirstOrDefaultAsync();
                 if (user == null)
                     return new AuthResponseDto { Success = false, Message = "User not found." };
 
-                // ✅ Verify old password
+
+                // ✅ NEW: Chặn đổi password với account Google-only (chưa từng có password)
+                if (!string.IsNullOrEmpty(user.AuthProvider)
+                    && user.AuthProvider == "Google"
+                    && string.IsNullOrEmpty(user.PasswordHash))
+                {
+                    _logger.LogInformation("ChangePassword blocked for Google-only account: {UserId}", userId);
+
+
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Your account was created using Google and does not have a password to change. Please sign in with Google."
+                    };
+                }
+
+
+                // ✅ Nếu vì lý do gì đó passwordHash vẫn null → chặn luôn cho an toàn
+                if (string.IsNullOrEmpty(user.PasswordHash))
+                {
+                    _logger.LogWarning("User has no password hash but is not Google-only: {UserId}", userId);
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Password cannot be changed for this account."
+                    };
+                }
+
+
+                // ✅ Verify old password (chỉ chạy khi chắc chắn có PasswordHash)
                 if (!BCrypt.Net.BCrypt.Verify(changePasswordDto.OldPassword, user.PasswordHash))
                 {
                     _logger.LogWarning("Invalid old password for user: {UserId}", userId);
                     return new AuthResponseDto { Success = false, Message = "Old password is incorrect." };
                 }
 
+
                 // ✅ Hash new password
                 var newPasswordHash = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.NewPassword);
+
 
                 var update = Builders<User>.Update.Set(u => u.PasswordHash, newPasswordHash);
                 var result = await _usersCollection.UpdateOneAsync(u => u.Id == userId, update);
 
+
                 if (result.ModifiedCount == 0)
                     return new AuthResponseDto { Success = false, Message = "Failed to change password." };
 
+
                 _logger.LogInformation("Password changed: {UserId}", userId);
+
 
                 return new AuthResponseDto
                 {
@@ -167,6 +218,8 @@ namespace GestPipe.Backend.Services
                 return new AuthResponseDto { Success = false, Message = "Error changing password." };
             }
         }
+
+
         // ✅ THÊM METHOD UPDATE AVATAR
         public async Task<ProfileResponseDto> UpdateAvatarAsync(string userId, string avatarUrl)
         {
@@ -175,21 +228,27 @@ namespace GestPipe.Backend.Services
                 if (!ObjectId.TryParse(userId, out _))
                     return new ProfileResponseDto { Success = false, Message = "Invalid user ID." };
 
+
                 if (string.IsNullOrWhiteSpace(avatarUrl))
                     return new ProfileResponseDto { Success = false, Message = "Avatar URL is required." };
+
 
                 var user = await _usersCollection.Find(u => u.Id == userId).FirstOrDefaultAsync();
                 if (user == null)
                     return new ProfileResponseDto { Success = false, Message = "User not found." };
 
+
                 // ✅ CHỈ CẬP NHẬT AVATAR
                 user.AvatarUrl = avatarUrl;
                 await _usersCollection.ReplaceOneAsync(u => u.Id == userId, user);
 
+
                 _logger.LogInformation("✅ Avatar updated successfully: {UserId} → {AvatarUrl}", userId, avatarUrl);
+
 
                 // ✅ Lấy lại profile để trả về
                 var profile = await _profilesCollection.Find(p => p.UserId == userId).FirstOrDefaultAsync();
+
 
                 return new ProfileResponseDto
                 {

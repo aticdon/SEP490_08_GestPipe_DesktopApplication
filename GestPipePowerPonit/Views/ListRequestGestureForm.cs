@@ -1,5 +1,6 @@
 ﻿using GestPipePowerPonit.I18n;
 using GestPipePowerPonit.Models;
+using GestPipePowerPonit.Models.DTOs;
 using GestPipePowerPonit.Services;
 using GestPipePowerPonit.Views;
 using GestPipePowerPonit.Views.Auth;
@@ -172,14 +173,21 @@ namespace GestPipePowerPonit
                 var requestService = new UserGestureRequestService();
 
                 // Song song lấy requests cho tốc độ nhanh
-                var requestTasks = defaultGestures.Select(config => requestService.GetLatestRequestByConfigAsync(config.Id, userId)).ToList();
-                var requests = await Task.WhenAll(requestTasks);
+                //var requestTasks = defaultGestures.Select(config => requestService.GetLatestRequestByConfigAsync(config.Id, userId)).ToList();
+                //var requests = await Task.WhenAll(requestTasks);
+
+                var configIds = defaultGestures.Select(config => config.Id).ToList();
+                var requests = await requestService.GetLatestRequestsBatchAsync(userId, configIds);
+                // Map thành Dictionary cho dễ tra cứu:
+                var requestDict = requests?.ToDictionary(r => r.UserGestureConfigId, r => r) ?? new Dictionary<string, UserGestureRequestDto>();
 
                 var rowsToAdd = new List<object[]>();
                 for (int i = 0; i < defaultGestures.Count; i++)
                 {
                     var config = defaultGestures[i];
-                    var request = requests[i];
+                    //var request = requests[i];
+                    //var requestDictEntry = requestDict.TryGetValue(config.Id, out var request) ? request : null;
+                    var request = requestDict.TryGetValue(config.Id, out var req) ? req : null;
                     string status;
                     string statusToShow = "", timeToShow, accuracToShow;
                     object viewIcon, customIcon;
@@ -203,6 +211,7 @@ namespace GestPipePowerPonit
                     }
                     else if (request != null)
                     {
+                        //status = I18nHelper.GetLocalized(request.Status);
                         status = I18nHelper.GetLocalized(request.Status);
                         if (status.Contains("Active"))
                         {
@@ -291,15 +300,16 @@ namespace GestPipePowerPonit
 
                 var requestService = new UserGestureRequestService();
 
-                // Song song lấy requests cho tốc độ nhanh
-                var requestTasks = userGestures.Select(config => requestService.GetLatestRequestByConfigAsync(config.Id, userId)).ToList();
-                var requests = await Task.WhenAll(requestTasks);
+                // **Sửa ở đây: dùng batch thay cho từng request**
+                var configIds = userGestures.Select(config => config.Id).ToList();
+                var requests = await requestService.GetLatestRequestsBatchAsync(userId, configIds);
+                var requestDict = requests?.ToDictionary(r => r.UserGestureConfigId, r => r) ?? new Dictionary<string, UserGestureRequestDto>();
 
                 var rowsToAdd = new List<object[]>();
                 for (int i = 0; i < userGestures.Count; i++)
                 {
                     var config = userGestures[i];
-                    var request = requests[i];
+                    var request = requestDict.TryGetValue(config.Id, out var req) ? req : null;
                     string status;
                     string statusToShow = "", timeToShow, accuracToShow;
                     object viewIcon, customIcon;
@@ -356,17 +366,16 @@ namespace GestPipePowerPonit
 
                     rowsToAdd.Add(new object[]
                     {
-                        I18nHelper.GetLocalized(config.Name),
-                        I18nHelper.GetLocalized(config.Type),
-                        accuracToShow,
-                        statusToShow,
-                        timeToShow,
-                        viewIcon,
-                        customIcon
+                I18nHelper.GetLocalized(config.Name),
+                I18nHelper.GetLocalized(config.Type),
+                accuracToShow,
+                statusToShow,
+                timeToShow,
+                viewIcon,
+                customIcon
                     });
                 }
 
-                // Add tất cả dòng vào grid một lượt
                 if (guna2DataGridView1 != null)
                 {
                     foreach (var row in rowsToAdd)
@@ -377,7 +386,7 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Không thể tải danh sách default gesture!\n" + ex.Message);
+                MessageBox.Show("Không thể tải danh sách user gesture!\n" + ex.Message);
             }
             finally
             {
@@ -385,6 +394,123 @@ namespace GestPipePowerPonit
                     panelLoading.Visible = false;
             }
         }
+        //private async Task LoadUserGesturesAsync()
+        //{
+        //    try
+        //    {
+        //        if (panelLoading != null)
+        //        {
+        //            panelLoading.Visible = true;
+        //            panelLoading.BringToFront();
+        //        }
+
+        //        if (lblLoading != null)
+        //            lblLoading.Text = Properties.Resources.List_Loading;
+
+        //        userGestures = await _uGestureService.GetUserGesturesAsync(userId);
+
+        //        if (guna2DataGridView1 != null)
+        //        {
+        //            guna2DataGridView1.Rows.Clear();
+        //            guna2DataGridView1.AllowUserToAddRows = false;
+        //        }
+
+        //        var requestService = new UserGestureRequestService();
+
+        //        // Song song lấy requests cho tốc độ nhanh
+        //        var requestTasks = userGestures.Select(config => requestService.GetLatestRequestByConfigAsync(config.Id, userId)).ToList();
+        //        var requests = await Task.WhenAll(requestTasks);
+
+        //        var rowsToAdd = new List<object[]>();
+        //        for (int i = 0; i < userGestures.Count; i++)
+        //        {
+        //            var config = userGestures[i];
+        //            var request = requests[i];
+        //            string status;
+        //            string statusToShow = "", timeToShow, accuracToShow;
+        //            object viewIcon, customIcon;
+
+        //            if (!_canRequest)
+        //            {
+        //                status = I18nHelper.GetLocalized(config.Status);
+
+        //                if (status.Contains("Active"))
+        //                {
+        //                    statusToShow = I18nHelper.GetString("Ready", "Sẵn sàng");
+        //                }
+        //                else
+        //                {
+        //                    statusToShow = status;
+        //                }
+        //                timeToShow = config.LastUpdate.ToString("dd-MM-yyyy HH:mm");
+        //                accuracToShow = $"{config.Accuracy * 100:F1}%";
+        //                viewIcon = Properties.Resources.eye_gray;
+        //                customIcon = Properties.Resources.CustomCameraGray;
+        //            }
+        //            else if (request != null)
+        //            {
+        //                status = I18nHelper.GetLocalized(request.Status);
+        //                if (status.Contains("Active"))
+        //                {
+        //                    statusToShow = I18nHelper.GetString("Ready", "Sẵn sàng");
+        //                }
+        //                else
+        //                {
+        //                    statusToShow = status;
+        //                }
+        //                timeToShow = request.CreatedAt.ToString("dd-MM-yyyy HH:mm");
+        //                accuracToShow = "N/A";
+        //                viewIcon = Properties.Resources.eye_gray;
+        //                customIcon = Properties.Resources.CustomCameraGray;
+        //            }
+        //            else
+        //            {
+        //                status = I18nHelper.GetLocalized(config.Status);
+        //                if (status.Contains("Active"))
+        //                {
+        //                    statusToShow = I18nHelper.GetString("Ready", "Sẵn sàng");
+        //                }
+        //                else
+        //                {
+        //                    statusToShow = status;
+        //                }
+        //                timeToShow = config.LastUpdate.ToString("dd-MM-yyyy HH:mm");
+        //                accuracToShow = $"{config.Accuracy * 100:F1}%";
+        //                viewIcon = Properties.Resources.eye;
+        //                customIcon = Properties.Resources.CustomCamera;
+        //            }
+
+        //            rowsToAdd.Add(new object[]
+        //            {
+        //                I18nHelper.GetLocalized(config.Name),
+        //                I18nHelper.GetLocalized(config.Type),
+        //                accuracToShow,
+        //                statusToShow,
+        //                timeToShow,
+        //                viewIcon,
+        //                customIcon
+        //            });
+        //        }
+
+        //        // Add tất cả dòng vào grid một lượt
+        //        if (guna2DataGridView1 != null)
+        //        {
+        //            foreach (var row in rowsToAdd)
+        //            {
+        //                guna2DataGridView1.Rows.Add(row);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Không thể tải danh sách default gesture!\n" + ex.Message);
+        //    }
+        //    finally
+        //    {
+        //        if (panelLoading != null)
+        //            panelLoading.Visible = false;
+        //    }
+        //}
 
         // ✅ THAY ĐỔI: Xử lý click dựa trên loại gesture đang hiển thị
         private async void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)

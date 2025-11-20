@@ -291,7 +291,9 @@
     </Compile>
     <Compile Include="Services\ApiService.cs" />
     <Compile Include="Services\AuthService.cs" />
+    <Compile Include="Services\LoadingManager.cs" />
     <Compile Include="Services\ProfileService.cs" />
+    <Compile Include="Services\SlideInfoService.cs" />
     <Compile Include="Services\UserGestureRequestService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Views\Auth\ForgotPasswordForm.cs">
@@ -357,6 +359,12 @@
     </Compile>
     <Compile Include="Views\FormUserGesture.Designer.cs">
       <DependentUpon>FormUserGesture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InstructionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\InstructionForm.Designer.cs">
+      <DependentUpon>InstructionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\IntructionTraingForm.cs">
       <SubType>Form</SubType>
@@ -485,6 +493,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\FormUserGesture.resx">
       <DependentUpon>FormUserGesture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\InstructionForm.resx">
+      <DependentUpon>InstructionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\IntructionTraingForm.resx">
       <DependentUpon>IntructionTraingForm.cs</DependentUpon>

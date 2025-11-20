@@ -1,7 +1,7 @@
 ﻿using GestPipePowerPonit.I18n;
 using GestPipePowerPonit.Models.DTOs;
 using GestPipePowerPonit.Services;
-using GestPipePowerPonit.Views; // ✅ Import CustomMessageBox
+using GestPipePowerPonit.Views;
 using Newtonsoft.Json;
 using System;
 using System.Collections;

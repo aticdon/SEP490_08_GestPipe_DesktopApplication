@@ -6,9 +6,9 @@ namespace GestPipe.Backend.Services.IServices
     {
         List<DefaultGesture> GetAll();
         DefaultGesture GetById(string id);
-        void Create(DefaultGesture gesture);
-        void Update(string id, DefaultGesture gesture);
-        void Delete(string id);
+        //void Create(DefaultGesture gesture);
+        //void Update(string id, DefaultGesture gesture);
+        //void Delete(string id);
 
     }
 }

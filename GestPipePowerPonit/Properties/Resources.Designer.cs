@@ -503,9 +503,29 @@ namespace GestPipePowerPonit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap icon_check {
+            get {
+                object obj = ResourceManager.GetObject("icon_check", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap icon_down_arrow {
             get {
                 object obj = ResourceManager.GetObject("icon_down_arrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap icon_error {
+            get {
+                object obj = ResourceManager.GetObject("icon_error", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

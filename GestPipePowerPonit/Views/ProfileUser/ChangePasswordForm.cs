@@ -5,12 +5,14 @@ using System.Windows.Forms;
 using GestPipePowerPonit.Models.DTOs;
 using GestPipePowerPonit.Services;
 
+
 namespace GestPipePowerPonit.Views.Profile
 {
     public partial class ChangePasswordForm : Form
     {
         private readonly ProfileService _profileService;
         private readonly string _userId;
+
 
         public ChangePasswordForm(string userId)
         {
@@ -23,17 +25,21 @@ namespace GestPipePowerPonit.Views.Profile
                 MessageBox.Show($"Designer Error: {ex.Message}", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
+
             _profileService = new ProfileService();
             _userId = userId;
+
 
             // ✅ Match parent ProfileForm size
             this.Size = new Size(1537, 960);
             this.Location = new Point(0, 0);
         }
 
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
 
             // ✅ Position relative to parent
             if (this.Owner != null)
@@ -42,8 +48,10 @@ namespace GestPipePowerPonit.Views.Profile
                 this.Size = this.Owner.Size;
             }
 
+
             ApplyLanguage();
         }
+
 
         private void ApplyLanguage()
         {
@@ -61,26 +69,32 @@ namespace GestPipePowerPonit.Views.Profile
             }
         }
 
+
         private void ClearErrors()
         {
             Color defaultBorder = Color.FromArgb(64, 64, 64);
 
+
             if (lblOldPasswordError != null) lblOldPasswordError.Visible = false;
             if (lblNewPasswordError != null) lblNewPasswordError.Visible = false;
             if (lblConfirmPasswordError != null) lblConfirmPasswordError.Visible = false;
+
 
             if (txtOldPassword != null) txtOldPassword.BorderColor = defaultBorder;
             if (txtNewPassword != null) txtNewPassword.BorderColor = defaultBorder;
             if (txtConfirmPassword != null) txtConfirmPassword.BorderColor = defaultBorder;
         }
 
+
         private bool ValidateInputs(out List<string> errors)
         {
             errors = new List<string>();
             ClearErrors();
 
+
             bool hasErrors = false;
             Color errorBorder = Color.FromArgb(255, 193, 7);
+
 
             if (txtOldPassword == null || string.IsNullOrWhiteSpace(txtOldPassword.Text))
             {
@@ -93,6 +107,7 @@ namespace GestPipePowerPonit.Views.Profile
                 errors.Add("Old password is required");
                 hasErrors = true;
             }
+
 
             string newPassword = txtNewPassword?.Text ?? "";
             if (string.IsNullOrWhiteSpace(newPassword))
@@ -118,6 +133,7 @@ namespace GestPipePowerPonit.Views.Profile
                 hasErrors = true;
             }
 
+
             if (txtConfirmPassword == null || string.IsNullOrWhiteSpace(txtConfirmPassword.Text))
             {
                 if (lblConfirmPasswordError != null)
@@ -141,8 +157,10 @@ namespace GestPipePowerPonit.Views.Profile
                 hasErrors = true;
             }
 
+
             return !hasErrors;
         }
+
 
         private async void btnSave_Click(object sender, EventArgs e)
         {
@@ -151,12 +169,14 @@ namespace GestPipePowerPonit.Views.Profile
                 return;
             }
 
+
             if (btnSave != null)
             {
                 btnSave.Enabled = false;
                 btnSave.Text = "Saving...";
             }
             if (btnCancel != null) btnCancel.Enabled = false;
+
 
             try
             {
@@ -167,7 +187,9 @@ namespace GestPipePowerPonit.Views.Profile
                     ConfirmPassword = txtConfirmPassword?.Text ?? ""
                 };
 
+
                 var response = await _profileService.ChangePasswordAsync(_userId, changePasswordDto);
+
 
                 if (response?.Success == true)
                 {
@@ -176,12 +198,14 @@ namespace GestPipePowerPonit.Views.Profile
                         "Success"
                     );
 
+
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 else
                 {
                     string errorMessage = response?.Message ?? "Failed to change password.";
+
 
                     if (errorMessage.ToLower().Contains("incorrect") || errorMessage.ToLower().Contains("wrong") || errorMessage.ToLower().Contains("old password"))
                     {
@@ -197,11 +221,21 @@ namespace GestPipePowerPonit.Views.Profile
                             txtOldPassword.Focus();
                         }
                     }
+                    else if (errorMessage.ToLower().Contains("google") && errorMessage.ToLower().Contains("password"))
+                    {
+                        CustomMessageBox.ShowInfo(errorMessage, "Information");
+
+
+                        // Option: disable nút Save cho account này
+                        // if (btnSave != null) btnSave.Enabled = false;
+                    }
                     else
                     {
                         CustomMessageBox.ShowError(errorMessage, "Error");
                     }
                 }
+
+
             }
             catch (Exception ex)
             {
@@ -218,11 +252,13 @@ namespace GestPipePowerPonit.Views.Profile
             }
         }
 
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
 
         private void panelOverlay_Click(object sender, EventArgs e)
         {
@@ -230,11 +266,13 @@ namespace GestPipePowerPonit.Views.Profile
             this.Close();
         }
 
+
         private void txtOldPassword_IconRightClick(object sender, EventArgs e)
         {
             if (txtOldPassword != null)
                 txtOldPassword.PasswordChar = txtOldPassword.PasswordChar == '\0' ? '●' : '\0';
         }
+
 
         private void txtNewPassword_IconRightClick(object sender, EventArgs e)
         {
@@ -242,11 +280,13 @@ namespace GestPipePowerPonit.Views.Profile
                 txtNewPassword.PasswordChar = txtNewPassword.PasswordChar == '\0' ? '●' : '\0';
         }
 
+
         private void txtConfirmPassword_IconRightClick(object sender, EventArgs e)
         {
             if (txtConfirmPassword != null)
                 txtConfirmPassword.PasswordChar = txtConfirmPassword.PasswordChar == '\0' ? '●' : '\0';
         }
+
 
         private void txtOldPassword_TextChanged(object sender, EventArgs e)
         {
@@ -257,11 +297,14 @@ namespace GestPipePowerPonit.Views.Profile
             }
         }
 
+
         private void txtNewPassword_TextChanged(object sender, EventArgs e)
         {
             if (txtNewPassword == null) return;
 
+
             string newPassword = txtNewPassword.Text;
+
 
             if (string.IsNullOrWhiteSpace(newPassword))
             {
@@ -283,15 +326,18 @@ namespace GestPipePowerPonit.Views.Profile
                 txtNewPassword.BorderColor = Color.FromArgb(94, 148, 255);
             }
 
+
             if (txtConfirmPassword != null && !string.IsNullOrWhiteSpace(txtConfirmPassword.Text))
             {
                 txtConfirmPassword_TextChanged(sender, e);
             }
         }
 
+
         private void txtConfirmPassword_TextChanged(object sender, EventArgs e)
         {
             if (txtConfirmPassword == null || txtNewPassword == null) return;
+
 
             if (string.IsNullOrWhiteSpace(txtConfirmPassword.Text))
             {

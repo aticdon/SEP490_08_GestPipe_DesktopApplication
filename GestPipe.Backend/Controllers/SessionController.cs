@@ -15,13 +15,13 @@ namespace GestPipe.Backend.Controllers
         [HttpGet]
         public ActionResult<List<Session>> Get() => _service.GetAll();
 
-        [HttpGet("{id}")]
-        public ActionResult<Session> Get(string id)
-        {
-            var session = _service.Get(id);
-            if (session == null) return NotFound();
-            return session;
-        }
+        //[HttpGet("{id}")]
+        //public ActionResult<Session> Get(string id)
+        //{
+        //    var session = _service.Get(id);
+        //    if (session == null) return NotFound();
+        //    return session;
+        //}
 
         [HttpPost]
         public ActionResult<Session> Create(Session session)

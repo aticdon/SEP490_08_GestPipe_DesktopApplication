@@ -80,5 +80,29 @@ namespace GestPipePowerPonit.Services
                 return false;
             }
         }
+        public async Task<List<UserGestureRequestDto>> GetLatestRequestsBatchAsync(string userId, List<string> gestureConfigIds)
+        {
+            try
+            {
+                var data = new
+                {
+                    UserId = userId,
+                    GestureConfigIds = gestureConfigIds
+                };
+                var json = JsonConvert.SerializeObject(data);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("/api/UserGestureRequest/batch/latest-requests", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<List<UserGestureRequestDto>>();
+                    return result;
+                }
+                return new List<UserGestureRequestDto>();
+            }
+            catch
+            {
+                return new List<UserGestureRequestDto>();
+            }
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblUserError = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.txtPassword = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblPwdError = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.chkRememberMe = new Guna.UI2.WinForms.Guna2CheckBox(); // ✅ NEW
+            this.chkRememberMe = new Guna.UI2.WinForms.Guna2CheckBox();
             this.btnLogin = new Guna.UI2.WinForms.Guna2GradientButton();
             this.lblForgotPassword = new System.Windows.Forms.LinkLabel();
             this.lblNoAccount = new System.Windows.Forms.Label();
@@ -49,7 +49,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.pnlCard.Controls.Add(this.lblUserError);
             this.pnlCard.Controls.Add(this.txtPassword);
             this.pnlCard.Controls.Add(this.lblPwdError);
-            this.pnlCard.Controls.Add(this.chkRememberMe); // ✅ NEW
+            this.pnlCard.Controls.Add(this.chkRememberMe);
             this.pnlCard.Controls.Add(this.btnLogin);
             this.pnlCard.Controls.Add(this.lblForgotPassword);
             this.pnlCard.Controls.Add(this.lblNoAccount);
@@ -65,7 +65,7 @@ namespace GestPipePowerPonit.Views.Auth
             // 
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
-            this.lblTitle.Location = new System.Drawing.Point(0, 16);
+            this.lblTitle.Location = new System.Drawing.Point(0, 9);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(450, 94);
             this.lblTitle.TabIndex = 0;
@@ -87,7 +87,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtUserName.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtUserName.ForeColor = System.Drawing.Color.Black;
             this.txtUserName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
-            this.txtUserName.Location = new System.Drawing.Point(40, 130);
+            this.txtUserName.Location = new System.Drawing.Point(40, 123);
             this.txtUserName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.PlaceholderForeColor = System.Drawing.Color.Gray;
@@ -125,7 +125,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtPassword.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
             this.txtPassword.IconRight = global::GestPipePowerPonit.Properties.Resources.eye;
             this.txtPassword.IconRightCursor = System.Windows.Forms.Cursors.Hand;
-            this.txtPassword.Location = new System.Drawing.Point(40, 209);
+            this.txtPassword.Location = new System.Drawing.Point(40, 202);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
@@ -148,7 +148,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblPwdError.Text = null;
             this.lblPwdError.Visible = false;
             // 
-            // chkRememberMe ✅ NEW
+            // chkRememberMe
             // 
             this.chkRememberMe.AutoSize = true;
             this.chkRememberMe.BackColor = System.Drawing.Color.Transparent;
@@ -158,9 +158,9 @@ namespace GestPipePowerPonit.Views.Auth
             this.chkRememberMe.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
             this.chkRememberMe.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.chkRememberMe.ForeColor = System.Drawing.Color.White;
-            this.chkRememberMe.Location = new System.Drawing.Point(40, 264);
+            this.chkRememberMe.Location = new System.Drawing.Point(40, 281);
             this.chkRememberMe.Name = "chkRememberMe";
-            this.chkRememberMe.Size = new System.Drawing.Size(141, 27);
+            this.chkRememberMe.Size = new System.Drawing.Size(144, 27);
             this.chkRememberMe.TabIndex = 2;
             this.chkRememberMe.Text = "Remember Me";
             this.chkRememberMe.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
@@ -180,7 +180,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnLogin.ForeColor = System.Drawing.Color.White;
             this.btnLogin.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(150)))), ((int)(((byte)(200)))));
-            this.btnLogin.Location = new System.Drawing.Point(125, 306);
+            this.btnLogin.Location = new System.Drawing.Point(125, 325);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(193, 45);
             this.btnLogin.TabIndex = 3;
@@ -192,7 +192,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblForgotPassword.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lblForgotPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblForgotPassword.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(180)))), ((int)(((byte)(218)))));
-            this.lblForgotPassword.Location = new System.Drawing.Point(40, 364);
+            this.lblForgotPassword.Location = new System.Drawing.Point(40, 383);
             this.lblForgotPassword.Name = "lblForgotPassword";
             this.lblForgotPassword.Size = new System.Drawing.Size(370, 25);
             this.lblForgotPassword.TabIndex = 4;
@@ -207,7 +207,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblNoAccount.AutoSize = true;
             this.lblNoAccount.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.lblNoAccount.ForeColor = System.Drawing.Color.White;
-            this.lblNoAccount.Location = new System.Drawing.Point(122, 397);
+            this.lblNoAccount.Location = new System.Drawing.Point(106, 416);
             this.lblNoAccount.Name = "lblNoAccount";
             this.lblNoAccount.Size = new System.Drawing.Size(125, 25);
             this.lblNoAccount.TabIndex = 5;
@@ -219,7 +219,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblRegister.AutoSize = true;
             this.lblRegister.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblRegister.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(180)))), ((int)(((byte)(218)))));
-            this.lblRegister.Location = new System.Drawing.Point(237, 397);
+            this.lblRegister.Location = new System.Drawing.Point(237, 416);
             this.lblRegister.Name = "lblRegister";
             this.lblRegister.Size = new System.Drawing.Size(84, 25);
             this.lblRegister.TabIndex = 6;
@@ -244,7 +244,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.btnGoogleLogin.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnGoogleLogin.ImageOffset = new System.Drawing.Point(15, 0);
             this.btnGoogleLogin.ImageSize = new System.Drawing.Size(18, 18);
-            this.btnGoogleLogin.Location = new System.Drawing.Point(78, 442);
+            this.btnGoogleLogin.Location = new System.Drawing.Point(78, 461);
             this.btnGoogleLogin.Name = "btnGoogleLogin";
             this.btnGoogleLogin.Size = new System.Drawing.Size(285, 45);
             this.btnGoogleLogin.TabIndex = 8;
@@ -290,7 +290,7 @@ namespace GestPipePowerPonit.Views.Auth
             // LoginForm
             // 
             this.AcceptButton = this.btnLogin;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1366, 768);

@@ -189,67 +189,6 @@ namespace GestPipePowerPonit
             }
             catch { }
         }
-
-        //private void StartCameraReceiver(int port = 6000)
-        //{
-        //    try
-        //    {
-        //        cameraListener = new TcpListener(System.Net.IPAddress.Any, port);
-        //        cameraListener.Start();
-        //        cameraRunning = true;
-        //        cameraThread = new Thread(() =>
-        //        {
-        //            try
-        //            {
-        //                using (TcpClient client = cameraListener.AcceptTcpClient())
-        //                using (NetworkStream ns = client.GetStream())
-        //                {
-        //                    while (cameraRunning)
-        //                    {
-        //                        byte[] lengthBytes = new byte[4];
-        //                        int bytesRead = 0;
-        //                        while (bytesRead < 4)
-        //                        {
-        //                            int r = ns.Read(lengthBytes, bytesRead, 4 - bytesRead);
-        //                            if (r <= 0) return;
-        //                            bytesRead += r;
-        //                        }
-        //                        int length = System.BitConverter.ToInt32(lengthBytes.Reverse().ToArray(), 0);
-        //                        byte[] imageBytes = new byte[length];
-        //                        int read = 0;
-        //                        while (read < length)
-        //                        {
-        //                            int r = ns.Read(imageBytes, read, length - read);
-        //                            if (r <= 0) return;
-        //                            read += r;
-        //                        }
-        //                        using (var ms = new MemoryStream(imageBytes))
-        //                        {
-        //                            var img = Image.FromStream(ms);
-        //                            img.RotateFlip(RotateFlipType.RotateNoneFlipX);
-        //                            this.Invoke(new Action(() =>
-        //                            {
-        //                                pictureBoxCamera.Image = img;
-        //                            }));
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                //MessageBox.Show("Camera thread error: " + ex.Message);
-        //                Debug.WriteLine("Camera thread error: " + ex.ToString());
-        //            }
-        //        });
-        //        cameraThread.IsBackground = true;
-        //        cameraThread.Start();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //MessageBox.Show("StartCameraReceiver error: " + ex.Message);
-        //        Debug.WriteLine("StartCameraReceiver error: " + ex.ToString());
-        //    }
-        //}
         private void StartCameraReceiver(int port = 6000)
         {
             try
@@ -359,16 +298,6 @@ namespace GestPipePowerPonit
                 Debug.WriteLine($"[Camera] StartCameraReceiver error: {ex.Message}");
             }
         }
-        //private void StopCameraReceiver()
-        //{
-        //    cameraRunning = false;
-        //    try
-        //    {
-        //        cameraListener?.Stop();
-        //        cameraThread?.Abort();
-        //    }
-        //    catch { }
-        //}
         private void StopCameraReceiver()
         {
             Debug.WriteLine("[Camera] Stopping camera receiver...");
@@ -1192,7 +1121,6 @@ namespace GestPipePowerPonit
                 case "rotate_right": btnViewLeft_Click(null, null); Console.WriteLine("Rotate Right"); break;
                 case "rotate_up": btnViewBottom_Click(null, null); Console.WriteLine("Rotate Up"); break;
                 case "rotate_down": btnViewTop_Click(null, null); Console.WriteLine("Rotate Down"); break;
-                //case "Slide_show": btnSlideShow_Click(null, null); break;
                 default: MessageBox.Show($"Nhận lệnh không xác định: {command}"); break;
             }
         }
@@ -1272,7 +1200,6 @@ namespace GestPipePowerPonit
 
                 if (!File.Exists(scriptFile))
                 {
-                    //MessageBox.Show("Không tìm thấy file script python: " + scriptFile, "Python Script Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Debug.WriteLine("Không tìm thấy script python: " + scriptFile);
                     return;
                 }
@@ -1335,12 +1262,10 @@ namespace GestPipePowerPonit
 
         private void UpdateControlTexts()
         {
-            // Gán lại text cho từng button từ Properties.Resources
             btnHome.Text = Properties.Resources.Btn_Home;
             btnGestureControl.Text = Properties.Resources.Btn_GestureControl;
             btnInstruction.Text = Properties.Resources.Btn_Instruction;
             lblPresentationFile.Text = Properties.Resources.Lbl_PresentiontationFile;
-            // ... Gán cho các label/button khác tương tự
         }
         private async void UpdateCultureAndApply(string cultureCode)
         {
@@ -1631,7 +1556,6 @@ namespace GestPipePowerPonit
 
             loadingLabel.Text = message;
 
-            // Center the label
             if (loadingPanel.IsHandleCreated && !loadingPanel.IsDisposed)
             {
                 this.Invoke(new Action(() =>
@@ -1644,7 +1568,6 @@ namespace GestPipePowerPonit
             }
         }
 
-        // ✅ THÊM: Show loading
         private void ShowLoading(string message = null)
         {
             if (InvokeRequired)

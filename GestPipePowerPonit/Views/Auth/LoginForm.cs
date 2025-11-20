@@ -212,30 +212,38 @@ namespace GestPipePowerPonit.Views.Auth
                 return;
             }
 
+
             btnLogin.Enabled = false;
             btnLogin.Text = AppSettings.GetText("LoginForm_SigningIn");
+
 
             try
             {
                 string email = txtUserName.Text.Trim();
                 string password = txtPassword.Text;
 
+
                 var res = await _authService.LoginAsync(email, password);
+
 
                 if (res?.Success == true)
                 {
                     // ✅ SỬA: Truyền chkRememberMe.Checked thay vì hard-coded false
                     _authService.SaveUserSession(res, chkRememberMe.Checked);
 
+
                     // ✅ LƯU EMAIL NẾU REMEMBER ME (KHÔNG LƯU PASSWORD)
                     SaveEmailIfNeeded(email);
 
+
                     AppSettings.LoadLanguageSettings();
+
 
                     CustomMessageBox.ShowSuccess(
                         AppSettings.GetText("Message_LoginSuccess"),
                         AppSettings.GetText("Title_Success") ?? "Success"
                     );
+
 
                     HomeUser homeForm = new HomeUser(res.UserId);
                     this.Hide();
@@ -248,6 +256,7 @@ namespace GestPipePowerPonit.Views.Auth
                         AppSettings.GetText("Title_VerificationRequired") ?? "Verification Required"
                     );
 
+
                     var verifyForm = new VerifyOtpForm(this, email, isRegistration: false);
                     verifyForm.Owner = this;
                     this.Hide();
@@ -255,16 +264,31 @@ namespace GestPipePowerPonit.Views.Auth
                 }
                 else
                 {
+                    var errorMsg = string.IsNullOrWhiteSpace(res?.Message)
+                        ? AppSettings.GetText("Message_LoginFailed")
+                        : res.Message;
+
+
                     CustomMessageBox.ShowError(
-                        string.IsNullOrWhiteSpace(res?.Message)
-                            ? AppSettings.GetText("Message_LoginFailed")
-                            : res.Message,
+                        errorMsg,
                         AppSettings.GetText("Title_Error") ?? "Error"
                     );
 
-                    lblPwdError.Text = AppSettings.GetText("Validation_WrongCredentials");
+
+                    // Nếu là thông báo Google thì coi như info, không ghi "Sai mật khẩu"
+                    if (errorMsg.Contains("Google"))
+                    {
+                        //lblPwdError.Text = errorMsg;
+                        //txtPassword.BorderColor = Color.Goldenrod; // nhẹ hơn
+                    }
+                    else
+                    {
+                        lblPwdError.Text = AppSettings.GetText("Validation_WrongCredentials");
+                        txtPassword.BorderColor = Color.OrangeRed;
+                    }
+
+
                     lblPwdError.Visible = true;
-                    txtPassword.BorderColor = Color.OrangeRed;
                 }
             }
             catch (Exception ex)
@@ -280,7 +304,6 @@ namespace GestPipePowerPonit.Views.Auth
                 btnLogin.Text = AppSettings.GetText("LoginForm_BtnLogin");
             }
         }
-
         private void lblForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var forgotForm = new ForgotPasswordForm(this);

@@ -1,24 +1,27 @@
-﻿    namespace GestPipePowerPonit
+﻿using Guna.UI2.WinForms;
+using System.Drawing;
+
+namespace GestPipePowerPonit
+{
+    partial class InstructionForm
     {
-        partial class HomeUser
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
         {
-            private System.ComponentModel.IContainer components = null;
-
-            protected override void Dispose(bool disposing)
+            if (disposing && (components != null))
             {
-                if (disposing && (components != null))
-                {
-                    components.Dispose();
-                }
-                base.Dispose(disposing);
+                components.Dispose();
             }
+            base.Dispose(disposing);
+        }
 
-            #region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-            private void InitializeComponent()
-            {
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeUser));
+            this.pnlContentHolder = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             this.btnCustomGesture = new Guna.UI2.WinForms.Guna2Button();
@@ -31,16 +34,14 @@
             this.btnHome = new Guna.UI2.WinForms.Guna2Button();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblWelcome = new System.Windows.Forms.Label();
-            this.lblSubtitle = new System.Windows.Forms.Label();
             this.btnLogout = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.btnProfile = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.guna2ControlBoxClose = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBoxMinimize = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlMain = new Guna.UI2.WinForms.Guna2GradientPanel();
-            this.btnPresent = new Guna.UI2.WinForms.Guna2Button();
-            this.btnTraining = new Guna.UI2.WinForms.Guna2Button();
-            this.pictureBoxBanner = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.btnSubtab2 = new Guna.UI2.WinForms.Guna2Button();
+            this.btnSubtab1 = new Guna.UI2.WinForms.Guna2Button();
+            this.richTextBoxContent = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.pnlSidebar.SuspendLayout();
             this.pnlFooter.SuspendLayout();
@@ -49,8 +50,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnProfile)).BeginInit();
             this.pnlMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBanner)).BeginInit();
             this.SuspendLayout();
+            // 
+            // pnlContentHolder
+            // 
+            this.pnlContentHolder.BackColor = System.Drawing.Color.Transparent;
+            this.pnlContentHolder.BorderRadius = 10;
+            this.pnlContentHolder.FillColor = System.Drawing.Color.Transparent;
+            this.pnlContentHolder.Location = new System.Drawing.Point(20, 97);
+            this.pnlContentHolder.Name = "pnlContentHolder";
+            this.pnlContentHolder.Size = new System.Drawing.Size(1050, 489);
+            this.pnlContentHolder.TabIndex = 3;
             // 
             // guna2Elipse1
             // 
@@ -185,7 +195,6 @@
             this.btnInstruction.TabIndex = 4;
             this.btnInstruction.Text = "Instruction";
             this.btnInstruction.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnInstruction.Click += new System.EventHandler(this.btnInstruction_Click);
             // 
             // btnGestureControl
             // 
@@ -242,8 +251,6 @@
             // 
             // pnlHeader
             // 
-            this.pnlHeader.Controls.Add(this.lblWelcome);
-            this.pnlHeader.Controls.Add(this.lblSubtitle);
             this.pnlHeader.Controls.Add(this.btnLogout);
             this.pnlHeader.Controls.Add(this.btnProfile);
             this.pnlHeader.Controls.Add(this.guna2ControlBoxClose);
@@ -254,30 +261,6 @@
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(1099, 120);
             this.pnlHeader.TabIndex = 2;
-            // 
-            // lblWelcome
-            // 
-            this.lblWelcome.AutoSize = true;
-            this.lblWelcome.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblWelcome.ForeColor = System.Drawing.Color.White;
-            this.lblWelcome.Location = new System.Drawing.Point(40, 37);
-            this.lblWelcome.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(144, 37);
-            this.lblWelcome.TabIndex = 0;
-            this.lblWelcome.Text = "Wellcome";
-            // 
-            // lblSubtitle
-            // 
-            this.lblSubtitle.AutoSize = true;
-            this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(40, 80);
-            this.lblSubtitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblSubtitle.Name = "lblSubtitle";
-            this.lblSubtitle.Size = new System.Drawing.Size(268, 28);
-            this.lblSubtitle.TabIndex = 1;
-            this.lblSubtitle.Text = "Do you want to present now?";
             // 
             // btnLogout
             // 
@@ -337,9 +320,9 @@
             // pnlMain
             // 
             this.pnlMain.BorderRadius = 20;
-            this.pnlMain.Controls.Add(this.btnPresent);
-            this.pnlMain.Controls.Add(this.btnTraining);
-            this.pnlMain.Controls.Add(this.pictureBoxBanner);
+            this.pnlMain.Controls.Add(this.btnSubtab2);
+            this.pnlMain.Controls.Add(this.btnSubtab1);
+            this.pnlMain.Controls.Add(this.pnlContentHolder);
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMain.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
             this.pnlMain.FillColor2 = System.Drawing.Color.Black;
@@ -349,70 +332,49 @@
             this.pnlMain.Size = new System.Drawing.Size(1099, 648);
             this.pnlMain.TabIndex = 1;
             // 
-            // btnPresent
+            // btnSubtab2
             // 
-            this.btnPresent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPresent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
-            this.btnPresent.BorderRadius = 15;
-            this.btnPresent.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnPresent.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnPresent.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnPresent.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnPresent.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(200)))), ((int)(((byte)(255)))));
-            this.btnPresent.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.btnPresent.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.btnPresent.ForeColor = System.Drawing.Color.White;
-            this.btnPresent.Image = global::GestPipePowerPonit.Properties.Resources.icon_present;
-            this.btnPresent.ImageSize = new System.Drawing.Size(40, 40);
-            this.btnPresent.Location = new System.Drawing.Point(582, 482);
-            this.btnPresent.Margin = new System.Windows.Forms.Padding(4);
-            this.btnPresent.Name = "btnPresent";
-            this.btnPresent.Size = new System.Drawing.Size(240, 111);
-            this.btnPresent.TabIndex = 4;
-            this.btnPresent.Text = "Present";
+            this.btnSubtab2.BorderRadius = 10;
+            this.btnSubtab2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
+            this.btnSubtab2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSubtab2.ForeColor = System.Drawing.Color.White;
+            this.btnSubtab2.Location = new System.Drawing.Point(162, 20);
+            this.btnSubtab2.Name = "btnSubtab2";
+            this.btnSubtab2.Size = new System.Drawing.Size(144, 50);
+            this.btnSubtab2.TabIndex = 1;
+            this.btnSubtab2.Text = "Camera & Lighting";
             // 
-            // btnTraining
+            // btnSubtab1
             // 
-            this.btnTraining.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTraining.BackColor = System.Drawing.Color.Transparent;
-            this.btnTraining.BorderColor = this.btnTraining.FillColor;
-            this.btnTraining.BorderRadius = 15;
-            this.btnTraining.BorderThickness = 1;
-            this.btnTraining.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnTraining.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnTraining.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnTraining.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnTraining.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(200)))), ((int)(((byte)(255)))));
-            this.btnTraining.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.btnTraining.ForeColor = System.Drawing.Color.White;
-            this.btnTraining.Image = ((System.Drawing.Image)(resources.GetObject("btnTraining.Image")));
-            this.btnTraining.ImageSize = new System.Drawing.Size(40, 40);
-            this.btnTraining.Location = new System.Drawing.Point(252, 482);
-            this.btnTraining.Margin = new System.Windows.Forms.Padding(4);
-            this.btnTraining.Name = "btnTraining";
-            this.btnTraining.Size = new System.Drawing.Size(240, 111);
-            this.btnTraining.TabIndex = 3;
-            this.btnTraining.Text = "Training";
+            this.btnSubtab1.BackColor = System.Drawing.Color.Transparent;
+            this.btnSubtab1.BorderRadius = 10;
+            this.btnSubtab1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnSubtab1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSubtab1.ForeColor = System.Drawing.Color.White;
+            this.btnSubtab1.Location = new System.Drawing.Point(20, 20);
+            this.btnSubtab1.Name = "btnSubtab1";
+            this.btnSubtab1.Size = new System.Drawing.Size(136, 50);
+            this.btnSubtab1.TabIndex = 0;
+            this.btnSubtab1.Text = "Interact with 3D Model";
             // 
-            // pictureBoxBanner
+            // richTextBoxContent
             // 
-            this.pictureBoxBanner.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxBanner.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBoxBanner.BorderRadius = 20;
-            this.pictureBoxBanner.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(40)))), ((int)(((byte)(80)))));
-            this.pictureBoxBanner.Image = global::GestPipePowerPonit.Properties.Resources.Banner;
-            this.pictureBoxBanner.ImageRotate = 0F;
-            this.pictureBoxBanner.Location = new System.Drawing.Point(70, 63);
-            this.pictureBoxBanner.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBoxBanner.Name = "pictureBoxBanner";
-            this.pictureBoxBanner.Size = new System.Drawing.Size(960, 345);
-            this.pictureBoxBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxBanner.TabIndex = 2;
-            this.pictureBoxBanner.TabStop = false;
+            this.richTextBoxContent.BackColor = System.Drawing.Color.Transparent;
+            this.richTextBoxContent.BorderColor = System.Drawing.Color.Transparent;
+            this.richTextBoxContent.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.richTextBoxContent.DefaultText = "";
+            this.richTextBoxContent.FillColor = System.Drawing.Color.Transparent;
+            this.richTextBoxContent.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBoxContent.ForeColor = System.Drawing.Color.White;
+            this.richTextBoxContent.Location = new System.Drawing.Point(20, 100);
+            this.richTextBoxContent.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
+            this.richTextBoxContent.Multiline = true;
+            this.richTextBoxContent.Name = "richTextBoxContent";
+            this.richTextBoxContent.PlaceholderText = "";
+            this.richTextBoxContent.ReadOnly = true;
+            this.richTextBoxContent.SelectedText = "";
+            this.richTextBoxContent.Size = new System.Drawing.Size(1050, 490);
+            this.richTextBoxContent.TabIndex = 3;
             // 
             // guna2DragControl1
             // 
@@ -420,7 +382,7 @@
             this.guna2DragControl1.TargetControl = this.pnlHeader;
             this.guna2DragControl1.UseTransparentDrag = true;
             // 
-            // HomeUser
+            // InstructionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.Black;
@@ -429,39 +391,31 @@
             this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.pnlSidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "HomeUser";
+            this.Name = "InstructionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "GestPipe - Home";
+            this.Text = "GestPipe - Instruction";
             this.pnlSidebar.ResumeLayout(false);
             this.pnlFooter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnProfile)).EndInit();
             this.pnlMain.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBanner)).EndInit();
             this.ResumeLayout(false);
 
-            }
+        }
 
-            #endregion
+        #endregion
 
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
         private Guna.UI2.WinForms.Guna2Panel pnlSidebar;
-        private Guna.UI2.WinForms.Guna2Panel pnlHeader; // Thêm khai báo này
+        private Guna.UI2.WinForms.Guna2Panel pnlHeader;
         private Guna.UI2.WinForms.Guna2GradientPanel pnlMain;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
         private Guna.UI2.WinForms.Guna2Button btnHome;
         private Guna.UI2.WinForms.Guna2Button btnGestureControl;
         private Guna.UI2.WinForms.Guna2Button btnInstruction;
-        private System.Windows.Forms.Label lblWelcome;
-        private System.Windows.Forms.Label lblSubtitle;
-        private Guna.UI2.WinForms.Guna2PictureBox pictureBoxBanner;
-        private Guna.UI2.WinForms.Guna2Button btnTraining;
-        private Guna.UI2.WinForms.Guna2Button btnPresent;
         private Guna.UI2.WinForms.Guna2CirclePictureBox btnLogout;
         private Guna.UI2.WinForms.Guna2CirclePictureBox btnProfile;
         private Guna.UI2.WinForms.Guna2Panel pnlFooter;
@@ -472,5 +426,9 @@
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
         private Guna.UI2.WinForms.Guna2Button btnPresentation;
         private Guna.UI2.WinForms.Guna2Button btnCustomGesture;
+        private Guna.UI2.WinForms.Guna2Button btnSubtab1;
+        private Guna.UI2.WinForms.Guna2Button btnSubtab2;
+        private Guna.UI2.WinForms.Guna2TextBox richTextBoxContent;
+        private Guna.UI2.WinForms.Guna2Panel pnlContentHolder;
     }
 }

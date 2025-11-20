@@ -19,7 +19,7 @@ namespace GestPipe.Backend.Services
 
         //public List<Session> GetAll() => _sessions.Find(session => true).ToList();
 
-        public Session Get(string id) => _sessions.Find(session => session.Id == id).FirstOrDefault();
+        //public Session Get(string id) => _sessions.Find(session => session.Id == id).FirstOrDefault();
 
         public void Create(Session session) => _sessions.InsertOne(session);
         public List<Session> GetAll()
