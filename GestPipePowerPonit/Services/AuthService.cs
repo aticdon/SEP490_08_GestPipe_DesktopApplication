@@ -66,7 +66,7 @@ namespace GestPipePowerPonit.Services
                 OtpCode = otpCode
             };
 
-            string endpoint = $"auth/validate-otp?purpose={purpose}";
+            string endpoint = $"auth/validate-otp/{purpose}";
             return await _apiService.PostAsync<AuthResponseDto>(endpoint, verifyDto);
         }
 

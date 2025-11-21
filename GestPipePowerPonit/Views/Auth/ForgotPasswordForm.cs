@@ -147,11 +147,13 @@ namespace GestPipePowerPonit.Views.Auth
                     );
 
                     // ✅ Close ForgotPasswordForm trước
-                    this.Close();
+                    string email = txtEmail.Text.Trim();
 
                     // ✅ PASS LOGINFORM TO VERIFYOTPFORM
-                    var verify = new VerifyOtpForm(_loginForm, txtEmail.Text.Trim(), isRegistration: false);
+                    var verify = new VerifyOtpForm(_loginForm, email, isRegistration: false);
                     verify.ShowDialog();
+
+                    this.Close();
                 }
                 else
                 {

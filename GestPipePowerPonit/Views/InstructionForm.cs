@@ -175,13 +175,18 @@ namespace GestPipePowerPonit
         }
         private async Task ChangeLanguageAsync(string cultureCode)
         {
-            _currentCultureCode = cultureCode;
-            CultureManager.CurrentCultureCode = _currentCultureCode;
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
-            ResourceHelper.SetCulture(_currentCultureCode, this);
-            ApplyResourceToControls();
-            ShowSubtabImage();
-            await _apiClient.SetUserLanguageAsync(_currentUserId, cultureCode);
+            try
+            {
+                _currentCultureCode = cultureCode;
+                CultureManager.CurrentCultureCode = _currentCultureCode;
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
+                ResourceHelper.SetCulture(_currentCultureCode, this);
+                ApplyResourceToControls();
+                ShowSubtabImage();
+                await _apiClient.SetUserLanguageAsync(_currentUserId, cultureCode);
+            }
+            catch { }
+            
         }
 
 
@@ -195,19 +200,18 @@ namespace GestPipePowerPonit
 
 
             btnSubtab1.Text = I18nHelper.GetString(
-                "Gesture Recording Guide",
-                "Hướng dẫn ghi nhận động tác"
-            );
-            btnSubtab2.Text = I18nHelper.GetString(
                 "3D Model Setup",
                 "Thiết lập lỗi mô hình 3D"
+                
             );
-            btnSubtab3.Text = I18nHelper.GetString(
+            btnSubtab2.Text = I18nHelper.GetString(
                 "Environment & Practice Tips",
                 "Mẹo môi trường & luyện tập"
             );
-            // Nếu muốn text cho tab 3:
-            // btnSubtab3.Text = I18nHelper.GetString("Presentation Environment", "Môi trường trình bày");
+            btnSubtab3.Text = I18nHelper.GetString(
+                "Gesture Recording Guide",
+                "Hướng dẫn ghi nhận động tác"
+            );
         }
 
 

@@ -132,10 +132,10 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                CustomMessageBox.ShowError(
-                    Properties.Resources.Message_ChangeLanguageFailed,
-                    Properties.Resources.Title_Error
-                );
+                //CustomMessageBox.ShowError(
+                //    Properties.Resources.Message_ChangeLanguageFailed,
+                //    Properties.Resources.Title_Error
+                //);
             }
         }
 
