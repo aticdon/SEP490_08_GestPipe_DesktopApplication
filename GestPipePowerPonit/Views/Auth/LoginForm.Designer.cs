@@ -289,9 +289,9 @@ namespace GestPipePowerPonit.Views.Auth
             // 
             // LoginForm
             // 
-            this.AcceptButton = this.btnLogin;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AcceptButton = this.btnLogin;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1366, 768);
             this.Controls.Add(this.guna2ControlBoxClose);
@@ -299,17 +299,18 @@ namespace GestPipePowerPonit.Views.Auth
             this.Controls.Add(this.picLogo);
             this.Controls.Add(this.pnlCard);
             this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 11F);
+            //this.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            //this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "LoginForm";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.Load += new System.EventHandler(this.LoginForm_Load);
-            this.Resize += new System.EventHandler(this.LoginForm_Resize);
+            //this.Resize += new System.EventHandler(this.LoginForm_Resize);
             this.pnlCard.ResumeLayout(false);
             this.pnlCard.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();

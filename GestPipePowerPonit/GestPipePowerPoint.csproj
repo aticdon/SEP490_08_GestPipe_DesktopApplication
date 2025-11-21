@@ -262,6 +262,12 @@
   <ItemGroup>
     <Compile Include="ApiClient.cs" />
     <Compile Include="AppSetting.cs" />
+    <Compile Include="BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CultureManager.cs" />
     <Compile Include="Languages\LoginFormStrings.Designer.cs" />
     <Compile Include="Languages\RegisterFormStrings.Designer.cs" />

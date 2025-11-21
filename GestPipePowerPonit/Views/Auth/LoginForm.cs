@@ -20,9 +20,9 @@ namespace GestPipePowerPonit.Views.Auth
             this.DoubleBuffered = true;
 
             _authService = new AuthService();
-            this.Size = new Size(1366, 786);
-            this.MinimumSize = new Size(1366, 786);
-            this.MaximumSize = new Size(1366, 786);
+            //this.Size = new Size(1366, 786);
+            //this.MinimumSize = new Size(1366, 786);
+            //this.MaximumSize = new Size(1366, 786);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             AppSettings.CurrentLanguage = "EN";
@@ -33,6 +33,16 @@ namespace GestPipePowerPonit.Views.Auth
         {
             try
             {
+                Console.WriteLine("=== LoginForm Font & DPI Debug ===");
+                Console.WriteLine($"Form Font: {this.Font.Name} {this.Font.Size}F");
+                Console.WriteLine($"AutoScaleMode: {this.AutoScaleMode}");
+                Console.WriteLine($"AutoScaleDimensions: {this.AutoScaleDimensions}");
+                Console.WriteLine($"Form Size: {this.Size}");
+                Console.WriteLine("==================================");
+                var currentScale = this.CurrentAutoScaleDimensions;
+                var designScale = new SizeF(8F, 16F);
+
+                Console.WriteLine($"Design: {designScale}\nCurrent: {currentScale}\nScale Factor: {currentScale.Width / designScale.Width}");
                 this.BackgroundImage = Properties.Resources.background;
                 this.BackgroundImageLayout = ImageLayout.Stretch;
                 this.picLogo.Image = Properties.Resources.Logo;
@@ -107,7 +117,7 @@ namespace GestPipePowerPonit.Views.Auth
             }
         }
 
-        private void LoginForm_Resize(object sender, EventArgs e) => CenterControls();
+        //private void LoginForm_Resize(object sender, EventArgs e) => CenterControls();
 
         private void CenterControls()
         {

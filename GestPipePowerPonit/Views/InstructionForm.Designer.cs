@@ -332,11 +332,16 @@ namespace GestPipePowerPonit
             // 
             // guna2PictureBox1
             // 
-            this.guna2PictureBox1.Image = global::GestPipePowerPonit.Properties.Resources.IntructionTest_1;
+            this.guna2PictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2PictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.guna2PictureBox1.Image = global::GestPipePowerPonit.Properties.Resources.Instruction_Tab1;
             this.guna2PictureBox1.ImageRotate = 0F;
-            this.guna2PictureBox1.Location = new System.Drawing.Point(3, 88);
+            this.guna2PictureBox1.Location = new System.Drawing.Point(0, 101);
             this.guna2PictureBox1.Name = "guna2PictureBox1";
-            this.guna2PictureBox1.Size = new System.Drawing.Size(1096, 506);
+            this.guna2PictureBox1.Size = new System.Drawing.Size(1099, 506);
+            this.guna2PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.guna2PictureBox1.TabIndex = 2;
             this.guna2PictureBox1.TabStop = false;
             // 
@@ -350,8 +355,8 @@ namespace GestPipePowerPonit
             this.btnSubtab3.ForeColor = System.Drawing.Color.White;
             this.btnSubtab3.Location = new System.Drawing.Point(400, 20);
             this.btnSubtab3.Name = "btnSubtab3";
-            this.btnSubtab3.Size = new System.Drawing.Size(180, 50);
-            this.btnSubtab3.TabIndex = 1;
+            this.btnSubtab3.Size = new System.Drawing.Size(180, 80);
+            this.btnSubtab3.TabIndex = 3;
             this.btnSubtab3.Text = "Environment & Practice Tips";
             // 
             // btnSubtab2
@@ -364,8 +369,8 @@ namespace GestPipePowerPonit
             this.btnSubtab2.ForeColor = System.Drawing.Color.White;
             this.btnSubtab2.Location = new System.Drawing.Point(210, 20);
             this.btnSubtab2.Name = "btnSubtab2";
-            this.btnSubtab2.Size = new System.Drawing.Size(180, 50);
-            this.btnSubtab2.TabIndex = 1;
+            this.btnSubtab2.Size = new System.Drawing.Size(180, 80);
+            this.btnSubtab2.TabIndex = 4;
             this.btnSubtab2.Text = "3D Model Setup";
             // 
             // btnSubtab1
@@ -378,8 +383,8 @@ namespace GestPipePowerPonit
             this.btnSubtab1.ForeColor = System.Drawing.Color.White;
             this.btnSubtab1.Location = new System.Drawing.Point(20, 20);
             this.btnSubtab1.Name = "btnSubtab1";
-            this.btnSubtab1.Size = new System.Drawing.Size(180, 50);
-            this.btnSubtab1.TabIndex = 0;
+            this.btnSubtab1.Size = new System.Drawing.Size(180, 80);
+            this.btnSubtab1.TabIndex = 5;
             this.btnSubtab1.Text = "Gesture Recording Guide";
             // 
             // guna2DragControl1
@@ -390,7 +395,8 @@ namespace GestPipePowerPonit
             // 
             // InstructionForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1366, 768);
             this.Controls.Add(this.pnlMain);

@@ -67,8 +67,8 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtCompany = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblCompanyError = new System.Windows.Forms.Label();
             this.lblOccupation = new System.Windows.Forms.Label();
-            this.cmbOccupation = new Guna.UI2.WinForms.Guna2ComboBox();  // ✅ ComboBox
-            this.txtOccupationOther = new Guna.UI2.WinForms.Guna2TextBox();  // ✅ TextBox Other
+            this.cmbOccupation = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.txtOccupationOther = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblOccupationError = new System.Windows.Forms.Label();
             this.btnRegister = new Guna.UI2.WinForms.Guna2GradientButton();
             this.lnkLogin = new System.Windows.Forms.LinkLabel();
@@ -114,8 +114,8 @@ namespace GestPipePowerPonit.Views.Auth
             this.pnlCard.Controls.Add(this.txtCompany);
             this.pnlCard.Controls.Add(this.lblCompanyError);
             this.pnlCard.Controls.Add(this.lblOccupation);
-            this.pnlCard.Controls.Add(this.cmbOccupation);  // ✅ Thêm ComboBox
-            this.pnlCard.Controls.Add(this.txtOccupationOther);  // ✅ Thêm TextBox Other
+            this.pnlCard.Controls.Add(this.cmbOccupation);
+            this.pnlCard.Controls.Add(this.txtOccupationOther);
             this.pnlCard.Controls.Add(this.lblOccupationError);
             this.pnlCard.Controls.Add(this.btnRegister);
             this.pnlCard.Controls.Add(this.lnkLogin);
@@ -124,14 +124,14 @@ namespace GestPipePowerPonit.Views.Auth
             this.pnlCard.Location = new System.Drawing.Point(133, 68);
             this.pnlCard.Name = "pnlCard";
             this.pnlCard.Padding = new System.Windows.Forms.Padding(40);
-            this.pnlCard.Size = new System.Drawing.Size(1100, 880);  // ✅ Tăng chiều cao
+            this.pnlCard.Size = new System.Drawing.Size(1100, 880);
             this.pnlCard.TabIndex = 0;
             // 
             // lblTitle
             // 
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
-            this.lblTitle.Location = new System.Drawing.Point(221, 22);
+            this.lblTitle.Location = new System.Drawing.Point(221, 58);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(645, 90);
             this.lblTitle.TabIndex = 0;
@@ -143,7 +143,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblEmail.AutoSize = true;
             this.lblEmail.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblEmail.ForeColor = System.Drawing.Color.White;
-            this.lblEmail.Location = new System.Drawing.Point(71, 130);
+            this.lblEmail.Location = new System.Drawing.Point(71, 166);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(51, 20);
             this.lblEmail.TabIndex = 1;
@@ -158,7 +158,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtEmail.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
             this.txtEmail.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtEmail.ForeColor = System.Drawing.Color.Black;
-            this.txtEmail.Location = new System.Drawing.Point(71, 150);
+            this.txtEmail.Location = new System.Drawing.Point(71, 186);
             this.txtEmail.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.PlaceholderText = "Enter gmail";
@@ -172,7 +172,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblEmailError.AutoSize = true;
             this.lblEmailError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblEmailError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblEmailError.Location = new System.Drawing.Point(71, 188);
+            this.lblEmailError.Location = new System.Drawing.Point(71, 224);
             this.lblEmailError.Name = "lblEmailError";
             this.lblEmailError.Size = new System.Drawing.Size(0, 19);
             this.lblEmailError.TabIndex = 2;
@@ -183,7 +183,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblFullName.AutoSize = true;
             this.lblFullName.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblFullName.ForeColor = System.Drawing.Color.White;
-            this.lblFullName.Location = new System.Drawing.Point(71, 211);
+            this.lblFullName.Location = new System.Drawing.Point(71, 247);
             this.lblFullName.Name = "lblFullName";
             this.lblFullName.Size = new System.Drawing.Size(79, 20);
             this.lblFullName.TabIndex = 3;
@@ -198,7 +198,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtFullName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
             this.txtFullName.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtFullName.ForeColor = System.Drawing.Color.Black;
-            this.txtFullName.Location = new System.Drawing.Point(71, 231);
+            this.txtFullName.Location = new System.Drawing.Point(71, 267);
             this.txtFullName.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.txtFullName.Name = "txtFullName";
             this.txtFullName.PlaceholderText = "Enter full name";
@@ -212,7 +212,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblFullNameError.AutoSize = true;
             this.lblFullNameError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblFullNameError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblFullNameError.Location = new System.Drawing.Point(71, 269);
+            this.lblFullNameError.Location = new System.Drawing.Point(71, 305);
             this.lblFullNameError.Name = "lblFullNameError";
             this.lblFullNameError.Size = new System.Drawing.Size(0, 19);
             this.lblFullNameError.TabIndex = 4;
@@ -223,7 +223,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblPassword.AutoSize = true;
             this.lblPassword.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblPassword.ForeColor = System.Drawing.Color.White;
-            this.lblPassword.Location = new System.Drawing.Point(71, 292);
+            this.lblPassword.Location = new System.Drawing.Point(71, 328);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(73, 20);
             this.lblPassword.TabIndex = 5;
@@ -240,7 +240,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtPassword.ForeColor = System.Drawing.Color.Black;
             this.txtPassword.IconRight = global::GestPipePowerPonit.Properties.Resources.eye;
             this.txtPassword.IconRightCursor = System.Windows.Forms.Cursors.Hand;
-            this.txtPassword.Location = new System.Drawing.Point(71, 312);
+            this.txtPassword.Location = new System.Drawing.Point(71, 348);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
@@ -256,7 +256,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblPasswordError.AutoSize = true;
             this.lblPasswordError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblPasswordError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblPasswordError.Location = new System.Drawing.Point(71, 350);
+            this.lblPasswordError.Location = new System.Drawing.Point(71, 386);
             this.lblPasswordError.Name = "lblPasswordError";
             this.lblPasswordError.Size = new System.Drawing.Size(0, 19);
             this.lblPasswordError.TabIndex = 6;
@@ -267,7 +267,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblConfirmPassword.AutoSize = true;
             this.lblConfirmPassword.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblConfirmPassword.ForeColor = System.Drawing.Color.White;
-            this.lblConfirmPassword.Location = new System.Drawing.Point(71, 373);
+            this.lblConfirmPassword.Location = new System.Drawing.Point(71, 409);
             this.lblConfirmPassword.Name = "lblConfirmPassword";
             this.lblConfirmPassword.Size = new System.Drawing.Size(134, 20);
             this.lblConfirmPassword.TabIndex = 7;
@@ -284,7 +284,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtConfirmPassword.ForeColor = System.Drawing.Color.Black;
             this.txtConfirmPassword.IconRight = global::GestPipePowerPonit.Properties.Resources.eye;
             this.txtConfirmPassword.IconRightCursor = System.Windows.Forms.Cursors.Hand;
-            this.txtConfirmPassword.Location = new System.Drawing.Point(71, 393);
+            this.txtConfirmPassword.Location = new System.Drawing.Point(71, 429);
             this.txtConfirmPassword.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.txtConfirmPassword.Name = "txtConfirmPassword";
             this.txtConfirmPassword.PasswordChar = '●';
@@ -300,7 +300,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblConfirmPasswordError.AutoSize = true;
             this.lblConfirmPasswordError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblConfirmPasswordError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblConfirmPasswordError.Location = new System.Drawing.Point(71, 431);
+            this.lblConfirmPasswordError.Location = new System.Drawing.Point(71, 467);
             this.lblConfirmPasswordError.Name = "lblConfirmPasswordError";
             this.lblConfirmPasswordError.Size = new System.Drawing.Size(0, 19);
             this.lblConfirmPasswordError.TabIndex = 8;
@@ -311,7 +311,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblPhoneNumber.AutoSize = true;
             this.lblPhoneNumber.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblPhoneNumber.ForeColor = System.Drawing.Color.White;
-            this.lblPhoneNumber.Location = new System.Drawing.Point(71, 454);
+            this.lblPhoneNumber.Location = new System.Drawing.Point(71, 490);
             this.lblPhoneNumber.Name = "lblPhoneNumber";
             this.lblPhoneNumber.Size = new System.Drawing.Size(111, 20);
             this.lblPhoneNumber.TabIndex = 9;
@@ -326,7 +326,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtPhoneNumber.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
             this.txtPhoneNumber.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtPhoneNumber.ForeColor = System.Drawing.Color.Black;
-            this.txtPhoneNumber.Location = new System.Drawing.Point(71, 474);
+            this.txtPhoneNumber.Location = new System.Drawing.Point(71, 510);
             this.txtPhoneNumber.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.txtPhoneNumber.Name = "txtPhoneNumber";
             this.txtPhoneNumber.PlaceholderText = "Enter phone number";
@@ -340,7 +340,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblPhoneNumberError.AutoSize = true;
             this.lblPhoneNumberError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblPhoneNumberError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblPhoneNumberError.Location = new System.Drawing.Point(71, 512);
+            this.lblPhoneNumberError.Location = new System.Drawing.Point(71, 548);
             this.lblPhoneNumberError.Name = "lblPhoneNumberError";
             this.lblPhoneNumberError.Size = new System.Drawing.Size(0, 19);
             this.lblPhoneNumberError.TabIndex = 10;
@@ -351,7 +351,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblGender.AutoSize = true;
             this.lblGender.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblGender.ForeColor = System.Drawing.Color.White;
-            this.lblGender.Location = new System.Drawing.Point(71, 535);
+            this.lblGender.Location = new System.Drawing.Point(71, 571);
             this.lblGender.Name = "lblGender";
             this.lblGender.Size = new System.Drawing.Size(60, 20);
             this.lblGender.TabIndex = 11;
@@ -374,7 +374,7 @@ namespace GestPipePowerPonit.Views.Auth
             "Male",
             "Female",
             "Other"});
-            this.cmbGender.Location = new System.Drawing.Point(71, 555);
+            this.cmbGender.Location = new System.Drawing.Point(71, 591);
             this.cmbGender.Name = "cmbGender";
             this.cmbGender.Size = new System.Drawing.Size(360, 36);
             this.cmbGender.TabIndex = 5;
@@ -385,7 +385,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblGenderError.AutoSize = true;
             this.lblGenderError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblGenderError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblGenderError.Location = new System.Drawing.Point(71, 595);
+            this.lblGenderError.Location = new System.Drawing.Point(71, 629);
             this.lblGenderError.Name = "lblGenderError";
             this.lblGenderError.Size = new System.Drawing.Size(0, 19);
             this.lblGenderError.TabIndex = 12;
@@ -396,7 +396,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblBirthDate.AutoSize = true;
             this.lblBirthDate.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblBirthDate.ForeColor = System.Drawing.Color.White;
-            this.lblBirthDate.Location = new System.Drawing.Point(591, 130);
+            this.lblBirthDate.Location = new System.Drawing.Point(591, 166);
             this.lblBirthDate.Name = "lblBirthDate";
             this.lblBirthDate.Size = new System.Drawing.Size(121, 20);
             this.lblBirthDate.TabIndex = 13;
@@ -412,7 +412,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.dtpBirthDate.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.dtpBirthDate.ForeColor = System.Drawing.Color.Black;
             this.dtpBirthDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpBirthDate.Location = new System.Drawing.Point(591, 150);
+            this.dtpBirthDate.Location = new System.Drawing.Point(591, 186);
             this.dtpBirthDate.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpBirthDate.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpBirthDate.Name = "dtpBirthDate";
@@ -426,7 +426,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblBirthDateError.AutoSize = true;
             this.lblBirthDateError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblBirthDateError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblBirthDateError.Location = new System.Drawing.Point(591, 188);
+            this.lblBirthDateError.Location = new System.Drawing.Point(591, 224);
             this.lblBirthDateError.Name = "lblBirthDateError";
             this.lblBirthDateError.Size = new System.Drawing.Size(0, 19);
             this.lblBirthDateError.TabIndex = 14;
@@ -437,7 +437,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblAddress.AutoSize = true;
             this.lblAddress.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblAddress.ForeColor = System.Drawing.Color.White;
-            this.lblAddress.Location = new System.Drawing.Point(591, 211);
+            this.lblAddress.Location = new System.Drawing.Point(591, 247);
             this.lblAddress.Name = "lblAddress";
             this.lblAddress.Size = new System.Drawing.Size(96, 20);
             this.lblAddress.TabIndex = 15;
@@ -493,7 +493,7 @@ namespace GestPipePowerPonit.Views.Auth
             "Thành phố Cần Thơ",
             "Tỉnh An Giang",
             "Tỉnh Cà Mau"});
-            this.cmbAddress.Location = new System.Drawing.Point(591, 231);
+            this.cmbAddress.Location = new System.Drawing.Point(591, 267);
             this.cmbAddress.MaxDropDownItems = 5;
             this.cmbAddress.Name = "cmbAddress";
             this.cmbAddress.Size = new System.Drawing.Size(360, 36);
@@ -505,7 +505,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblAddressError.AutoSize = true;
             this.lblAddressError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblAddressError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblAddressError.Location = new System.Drawing.Point(591, 271);
+            this.lblAddressError.Location = new System.Drawing.Point(591, 305);
             this.lblAddressError.Name = "lblAddressError";
             this.lblAddressError.Size = new System.Drawing.Size(0, 19);
             this.lblAddressError.TabIndex = 16;
@@ -516,7 +516,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblEdu.AutoSize = true;
             this.lblEdu.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblEdu.ForeColor = System.Drawing.Color.White;
-            this.lblEdu.Location = new System.Drawing.Point(591, 294);
+            this.lblEdu.Location = new System.Drawing.Point(591, 330);
             this.lblEdu.Name = "lblEdu";
             this.lblEdu.Size = new System.Drawing.Size(128, 20);
             this.lblEdu.TabIndex = 17;
@@ -541,7 +541,7 @@ namespace GestPipePowerPonit.Views.Auth
             "Bachelor",
             "Master",
             "PhD"});
-            this.cmbEdu.Location = new System.Drawing.Point(591, 314);
+            this.cmbEdu.Location = new System.Drawing.Point(591, 350);
             this.cmbEdu.Name = "cmbEdu";
             this.cmbEdu.Size = new System.Drawing.Size(360, 36);
             this.cmbEdu.TabIndex = 8;
@@ -552,7 +552,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblEduError.AutoSize = true;
             this.lblEduError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblEduError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblEduError.Location = new System.Drawing.Point(591, 354);
+            this.lblEduError.Location = new System.Drawing.Point(591, 388);
             this.lblEduError.Name = "lblEduError";
             this.lblEduError.Size = new System.Drawing.Size(0, 19);
             this.lblEduError.TabIndex = 18;
@@ -563,7 +563,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblCompany.AutoSize = true;
             this.lblCompany.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblCompany.ForeColor = System.Drawing.Color.White;
-            this.lblCompany.Location = new System.Drawing.Point(591, 373);
+            this.lblCompany.Location = new System.Drawing.Point(591, 409);
             this.lblCompany.Name = "lblCompany";
             this.lblCompany.Size = new System.Drawing.Size(108, 20);
             this.lblCompany.TabIndex = 19;
@@ -578,7 +578,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtCompany.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
             this.txtCompany.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtCompany.ForeColor = System.Drawing.Color.Black;
-            this.txtCompany.Location = new System.Drawing.Point(591, 393);
+            this.txtCompany.Location = new System.Drawing.Point(591, 429);
             this.txtCompany.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.txtCompany.Name = "txtCompany";
             this.txtCompany.PlaceholderText = "Enter company";
@@ -592,7 +592,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblCompanyError.AutoSize = true;
             this.lblCompanyError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblCompanyError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblCompanyError.Location = new System.Drawing.Point(591, 435);
+            this.lblCompanyError.Location = new System.Drawing.Point(591, 467);
             this.lblCompanyError.Name = "lblCompanyError";
             this.lblCompanyError.Size = new System.Drawing.Size(0, 19);
             this.lblCompanyError.TabIndex = 20;
@@ -603,7 +603,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblOccupation.AutoSize = true;
             this.lblOccupation.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblOccupation.ForeColor = System.Drawing.Color.White;
-            this.lblOccupation.Location = new System.Drawing.Point(591, 454);
+            this.lblOccupation.Location = new System.Drawing.Point(591, 490);
             this.lblOccupation.Name = "lblOccupation";
             this.lblOccupation.Size = new System.Drawing.Size(88, 20);
             this.lblOccupation.TabIndex = 21;
@@ -634,7 +634,7 @@ namespace GestPipePowerPonit.Views.Auth
             "Entrepreneur",
             "Freelancer",
             "Other (specify below)"});
-            this.cmbOccupation.Location = new System.Drawing.Point(591, 474);
+            this.cmbOccupation.Location = new System.Drawing.Point(591, 510);
             this.cmbOccupation.Name = "cmbOccupation";
             this.cmbOccupation.Size = new System.Drawing.Size(360, 36);
             this.cmbOccupation.TabIndex = 10;
@@ -649,7 +649,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.txtOccupationOther.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
             this.txtOccupationOther.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtOccupationOther.ForeColor = System.Drawing.Color.Black;
-            this.txtOccupationOther.Location = new System.Drawing.Point(591, 516);
+            this.txtOccupationOther.Location = new System.Drawing.Point(591, 552);
             this.txtOccupationOther.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.txtOccupationOther.Name = "txtOccupationOther";
             this.txtOccupationOther.PlaceholderText = "Specify your occupation";
@@ -664,7 +664,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblOccupationError.AutoSize = true;
             this.lblOccupationError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblOccupationError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblOccupationError.Location = new System.Drawing.Point(591, 556);
+            this.lblOccupationError.Location = new System.Drawing.Point(591, 590);
             this.lblOccupationError.Name = "lblOccupationError";
             this.lblOccupationError.Size = new System.Drawing.Size(0, 19);
             this.lblOccupationError.TabIndex = 22;
@@ -750,7 +750,7 @@ namespace GestPipePowerPonit.Views.Auth
             // 
             // RegisterForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1366, 768);
@@ -758,7 +758,6 @@ namespace GestPipePowerPonit.Views.Auth
             this.Controls.Add(this.guna2ControlBoxMinimize);
             this.Controls.Add(this.pnlCard);
             this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -770,6 +769,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.pnlCard.ResumeLayout(false);
             this.pnlCard.PerformLayout();
             this.ResumeLayout(false);
+
         }
     }
 }

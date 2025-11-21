@@ -22,9 +22,9 @@ namespace GestPipePowerPonit.Views.Auth
             _authService = new AuthService();
             _loginForm = loginForm;
 
-            this.Size = new Size(1366, 786);
-            this.MinimumSize = new Size(1366, 786);
-            this.MaximumSize = new Size(1366, 786);
+            //this.Size = new Size(1366, 786);
+            //this.MinimumSize = new Size(1366, 786);
+            //this.MaximumSize = new Size(1366, 786);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             this.DoubleBuffered = true;

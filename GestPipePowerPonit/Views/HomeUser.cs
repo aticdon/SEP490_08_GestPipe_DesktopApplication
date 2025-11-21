@@ -50,6 +50,16 @@ namespace GestPipePowerPonit
 
         private async void HomeUser_Load(object sender, EventArgs e)
         {
+            Console.WriteLine("=== HomeForm Font & DPI Debug ===");
+            Console.WriteLine($"Form Font: {this.Font.Name} {this.Font.Size}F");
+            Console.WriteLine($"AutoScaleMode: {this.AutoScaleMode}");
+            Console.WriteLine($"AutoScaleDimensions: {this.AutoScaleDimensions}");
+            Console.WriteLine($"Form Size: {this.Size}");
+            Console.WriteLine("==================================");
+            var currentScale = this.CurrentAutoScaleDimensions;
+            var designScale = new SizeF(8F, 16F);
+
+            Console.WriteLine($"Design: {designScale}\nCurrent: {currentScale}\nScale Factor: {currentScale.Width / designScale.Width}");
             await LoadUserAndApplyLanguageAsync();
         }
 
