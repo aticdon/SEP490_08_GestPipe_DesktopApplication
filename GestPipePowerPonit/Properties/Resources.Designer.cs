@@ -661,6 +661,46 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Instruction_Tab1 {
+            get {
+                object obj = ResourceManager.GetObject("Instruction_Tab1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Instruction_Tab2 {
+            get {
+                object obj = ResourceManager.GetObject("Instruction_Tab2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Instruction_Tab3 {
+            get {
+                object obj = ResourceManager.GetObject("Instruction_Tab3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap IntructionTest_1 {
+            get {
+                object obj = ResourceManager.GetObject("IntructionTest_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accuracy.
         /// </summary>
         public static string Lbl_Accuracy {

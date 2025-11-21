@@ -7,10 +7,10 @@
         // CÁC CONTROLS GUNA UI
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
         private Guna.UI2.WinForms.Guna2Panel panelMain; // Panel chứa chính
-        private Guna.UI2.WinForms.Guna2Button btnClose; // Nút đóng
+        private Guna.UI2.WinForms.Guna2GradientButton btnClose; // Nút đóng
         private Guna.UI2.WinForms.Guna2PictureBox pictureBoxHandLayer; // Giữ nguyên
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
-        private Guna.UI2.WinForms.Guna2Button btnTraining;
+        private Guna.UI2.WinForms.Guna2GradientButton btnTraining;
 
         // CÁC LABEL HIỂN THỊ DỮ LIỆU
         private System.Windows.Forms.Label lblTitleName;
@@ -49,8 +49,8 @@
             this.lblTitleInstruction = new System.Windows.Forms.Label();
             this.lblTitleNote = new System.Windows.Forms.Label();
             this.lblValueNote = new System.Windows.Forms.Label();
-            this.btnTraining = new Guna.UI2.WinForms.Guna2Button();
-            this.btnClose = new Guna.UI2.WinForms.Guna2Button();
+            this.btnTraining = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnClose = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pictureBoxHandLayer = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.panelMain.SuspendLayout();
@@ -200,7 +200,8 @@
             this.btnTraining.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTraining.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnTraining.BorderRadius = 10;
-            this.btnTraining.FillColor = System.Drawing.Color.SteelBlue;
+            this.btnTraining.FillColor = System.Drawing.Color.Cyan;
+            this.btnTraining.FillColor2 = System.Drawing.Color.Teal;
             this.btnTraining.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnTraining.ForeColor = System.Drawing.Color.White;
             this.btnTraining.Location = new System.Drawing.Point(441, 690);
@@ -215,7 +216,8 @@
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnClose.BorderRadius = 10;
-            this.btnClose.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnClose.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnClose.FillColor2 = System.Drawing.Color.Maroon;
             this.btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.Location = new System.Drawing.Point(620, 690);
@@ -244,7 +246,7 @@
             this.guna2DragControl1.TargetControl = this.panelMain;
             this.guna2DragControl1.UseTransparentDrag = true;
             // 
-            // FormInstructionTraining
+            // IntructionTraingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -252,7 +254,7 @@
             this.Controls.Add(this.panelMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormInstructionTraining";
+            this.Name = "IntructionTraingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormInstructionTraining";
             this.panelMain.ResumeLayout(false);

@@ -21,7 +21,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DetailGestureForm));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.panelContainer = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnCancel = new Guna.UI2.WinForms.Guna2Button();
+            this.btnCancel = new Guna.UI2.WinForms.Guna2GradientButton();
             this.txtDescriptionValue = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblDescriptionLabel = new System.Windows.Forms.Label();
             this.lblLastUpdateValue = new System.Windows.Forms.Label();
@@ -83,6 +83,7 @@
             // 
             this.btnCancel.BorderRadius = 10;
             this.btnCancel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnCancel.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.Color.White;
             this.btnCancel.Location = new System.Drawing.Point(580, 698);
@@ -333,7 +334,7 @@
             this.guna2DragControl1.TargetControl = this.panelContainer;
             this.guna2DragControl1.UseTransparentDrag = true;
             // 
-            // FormGestureDetails
+            // DetailGestureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -342,7 +343,7 @@
             this.Controls.Add(this.panelContainer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormGestureDetails";
+            this.Name = "DetailGestureForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Gesture Detail";
             this.panelContainer.ResumeLayout(false);
@@ -359,7 +360,7 @@
         // Khai báo Controls mới (Guna Controls)
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
         private Guna.UI2.WinForms.Guna2Panel panelContainer;
-        private Guna.UI2.WinForms.Guna2Button btnCancel;
+        private Guna.UI2.WinForms.Guna2GradientButton btnCancel;
         private Guna.UI2.WinForms.Guna2TextBox txtDescriptionValue;
         private System.Windows.Forms.Label lblDescriptionLabel;
         private System.Windows.Forms.Label lblLastUpdateValue;

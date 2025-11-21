@@ -21,14 +21,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeUser));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnCustomGesture = new Guna.UI2.WinForms.Guna2Button();
-            this.btnPresentation = new Guna.UI2.WinForms.Guna2Button();
+            this.btnCustomGesture = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnPresentation = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pnlFooter = new Guna.UI2.WinForms.Guna2Panel();
             this.btnLanguageEN = new Guna.UI2.WinForms.Guna2Button();
             this.btnLanguageVN = new Guna.UI2.WinForms.Guna2Button();
-            this.btnInstruction = new Guna.UI2.WinForms.Guna2Button();
-            this.btnGestureControl = new Guna.UI2.WinForms.Guna2Button();
-            this.btnHome = new Guna.UI2.WinForms.Guna2Button();
+            this.btnInstruction = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnGestureControl = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnHome = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
             this.lblWelcome = new System.Windows.Forms.Label();
@@ -38,8 +38,8 @@
             this.guna2ControlBoxClose = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBoxMinimize = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlMain = new Guna.UI2.WinForms.Guna2GradientPanel();
-            this.btnPresent = new Guna.UI2.WinForms.Guna2Button();
-            this.btnTraining = new Guna.UI2.WinForms.Guna2Button();
+            this.btnPresent = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnTraining = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pictureBoxBanner = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.pnlSidebar.SuspendLayout();
@@ -82,6 +82,7 @@
             this.btnCustomGesture.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnCustomGesture.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnCustomGesture.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnCustomGesture.FillColor2 = System.Drawing.Color.Gray;
             this.btnCustomGesture.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCustomGesture.ForeColor = System.Drawing.Color.White;
             this.btnCustomGesture.Image = global::GestPipePowerPonit.Properties.Resources.CustomCamera;
@@ -104,6 +105,7 @@
             this.btnPresentation.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnPresentation.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnPresentation.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnPresentation.FillColor2 = System.Drawing.Color.Gray;
             this.btnPresentation.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPresentation.ForeColor = System.Drawing.Color.White;
             this.btnPresentation.Image = global::GestPipePowerPonit.Properties.Resources.icon_search;
@@ -136,7 +138,7 @@
             this.btnLanguageEN.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnLanguageEN.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnLanguageEN.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnLanguageEN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnLanguageEN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnLanguageEN.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnLanguageEN.ForeColor = System.Drawing.Color.White;
             this.btnLanguageEN.Image = global::GestPipePowerPonit.Properties.Resources.English;
@@ -154,7 +156,7 @@
             this.btnLanguageVN.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnLanguageVN.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnLanguageVN.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnLanguageVN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnLanguageVN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnLanguageVN.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnLanguageVN.ForeColor = System.Drawing.Color.White;
             this.btnLanguageVN.Image = global::GestPipePowerPonit.Properties.Resources.Vietnamese;
@@ -173,6 +175,7 @@
             this.btnInstruction.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnInstruction.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnInstruction.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnInstruction.FillColor2 = System.Drawing.Color.Gray;
             this.btnInstruction.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnInstruction.ForeColor = System.Drawing.Color.White;
             this.btnInstruction.Image = global::GestPipePowerPonit.Properties.Resources.icon_instruction;
@@ -195,6 +198,7 @@
             this.btnGestureControl.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnGestureControl.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnGestureControl.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnGestureControl.FillColor2 = System.Drawing.Color.Gray;
             this.btnGestureControl.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnGestureControl.ForeColor = System.Drawing.Color.White;
             this.btnGestureControl.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
@@ -215,7 +219,8 @@
             this.btnHome.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnHome.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnHome.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnHome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
+            this.btnHome.FillColor = System.Drawing.Color.Navy;
+            this.btnHome.FillColor2 = System.Drawing.Color.DeepSkyBlue;
             this.btnHome.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHome.ForeColor = System.Drawing.Color.White;
             this.btnHome.Image = global::GestPipePowerPonit.Properties.Resources.icon_home;
@@ -353,16 +358,19 @@
             // 
             this.btnPresent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPresent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(41)))), ((int)(((byte)(62)))));
+            this.btnPresent.BackColor = System.Drawing.Color.Transparent;
+            this.btnPresent.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
             this.btnPresent.BorderRadius = 15;
             this.btnPresent.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnPresent.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnPresent.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnPresent.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnPresent.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(200)))), ((int)(((byte)(255)))));
+            this.btnPresent.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
+            this.btnPresent.FillColor2 = System.Drawing.Color.Black;
             this.btnPresent.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.btnPresent.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnPresent.ForeColor = System.Drawing.Color.White;
+            this.btnPresent.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             this.btnPresent.Image = global::GestPipePowerPonit.Properties.Resources.icon_present;
             this.btnPresent.ImageSize = new System.Drawing.Size(40, 40);
             this.btnPresent.Location = new System.Drawing.Point(582, 482);
@@ -377,16 +385,18 @@
             this.btnTraining.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTraining.BackColor = System.Drawing.Color.Transparent;
-            this.btnTraining.BorderColor = this.btnTraining.FillColor;
             this.btnTraining.BorderRadius = 15;
             this.btnTraining.BorderThickness = 1;
             this.btnTraining.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnTraining.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnTraining.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnTraining.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnTraining.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(200)))), ((int)(((byte)(255)))));
+            this.btnTraining.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
+            this.btnTraining.FillColor2 = System.Drawing.Color.Black;
+            this.btnTraining.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.btnTraining.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnTraining.ForeColor = System.Drawing.Color.White;
+            this.btnTraining.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             this.btnTraining.Image = ((System.Drawing.Image)(resources.GetObject("btnTraining.Image")));
             this.btnTraining.ImageSize = new System.Drawing.Size(40, 40);
             this.btnTraining.Location = new System.Drawing.Point(252, 482);
@@ -395,6 +405,7 @@
             this.btnTraining.Size = new System.Drawing.Size(240, 111);
             this.btnTraining.TabIndex = 3;
             this.btnTraining.Text = "Training";
+            this.btnTraining.Click += new System.EventHandler(this.btnTraining_Click);
             // 
             // pictureBoxBanner
             // 
@@ -454,14 +465,14 @@
         private Guna.UI2.WinForms.Guna2Panel pnlHeader; // Thêm khai báo này
         private Guna.UI2.WinForms.Guna2GradientPanel pnlMain;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
-        private Guna.UI2.WinForms.Guna2Button btnHome;
-        private Guna.UI2.WinForms.Guna2Button btnGestureControl;
-        private Guna.UI2.WinForms.Guna2Button btnInstruction;
+        private Guna.UI2.WinForms.Guna2GradientButton btnHome;
+        private Guna.UI2.WinForms.Guna2GradientButton btnGestureControl;
+        private Guna.UI2.WinForms.Guna2GradientButton btnInstruction;
         private System.Windows.Forms.Label lblWelcome;
         private System.Windows.Forms.Label lblSubtitle;
         private Guna.UI2.WinForms.Guna2PictureBox pictureBoxBanner;
-        private Guna.UI2.WinForms.Guna2Button btnTraining;
-        private Guna.UI2.WinForms.Guna2Button btnPresent;
+        private Guna.UI2.WinForms.Guna2GradientButton btnTraining;
+        private Guna.UI2.WinForms.Guna2GradientButton btnPresent;
         private Guna.UI2.WinForms.Guna2CirclePictureBox btnLogout;
         private Guna.UI2.WinForms.Guna2CirclePictureBox btnProfile;
         private Guna.UI2.WinForms.Guna2Panel pnlFooter;
@@ -470,7 +481,7 @@
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBoxClose;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBoxMinimize;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
-        private Guna.UI2.WinForms.Guna2Button btnPresentation;
-        private Guna.UI2.WinForms.Guna2Button btnCustomGesture;
+        private Guna.UI2.WinForms.Guna2GradientButton btnPresentation;
+        private Guna.UI2.WinForms.Guna2GradientButton btnCustomGesture;
     }
 }

@@ -239,25 +239,25 @@ namespace GestPipePowerPonit
             string userId = Properties.Settings.Default.UserId; // ✅ Sử dụng UserId từ Settings
             var homeForm = new HomeUser(userId);
 
-            // ✅ PHÂN BIỆT THEO LOẠI GESTURE
-            if (isUserGesture)
-            {
-                // ✅ MỞ TrainingUserGestureForm cho User Gesture
-                var trainUserForm = new TrainingUserGestureForm(
-                    homeForm,
-                    dfGestureForm,
-                    detail.PoseLabel,
-                    detail.VectorData,
-                    this.gestureName
-                );
-                trainUserForm.StartTrainingWithAction(this.gestureAction);
-                trainUserForm.Show();
+            //// ✅ PHÂN BIỆT THEO LOẠI GESTURE
+            //if (isUserGesture)
+            //{
+            //    // ✅ MỞ TrainingUserGestureForm cho User Gesture
+            //    var trainUserForm = new TrainingUserGestureForm(
+            //        homeForm,
+            //        dfGestureForm,
+            //        detail.PoseLabel,
+            //        detail.VectorData,
+            //        this.gestureName
+            //    );
+            //    trainUserForm.StartTrainingWithAction(this.gestureAction);
+            //    trainUserForm.Show();
 
-                Console.WriteLine($"[FormInstructionTraining] Opening TrainingUserGestureForm for: {this.gestureName}");
-            }
-            else
-            {
-                // ✅ MỞ TrainingDefaultGestureForm cho Default Gesture
+            //    Console.WriteLine($"[FormInstructionTraining] Opening TrainingUserGestureForm for: {this.gestureName}");
+            //}
+            //else
+            //{
+            //    // ✅ MỞ TrainingDefaultGestureForm cho Default Gesture
                 var trainDefaultForm = new TrainingDefaultGestureForm(
                     homeForm,
                     dfGestureForm,
@@ -269,7 +269,7 @@ namespace GestPipePowerPonit
                 trainDefaultForm.Show();
 
                 Console.WriteLine($"[FormInstructionTraining] Opening TrainingDefaultGestureForm for: {this.gestureName}");
-            }
+            //}
 
             // Đóng form hướng dẫn hiện tại
             this.Close();

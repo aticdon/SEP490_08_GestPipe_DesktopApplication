@@ -41,10 +41,6 @@ namespace GestPipePowerPonit.Views.Profile
 
         private void InitializeSidebarEvents()
         {
-            //btnHome.Click += BtnHome_Click;
-            //btnGestureControl.Click += BtnGestureControl_Click;
-            //btnPresentation.Click += BtnPresentation_Click;
-            btnCustomGesture.Click += BtnCustomGesture_Click;
             btnLanguageEN.Click += async (s, e) => await ChangeLanguageAsync("en-US");
             btnLanguageVN.Click += async (s, e) => await ChangeLanguageAsync("vi-VN");
 
@@ -97,8 +93,8 @@ namespace GestPipePowerPonit.Views.Profile
         {
             try
             {
-                FormUserGesture usergestureForm = new FormUserGesture(_homeForm);
-                usergestureForm.Show();
+                ListRequestGestureForm requestForm = new ListRequestGestureForm(_homeForm);
+                requestForm.Show();
                 this.Hide();
             }
             catch (Exception ex)
@@ -142,11 +138,6 @@ namespace GestPipePowerPonit.Views.Profile
                 ResourceHelper.SetCulture(cultureCode, this);
 
                 await _apiClient.SetUserLanguageAsync(_userId, cultureCode);
-
-                CustomMessageBox.ShowSuccess(
-                    Properties.Resources.Message_ChangeLanguageSuccess,
-                    Properties.Resources.Title_Success
-                );
             }
             catch (Exception ex)
             {
@@ -1028,5 +1019,12 @@ namespace GestPipePowerPonit.Views.Profile
         private void dtpBirthDate_ValueChanged(object sender, EventArgs e) => ClearErrors();
         private void txtCompany_TextChanged(object sender, EventArgs e) => ClearErrors();
         private void txtOccupationOther_TextChanged(object sender, EventArgs e) => ClearErrors();
+
+        private void btnInstruction_Click(object sender, EventArgs e)
+        {
+            InstructionForm instructionForm = new InstructionForm(_homeForm);
+            instructionForm.Show();
+            this.Hide();
+        }
     }
 }

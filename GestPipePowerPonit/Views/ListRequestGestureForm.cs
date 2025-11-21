@@ -80,15 +80,6 @@ namespace GestPipePowerPonit
                 _canRequest = await _userService.CheckCanRequestAsync(userId);
                 if (!_canRequest && lblRequestStatus != null)
                 {
-                    //// Đặt text song ngữ tùy theo ngôn ngữ hiện tại
-                    //if (CultureManager.CurrentCultureCode.Contains("vi"))
-                    //{
-                    //    lblRequestStatus.Text = "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục yêu cầu mới.";
-                    //}
-                    //else
-                    //{
-                    //    lblRequestStatus.Text = "Gesture is being trained. Please wait until it completes to continue.";
-                    //}
                     lblRequestStatus.Text = I18nHelper.GetString(
                         "Gesture is being trained. Please wait until it completes to continue!",
                         "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục yêu cầu mới!"
@@ -394,124 +385,6 @@ namespace GestPipePowerPonit
                     panelLoading.Visible = false;
             }
         }
-        //private async Task LoadUserGesturesAsync()
-        //{
-        //    try
-        //    {
-        //        if (panelLoading != null)
-        //        {
-        //            panelLoading.Visible = true;
-        //            panelLoading.BringToFront();
-        //        }
-
-        //        if (lblLoading != null)
-        //            lblLoading.Text = Properties.Resources.List_Loading;
-
-        //        userGestures = await _uGestureService.GetUserGesturesAsync(userId);
-
-        //        if (guna2DataGridView1 != null)
-        //        {
-        //            guna2DataGridView1.Rows.Clear();
-        //            guna2DataGridView1.AllowUserToAddRows = false;
-        //        }
-
-        //        var requestService = new UserGestureRequestService();
-
-        //        // Song song lấy requests cho tốc độ nhanh
-        //        var requestTasks = userGestures.Select(config => requestService.GetLatestRequestByConfigAsync(config.Id, userId)).ToList();
-        //        var requests = await Task.WhenAll(requestTasks);
-
-        //        var rowsToAdd = new List<object[]>();
-        //        for (int i = 0; i < userGestures.Count; i++)
-        //        {
-        //            var config = userGestures[i];
-        //            var request = requests[i];
-        //            string status;
-        //            string statusToShow = "", timeToShow, accuracToShow;
-        //            object viewIcon, customIcon;
-
-        //            if (!_canRequest)
-        //            {
-        //                status = I18nHelper.GetLocalized(config.Status);
-
-        //                if (status.Contains("Active"))
-        //                {
-        //                    statusToShow = I18nHelper.GetString("Ready", "Sẵn sàng");
-        //                }
-        //                else
-        //                {
-        //                    statusToShow = status;
-        //                }
-        //                timeToShow = config.LastUpdate.ToString("dd-MM-yyyy HH:mm");
-        //                accuracToShow = $"{config.Accuracy * 100:F1}%";
-        //                viewIcon = Properties.Resources.eye_gray;
-        //                customIcon = Properties.Resources.CustomCameraGray;
-        //            }
-        //            else if (request != null)
-        //            {
-        //                status = I18nHelper.GetLocalized(request.Status);
-        //                if (status.Contains("Active"))
-        //                {
-        //                    statusToShow = I18nHelper.GetString("Ready", "Sẵn sàng");
-        //                }
-        //                else
-        //                {
-        //                    statusToShow = status;
-        //                }
-        //                timeToShow = request.CreatedAt.ToString("dd-MM-yyyy HH:mm");
-        //                accuracToShow = "N/A";
-        //                viewIcon = Properties.Resources.eye_gray;
-        //                customIcon = Properties.Resources.CustomCameraGray;
-        //            }
-        //            else
-        //            {
-        //                status = I18nHelper.GetLocalized(config.Status);
-        //                if (status.Contains("Active"))
-        //                {
-        //                    statusToShow = I18nHelper.GetString("Ready", "Sẵn sàng");
-        //                }
-        //                else
-        //                {
-        //                    statusToShow = status;
-        //                }
-        //                timeToShow = config.LastUpdate.ToString("dd-MM-yyyy HH:mm");
-        //                accuracToShow = $"{config.Accuracy * 100:F1}%";
-        //                viewIcon = Properties.Resources.eye;
-        //                customIcon = Properties.Resources.CustomCamera;
-        //            }
-
-        //            rowsToAdd.Add(new object[]
-        //            {
-        //                I18nHelper.GetLocalized(config.Name),
-        //                I18nHelper.GetLocalized(config.Type),
-        //                accuracToShow,
-        //                statusToShow,
-        //                timeToShow,
-        //                viewIcon,
-        //                customIcon
-        //            });
-        //        }
-
-        //        // Add tất cả dòng vào grid một lượt
-        //        if (guna2DataGridView1 != null)
-        //        {
-        //            foreach (var row in rowsToAdd)
-        //            {
-        //                guna2DataGridView1.Rows.Add(row);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Không thể tải danh sách default gesture!\n" + ex.Message);
-        //    }
-        //    finally
-        //    {
-        //        if (panelLoading != null)
-        //            panelLoading.Visible = false;
-        //    }
-        //}
-
         // ✅ THAY ĐỔI: Xử lý click dựa trên loại gesture đang hiển thị
         private async void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -686,11 +559,6 @@ namespace GestPipePowerPonit
                 ResourceHelper.SetCulture(cultureCode, this);
 
                 await _apiClient.SetUserLanguageAsync(userId, cultureCode);
-
-                CustomMessageBox.ShowSuccess(
-                    Properties.Resources.Message_ChangeLanguageSuccess,
-                    Properties.Resources.Title_Success
-                );
             }
             catch (Exception ex)
             {
@@ -719,7 +587,10 @@ namespace GestPipePowerPonit
                     btnPresentation.Text = Properties.Resources.Btn_Present;
                 if (btnRequest != null)
                     btnRequest.Text = Properties.Resources.Btn_RequestGesture;
-
+                lblRequestStatus.Text = I18nHelper.GetString(
+                        "Gesture is being trained. Please wait until it completes to continue!",
+                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục yêu cầu mới!"
+                    );
                 if (guna2DataGridView1?.Columns != null)
                 {
                     var colName = guna2DataGridView1.Columns["ColumnName"];
@@ -768,16 +639,33 @@ namespace GestPipePowerPonit
             this.Hide();
         }
 
-        private void btnTrainingGesture_Click(object sender, EventArgs e)
-        {
-            FormUserGesture uGestureForm = new FormUserGesture(_homeForm);
-            uGestureForm.Show();
-            this.Hide();
-        }
-
         private void btnRequest_Click(object sender, EventArgs e)
         {
             var requestForm = new RequestGestureForm(userId, isShowingUserGestures);
+            requestForm.FormClosed += async (s, args) =>
+            {
+                // CẬP NHẬT TRẠNG THÁI request mới sau khi form request đóng
+                _canRequest = await _userService.CheckCanRequestAsync(userId);
+                if (!_canRequest && lblRequestStatus != null)
+                {
+                    lblRequestStatus.Text = I18nHelper.GetString(
+                        "Gesture is being trained. Please wait until it completes to continue!",
+                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục yêu cầu mới!"
+                    );
+                    lblRequestStatus.Visible = true;
+                }
+                else if (lblRequestStatus != null)
+                {
+                    lblRequestStatus.Text = "";
+                    lblRequestStatus.Visible = false;
+                }
+                if (btnRequest != null)
+                {
+                    btnRequest.Enabled = _canRequest;
+                    btnRequest.ForeColor = _canRequest ? Color.White : Color.Black;
+                }
+                await RefreshGesturesAsync();
+            };
             requestForm.ShowDialog();
         }
 
@@ -885,6 +773,13 @@ namespace GestPipePowerPonit
         public async Task RefreshGesturesAsync()
         {
             await LoadGesturesAsync();
+        }
+
+        private void btnInstruction_Click(object sender, EventArgs e)
+        {
+            InstructionForm instructionForm = new InstructionForm(_homeForm);
+            instructionForm.Show();
+            this.Hide();
         }
     }
 }

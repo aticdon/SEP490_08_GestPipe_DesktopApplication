@@ -21,17 +21,16 @@ namespace GestPipePowerPonit
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.pnlContentHolder = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnCustomGesture = new Guna.UI2.WinForms.Guna2Button();
-            this.btnPresentation = new Guna.UI2.WinForms.Guna2Button();
+            this.btnCustomGesture = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnPresentation = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pnlFooter = new Guna.UI2.WinForms.Guna2Panel();
             this.btnLanguageEN = new Guna.UI2.WinForms.Guna2Button();
             this.btnLanguageVN = new Guna.UI2.WinForms.Guna2Button();
-            this.btnInstruction = new Guna.UI2.WinForms.Guna2Button();
-            this.btnGestureControl = new Guna.UI2.WinForms.Guna2Button();
-            this.btnHome = new Guna.UI2.WinForms.Guna2Button();
+            this.btnInstruction = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnGestureControl = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnHome = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
             this.btnLogout = new Guna.UI2.WinForms.Guna2CirclePictureBox();
@@ -39,9 +38,10 @@ namespace GestPipePowerPonit
             this.guna2ControlBoxClose = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBoxMinimize = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlMain = new Guna.UI2.WinForms.Guna2GradientPanel();
-            this.btnSubtab2 = new Guna.UI2.WinForms.Guna2Button();
-            this.btnSubtab1 = new Guna.UI2.WinForms.Guna2Button();
-            this.richTextBoxContent = new Guna.UI2.WinForms.Guna2TextBox();
+            this.guna2PictureBox1 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.btnSubtab3 = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnSubtab2 = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnSubtab1 = new Guna.UI2.WinForms.Guna2GradientButton();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.pnlSidebar.SuspendLayout();
             this.pnlFooter.SuspendLayout();
@@ -50,17 +50,8 @@ namespace GestPipePowerPonit
             ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnProfile)).BeginInit();
             this.pnlMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pnlContentHolder
-            // 
-            this.pnlContentHolder.BackColor = System.Drawing.Color.Transparent;
-            this.pnlContentHolder.BorderRadius = 10;
-            this.pnlContentHolder.FillColor = System.Drawing.Color.Transparent;
-            this.pnlContentHolder.Location = new System.Drawing.Point(20, 97);
-            this.pnlContentHolder.Name = "pnlContentHolder";
-            this.pnlContentHolder.Size = new System.Drawing.Size(1050, 489);
-            this.pnlContentHolder.TabIndex = 3;
             // 
             // guna2Elipse1
             // 
@@ -92,6 +83,7 @@ namespace GestPipePowerPonit
             this.btnCustomGesture.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnCustomGesture.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnCustomGesture.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnCustomGesture.FillColor2 = System.Drawing.Color.Gray;
             this.btnCustomGesture.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCustomGesture.ForeColor = System.Drawing.Color.White;
             this.btnCustomGesture.Image = global::GestPipePowerPonit.Properties.Resources.CustomCamera;
@@ -114,6 +106,7 @@ namespace GestPipePowerPonit
             this.btnPresentation.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnPresentation.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnPresentation.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnPresentation.FillColor2 = System.Drawing.Color.Gray;
             this.btnPresentation.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPresentation.ForeColor = System.Drawing.Color.White;
             this.btnPresentation.Image = global::GestPipePowerPonit.Properties.Resources.icon_search;
@@ -182,8 +175,9 @@ namespace GestPipePowerPonit
             this.btnInstruction.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnInstruction.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnInstruction.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnInstruction.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.btnInstruction.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnInstruction.FillColor = System.Drawing.Color.Navy;
+            this.btnInstruction.FillColor2 = System.Drawing.Color.DeepSkyBlue;
+            this.btnInstruction.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnInstruction.ForeColor = System.Drawing.Color.White;
             this.btnInstruction.Image = global::GestPipePowerPonit.Properties.Resources.icon_instruction;
             this.btnInstruction.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -204,7 +198,8 @@ namespace GestPipePowerPonit
             this.btnGestureControl.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnGestureControl.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnGestureControl.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
-            this.btnGestureControl.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnGestureControl.FillColor2 = System.Drawing.Color.Gray;
+            this.btnGestureControl.Font = new System.Drawing.Font("Segoe UI", 10.2F);
             this.btnGestureControl.ForeColor = System.Drawing.Color.White;
             this.btnGestureControl.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
             this.btnGestureControl.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -224,8 +219,9 @@ namespace GestPipePowerPonit
             this.btnHome.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnHome.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnHome.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnHome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
-            this.btnHome.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnHome.FillColor2 = System.Drawing.Color.Gray;
+            this.btnHome.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHome.ForeColor = System.Drawing.Color.White;
             this.btnHome.Image = global::GestPipePowerPonit.Properties.Resources.icon_home;
             this.btnHome.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -237,6 +233,7 @@ namespace GestPipePowerPonit
             this.btnHome.TabIndex = 1;
             this.btnHome.Text = "Home";
             this.btnHome.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnHome.Click += new System.EventHandler(this.btnHome_Click);
             // 
             // pictureBoxLogo
             // 
@@ -320,9 +317,10 @@ namespace GestPipePowerPonit
             // pnlMain
             // 
             this.pnlMain.BorderRadius = 20;
+            this.pnlMain.Controls.Add(this.guna2PictureBox1);
+            this.pnlMain.Controls.Add(this.btnSubtab3);
             this.pnlMain.Controls.Add(this.btnSubtab2);
             this.pnlMain.Controls.Add(this.btnSubtab1);
-            this.pnlMain.Controls.Add(this.pnlContentHolder);
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMain.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
             this.pnlMain.FillColor2 = System.Drawing.Color.Black;
@@ -332,49 +330,57 @@ namespace GestPipePowerPonit
             this.pnlMain.Size = new System.Drawing.Size(1099, 648);
             this.pnlMain.TabIndex = 1;
             // 
+            // guna2PictureBox1
+            // 
+            this.guna2PictureBox1.Image = global::GestPipePowerPonit.Properties.Resources.IntructionTest_1;
+            this.guna2PictureBox1.ImageRotate = 0F;
+            this.guna2PictureBox1.Location = new System.Drawing.Point(3, 88);
+            this.guna2PictureBox1.Name = "guna2PictureBox1";
+            this.guna2PictureBox1.Size = new System.Drawing.Size(1096, 506);
+            this.guna2PictureBox1.TabIndex = 2;
+            this.guna2PictureBox1.TabStop = false;
+            // 
+            // btnSubtab3
+            // 
+            this.btnSubtab3.BackColor = System.Drawing.Color.Transparent;
+            this.btnSubtab3.BorderRadius = 10;
+            this.btnSubtab3.FillColor = System.Drawing.Color.Black;
+            this.btnSubtab3.FillColor2 = System.Drawing.Color.Navy;
+            this.btnSubtab3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSubtab3.ForeColor = System.Drawing.Color.White;
+            this.btnSubtab3.Location = new System.Drawing.Point(400, 20);
+            this.btnSubtab3.Name = "btnSubtab3";
+            this.btnSubtab3.Size = new System.Drawing.Size(180, 50);
+            this.btnSubtab3.TabIndex = 1;
+            this.btnSubtab3.Text = "Environment & Practice Tips";
+            // 
             // btnSubtab2
             // 
+            this.btnSubtab2.BackColor = System.Drawing.Color.Transparent;
             this.btnSubtab2.BorderRadius = 10;
-            this.btnSubtab2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
+            this.btnSubtab2.FillColor = System.Drawing.Color.Black;
+            this.btnSubtab2.FillColor2 = System.Drawing.Color.Navy;
             this.btnSubtab2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSubtab2.ForeColor = System.Drawing.Color.White;
-            this.btnSubtab2.Location = new System.Drawing.Point(162, 20);
+            this.btnSubtab2.Location = new System.Drawing.Point(210, 20);
             this.btnSubtab2.Name = "btnSubtab2";
-            this.btnSubtab2.Size = new System.Drawing.Size(144, 50);
+            this.btnSubtab2.Size = new System.Drawing.Size(180, 50);
             this.btnSubtab2.TabIndex = 1;
-            this.btnSubtab2.Text = "Camera & Lighting";
+            this.btnSubtab2.Text = "3D Model Setup";
             // 
             // btnSubtab1
             // 
             this.btnSubtab1.BackColor = System.Drawing.Color.Transparent;
             this.btnSubtab1.BorderRadius = 10;
-            this.btnSubtab1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnSubtab1.FillColor = System.Drawing.Color.Black;
+            this.btnSubtab1.FillColor2 = System.Drawing.Color.Navy;
             this.btnSubtab1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSubtab1.ForeColor = System.Drawing.Color.White;
             this.btnSubtab1.Location = new System.Drawing.Point(20, 20);
             this.btnSubtab1.Name = "btnSubtab1";
-            this.btnSubtab1.Size = new System.Drawing.Size(136, 50);
+            this.btnSubtab1.Size = new System.Drawing.Size(180, 50);
             this.btnSubtab1.TabIndex = 0;
-            this.btnSubtab1.Text = "Interact with 3D Model";
-            // 
-            // richTextBoxContent
-            // 
-            this.richTextBoxContent.BackColor = System.Drawing.Color.Transparent;
-            this.richTextBoxContent.BorderColor = System.Drawing.Color.Transparent;
-            this.richTextBoxContent.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.richTextBoxContent.DefaultText = "";
-            this.richTextBoxContent.FillColor = System.Drawing.Color.Transparent;
-            this.richTextBoxContent.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBoxContent.ForeColor = System.Drawing.Color.White;
-            this.richTextBoxContent.Location = new System.Drawing.Point(20, 100);
-            this.richTextBoxContent.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
-            this.richTextBoxContent.Multiline = true;
-            this.richTextBoxContent.Name = "richTextBoxContent";
-            this.richTextBoxContent.PlaceholderText = "";
-            this.richTextBoxContent.ReadOnly = true;
-            this.richTextBoxContent.SelectedText = "";
-            this.richTextBoxContent.Size = new System.Drawing.Size(1050, 490);
-            this.richTextBoxContent.TabIndex = 3;
+            this.btnSubtab1.Text = "Gesture Recording Guide";
             // 
             // guna2DragControl1
             // 
@@ -402,6 +408,7 @@ namespace GestPipePowerPonit
             ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnProfile)).EndInit();
             this.pnlMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -413,9 +420,9 @@ namespace GestPipePowerPonit
         private Guna.UI2.WinForms.Guna2Panel pnlHeader;
         private Guna.UI2.WinForms.Guna2GradientPanel pnlMain;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
-        private Guna.UI2.WinForms.Guna2Button btnHome;
-        private Guna.UI2.WinForms.Guna2Button btnGestureControl;
-        private Guna.UI2.WinForms.Guna2Button btnInstruction;
+        private Guna.UI2.WinForms.Guna2GradientButton btnHome;
+        private Guna.UI2.WinForms.Guna2GradientButton btnGestureControl;
+        private Guna.UI2.WinForms.Guna2GradientButton btnInstruction;
         private Guna.UI2.WinForms.Guna2CirclePictureBox btnLogout;
         private Guna.UI2.WinForms.Guna2CirclePictureBox btnProfile;
         private Guna.UI2.WinForms.Guna2Panel pnlFooter;
@@ -424,11 +431,11 @@ namespace GestPipePowerPonit
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBoxClose;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBoxMinimize;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
-        private Guna.UI2.WinForms.Guna2Button btnPresentation;
-        private Guna.UI2.WinForms.Guna2Button btnCustomGesture;
-        private Guna.UI2.WinForms.Guna2Button btnSubtab1;
-        private Guna.UI2.WinForms.Guna2Button btnSubtab2;
-        private Guna.UI2.WinForms.Guna2TextBox richTextBoxContent;
-        private Guna.UI2.WinForms.Guna2Panel pnlContentHolder;
+        private Guna.UI2.WinForms.Guna2GradientButton btnPresentation;
+        private Guna.UI2.WinForms.Guna2GradientButton btnCustomGesture;
+        private Guna.UI2.WinForms.Guna2GradientButton btnSubtab1;
+        private Guna.UI2.WinForms.Guna2GradientButton btnSubtab2;
+        private Guna.UI2.WinForms.Guna2GradientButton btnSubtab3;
+        private Guna2PictureBox guna2PictureBox1;
     }
 }

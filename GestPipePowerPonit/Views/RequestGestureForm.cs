@@ -255,8 +255,6 @@ namespace GestPipePowerPonit.Views
 
                 // Reset button state
                 btnStartRequest.Enabled = true;
-                //btnStartRequest.Text = "🚀 Start Training";
-                //btnStartRequest.FillColor = System.Drawing.Color.FromArgb(0, 188, 212);
             }
         }
         private void ApplyLanguage()

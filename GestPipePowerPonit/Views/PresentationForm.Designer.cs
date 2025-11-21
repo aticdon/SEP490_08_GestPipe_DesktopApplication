@@ -14,9 +14,9 @@ namespace GestPipePowerPonit
         // Guna Controls - Khai báo đồng bộ với HomeUser
         private Guna.UI2.WinForms.Guna2Panel pnlSidebar, pnlFooter;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
-        private Guna.UI2.WinForms.Guna2Button btnHome;
-        private Guna.UI2.WinForms.Guna2Button btnGestureControl;
-        private Guna.UI2.WinForms.Guna2Button btnInstruction;
+        private Guna.UI2.WinForms.Guna2GradientButton btnHome;
+        private Guna.UI2.WinForms.Guna2GradientButton btnGestureControl;
+        private Guna.UI2.WinForms.Guna2GradientButton btnInstruction;
         private Guna.UI2.WinForms.Guna2Button btnLanguageVN;
         private Guna.UI2.WinForms.Guna2Button btnLanguageEN;
         private Guna2Panel pnlHeader;
@@ -24,15 +24,15 @@ namespace GestPipePowerPonit
         private Label lblPresentationFile;
         private Label lblOpenFile;
         private Guna2TextBox txtFile;
-        private Guna2Button btnOpen;
-        private Guna2Button btnSlideShow;
+        private Guna2GradientButton btnOpen;
+        private Guna2GradientButton btnSlideShow;
         private PictureBox pictureBoxCamera;
         private Panel panelSlide;
         private OpenFileDialog openFileDialog1;
         private Panel panelPreview;
         private Label lblPresentationPreview;
         private Guna2ComboBox cmbTopic, cmbCategory;
-        private Guna2Button btnExit;
+        private Guna2GradientButton btnExit;
 
         // Title Bar Controls MỚI
         private Guna2ControlBox guna2ControlBoxMinimize;
@@ -94,18 +94,18 @@ namespace GestPipePowerPonit
             this.btnLogout = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.btnProfile = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnCustomGesture = new Guna.UI2.WinForms.Guna2Button();
-            this.btnPresentation = new Guna.UI2.WinForms.Guna2Button();
+            this.btnCustomGesture = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnPresentation = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pnlFooter = new Guna.UI2.WinForms.Guna2Panel();
             this.btnLanguageEN = new Guna.UI2.WinForms.Guna2Button();
             this.btnLanguageVN = new Guna.UI2.WinForms.Guna2Button();
-            this.btnInstruction = new Guna.UI2.WinForms.Guna2Button();
-            this.btnGestureControl = new Guna.UI2.WinForms.Guna2Button();
-            this.btnHome = new Guna.UI2.WinForms.Guna2Button();
+            this.btnInstruction = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnGestureControl = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnHome = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.pnlMain = new Guna.UI2.WinForms.Guna2GradientPanel();
-            this.btnExit = new Guna.UI2.WinForms.Guna2Button();
-            this.btnSlideShow = new Guna.UI2.WinForms.Guna2Button();
+            this.btnExit = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnSlideShow = new Guna.UI2.WinForms.Guna2GradientButton();
             this.panelPreview = new System.Windows.Forms.Panel();
             this.lblPresentationPreview = new System.Windows.Forms.Label();
             this.pictureBoxCamera = new System.Windows.Forms.PictureBox();
@@ -113,7 +113,7 @@ namespace GestPipePowerPonit
             this.lblCategory = new System.Windows.Forms.Label();
             this.cmbTopic = new Guna.UI2.WinForms.Guna2ComboBox();
             this.lblTopic = new System.Windows.Forms.Label();
-            this.btnOpen = new Guna.UI2.WinForms.Guna2Button();
+            this.btnOpen = new Guna.UI2.WinForms.Guna2GradientButton();
             this.txtFile = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblOpenFile = new System.Windows.Forms.Label();
             this.lblPresentationFile = new System.Windows.Forms.Label();
@@ -256,6 +256,7 @@ namespace GestPipePowerPonit
             this.btnCustomGesture.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnCustomGesture.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnCustomGesture.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnCustomGesture.FillColor2 = System.Drawing.Color.Gray;
             this.btnCustomGesture.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCustomGesture.ForeColor = System.Drawing.Color.White;
             this.btnCustomGesture.Image = global::GestPipePowerPonit.Properties.Resources.CustomCamera;
@@ -277,7 +278,8 @@ namespace GestPipePowerPonit
             this.btnPresentation.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnPresentation.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnPresentation.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnPresentation.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
+            this.btnPresentation.FillColor = System.Drawing.Color.Navy;
+            this.btnPresentation.FillColor2 = System.Drawing.Color.DeepSkyBlue;
             this.btnPresentation.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPresentation.ForeColor = System.Drawing.Color.White;
             this.btnPresentation.Image = global::GestPipePowerPonit.Properties.Resources.icon_search;
@@ -305,7 +307,7 @@ namespace GestPipePowerPonit
             // btnLanguageEN
             // 
             this.btnLanguageEN.BorderRadius = 5;
-            this.btnLanguageEN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnLanguageEN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnLanguageEN.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnLanguageEN.ForeColor = System.Drawing.Color.White;
             this.btnLanguageEN.Image = global::GestPipePowerPonit.Properties.Resources.English;
@@ -319,7 +321,7 @@ namespace GestPipePowerPonit
             // btnLanguageVN
             // 
             this.btnLanguageVN.BorderRadius = 5;
-            this.btnLanguageVN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnLanguageVN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnLanguageVN.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnLanguageVN.ForeColor = System.Drawing.Color.White;
             this.btnLanguageVN.Image = global::GestPipePowerPonit.Properties.Resources.Vietnamese;
@@ -334,6 +336,7 @@ namespace GestPipePowerPonit
             // 
             this.btnInstruction.BorderRadius = 10;
             this.btnInstruction.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnInstruction.FillColor2 = System.Drawing.Color.Gray;
             this.btnInstruction.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnInstruction.ForeColor = System.Drawing.Color.White;
             this.btnInstruction.Image = global::GestPipePowerPonit.Properties.Resources.icon_instruction;
@@ -346,11 +349,13 @@ namespace GestPipePowerPonit
             this.btnInstruction.TabIndex = 4;
             this.btnInstruction.Text = "Instruction";
             this.btnInstruction.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnInstruction.Click += new System.EventHandler(this.btnInstruction_Click);
             // 
             // btnGestureControl
             // 
             this.btnGestureControl.BorderRadius = 10;
             this.btnGestureControl.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnGestureControl.FillColor2 = System.Drawing.Color.Gray;
             this.btnGestureControl.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnGestureControl.ForeColor = System.Drawing.Color.White;
             this.btnGestureControl.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
@@ -369,6 +374,7 @@ namespace GestPipePowerPonit
             // 
             this.btnHome.BorderRadius = 10;
             this.btnHome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnHome.FillColor2 = System.Drawing.Color.Gray;
             this.btnHome.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHome.ForeColor = System.Drawing.Color.White;
             this.btnHome.Image = global::GestPipePowerPonit.Properties.Resources.icon_home;
@@ -421,7 +427,7 @@ namespace GestPipePowerPonit
             // 
             this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExit.BorderRadius = 10;
-            this.btnExit.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnExit.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnExit.ForeColor = System.Drawing.Color.White;
             this.btnExit.Location = new System.Drawing.Point(946, 590);
@@ -435,7 +441,8 @@ namespace GestPipePowerPonit
             // 
             this.btnSlideShow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSlideShow.BorderRadius = 10;
-            this.btnSlideShow.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(230)))));
+            this.btnSlideShow.FillColor = System.Drawing.Color.Navy;
+            this.btnSlideShow.FillColor2 = System.Drawing.Color.DeepSkyBlue;
             this.btnSlideShow.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnSlideShow.ForeColor = System.Drawing.Color.White;
             this.btnSlideShow.Location = new System.Drawing.Point(27, 563);
@@ -484,7 +491,7 @@ namespace GestPipePowerPonit
             // cmbCategory
             // 
             this.cmbCategory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(70)))), ((int)(((byte)(100)))));
-            this.cmbCategory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cmbCategory.BorderColor = System.Drawing.Color.Navy;
             this.cmbCategory.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCategory.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(70)))), ((int)(((byte)(100)))));
@@ -512,7 +519,7 @@ namespace GestPipePowerPonit
             // cmbTopic
             // 
             this.cmbTopic.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(70)))), ((int)(((byte)(100)))));
-            this.cmbTopic.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.cmbTopic.BorderColor = System.Drawing.Color.Navy;
             this.cmbTopic.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbTopic.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTopic.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(70)))), ((int)(((byte)(100)))));
@@ -539,7 +546,8 @@ namespace GestPipePowerPonit
             // btnOpen
             // 
             this.btnOpen.BorderRadius = 10;
-            this.btnOpen.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(200)))));
+            this.btnOpen.FillColor = System.Drawing.Color.Navy;
+            this.btnOpen.FillColor2 = System.Drawing.Color.DeepSkyBlue;
             this.btnOpen.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnOpen.ForeColor = System.Drawing.Color.White;
             this.btnOpen.Location = new System.Drawing.Point(27, 118);
@@ -552,7 +560,7 @@ namespace GestPipePowerPonit
             // txtFile
             // 
             this.txtFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(70)))), ((int)(((byte)(100)))));
-            this.txtFile.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.txtFile.BorderColor = System.Drawing.Color.Navy;
             this.txtFile.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtFile.DefaultText = "";
             this.txtFile.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -562,7 +570,7 @@ namespace GestPipePowerPonit
             this.txtFile.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(70)))), ((int)(((byte)(100)))));
             this.txtFile.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtFile.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtFile.ForeColor = System.Drawing.Color.White;
+            this.txtFile.ForeColor = System.Drawing.Color.Empty;
             this.txtFile.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtFile.Location = new System.Drawing.Point(27, 84);
             this.txtFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -801,7 +809,7 @@ namespace GestPipePowerPonit
 
         private Label lblTopic;
         private Label lblCategory;
-        private Guna2Button btnPresentation;
-        private Guna2Button btnCustomGesture;
+        private Guna2GradientButton btnPresentation;
+        private Guna2GradientButton btnCustomGesture;
     }
 }

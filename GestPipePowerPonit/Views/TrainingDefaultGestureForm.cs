@@ -427,15 +427,6 @@ namespace GestPipePowerPonit
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
-
-        //public void StartTrainingWithAction(string actionName)
-        //{
-        //    lblPose.Text = "Pose: " + actionName; // Hiện tên action lên giao diện
-        //    SendPoseNameToPython(actionName);      // Gửi tên động tác qua python
-        //    StartReceivingCameraFrames(6001);      // Bắt đầu lấy hình
-        //    StartReceivingTrainingStatus(6002);    // Bắt đầu lấy trạng thái
-        //}
-
         public async void StartTrainingWithAction(string actionName)
         {
             try

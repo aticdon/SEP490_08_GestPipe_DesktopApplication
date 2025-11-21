@@ -555,4 +555,16 @@ recording</value>
   <data name="icon_check" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="IntructionTest_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IntructionTest_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Instruction_Tab1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Instruction_Tab1_EN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Instruction_Tab2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Instruction_Tab2_EN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Instruction_Tab3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Instruction_Tab3_EN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

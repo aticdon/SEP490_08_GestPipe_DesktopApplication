@@ -17,7 +17,7 @@ namespace GestPipePowerPonit
         private System.Windows.Forms.Label lblCustomCount;
         private System.Windows.Forms.Label lblCustomStatus; // Dòng này là biến thành viên
         private System.Windows.Forms.PictureBox pictureBoxCustomCamera;
-        private Guna.UI2.WinForms.Guna2Button btnHome;
+        private Guna.UI2.WinForms.Guna2GradientButton btnHome;
         private System.Windows.Forms.Label lblName;
 
         // NEW CONTROLS FOR INSTRUCTIONS
@@ -29,7 +29,7 @@ namespace GestPipePowerPonit
         private System.Windows.Forms.Label lblInstruction4;
         private System.Windows.Forms.Label lblInstruction5;
         private System.Windows.Forms.Label lblInstruction6;
-        private Guna.UI2.WinForms.Guna2Button btnStartRecording;
+        private Guna.UI2.WinForms.Guna2GradientButton btnStartRecording;
 
         private Guna.UI2.WinForms.Guna2Panel loadingPanel;
         private System.Windows.Forms.Label loadingLabel;
@@ -64,7 +64,7 @@ namespace GestPipePowerPonit
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.pnlMain = new Guna.UI2.WinForms.Guna2GradientPanel();
             this.pnlInstructions = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnStartRecording = new Guna.UI2.WinForms.Guna2Button();
+            this.btnStartRecording = new Guna.UI2.WinForms.Guna2GradientButton();
             this.lblInstructionTitle = new System.Windows.Forms.Label();
             this.lblInstruction1 = new System.Windows.Forms.Label();
             this.lblInstruction6 = new System.Windows.Forms.Label();
@@ -73,7 +73,7 @@ namespace GestPipePowerPonit
             this.lblInstruction5 = new System.Windows.Forms.Label();
             this.lblInstruction4 = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
-            this.btnHome = new Guna.UI2.WinForms.Guna2Button();
+            this.btnHome = new Guna.UI2.WinForms.Guna2GradientButton();
             this.loadingPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.loadingSpinner = new System.Windows.Forms.PictureBox();
             this.loadingLabel = new System.Windows.Forms.Label();
@@ -185,7 +185,8 @@ namespace GestPipePowerPonit
             this.btnStartRecording.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnStartRecording.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnStartRecording.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnStartRecording.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(188)))), ((int)(((byte)(212)))));
+            this.btnStartRecording.FillColor = System.Drawing.Color.Cyan;
+            this.btnStartRecording.FillColor2 = System.Drawing.Color.Gray;
             this.btnStartRecording.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnStartRecording.ForeColor = System.Drawing.Color.White;
             this.btnStartRecording.Location = new System.Drawing.Point(105, 420);
@@ -300,7 +301,8 @@ namespace GestPipePowerPonit
             this.btnHome.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnHome.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnHome.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnHome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnHome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnHome.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btnHome.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnHome.ForeColor = System.Drawing.Color.Black;
             this.btnHome.Location = new System.Drawing.Point(895, 685);
@@ -352,15 +354,15 @@ namespace GestPipePowerPonit
             this.spinnerTimer.Interval = 50;
             this.spinnerTimer.Tick += new System.EventHandler(this.SpinnerTimer_Tick);
             // 
-            // FormCustomGesture
+            // CustomGestureForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F); 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1100, 750);
             this.Controls.Add(this.pnlMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormCustomGesture";
+            this.Name = "CustomGestureForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Custom Gesture Collector";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCustomCamera)).EndInit();

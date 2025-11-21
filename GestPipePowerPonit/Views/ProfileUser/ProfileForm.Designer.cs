@@ -22,14 +22,14 @@ namespace GestPipePowerPonit.Views.Profile
             this.components = new System.ComponentModel.Container();
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnPresentation = new Guna.UI2.WinForms.Guna2Button();
-            this.btnCustomGesture = new Guna.UI2.WinForms.Guna2Button();
+            this.btnPresentation = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnCustomGesture = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pnlFooter = new Guna.UI2.WinForms.Guna2Panel();
             this.btnLanguageEN = new Guna.UI2.WinForms.Guna2Button();
             this.btnLanguageVN = new Guna.UI2.WinForms.Guna2Button();
-            this.btnInstruction = new Guna.UI2.WinForms.Guna2Button();
-            this.btnGestureControl = new Guna.UI2.WinForms.Guna2Button();
-            this.btnHome = new Guna.UI2.WinForms.Guna2Button();
+            this.btnInstruction = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnGestureControl = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.btnHome = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
@@ -130,6 +130,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnPresentation.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnPresentation.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnPresentation.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnPresentation.FillColor2 = System.Drawing.Color.Gray;
             this.btnPresentation.Font = new System.Drawing.Font("Segoe UI", 10.2F);
             this.btnPresentation.ForeColor = System.Drawing.Color.White;
             this.btnPresentation.Image = global::GestPipePowerPonit.Properties.Resources.icon_search;
@@ -152,6 +153,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnCustomGesture.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnCustomGesture.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnCustomGesture.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnCustomGesture.FillColor2 = System.Drawing.Color.Gray;
             this.btnCustomGesture.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnCustomGesture.ForeColor = System.Drawing.Color.White;
             this.btnCustomGesture.Image = global::GestPipePowerPonit.Properties.Resources.CustomCamera;
@@ -184,7 +186,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnLanguageEN.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnLanguageEN.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnLanguageEN.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnLanguageEN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnLanguageEN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnLanguageEN.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnLanguageEN.ForeColor = System.Drawing.Color.White;
             this.btnLanguageEN.Image = global::GestPipePowerPonit.Properties.Resources.English;
@@ -202,7 +204,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnLanguageVN.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnLanguageVN.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnLanguageVN.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnLanguageVN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnLanguageVN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnLanguageVN.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnLanguageVN.ForeColor = System.Drawing.Color.White;
             this.btnLanguageVN.Image = global::GestPipePowerPonit.Properties.Resources.Vietnamese;
@@ -221,6 +223,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnInstruction.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnInstruction.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnInstruction.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnInstruction.FillColor2 = System.Drawing.Color.Gray;
             this.btnInstruction.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnInstruction.ForeColor = System.Drawing.Color.White;
             this.btnInstruction.Image = global::GestPipePowerPonit.Properties.Resources.icon_instruction;
@@ -233,6 +236,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnInstruction.TabIndex = 4;
             this.btnInstruction.Text = "Instruction";
             this.btnInstruction.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnInstruction.Click += new System.EventHandler(this.btnInstruction_Click);
             // 
             // btnGestureControl
             // 
@@ -242,6 +246,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnGestureControl.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnGestureControl.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnGestureControl.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnGestureControl.FillColor2 = System.Drawing.Color.Gray;
             this.btnGestureControl.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnGestureControl.ForeColor = System.Drawing.Color.White;
             this.btnGestureControl.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
@@ -264,6 +269,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnHome.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnHome.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnHome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
+            this.btnHome.FillColor2 = System.Drawing.Color.Gray;
             this.btnHome.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnHome.ForeColor = System.Drawing.Color.White;
             this.btnHome.Image = global::GestPipePowerPonit.Properties.Resources.icon_home;
@@ -547,7 +553,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnBannerAdd.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnBannerAdd.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnBannerAdd.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnBannerAdd.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
+            this.btnBannerAdd.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
             this.btnBannerAdd.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnBannerAdd.ForeColor = System.Drawing.Color.White;
             this.btnBannerAdd.Location = new System.Drawing.Point(756, 10);
@@ -1173,11 +1179,11 @@ namespace GestPipePowerPonit.Views.Profile
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
         private Guna.UI2.WinForms.Guna2Panel pnlSidebar;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
-        private Guna.UI2.WinForms.Guna2Button btnHome;
-        private Guna.UI2.WinForms.Guna2Button btnGestureControl;
-        private Guna.UI2.WinForms.Guna2Button btnInstruction;
-        private Guna.UI2.WinForms.Guna2Button btnCustomGesture;
-        private Guna.UI2.WinForms.Guna2Button btnPresentation;
+        private Guna.UI2.WinForms.Guna2GradientButton btnHome;
+        private Guna.UI2.WinForms.Guna2GradientButton btnGestureControl;
+        private Guna.UI2.WinForms.Guna2GradientButton btnInstruction;
+        private Guna.UI2.WinForms.Guna2GradientButton btnCustomGesture;
+        private Guna.UI2.WinForms.Guna2GradientButton btnPresentation;
         private Guna.UI2.WinForms.Guna2Panel pnlFooter;
         private Guna.UI2.WinForms.Guna2Button btnLanguageVN;
         private Guna.UI2.WinForms.Guna2Button btnLanguageEN;

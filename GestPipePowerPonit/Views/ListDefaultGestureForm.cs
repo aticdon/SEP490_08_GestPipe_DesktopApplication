@@ -324,11 +324,6 @@ namespace GestPipePowerPonit
                 ResourceHelper.SetCulture(cultureCode, this);
 
                 await _apiClient.SetUserLanguageAsync(_currentUserId, cultureCode);
-
-                CustomMessageBox.ShowSuccess(
-                    Properties.Resources.Message_ChangeLanguageSuccess,
-                    Properties.Resources.Title_Success
-                );
             }
             catch (Exception ex)
             {
@@ -359,12 +354,12 @@ namespace GestPipePowerPonit
             AppSettings.ExitAll();
         }
 
-        private void btnTrainingGesture_Click(object sender, EventArgs e)
-        {
-            FormUserGesture uGestureForm = new FormUserGesture(_homeForm);
-            uGestureForm.Show();
-            this.Hide();
-        }
+        //private void btnTrainingGesture_Click(object sender, EventArgs e)
+        //{
+        //    FormUserGesture uGestureForm = new FormUserGesture(_homeForm);
+        //    uGestureForm.Show();
+        //    this.Hide();
+        //}
 
         private void btnPresentation_Click(object sender, EventArgs e)
         {
@@ -493,6 +488,13 @@ namespace GestPipePowerPonit
         public async Task RefreshGesturesAsync()
         {
             await LoadGesturesAsync();
+        }
+
+        private void btnInstruction_Click(object sender, EventArgs e)
+        {
+            InstructionForm instructionForm = new InstructionForm(_homeForm);
+            instructionForm.Show();
+            this.Hide();
         }
     }
 }

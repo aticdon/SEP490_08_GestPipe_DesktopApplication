@@ -112,12 +112,6 @@ namespace GestPipePowerPonit
         {
             try
             {
-                //await _apiClient.SetUserLanguageAsync(_currentUserId, cultureCode);
-                //_currentCultureCode = cultureCode;
-                //CultureManager.CurrentCultureCode = _currentCultureCode;
-                //ResourceHelper.SetCulture(_currentCultureCode, this);
-                //ApplyResourceToControls();
-                // ✅ SET CULTURE TRƯỚC (như Form1)
                 _currentCultureCode = cultureCode;
                 CultureManager.CurrentCultureCode = _currentCultureCode;
                 ResourceHelper.SetCulture(_currentCultureCode, this);
@@ -125,11 +119,6 @@ namespace GestPipePowerPonit
 
                 // ✅ API call SAU
                 await _apiClient.SetUserLanguageAsync(_currentUserId, cultureCode);
-
-                CustomMessageBox.ShowSuccess(
-                    Properties.Resources.Message_ChangeLanguageSuccess,
-                    Properties.Resources.Title_Success
-                );
             }
             catch (Exception ex)
             {
@@ -153,12 +142,12 @@ namespace GestPipePowerPonit
             btnPresentation.Text = Properties.Resources.Btn_Present;
         }
 
-        private void btnTrainingGesture_Click(object sender, EventArgs e)
-        {
-            FormUserGesture usergestureForm = new FormUserGesture(this);
-            usergestureForm.Show();
-            this.Hide();
-        }
+        //private void btnTrainingGesture_Click(object sender, EventArgs e)
+        //{
+        //    FormUserGesture usergestureForm = new FormUserGesture(this);
+        //    usergestureForm.Show();
+        //    this.Hide();
+        //}
 
 
         private void btnPresentation_Click(object sender, EventArgs e)
@@ -291,6 +280,13 @@ namespace GestPipePowerPonit
         {
             InstructionForm instructionForm = new InstructionForm(this);
             instructionForm.Show();
+            this.Hide();
+        }
+
+        private void btnTraining_Click(object sender, EventArgs e)
+        {
+            ListDefaultGestureForm defaultGesture = new ListDefaultGestureForm(this);
+            defaultGesture.Show();
             this.Hide();
         }
     }

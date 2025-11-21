@@ -1279,10 +1279,6 @@ namespace GestPipePowerPonit
                 cmbCategory.DisplayMember = "DisplayName";
                 cmbCategory.ValueMember = "Id";
                 await _apiClient.SetUserLanguageAsync(userId, cultureCode);
-                CustomMessageBox.ShowSuccess(
-                    Properties.Resources.Message_ChangeLanguageSuccess,
-                    Properties.Resources.Title_Success
-                );
             }
             catch (Exception ex)
             {
@@ -1320,12 +1316,12 @@ namespace GestPipePowerPonit
             this.Hide();
         }
 
-        private void btnTrainingGesture_Click(object sender, EventArgs e)
-        {
-            FormUserGesture uGestureForm = new FormUserGesture(_homeForm);
-            uGestureForm.Show();
-            this.Hide();
-        }
+        //private void btnTrainingGesture_Click(object sender, EventArgs e)
+        //{
+        //    FormUserGesture uGestureForm = new FormUserGesture(_homeForm);
+        //    uGestureForm.Show();
+        //    this.Hide();
+        //}
         private void guna2ControlBoxClose_Click(object sender, EventArgs e)
         {
             AppSettings.ExitAll();
@@ -1643,6 +1639,13 @@ namespace GestPipePowerPonit
             {
                 CustomMessageBox.ShowWarning(timeoutMsg, "Camera Warning");
             }));
+        }
+
+        private void btnInstruction_Click(object sender, EventArgs e)
+        {
+            InstructionForm instructionForm = new InstructionForm(_homeForm);
+            instructionForm.Show();
+            this.Hide();
         }
     }
 }

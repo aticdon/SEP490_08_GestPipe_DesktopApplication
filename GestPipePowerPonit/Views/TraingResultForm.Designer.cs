@@ -11,7 +11,7 @@
         private Guna.UI2.WinForms.Guna2GradientPanel pnlMain;
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
         private System.Windows.Forms.Label lblTitle;
-        private Guna.UI2.WinForms.Guna2Button btnClose;
+        private Guna.UI2.WinForms.Guna2GradientButton btnClose;
         private System.Windows.Forms.Label lblNameGesture;
         private System.Windows.Forms.Label lblAction;
         private System.Windows.Forms.Label lblAccuracyTraining;
@@ -51,7 +51,7 @@
             this.lblValueAccuracy = new System.Windows.Forms.Label();
             this.lblTrainingDay = new System.Windows.Forms.Label();
             this.lblValueDay = new System.Windows.Forms.Label();
-            this.btnClose = new Guna.UI2.WinForms.Guna2Button();
+            this.btnClose = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pnlMain.SuspendLayout();
             this.SuspendLayout();
             // 

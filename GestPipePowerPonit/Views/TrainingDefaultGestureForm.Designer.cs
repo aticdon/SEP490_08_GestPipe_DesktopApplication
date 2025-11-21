@@ -59,7 +59,7 @@ namespace GestPipePowerPonit
             this.pnlMain = new Guna.UI2.WinForms.Guna2GradientPanel();
             this.lblTraining = new System.Windows.Forms.Label();
             this.lblGestureName = new System.Windows.Forms.Label();
-            this.btnEndTraining = new Guna.UI2.WinForms.Guna2Button();
+            this.btnEndTraining = new Guna.UI2.WinForms.Guna2GradientButton();
             this.picCamera = new System.Windows.Forms.PictureBox();
             this.lblPose = new System.Windows.Forms.Label();
             this.lblResult = new System.Windows.Forms.Label();
@@ -71,6 +71,7 @@ namespace GestPipePowerPonit
             this.loadingSpinner = new System.Windows.Forms.PictureBox();
             this.loadingLabel = new System.Windows.Forms.Label();
             this.spinnerTimer = new System.Windows.Forms.Timer(this.components);
+            this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCamera)).BeginInit();
             this.loadingPanel.SuspendLayout();
@@ -133,6 +134,7 @@ namespace GestPipePowerPonit
             this.pnlMain.Controls.Add(this.lblWrong);
             this.pnlMain.Controls.Add(this.lblAccuracy);
             this.pnlMain.Controls.Add(this.lblReason);
+            this.pnlMain.Controls.Add(this.guna2Panel1);
             this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlMain.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(40)))), ((int)(((byte)(80)))));
             this.pnlMain.FillColor2 = System.Drawing.Color.Black;
@@ -169,9 +171,10 @@ namespace GestPipePowerPonit
             this.btnEndTraining.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEndTraining.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnEndTraining.BorderRadius = 10;
-            this.btnEndTraining.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnEndTraining.FillColor = System.Drawing.Color.Maroon;
+            this.btnEndTraining.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnEndTraining.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnEndTraining.ForeColor = System.Drawing.Color.Black;
+            this.btnEndTraining.ForeColor = System.Drawing.Color.White;
             this.btnEndTraining.Location = new System.Drawing.Point(918, 680);
             this.btnEndTraining.Name = "btnEndTraining";
             this.btnEndTraining.Size = new System.Drawing.Size(143, 40);
@@ -294,6 +297,15 @@ namespace GestPipePowerPonit
             this.spinnerTimer.Interval = 50;
             this.spinnerTimer.Tick += new System.EventHandler(this.SpinnerTimer_Tick);
             // 
+            // guna2Panel1
+            // 
+            this.guna2Panel1.BorderColor = System.Drawing.Color.Cyan;
+            this.guna2Panel1.BorderRadius = 5;
+            this.guna2Panel1.Location = new System.Drawing.Point(684, 163);
+            this.guna2Panel1.Name = "guna2Panel1";
+            this.guna2Panel1.Size = new System.Drawing.Size(395, 480);
+            this.guna2Panel1.TabIndex = 10;
+            // 
             // TrainingDefaultGestureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -319,9 +331,10 @@ namespace GestPipePowerPonit
 
         private System.Windows.Forms.Label lblPose;
         private System.Windows.Forms.Label lblReason;
-        private Guna2Button btnEndTraining;
+        private Guna2GradientButton btnEndTraining;
         private System.Windows.Forms.Label lblGestureName;
         private Guna2Button btnPresentation;
         private System.Windows.Forms.Label lblTraining;
+        private Guna2Panel guna2Panel1;
     }
 }
