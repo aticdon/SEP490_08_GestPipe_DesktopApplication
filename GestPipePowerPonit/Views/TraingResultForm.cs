@@ -38,7 +38,7 @@ namespace GestPipePowerPonit
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
-            _dfgestureForm.Show();
+            //_dfgestureForm.Show();
         }
         private void ApplyLanguage()
         {

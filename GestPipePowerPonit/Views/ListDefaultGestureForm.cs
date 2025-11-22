@@ -118,7 +118,7 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Không thể tải danh sách gesture!\n" + ex.Message);
+                Console.WriteLine("Không thể tải danh sách gesture!\n" + ex.Message);
             }
         }
         private async Task LoadGesturesAsync()
@@ -177,7 +177,7 @@ namespace GestPipePowerPonit
                     var detail = await _uGestureService.GetGestureDetailAsync(basic.Id);
                     if (detail == null)
                     {
-                        MessageBox.Show("Cannot get user gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Console.WriteLine("Cannot get user gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     string description = _uGestureService.GetGestureDescription(detail);
@@ -200,7 +200,7 @@ namespace GestPipePowerPonit
                     var detail = await _gestureService.GetGestureDetailAsync(basic.Id);
                     if (detail == null)
                     {
-                        MessageBox.Show("Cannot get gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Console.WriteLine("Cannot get gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     string description = _gestureService.GetGestureDescription(detail);
@@ -220,7 +220,7 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error viewing gesture details: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine($"Error viewing gesture details: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private async Task HandleTrainingClick(int rowIndex)
@@ -242,7 +242,7 @@ namespace GestPipePowerPonit
 
                 if (detail == null)
                 {
-                    MessageBox.Show("Cannot get gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Console.WriteLine("Cannot get gesture details!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -305,7 +305,7 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error opening training form: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine($"Error opening training form: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -353,21 +353,12 @@ namespace GestPipePowerPonit
         {
             AppSettings.ExitAll();
         }
-
-        //private void btnTrainingGesture_Click(object sender, EventArgs e)
-        //{
-        //    FormUserGesture uGestureForm = new FormUserGesture(_homeForm);
-        //    uGestureForm.Show();
-        //    this.Hide();
-        //}
-
         private void btnPresentation_Click(object sender, EventArgs e)
         {
             PresentationForm form1 = new PresentationForm(_homeForm);
             form1.Show();
             this.Hide();
         }
-
         private async void btnLogout_Click(object sender, EventArgs e)
         {
             try

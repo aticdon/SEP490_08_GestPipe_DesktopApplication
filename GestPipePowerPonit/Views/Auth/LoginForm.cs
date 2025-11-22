@@ -7,7 +7,6 @@ using GestPipePowerPonit.Models.DTOs;
 using GestPipePowerPonit.Services;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-
 namespace GestPipePowerPonit.Views.Auth
 {
     public partial class LoginForm : Form

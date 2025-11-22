@@ -21,6 +21,7 @@ namespace GestPipePowerPonit
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InstructionForm));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             this.btnCustomGesture = new Guna.UI2.WinForms.Guna2GradientButton();
@@ -338,9 +339,9 @@ namespace GestPipePowerPonit
             this.guna2PictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.guna2PictureBox1.Image = global::GestPipePowerPonit.Properties.Resources.Instruction_Tab1;
             this.guna2PictureBox1.ImageRotate = 0F;
-            this.guna2PictureBox1.Location = new System.Drawing.Point(0, 101);
+            this.guna2PictureBox1.Location = new System.Drawing.Point(1, 101);
             this.guna2PictureBox1.Name = "guna2PictureBox1";
-            this.guna2PictureBox1.Size = new System.Drawing.Size(1099, 506);
+            this.guna2PictureBox1.Size = new System.Drawing.Size(1099, 544);
             this.guna2PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.guna2PictureBox1.TabIndex = 2;
             this.guna2PictureBox1.TabStop = false;
@@ -403,6 +404,7 @@ namespace GestPipePowerPonit
             this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.pnlSidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "InstructionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -18,6 +18,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChangePasswordForm));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.panelDialog = new Guna.UI2.WinForms.Guna2Panel();
             this.lblOldPassword = new System.Windows.Forms.Label();
@@ -71,7 +72,7 @@
             this.lblOldPassword.ForeColor = System.Drawing.Color.White;
             this.lblOldPassword.Location = new System.Drawing.Point(40, 44);
             this.lblOldPassword.Name = "lblOldPassword";
-            this.lblOldPassword.Size = new System.Drawing.Size(155, 30);
+            this.lblOldPassword.Size = new System.Drawing.Size(133, 25);
             this.lblOldPassword.TabIndex = 0;
             this.lblOldPassword.Text = "Old Password";
             // 
@@ -107,7 +108,7 @@
             this.lblOldPasswordError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(7)))));
             this.lblOldPasswordError.Location = new System.Drawing.Point(248, 94);
             this.lblOldPasswordError.Name = "lblOldPasswordError";
-            this.lblOldPasswordError.Size = new System.Drawing.Size(0, 23);
+            this.lblOldPasswordError.Size = new System.Drawing.Size(0, 20);
             this.lblOldPasswordError.TabIndex = 2;
             this.lblOldPasswordError.Visible = false;
             // 
@@ -118,7 +119,7 @@
             this.lblNewPassword.ForeColor = System.Drawing.Color.White;
             this.lblNewPassword.Location = new System.Drawing.Point(40, 144);
             this.lblNewPassword.Name = "lblNewPassword";
-            this.lblNewPassword.Size = new System.Drawing.Size(165, 30);
+            this.lblNewPassword.Size = new System.Drawing.Size(142, 25);
             this.lblNewPassword.TabIndex = 3;
             this.lblNewPassword.Text = "New Password";
             // 
@@ -154,7 +155,7 @@
             this.lblNewPasswordError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(7)))));
             this.lblNewPasswordError.Location = new System.Drawing.Point(248, 194);
             this.lblNewPasswordError.Name = "lblNewPasswordError";
-            this.lblNewPasswordError.Size = new System.Drawing.Size(0, 23);
+            this.lblNewPasswordError.Size = new System.Drawing.Size(0, 20);
             this.lblNewPasswordError.TabIndex = 5;
             this.lblNewPasswordError.Visible = false;
             // 
@@ -165,7 +166,7 @@
             this.lblConfirmPassword.ForeColor = System.Drawing.Color.White;
             this.lblConfirmPassword.Location = new System.Drawing.Point(40, 244);
             this.lblConfirmPassword.Name = "lblConfirmPassword";
-            this.lblConfirmPassword.Size = new System.Drawing.Size(207, 30);
+            this.lblConfirmPassword.Size = new System.Drawing.Size(179, 25);
             this.lblConfirmPassword.TabIndex = 6;
             this.lblConfirmPassword.Text = "Re-enter Password";
             // 
@@ -201,7 +202,7 @@
             this.lblConfirmPasswordError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(7)))));
             this.lblConfirmPasswordError.Location = new System.Drawing.Point(248, 294);
             this.lblConfirmPasswordError.Name = "lblConfirmPasswordError";
-            this.lblConfirmPasswordError.Size = new System.Drawing.Size(0, 23);
+            this.lblConfirmPasswordError.Size = new System.Drawing.Size(0, 20);
             this.lblConfirmPasswordError.TabIndex = 8;
             this.lblConfirmPasswordError.Visible = false;
             // 
@@ -253,7 +254,7 @@
             this.panelOverlay.Location = new System.Drawing.Point(0, 0);
             this.panelOverlay.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelOverlay.Name = "panelOverlay";
-            this.panelOverlay.Size = new System.Drawing.Size(1537, 960);
+            this.panelOverlay.Size = new System.Drawing.Size(1366, 768);
             this.panelOverlay.TabIndex = 0;
             this.panelOverlay.Click += new System.EventHandler(this.panelOverlay_Click);
             // 
@@ -265,6 +266,7 @@
             this.ClientSize = new System.Drawing.Size(1366, 768);
             this.Controls.Add(this.panelOverlay);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "ChangePasswordForm";
             this.Opacity = 0.95D;

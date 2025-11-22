@@ -262,12 +262,6 @@
   <ItemGroup>
     <Compile Include="ApiClient.cs" />
     <Compile Include="AppSetting.cs" />
-    <Compile Include="BaseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BaseForm.Designer.cs">
-      <DependentUpon>BaseForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="CultureManager.cs" />
     <Compile Include="Languages\LoginFormStrings.Designer.cs" />
     <Compile Include="Languages\RegisterFormStrings.Designer.cs" />
@@ -295,6 +289,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="PythonProcessManager.cs" />
     <Compile Include="Services\ApiService.cs" />
     <Compile Include="Services\AuthService.cs" />
     <Compile Include="Services\LoadingManager.cs" />
@@ -484,6 +479,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CustomGestureForm.resx">
       <DependentUpon>CustomGestureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CustomGestureInstructionForm.resx">
+      <DependentUpon>CustomGestureInstructionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\CustomMessageBox.resx">
       <DependentUpon>CustomMessageBox.cs</DependentUpon>

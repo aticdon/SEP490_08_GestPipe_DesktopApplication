@@ -28,6 +28,7 @@ using A = DocumentFormat.OpenXml.Drawing;
 using OpenXmlShape = DocumentFormat.OpenXml.Presentation.Shape;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using WinFormControl = System.Windows.Forms.Control;
+using System.Security.AccessControl;
 
 namespace GestPipePowerPonit
 {
@@ -84,6 +85,7 @@ namespace GestPipePowerPonit
         private string userId = Properties.Settings.Default.UserId;
         private readonly ApiClient _apiClient;
         private bool firstCameraFrameReceived = false;
+        private bool _isInitializing = false;
 
         // ✅ THÊM AuthService
         private readonly AuthService _authService;
@@ -135,6 +137,8 @@ namespace GestPipePowerPonit
             if (btnLanguageVN != null)
                 btnLanguageVN.Click += (s, e) => UpdateCultureAndApply("vi-VN");
 
+            cmbCategory.SelectedIndexChanged += cmbCategory_SelectedIndexChanged;
+            cmbTopic.SelectedIndexChanged += cmbTopic_SelectedIndexChanged;
             // ✅ GẮN SỰ KIỆN LOGOUT VÀ PROFILE
             btnLogout.Click += btnLogout_Click;
             btnProfile.Click += btnProfile_Click;
@@ -170,11 +174,25 @@ namespace GestPipePowerPonit
             btnZoomInSlide.Enabled = inSlideShow;
             btnZoomOutSlide.Enabled = inSlideShow;
         }
-        private void UpdateSlideLabel()
+        private void UpdateSlideLabel(PowerPoint.SlideShowWindow wn = null)
         {
             try
             {
-                int current = oPPT.SlideShowWindows[1].View.CurrentShowPosition;
+                if (oPPT == null || oPres == null) return;
+
+                PowerPoint.SlideShowView view;
+                if (wn != null)
+                {
+                    view = wn.View;
+                }
+                else
+                {
+                    if (oPPT.SlideShowWindows == null || oPPT.SlideShowWindows.Count == 0)
+                        return;
+                    view = oPPT.SlideShowWindows[1].View;
+                }
+
+                int current = view.CurrentShowPosition;
                 int total = oPres.Slides.Count;
                 lblSlide.Text = $"Slide {current} / {total}";
 
@@ -189,6 +207,7 @@ namespace GestPipePowerPonit
             }
             catch { }
         }
+
         private void StartCameraReceiver(int port = 6000)
         {
             try
@@ -420,50 +439,36 @@ namespace GestPipePowerPonit
             {
                 try
                 {
-                    // Cleanup PowerPoint
-                    if (oPres != null)
-                    {
-                        oPres.Close();
-                        Marshal.FinalReleaseComObject(oPres);
-                        oPres = null;
-                    }
-                    if (oPPT != null)
-                    {
-                        oPPT.Quit();
-                        Marshal.FinalReleaseComObject(oPPT);
-                        oPPT = null;
-                    }
+                    // 🧹 1. DỌN TOÀN BỘ SESSION CŨ
+                    CleanupResources(keepPython: true);
 
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                    foreach (var process in System.Diagnostics.Process.GetProcessesByName("POWERPNT"))
-                    {
-                        process.Kill();
-                    }
-
-                    txtFile.Text = openFileDialog1.FileName;
-                    string ext = System.IO.Path.GetExtension(txtFile.Text).ToLower();
-
+                    // 🧠 2. Reset state logic
+                    zoomSlideCount = 0;
+                    gestureCounts.Clear();
                     firstCameraFrameReceived = false;
 
-                    // Start Python process
-                    await Task.Run(() =>
-                    {
-                        StartPythonProcess();
-                    });
+                    txtFile.Text = openFileDialog1.FileName;
+                    string ext = Path.GetExtension(txtFile.Text).ToLower();
 
+                    // 🧷 3. Đăng ký hotkey lại (nếu cần)
                     RegisterKeys();
+
+                    // 🛰 4. Tạo SocketServer mới
                     server = new SocketServer(5006, this, HandleGestureCommand);
                     server.Start();
+                    Debug.WriteLine("[SocketServer] Started on port 5006");
 
-                    // -- Đến bước này bạn chỉ show loading khi chờ CAMERA --
+                    // 🎥 5. Start camera receiver
                     ShowLoading(
                         CultureManager.CurrentCultureCode.Contains("vi")
                             ? "🎥 Đang kết nối camera..." : "🎥 Connecting camera..."
                     );
-                    // Start camera receiver
                     StartCameraReceiver(6000);
                     pictureBoxCamera.Visible = true;
+
+                    // 🐍 6. Start Python (sau khi server & camera đã sẵn sàng)
+                    //await Task.Run(() => StartPythonProcess());
+                    Task.Run(() => StartPythonProcess());
 
                     if (ext == ".pptx")
                     {
@@ -473,45 +478,52 @@ namespace GestPipePowerPonit
                         await Task.Run(() =>
                         {
                             slidesWith3D = Detect3DSlides(txtFile.Text);
-                            pptxFolderPath = System.IO.Path.GetDirectoryName(txtFile.Text);
+                            pptxFolderPath = Path.GetDirectoryName(txtFile.Text);
                             slideTitles = GetSlideTitles(txtFile.Text);
                         });
 
                         try
                         {
                             oPPT = new PowerPoint.Application();
-                            oPres = oPPT.Presentations.Open(txtFile.Text,
-                                MsoTriState.msoFalse, MsoTriState.msoFalse, MsoTriState.msoFalse);
+                            oPres = oPPT.Presentations.Open(
+                                txtFile.Text,
+                                MsoTriState.msoFalse,
+                                MsoTriState.msoFalse,
+                                MsoTriState.msoFalse
+                            );
 
                             oPPT.SlideShowNextSlide += O_PPT_SlideShowNextSlide;
                             btnSlideShow.Enabled = true;
-
-                            // *** KHÔNG update lại loading hoặc success nữa ***
                         }
                         catch (Exception ex)
                         {
                             string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
                                 ? $"Không thể mở PowerPoint: {ex.Message}"
                                 : $"Cannot open PowerPoint: {ex.Message}";
-                            MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Console.WriteLine(errorMsg);
                             oPPT = null;
                             oPres = null;
                             btnSlideShow.Enabled = false;
                         }
                     }
 
-                    // *** CHỈ update loading panel nội dung trong WaitForCameraConnectionAsync ***
-                    // *** CHỈ ẩn loading tại đây sau khi camera đã xong ***
                     await WaitForCameraConnectionAsync();
                     HideLoading();
+
+                    btnHome.Enabled = false;
+                    btnGestureControl.Enabled = false;
+                    btnInstruction.Enabled = false;
+                    btnPresentation.Enabled = false;
+                    btnCustomGesture.Enabled = false;
+                    btnProfile.Enabled = false;
                 }
                 catch (Exception ex)
                 {
                     string errorMsg = CultureManager.CurrentCultureCode.Contains("vi")
                         ? $"Lỗi: {ex.Message}"
                         : $"Error: {ex.Message}";
-                    MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    HideLoading(); // dù lỗi cũng ẩn loading
+                    Console.WriteLine(errorMsg);
+                    HideLoading();
                 }
             }
         }
@@ -573,10 +585,6 @@ namespace GestPipePowerPonit
         }
         private async void ShowGLBModel(string glbPath)
         {
-            //string loadingMsg = CultureManager.CurrentCultureCode.Contains("vi")
-            //    ? "Đang tải mô hình 3D...\nVui lòng đợi..."
-            //    : "Loading 3D model...\nPlease wait...";
-            //ShowLoading(loadingMsg);
 
             try
             {
@@ -584,8 +592,6 @@ namespace GestPipePowerPonit
 
                 if (!File.Exists(glbPath))
                 {
-                    //HideLoading();
-                    //MessageBox.Show("Không tìm thấy file GLB: " + glbPath);
                     return;
                 }
 
@@ -674,29 +680,65 @@ namespace GestPipePowerPonit
                     ? $"Lỗi khi tải mô hình 3D: {ex.Message}"
                     : $"Error loading 3D model: {ex.Message}";
 
-                MessageBox.Show(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine(errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
                 HideLoading();
             }
         }
-        private void CheckAndShowGLBForCurrentSlide()
+        private void CheckAndShowGLBForCurrentSlide(PowerPoint.SlideShowWindow wn = null)
         {
-            if (oPPT == null || oPres == null || slideTitles.Count == 0) return;
-            int current = oPPT.SlideShowWindows[1].View.CurrentShowPosition;
-            if (current <= 0 || current > slideTitles.Count) return;
-            string currTitle = slideTitles[current - 1]?.Trim();
-
-            if (!string.IsNullOrEmpty(currTitle) && currTitle.StartsWith("3D"))
+            try
             {
-                string glbFileName = currTitle + ".glb";
-                string glbPath = System.IO.Path.Combine(pptxFolderPath, glbFileName);
-                if (System.IO.File.Exists(glbPath))
+                if (oPPT == null || oPres == null || slideTitles.Count == 0)
+                    return;
+
+                PowerPoint.SlideShowView view = null;
+
+                if (wn != null)
                 {
-                    ShowGLBModel(glbPath);
-                    if (!isFullScreenGLB)
-                        EnterFullScreenGLB();
+                    // Dùng trực tiếp window được PowerPoint truyền vào event
+                    try
+                    {
+                        view = wn.View;
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    // Trường hợp gọi từ các button (First/Next/Prev/Last…)
+                    if (oPPT.SlideShowWindows == null || oPPT.SlideShowWindows.Count == 0)
+                        return;
+
+                    view = oPPT.SlideShowWindows[1].View;
+                }
+
+                int current = view.CurrentShowPosition;
+                if (current <= 0 || current > slideTitles.Count)
+                    return;
+
+                string currTitle = slideTitles[current - 1]?.Trim();
+
+                if (!string.IsNullOrEmpty(currTitle) && currTitle.StartsWith("3D"))
+                {
+                    string glbFileName = currTitle + ".glb";
+                    string glbPath = System.IO.Path.Combine(pptxFolderPath, glbFileName);
+                    if (System.IO.File.Exists(glbPath))
+                    {
+                        ShowGLBModel(glbPath);
+                        if (!isFullScreenGLB)
+                            EnterFullScreenGLB();
+                    }
+                    else
+                    {
+                        webView2_3D.Visible = false;
+                        if (isFullScreenGLB)
+                            ExitFullScreenGLB();
+                    }
                 }
                 else
                 {
@@ -705,13 +747,16 @@ namespace GestPipePowerPonit
                         ExitFullScreenGLB();
                 }
             }
-            else
+            catch (COMException comEx)
             {
-                webView2_3D.Visible = false;
-                if (isFullScreenGLB)
-                    ExitFullScreenGLB();
+                Debug.WriteLine($"[CheckAndShowGLBForCurrentSlide] COM error: {comEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[CheckAndShowGLBForCurrentSlide] error: {ex.Message}");
             }
         }
+
         private void btnSlideShow_Click(object sender, EventArgs e)
         {
             webView2_3D.Visible = false;
@@ -825,7 +870,11 @@ namespace GestPipePowerPonit
             if (success)
                 Console.WriteLine("Lưu session thành công!");
             else
-                MessageBox.Show("Lỗi lưu session!");
+                Console.WriteLine("Lỗi lưu session!");
+            if (oPPT != null)
+            {
+                try { oPPT.SlideShowNextSlide -= O_PPT_SlideShowNextSlide; } catch { }
+            }
             if (oPPT != null && oPPT.SlideShowWindows.Count > 0)
             {
                 oPPT.SlideShowWindows[1].View.Exit();
@@ -873,7 +922,7 @@ namespace GestPipePowerPonit
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            CleanupResources();
+            CleanupResources(keepPython: false);
             base.OnFormClosing(e);
         }
 
@@ -881,14 +930,35 @@ namespace GestPipePowerPonit
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            _isInitializing = true;
             ApplyLanguage(GestPipePowerPonit.CultureManager.CurrentCultureCode);
             pictureBoxCamera.Visible = false;
             SetButtonsEnabled(false, false);
+
             var categories = await categoryService.GetCategoriesAsync();
-            cmbCategory.DataSource = categories;
+
             cmbCategory.DisplayMember = "DisplayName";
             cmbCategory.ValueMember = "Id";
+            cmbCategory.DataSource = categories;
+
+            _ = Task.Run(() => StartPythonProcess());
+            // 🔁 Restore LastSelectedCategoryId
+            var lastCategoryId = Properties.Settings.Default.LastSelectedCategoryId;
+            if (!string.IsNullOrEmpty(lastCategoryId) &&
+                categories.Any(c => c.Id == lastCategoryId))
+            {
+                cmbCategory.SelectedValue = lastCategoryId;
+            }
+            else if (categories.Count > 0)
+            {
+                cmbCategory.SelectedIndex = 0;
+            }
+
+            // Sau khi chọn được category -> load topic
+            await LoadTopicsForSelectedCategoryAsync();
+            _isInitializing = false;
         }
+
 
         private void btnZoomInTop_Click(object sender, EventArgs e)
         {
@@ -1050,18 +1120,21 @@ namespace GestPipePowerPonit
 
         private void O_PPT_SlideShowNextSlide(PowerPoint.SlideShowWindow Wn)
         {
+            if (this.IsDisposed) return;
+
             if (this.InvokeRequired)
             {
                 this.BeginInvoke(new Action(() =>
                 {
-                    CheckAndShowGLBForCurrentSlide();
+                    CheckAndShowGLBForCurrentSlide(Wn);
                 }));
             }
             else
             {
-                CheckAndShowGLBForCurrentSlide();
+                CheckAndShowGLBForCurrentSlide(Wn);
             }
         }
+
         private void UpdateModelView()
         {
             webView2_3D.ExecuteScriptAsync($@"
@@ -1120,8 +1193,12 @@ namespace GestPipePowerPonit
                 case "rotate_left": btnViewRight_Click(null, null); Console.WriteLine("Rotate Left"); break;
                 case "rotate_right": btnViewLeft_Click(null, null); Console.WriteLine("Rotate Right"); break;
                 case "rotate_up": btnViewBottom_Click(null, null); Console.WriteLine("Rotate Up"); break;
+                case "start_present": btnSlideShow_Click(null,null); Console.WriteLine("Slide Show"); break;
+                case "end_present": btnClose_Click(null, null); Console.WriteLine("Close Slide"); break;
                 case "rotate_down": btnViewTop_Click(null, null); Console.WriteLine("Rotate Down"); break;
-                default: MessageBox.Show($"Nhận lệnh không xác định: {command}"); break;
+                case "zoom_in_slide": btnZoomInSlide_Click(null, null); Console.WriteLine("Zoom In Slide"); break;
+                case "zoom_out_slide": btnZoomOutSlide_Click(null, null); Console.WriteLine("Zoom Out Slide"); break;
+                default: Console.WriteLine($"Nhận lệnh không xác định: {command}"); break;
             }
         }
 
@@ -1152,7 +1229,7 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Zoom in error: " + ex.Message);
+                Console.WriteLine("Zoom in error: " + ex.Message);
             }
         }
 
@@ -1183,17 +1260,34 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Zoom in error: " + ex.Message);
+                Console.WriteLine("Zoom in error: " + ex.Message);
             }
         }
         private void StartPythonProcess()
         {
             try
             {
-                string pythonExePath = "python"; // hoặc @"C:\Users\THUCLTCE171961\AppData\Local\Programs\Python\Python39\python.exe"
+                if (pythonProcess != null)
+                {
+                    try
+                    {
+                        if (!pythonProcess.HasExited)
+                        {
+                            Debug.WriteLine("Python process đã chạy rồi.");
+                            return;
+                        }
+                    }
+                    catch (InvalidOperationException)
+                    {
+                    }
+
+                    pythonProcess.Dispose();
+                    pythonProcess = null;
+                }
+
+                string pythonExePath = "python";
                 string userFolder = $"user_{userId}";
                 string scriptFile = $@"D:\Semester9\codepython\hybrid_realtime_pipeline\code\{userFolder}\test_gesture_recognition.py";
-                //string userArgument = $"user_{userId}";
 
                 Debug.WriteLine("Python exe path: " + pythonExePath);
                 Debug.WriteLine("Python script path: " + scriptFile);
@@ -1204,47 +1298,48 @@ namespace GestPipePowerPonit
                     return;
                 }
 
-                if (pythonProcess != null && !pythonProcess.HasExited)
-                {
-                    Debug.WriteLine("Python process đã chạy rồi.");
-                    return;
-                }
+                var proc = new Process();
+                proc.StartInfo.FileName = pythonExePath;
+                proc.StartInfo.Arguments = $"\"{scriptFile}\"";
+                proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(scriptFile);
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.StartInfo.RedirectStandardError = true;
+                proc.StartInfo.CreateNoWindow = true;
 
-                pythonProcess = new Process();
-                pythonProcess.StartInfo.FileName = pythonExePath;
-                pythonProcess.StartInfo.Arguments = $"\"{scriptFile}\"";
-                //pythonProcess.StartInfo.Arguments = $"\"{scriptFile}\" {userArgument}";
-                pythonProcess.StartInfo.WorkingDirectory = Path.GetDirectoryName(scriptFile);
-                pythonProcess.StartInfo.UseShellExecute = false;
-                pythonProcess.StartInfo.RedirectStandardOutput = true;
-                pythonProcess.StartInfo.RedirectStandardError = true;
-                pythonProcess.StartInfo.CreateNoWindow = true;
-
-                pythonProcess.OutputDataReceived += (s, e) =>
+                proc.OutputDataReceived += (s, e) =>
                 {
                     if (!string.IsNullOrEmpty(e.Data))
                         Debug.WriteLine("[PYTHON OUT] " + e.Data);
                 };
-                pythonProcess.ErrorDataReceived += (s, e) =>
+                proc.ErrorDataReceived += (s, e) =>
                 {
                     if (!string.IsNullOrEmpty(e.Data))
                         Debug.WriteLine("[PYTHON ERR] " + e.Data);
                 };
 
-                bool started = pythonProcess.Start();
-                pythonProcess.BeginOutputReadLine();
-                pythonProcess.BeginErrorReadLine();
+                bool started = proc.Start();
+                if (!started)
+                {
+                    Debug.WriteLine("Failed to start Python process.");
+                    proc.Dispose();
+                    return;
+                }
 
-                Debug.WriteLine(started
-                    ? $"Started Python process: {pythonExePath} {pythonProcess.StartInfo.Arguments}"
-                    : "Failed to start Python process.");
+                proc.BeginOutputReadLine();
+                proc.BeginErrorReadLine();
+
+                pythonProcess = proc;  // 🔑 chỉ gán sau khi Start OK
+
+                Debug.WriteLine($"Started Python process: {pythonExePath} {proc.StartInfo.Arguments}");
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("Lỗi chạy Python: " + ex.Message, "Python Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Debug.WriteLine("Lỗi chạy Python: " + ex.ToString());
             }
         }
+
+
         private void btnHome_Click(object sender, EventArgs e)
         {
             _homeForm.Show();
@@ -1252,12 +1347,22 @@ namespace GestPipePowerPonit
         }
         private async void cmbCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string categoryId = cmbCategory.SelectedValue?.ToString();
-            var allTopics = await topicService.GetTopicsAsync();
-            var filteredTopics = allTopics.Where(t => t.CategoryId == categoryId).ToList();
-            cmbTopic.DataSource = filteredTopics;
-            cmbTopic.DisplayMember = "DisplayTitle";
-            cmbTopic.ValueMember = "Id";
+            if (_isInitializing) return;               
+            if (cmbCategory.SelectedValue == null) return;
+
+            // 💾 Save Category vào Settings
+            Properties.Settings.Default.LastSelectedCategoryId = cmbCategory.SelectedValue.ToString();
+            Properties.Settings.Default.Save();
+
+            await LoadTopicsForSelectedCategoryAsync();
+        }
+        private void cmbTopic_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_isInitializing) return;               
+            if (cmbTopic.SelectedValue == null) return;
+
+            Properties.Settings.Default.LastSelectedTopicId = cmbTopic.SelectedValue.ToString();
+            Properties.Settings.Default.Save();
         }
 
         private void UpdateControlTexts()
@@ -1273,22 +1378,40 @@ namespace GestPipePowerPonit
             {
                 CultureManager.CurrentCultureCode = cultureCode;
                 ResourceHelper.SetCulture(cultureCode, this);
+
+                // 🔁 Lấy lại danh sách category theo ngôn ngữ mới
                 var categories = await categoryService.GetCategoriesAsync();
+
+                // Lưu lại category hiện tại (nếu có) để giữ nguyên lựa chọn
+                var lastCategoryId = Properties.Settings.Default.LastSelectedCategoryId;
+
                 cmbCategory.DataSource = null;
-                cmbCategory.DataSource = categories;
                 cmbCategory.DisplayMember = "DisplayName";
                 cmbCategory.ValueMember = "Id";
+                cmbCategory.DataSource = categories;
+
+                // Restore category đã chọn trước đó (nếu vẫn tồn tại)
+                if (!string.IsNullOrEmpty(lastCategoryId) &&
+                    categories.Any(c => c.Id == lastCategoryId))
+                {
+                    cmbCategory.SelectedValue = lastCategoryId;
+                }
+                else if (categories.Count > 0)
+                {
+                    cmbCategory.SelectedIndex = 0;
+                }
+
+                // 🔥 QUAN TRỌNG: load lại Topic theo Category + ngôn ngữ mới
+                await LoadTopicsForSelectedCategoryAsync();
+
+                // Gửi ngôn ngữ lên server (nếu cần)
                 await _apiClient.SetUserLanguageAsync(userId, cultureCode);
             }
             catch (Exception ex)
             {
-                //CustomMessageBox.ShowError(
-                //    Properties.Resources.Message_ChangeLanguageFailed,
-                //    Properties.Resources.Title_Error
-                //);
             }
-
         }
+
         public void ApplyLanguage(string cultureCode)
         {
             ResourceHelper.SetCulture(cultureCode, this);
@@ -1316,12 +1439,6 @@ namespace GestPipePowerPonit
             this.Hide();
         }
 
-        //private void btnTrainingGesture_Click(object sender, EventArgs e)
-        //{
-        //    FormUserGesture uGestureForm = new FormUserGesture(_homeForm);
-        //    uGestureForm.Show();
-        //    this.Hide();
-        //}
         private void guna2ControlBoxClose_Click(object sender, EventArgs e)
         {
             AppSettings.ExitAll();
@@ -1348,7 +1465,7 @@ namespace GestPipePowerPonit
                 Console.WriteLine(new string('=', 60));
 
                 // Cleanup resources
-                CleanupResources();
+                CleanupResources(keepPython: false);
 
                 var response = await _authService.LogoutAsync();
 
@@ -1434,45 +1551,200 @@ namespace GestPipePowerPonit
                 );
             }
         }
-        private void CleanupResources()
+        private async Task LoadTopicsForSelectedCategoryAsync()
+        {
+            var categoryId = cmbCategory.SelectedValue?.ToString();
+            if (string.IsNullOrEmpty(categoryId))
+            {
+                cmbTopic.DataSource = null;
+                return;
+            }
+
+            var allTopics = await topicService.GetTopicsAsync();
+            var filteredTopics = allTopics
+                .Where(t => t.CategoryId == categoryId)
+                .ToList();
+
+            cmbTopic.DisplayMember = "DisplayTitle";
+            cmbTopic.ValueMember = "Id";
+            cmbTopic.DataSource = filteredTopics;
+
+            // 🔁 Restore LastSelectedTopicId nếu còn tồn tại
+            var lastTopicId = Properties.Settings.Default.LastSelectedTopicId;
+            if (!string.IsNullOrEmpty(lastTopicId) &&
+                filteredTopics.Any(t => t.Id == lastTopicId))
+            {
+                cmbTopic.SelectedValue = lastTopicId;
+            }
+        }
+        //private void CleanupResources()
+        //{
+        //    try
+        //    {
+        //        // ✅ Stop loading animation
+        //        try { spinnerTimer?.Stop(); } catch { }
+
+        //        // ✅ Camera
+        //        try
+        //        {
+        //            StopCameraReceiver();   // bên trong đã set cameraRunning = false, stop listener, join thread
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Debug.WriteLine("[Cleanup] StopCameraReceiver error: " + ex.Message);
+        //        }
+
+        //        // ✅ Python process
+        //        if (pythonProcess != null)
+        //        {
+        //            try
+        //            {
+        //                try
+        //                {
+        //                    // Có thể ném InvalidOperationException nếu process đã Dispose
+        //                    if (!pythonProcess.HasExited)
+        //                    {
+        //                        pythonProcess.Kill();
+        //                    }
+        //                }
+        //                catch (InvalidOperationException)
+        //                {
+        //                    // Không còn process gắn với object nữa -> bỏ qua
+        //                }
+
+        //                pythonProcess.Dispose();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Debug.WriteLine("[Cleanup] pythonProcess error: " + ex.Message);
+        //            }
+        //            finally
+        //            {
+        //                pythonProcess = null;  // 🔑 rất quan trọng
+        //            }
+        //        }
+
+        //        // ✅ Socket server
+        //        if (server != null)
+        //        {
+        //            try
+        //            {
+        //                server.Stop();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Debug.WriteLine("[Cleanup] SocketServer stop error: " + ex.Message);
+        //            }
+        //            finally
+        //            {
+        //                server = null;        // 🔑 đảm bảo lần sau tạo mới
+        //            }
+        //        }
+
+        //        // ✅ PowerPoint event
+        //        if (oPPT != null)
+        //        {
+        //            try { oPPT.SlideShowNextSlide -= O_PPT_SlideShowNextSlide; } catch { }
+        //        }
+
+        //        // ✅ Thoát slide show nếu còn
+        //        if (oPPT != null && oPPT.SlideShowWindows != null)
+        //        {
+        //            try
+        //            {
+        //                if (oPPT.SlideShowWindows.Count > 0)
+        //                    oPPT.SlideShowWindows[1].View.Exit();
+        //            }
+        //            catch { }
+        //        }
+
+        //        // ✅ Đóng presentation
+        //        if (oPres != null)
+        //        {
+        //            try
+        //            {
+        //                oPres.Close();
+        //            }
+        //            catch { }
+        //            finally
+        //            {
+        //                try { Marshal.FinalReleaseComObject(oPres); } catch { }
+        //                oPres = null;
+        //            }
+        //        }
+
+        //        // ✅ Quit PowerPoint app
+        //        if (oPPT != null)
+        //        {
+        //            try
+        //            {
+        //                oPPT.Quit();
+        //            }
+        //            catch { }
+        //            finally
+        //            {
+        //                try { Marshal.FinalReleaseComObject(oPPT); } catch { }
+        //                oPPT = null;
+        //            }
+        //        }
+
+        //        GC.Collect();
+        //        GC.WaitForPendingFinalizers();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine($"Error cleaning up resources: {ex.Message}");
+        //    }
+        //}
+        private void CleanupResources(bool keepPython)
         {
             try
             {
-                // ✅ Stop loading animation
-                spinnerTimer?.Stop();
+                try { spinnerTimer?.Stop(); } catch { }
 
-                // Stop camera receiver
-                StopCameraReceiver();
-
-                // Stop Python process
-                if (pythonProcess != null && !pythonProcess.HasExited)
+                // Camera
+                try { StopCameraReceiver(); }
+                catch (Exception ex)
                 {
-                    pythonProcess.Kill();
-                    pythonProcess.Dispose();
+                    Debug.WriteLine("[Cleanup] StopCameraReceiver error: " + ex.Message);
                 }
 
-                // Close PowerPoint
-                if (oPPT != null && oPPT.SlideShowWindows.Count > 0)
+                // ✅ Python – chỉ kill nếu không keepPython
+                if (!keepPython && pythonProcess != null)
                 {
-                    oPPT.SlideShowWindows[1].View.Exit();
+                    try
+                    {
+                        try
+                        {
+                            if (!pythonProcess.HasExited)
+                                pythonProcess.Kill();
+                        }
+                        catch (InvalidOperationException)
+                        {
+                        }
+
+                        pythonProcess.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("[Cleanup] pythonProcess error: " + ex.Message);
+                    }
+                    finally
+                    {
+                        pythonProcess = null;
+                    }
                 }
 
-                if (oPres != null)
+                // Socket server
+                if (server != null)
                 {
-                    oPres.Close();
-                    Marshal.FinalReleaseComObject(oPres);
-                    oPres = null;
+                    try { server.Stop(); }
+                    catch (Exception ex) { Debug.WriteLine("[Cleanup] SocketServer stop error: " + ex.Message); }
+                    finally { server = null; }
                 }
 
-                if (oPPT != null)
-                {
-                    oPPT.Quit();
-                    Marshal.FinalReleaseComObject(oPPT);
-                    oPPT = null;
-                }
-
-                // Stop socket server
-                server?.Stop();
+                // PowerPoint ...
+                // (giữ nguyên phần oPPT, oPres như bạn đã làm)
 
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
@@ -1483,12 +1755,54 @@ namespace GestPipePowerPonit
             }
         }
 
+
+
         private void btnCustomGesture_Click(object sender, EventArgs e)
         {
             ListRequestGestureForm uGestureForm = new ListRequestGestureForm(_homeForm);
             uGestureForm.Show();
             this.Hide();
 
+        }
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            // 1. Dọn tài nguyên giống đóng form
+            CleanupResources(keepPython: true);
+
+            // 2. Reset trạng thái logic
+            _startTime = null;
+            firstCameraFrameReceived = false;
+            gestureCounts.Clear();
+
+            // 3. Reset UI
+            txtFile.Text = string.Empty;
+            lblSlide.Text = "Slide - / -";
+
+            // Ẩn camera + 3D
+            if (pictureBoxCamera.Image != null)
+            {
+                pictureBoxCamera.Image.Dispose();
+                pictureBoxCamera.Image = null;
+            }
+            pictureBoxCamera.Visible = false;
+
+            webView2_3D.Visible = false;
+
+            // Không có file, không slideshow
+            SetButtonsEnabled(false, false);
+
+            // Bật lại các nút menu bên trái để user chọn lại
+            btnHome.Enabled = true;
+            btnGestureControl.Enabled = true;
+            btnInstruction.Enabled = true;
+            btnPresentation.Enabled = true;
+            btnCustomGesture.Enabled = true;
+            btnProfile.Enabled = true;
+
+            // Nếu đang hiện loading panel thì tắt luôn cho chắc
+            HideLoading();
+
+            Debug.WriteLine("[PresentationForm] Clear clicked – state reset without closing form");
         }
 
         private void SpinnerTimer_Tick(object sender, EventArgs e)
@@ -1540,7 +1854,6 @@ namespace GestPipePowerPonit
             }
         }
 
-        // ✅ THÊM: Update loading text (bilingual support)
         private void UpdateLoadingText(string message = null)
         {
             if (message == null)

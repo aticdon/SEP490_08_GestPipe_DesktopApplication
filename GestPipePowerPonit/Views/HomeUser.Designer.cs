@@ -366,7 +366,7 @@
             this.btnPresent.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnPresent.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnPresent.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
-            this.btnPresent.FillColor2 = System.Drawing.Color.Black;
+            this.btnPresent.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.btnPresent.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.btnPresent.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnPresent.ForeColor = System.Drawing.Color.White;
@@ -392,7 +392,7 @@
             this.btnTraining.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnTraining.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnTraining.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(135)))), ((int)(((byte)(202)))));
-            this.btnTraining.FillColor2 = System.Drawing.Color.Black;
+            this.btnTraining.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.btnTraining.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.btnTraining.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.btnTraining.ForeColor = System.Drawing.Color.White;
@@ -433,10 +433,8 @@
             // 
             // HomeUser
             // 
-            //this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            // Trong InitializeComponent(), thay đổi:
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font; // ✅ THAY ĐỔI
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1366, 768);
             this.Controls.Add(this.pnlMain);
@@ -465,7 +463,7 @@
 
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
         private Guna.UI2.WinForms.Guna2Panel pnlSidebar;
-        private Guna.UI2.WinForms.Guna2Panel pnlHeader; // Thêm khai báo này
+        private Guna.UI2.WinForms.Guna2Panel pnlHeader;
         private Guna.UI2.WinForms.Guna2GradientPanel pnlMain;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
         private Guna.UI2.WinForms.Guna2GradientButton btnHome;

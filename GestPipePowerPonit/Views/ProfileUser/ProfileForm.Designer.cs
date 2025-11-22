@@ -20,6 +20,7 @@ namespace GestPipePowerPonit.Views.Profile
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProfileForm));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             this.btnPresentation = new Guna.UI2.WinForms.Guna2GradientButton();
@@ -371,6 +372,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.guna2ControlBox1.Name = "guna2ControlBox1";
             this.guna2ControlBox1.Size = new System.Drawing.Size(50, 29);
             this.guna2ControlBox1.TabIndex = 6;
+            this.guna2ControlBox1.Click += new System.EventHandler(this.guna2ControlBox1_Click);
             // 
             // guna2ControlBox2
             // 
@@ -837,10 +839,12 @@ namespace GestPipePowerPonit.Views.Profile
             this.cmbAddress.BackColor = System.Drawing.Color.Transparent;
             this.cmbAddress.BorderRadius = 8;
             this.cmbAddress.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbAddress.DropDownHeight = 180;
             this.cmbAddress.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbAddress.FocusedColor = System.Drawing.Color.Empty;
             this.cmbAddress.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbAddress.ForeColor = System.Drawing.Color.Black;
+            this.cmbAddress.IntegralHeight = false;
             this.cmbAddress.ItemHeight = 30;
             this.cmbAddress.Items.AddRange(new object[] {
             "Chọn Tỉnh/Thành phố",
@@ -880,6 +884,7 @@ namespace GestPipePowerPonit.Views.Profile
             "Tỉnh Cà Mau"});
             this.cmbAddress.Location = new System.Drawing.Point(622, 237);
             this.cmbAddress.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cmbAddress.MaxDropDownItems = 6;
             this.cmbAddress.Name = "cmbAddress";
             this.cmbAddress.Size = new System.Drawing.Size(400, 36);
             this.cmbAddress.StartIndex = 0;
@@ -1006,10 +1011,12 @@ namespace GestPipePowerPonit.Views.Profile
             this.cmbOccupation.BackColor = System.Drawing.Color.Transparent;
             this.cmbOccupation.BorderRadius = 8;
             this.cmbOccupation.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbOccupation.DropDownHeight = 180;
             this.cmbOccupation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbOccupation.FocusedColor = System.Drawing.Color.Empty;
             this.cmbOccupation.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbOccupation.ForeColor = System.Drawing.Color.Black;
+            this.cmbOccupation.IntegralHeight = false;
             this.cmbOccupation.ItemHeight = 30;
             this.cmbOccupation.Items.AddRange(new object[] {
             "Select occupation",
@@ -1030,6 +1037,7 @@ namespace GestPipePowerPonit.Views.Profile
             "Other (specify below)"});
             this.cmbOccupation.Location = new System.Drawing.Point(622, 389);
             this.cmbOccupation.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cmbOccupation.MaxDropDownItems = 6;
             this.cmbOccupation.Name = "cmbOccupation";
             this.cmbOccupation.Size = new System.Drawing.Size(400, 36);
             this.cmbOccupation.StartIndex = 0;
@@ -1150,6 +1158,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.pnlSidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "ProfileForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

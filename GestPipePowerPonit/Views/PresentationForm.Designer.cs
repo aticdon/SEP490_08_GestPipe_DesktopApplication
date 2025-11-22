@@ -435,7 +435,7 @@ namespace GestPipePowerPonit
             this.btnExit.Size = new System.Drawing.Size(90, 36);
             this.btnExit.TabIndex = 9;
             this.btnExit.Text = "Exit";
-            this.btnExit.Click += new System.EventHandler(this.btnHome_Click);
+            this.btnExit.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // btnSlideShow
             // 

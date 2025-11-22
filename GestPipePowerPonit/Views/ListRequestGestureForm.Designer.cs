@@ -24,6 +24,7 @@ namespace GestPipePowerPonit
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListRequestGestureForm));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.btnCustomGesture = new Guna.UI2.WinForms.Guna2GradientButton();
@@ -364,7 +365,7 @@ namespace GestPipePowerPonit
             this.btnRequest.Location = new System.Drawing.Point(40, 24);
             this.btnRequest.Margin = new System.Windows.Forms.Padding(4);
             this.btnRequest.Name = "btnRequest";
-            this.btnRequest.Size = new System.Drawing.Size(165, 61);
+            this.btnRequest.Size = new System.Drawing.Size(204, 61);
             this.btnRequest.TabIndex = 6;
             this.btnRequest.Text = "Request";
             this.btnRequest.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -545,6 +546,7 @@ namespace GestPipePowerPonit
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.panelLoading);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ListRequestGestureForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GestPipe - Gesture Control";

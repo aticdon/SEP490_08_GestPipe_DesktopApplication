@@ -670,14 +670,16 @@ namespace GestPipePowerPonit
                     string successMsg = GetLocalizedText("save_success",
                         "Custom gesture request saved to database (pending status).",
                         "Yêu cầu cử chỉ tùy chỉnh đã được lưu vào cơ sở dữ liệu (trạng thái đang chờ).");
-                    MessageBox.Show(successMsg);
+                    CustomMessageBox.ShowSuccess(successMsg, GetLocalizedText("success_title", "Success", "Thành công"));
+                    //MessageBox.Show(successMsg);
                 }
                 else
                 {
                     string failMsg = GetLocalizedText("save_fail",
                         "Failed to save custom gesture request!",
                         "Không thể lưu yêu cầu cử chỉ tùy chỉnh!");
-                    MessageBox.Show(failMsg);
+                    CustomMessageBox.ShowError(failMsg, GetLocalizedText("error_title", "Error", "Lỗi"));
+                    //MessageBox.Show(failMsg);
                 }
             }
             catch (Exception ex)
@@ -685,7 +687,7 @@ namespace GestPipePowerPonit
                 string errorMsg = GetLocalizedText("save_error",
                     "Error saving custom gesture to DB: ",
                     "Lỗi khi lưu cử chỉ tùy chỉnh vào cơ sở dữ liệu: ");
-                MessageBox.Show(errorMsg + ex.Message);
+                //MessageBox.Show(errorMsg + ex.Message);
             }
         }
 

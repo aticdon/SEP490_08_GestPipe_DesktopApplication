@@ -136,7 +136,7 @@ namespace GestPipePowerPonit.Views.Profile
             {
                 CultureManager.CurrentCultureCode = cultureCode;
                 ResourceHelper.SetCulture(cultureCode, this);
-
+                CheckProfileCompleteness();
                 await _apiClient.SetUserLanguageAsync(_userId, cultureCode);
             }
             catch (Exception ex)
@@ -175,6 +175,7 @@ namespace GestPipePowerPonit.Views.Profile
                 btnSave.Text = Properties.Resources.ProfileForm_BtnSave;
                 btnCancel.Text = Properties.Resources.ProfileForm_BtnCancel;
                 btnChangePassword.Text = Properties.Resources.ProfileForm_BtnChangePassword;
+                btnBannerAdd.Text = Properties.Resources.ProfileForm_BtnBannerAdd;
 
                 // Gender combo
                 cmbGender.Items.Clear();
@@ -251,7 +252,10 @@ namespace GestPipePowerPonit.Views.Profile
 
             if (percentage < 70 && panelBanner != null)
             {
-                lblBannerMessage.Text = $"Your profile is {percentage}% complete. Add more info for a better experience!";
+                //lblBannerMessage.Text = $"Your profile is {percentage}% complete. Add more info for a better experience!";
+                string bannerEN = $"Your profile is {percentage}% complete. Add more info for a better experience!";
+                string bannerVN = $"Hồ sơ của bạn đã hoàn thành {percentage}% hãy thêm thông tin để trải nghiệm tốt hơn";
+                lblBannerMessage.Text = I18nHelper.GetString(bannerEN, bannerVN);
                 panelBanner.Visible = true;
                 panelBanner.BringToFront();
             }
@@ -272,14 +276,18 @@ namespace GestPipePowerPonit.Views.Profile
             lblEmailValue.Text = _currentUser.Email ?? "-";
             txtEmail.Text = _currentUser.Email ?? "";
 
+            string notAdded = I18nHelper.GetString("Not added", "Chưa thêm");
+            string notSpecified = I18nHelper.GetString("Not specified", "Chưa xác định");
+            string notSet = I18nHelper.GetString("Not set", "Chưa đặt");
+            string notProvided = I18nHelper.GetString("Not provided", "Chưa cung cấp");
             // ✅ Optional fields with gray color
-            SetFieldValue(lblPhoneValue, txtPhone, _currentProfile.PhoneNumber, "Not added");
-            SetFieldValue(lblGenderValue, null, _currentProfile.Gender, "Not specified");
-            SetFieldValue(lblBirthDateValue, null, _currentProfile.BirthDate?.ToString("MMMM d, yyyy"), "Not set");
-            SetFieldValue(lblAddressValue, null, _currentProfile.Address, "Not provided");
-            SetFieldValue(lblEducationValue, null, _currentProfile.EducationLevel, "Not added");
-            SetFieldValue(lblCompanyValue, txtCompany, _currentProfile.Company, "Not specified");
-            SetFieldValue(lblOccupationValue, null, _currentProfile.Occupation, "Not added");
+            SetFieldValue(lblPhoneValue, txtPhone, _currentProfile.PhoneNumber, notAdded);
+            SetFieldValue(lblGenderValue, null, _currentProfile.Gender, notSpecified);
+            SetFieldValue(lblBirthDateValue, null, _currentProfile.BirthDate?.ToString("MMMM d, yyyy"), notSet);
+            SetFieldValue(lblAddressValue, null, _currentProfile.Address, notProvided);
+            SetFieldValue(lblEducationValue, null, _currentProfile.EducationLevel, notAdded);
+            SetFieldValue(lblCompanyValue, txtCompany, _currentProfile.Company, notSpecified);
+            SetFieldValue(lblOccupationValue, null, _currentProfile.Occupation, notAdded);
 
             // ✅ Gender ComboBox
             if (!string.IsNullOrEmpty(_currentProfile.Gender))
@@ -1025,6 +1033,11 @@ namespace GestPipePowerPonit.Views.Profile
             InstructionForm instructionForm = new InstructionForm(_homeForm);
             instructionForm.Show();
             this.Hide();
+        }
+
+        private void guna2ControlBox1_Click(object sender, EventArgs e)
+        {
+            AppSettings.ExitAll();
         }
     }
 }

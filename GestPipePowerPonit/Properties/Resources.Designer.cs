@@ -1101,6 +1101,15 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update Info.
+        /// </summary>
+        public static string ProfileForm_BtnBannerAdd {
+            get {
+                return ResourceManager.GetString("ProfileForm_BtnBannerAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string ProfileForm_BtnCancel {

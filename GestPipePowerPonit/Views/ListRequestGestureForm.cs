@@ -103,10 +103,10 @@ namespace GestPipePowerPonit
             catch (Exception ex)
             {
                 Console.WriteLine($"[Form_Load] Error: {ex.Message}");
-                MessageBox.Show($"Error loading form: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine($"Error loading form: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+            
         // ✅ METHOD MỚI: Tự động quyết định hiển thị loại gesture nào
         private async Task LoadGesturesAsync()
         {
@@ -259,7 +259,7 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Không thể tải danh sách default gesture!\n" + ex.Message);
+                Console.WriteLine("Không thể tải danh sách default gesture!\n" + ex.Message);
             }
             finally
             {
@@ -377,7 +377,7 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Không thể tải danh sách user gesture!\n" + ex.Message);
+                Console.WriteLine("Không thể tải danh sách user gesture!\n" + ex.Message);
             }
             finally
             {

@@ -186,7 +186,7 @@ namespace GestPipePowerPonit
                 catch (Exception ex)
                 {
                     if (retry == 9)
-                        MessageBox.Show("Gửi tên gesture lỗi: " + ex.Message);
+                        Console.WriteLine("Gửi tên gesture lỗi: " + ex.Message);
                     Thread.Sleep(500);  // chờ 0.5s rồi thử lại
                     retry++;
                 }
@@ -424,7 +424,7 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                Console.WriteLine("Error: " + ex.Message);
             }
         }
         public async void StartTrainingWithAction(string actionName)
@@ -494,16 +494,25 @@ namespace GestPipePowerPonit
             {
                 btnEndTraining.Enabled = true;
                 SaveTrainingResultToDb();
-                this.Close();
+                
                 double accuracy = (totalTrain == 0) ? 0 : (double)correctTrain / totalTrain * 100.0;
                 DateTime trainingDay = DateTime.Now;
+                _defaultGesture.Show();
                 var resultForm = new TraingResultForm(gestureName,
                     poseLabel,
                     accuracy,
                     trainingDay,
                     //_userGestureForm);
                     _defaultGesture);
-                resultForm.Show();
+                //resultForm.Show();
+                {
+                    // form result nằm giữa form list
+                    resultForm.StartPosition = FormStartPosition.CenterParent;
+
+                    // CHÍNH ĐIỂM NÀY: modal, block tương tác list
+                    resultForm.ShowDialog(_defaultGesture);
+                }
+                this.Close();
             }
         }
 

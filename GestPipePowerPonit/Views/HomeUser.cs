@@ -19,6 +19,8 @@ namespace GestPipePowerPonit
         private readonly AuthService _authService;
         private readonly string _currentUserId;
         private string _currentCultureCode = "";
+        private ProfileService _profileService = new ProfileService();
+        private string userName = "";
 
         public HomeUser(string currentUserId)
         {
@@ -58,7 +60,10 @@ namespace GestPipePowerPonit
             Console.WriteLine("==================================");
             var currentScale = this.CurrentAutoScaleDimensions;
             var designScale = new SizeF(8F, 16F);
-
+            var profileResponse = await _profileService.GetProfileAsync(_currentUserId);
+            userName = profileResponse.Data.Profile.FullName;
+            string WebcomeMessage = $"WellCome {userName}";
+            lblWelcome.Text = WebcomeMessage;
             Console.WriteLine($"Design: {designScale}\nCurrent: {currentScale}\nScale Factor: {currentScale.Width / designScale.Width}");
             await LoadUserAndApplyLanguageAsync();
         }
@@ -86,14 +91,6 @@ namespace GestPipePowerPonit
             form1.Show();
             this.Hide();
         }
-
-        //private void BtnTraining_Click(object sender, EventArgs e)
-        //{
-        //    FormCustomGesture customForm = new FormCustomGesture(this);
-        //    customForm.Show();
-        //    this.Hide();
-        //    MessageBox.Show("Training feature coming soon!");
-        //}
 
         private void BtnGestureControl_Click(object sender, EventArgs e)
         {
@@ -147,7 +144,9 @@ namespace GestPipePowerPonit
             btnPresent.Text = Properties.Resources.Btn_Present;
             btnCustomGesture.Text = Properties.Resources.Btn_CustomGesture;
             btnTraining.Text = Properties.Resources.Btn_Training;
-            lblWelcome.Text = Properties.Resources.Home_Welcome;
+            //lblWelcome.Text = Properties.Resources.Home_Welcome;
+            string WebcomeMessage = $"WellCome {userName}";
+            lblWelcome.Text = WebcomeMessage;
             lblSubtitle.Text = Properties.Resources.LblSubtitle;
             btnPresentation.Text = Properties.Resources.Btn_Present;
         }
