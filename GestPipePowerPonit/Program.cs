@@ -18,6 +18,7 @@ namespace GestPipePowerPonit
 
             string currentUserId = Properties.Settings.Default.UserId; // Thay thế bằng ID người dùng thực tế
             //string currentUserId = "68fa3209582c17a482c5b11e";
+            //string currentUserId = "68fa3209582c17a482c5b11e";
 
             // Lấy ngôn ngữ của user trước khi tạo form
             string lang = "en-US"; // mặc định
@@ -43,7 +44,7 @@ namespace GestPipePowerPonit
 
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(lang);
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo(lang);
-            
+
             //HomeUser homeFomr = new HomeUser(currentUserId);
             //Application.Run(homeFomr);
             // Chạy form chính
