@@ -34,8 +34,6 @@ namespace GestPipePowerPonit.Views.Profile
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblWelcome = new System.Windows.Forms.Label();
-            this.lblSubtitle = new System.Windows.Forms.Label();
             this.btnLogout = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
@@ -311,8 +309,6 @@ namespace GestPipePowerPonit.Views.Profile
             // 
             // guna2Panel1
             // 
-            this.guna2Panel1.Controls.Add(this.lblWelcome);
-            this.guna2Panel1.Controls.Add(this.lblSubtitle);
             this.guna2Panel1.Controls.Add(this.btnLogout);
             this.guna2Panel1.Controls.Add(this.guna2ControlBox1);
             this.guna2Panel1.Controls.Add(this.guna2ControlBox2);
@@ -322,30 +318,6 @@ namespace GestPipePowerPonit.Views.Profile
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(1099, 120);
             this.guna2Panel1.TabIndex = 3;
-            // 
-            // lblWelcome
-            // 
-            this.lblWelcome.AutoSize = true;
-            this.lblWelcome.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblWelcome.ForeColor = System.Drawing.Color.White;
-            this.lblWelcome.Location = new System.Drawing.Point(40, 37);
-            this.lblWelcome.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(136, 37);
-            this.lblWelcome.TabIndex = 0;
-            this.lblWelcome.Text = "Welcome";
-            // 
-            // lblSubtitle
-            // 
-            this.lblSubtitle.AutoSize = true;
-            this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(42, 85);
-            this.lblSubtitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblSubtitle.Name = "lblSubtitle";
-            this.lblSubtitle.Size = new System.Drawing.Size(177, 28);
-            this.lblSubtitle.TabIndex = 1;
-            this.lblSubtitle.Text = "Here\'s your profile.";
             // 
             // btnLogout
             // 
@@ -1168,7 +1140,6 @@ namespace GestPipePowerPonit.Views.Profile
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.pnlHeader.ResumeLayout(false);
             this.guna2Panel1.ResumeLayout(false);
-            this.guna2Panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).EndInit();
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
@@ -1258,8 +1229,6 @@ namespace GestPipePowerPonit.Views.Profile
         private Guna.UI2.WinForms.Guna2CirclePictureBox btnLogout;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox2;
-        private System.Windows.Forms.Label lblWelcome;
-        private System.Windows.Forms.Label lblSubtitle;
         private Guna.UI2.WinForms.Guna2CirclePictureBox guna2CirclePictureBox1;
     }
 }

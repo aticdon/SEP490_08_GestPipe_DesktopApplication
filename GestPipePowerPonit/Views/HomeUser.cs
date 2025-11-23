@@ -145,8 +145,9 @@ namespace GestPipePowerPonit
             btnCustomGesture.Text = Properties.Resources.Btn_CustomGesture;
             btnTraining.Text = Properties.Resources.Btn_Training;
             //lblWelcome.Text = Properties.Resources.Home_Welcome;
-            string WebcomeMessage = $"WellCome {userName}";
-            lblWelcome.Text = WebcomeMessage;
+            string WelcomeMessage = $"WellCome {userName}";
+            string WelcomeMessageVN = $"Chào mừng {userName}";
+            lblWelcome.Text = I18nHelper.GetString(WelcomeMessage,WelcomeMessageVN);
             lblSubtitle.Text = Properties.Resources.LblSubtitle;
             btnPresentation.Text = Properties.Resources.Btn_Present;
         }
@@ -157,7 +158,6 @@ namespace GestPipePowerPonit
         //    usergestureForm.Show();
         //    this.Hide();
         //}
-
 
         private void btnPresentation_Click(object sender, EventArgs e)
         {

@@ -573,7 +573,7 @@ namespace GestPipePowerPonit
         {
             try
             {
-                ResourceHelper.SetCulture(cultureCode, this);
+                //ResourceHelper.SetCulture(cultureCode, this);
 
                 if (btnHome != null)
                     btnHome.Text = Properties.Resources.Btn_Home;

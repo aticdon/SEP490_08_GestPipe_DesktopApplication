@@ -408,11 +408,23 @@
     <Compile Include="Services\TrainingGestureService.cs" />
     <Compile Include="Services\UserGestureConfigService.cs" />
     <Compile Include="SocketServer.cs" />
+    <Compile Include="Views\PresentationForm.3D.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PresentationForm.Camera.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Views\PresentationForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\PresentationForm.Designer.cs">
       <DependentUpon>PresentationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PresentationForm.Loading.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PresentationForm.SlideShow.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\RequestGestureForm.cs">
       <SubType>Form</SubType>
