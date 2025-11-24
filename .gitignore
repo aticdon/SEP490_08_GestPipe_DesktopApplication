@@ -11,3 +11,4 @@ packages/
 obj/
 *.user
 .vs/
+GestPipe.Backend/credentials/

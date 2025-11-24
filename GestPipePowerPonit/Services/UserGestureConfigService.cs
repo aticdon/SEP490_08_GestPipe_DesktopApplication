@@ -1,8 +1,10 @@
 ﻿using GestPipePowerPonit.I18n;
 using GestPipePowerPonit.Models;
 using GestPipePowerPonit.Models.DTOs;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -137,5 +139,62 @@ namespace GestPipePowerPonit.Services
             sb.AppendLine($"{I18nHelper.GetString("Direction:", "Hướng di chuyển:"),-16}{direction}");
             return sb.ToString();
         }
+        //public async Task<int> ImportFromCsvAsync(string userId, string csvPath)
+        //{
+        //    if (!File.Exists(csvPath))
+        //        throw new FileNotFoundException("CSV file not found", csvPath);
+
+        //    // Đọc nội dung file CSV do Python đã sinh ra
+        //    string csvContent = File.ReadAllText(csvPath, Encoding.UTF8);
+
+        //    var request = new ImportGestureFromCsvRequest
+        //    {
+        //        UserId = userId,
+        //        CsvContent = csvContent
+        //    };
+
+        //    // Gọi API backend: POST /api/usergestureconfig/import-from-csv
+        //    var response = await _httpClient.PostAsJsonAsync(
+        //        "/api/usergestureconfig/import-from-csv",
+        //        request
+        //    );
+
+        //    if (!response.IsSuccessStatusCode)
+        //    {
+        //        var error = await response.Content.ReadAsStringAsync();
+        //        throw new Exception($"ImportFromCsv failed: {(int)response.StatusCode} - {error}");
+        //    }
+
+        //    // Backend trả { inserted: n }
+        //    var result = await response.Content.ReadFromJsonAsync<Dictionary<string, int>>();
+        //    return result != null && result.TryGetValue("inserted", out var count)
+        //        ? count
+        //        : 0;
+        //}
+        public async Task<int> ImportFromCsvAsync(string userId, string csvContent)
+        {
+            var payload = new ImportGestureFromCsvRequest
+            {
+                UserId = userId,
+                CsvContent = csvContent
+            };
+
+            var response = await _httpClient.PostAsJsonAsync(
+                "/api/usergestureconfig/import-from-csv",
+                payload
+            );
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                throw new Exception($"ImportFromCsv failed: {response.StatusCode} - {body}");
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+            // backend trả: { inserted = count }
+            return (int)result.inserted;
+        }
+
     }
 }

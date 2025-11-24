@@ -1,4 +1,5 @@
 ﻿using GestPipe.Backend.Models;
+using GestPipe.Backend.Models.DTOs;
 using GestPipe.Backend.Services;
 using GestPipe.Backend.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
@@ -83,6 +84,24 @@ namespace GestPipe.Backend.Controllers
                 Description = "",
                 VectorData = gesture.VectorData
             };
+        }
+
+        [HttpPost("import-from-csv")]
+        public async Task<IActionResult> ImportFromCsv([FromBody] ImportGestureFromCsvRequest request)
+        {
+            if (request == null ||
+                string.IsNullOrWhiteSpace(request.UserId) ||
+                string.IsNullOrWhiteSpace(request.CsvContent))
+            {
+                return BadRequest("UserId và CsvContent không được rỗng.");
+            }
+
+            var count = await _service.ImportFromCsvAsync(request.UserId, request.CsvContent);
+
+            return Ok(new
+            {
+                inserted = count
+            });
         }
     }
 }

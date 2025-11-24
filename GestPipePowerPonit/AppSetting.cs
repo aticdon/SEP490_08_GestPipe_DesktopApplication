@@ -146,15 +146,15 @@ namespace GestPipePowerPonit
 
         public async static void ExitAll()
         {
-            try
-            {
-                var authService = new AuthService();
-                await authService.LogoutAsync();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[AppSettings] Error during logout: {ex.Message}");
-            }
+            //try
+            //{
+            //    var authService = new AuthService();
+            //    await authService.LogoutAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    System.Diagnostics.Debug.WriteLine($"[AppSettings] Error during logout: {ex.Message}");
+            //}
             Application.Exit();
         }
     }

@@ -53,8 +53,11 @@ namespace GestPipePowerPonit
             this.ColumnCustom = new System.Windows.Forms.DataGridViewImageColumn();
             this.lblRequestStatus = new System.Windows.Forms.Label();
             this.panelLoading = new System.Windows.Forms.Panel();
+            this.loadingSpinner = new System.Windows.Forms.PictureBox();
             this.lblLoading = new System.Windows.Forms.Label();
+            this.spinnerTimer = new System.Windows.Forms.Timer(this.components);
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
+            this.btnDownload = new Guna.UI2.WinForms.Guna2GradientButton();
             this.guna2Panel1.SuspendLayout();
             this.guna2Panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
@@ -64,6 +67,7 @@ namespace GestPipePowerPonit
             this.panelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2DataGridView1)).BeginInit();
             this.panelLoading.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2Elipse1
@@ -337,6 +341,7 @@ namespace GestPipePowerPonit
             this.panelMain.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
             this.panelMain.BorderRadius = 15;
             this.panelMain.BorderThickness = 1;
+            this.panelMain.Controls.Add(this.btnDownload);
             this.panelMain.Controls.Add(this.btnRequest);
             this.panelMain.Controls.Add(this.guna2DataGridView1);
             this.panelMain.Controls.Add(this.lblRequestStatus);
@@ -362,7 +367,7 @@ namespace GestPipePowerPonit
             this.btnRequest.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnRequest.ImageOffset = new System.Drawing.Point(5, 0);
             this.btnRequest.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnRequest.Location = new System.Drawing.Point(40, 24);
+            this.btnRequest.Location = new System.Drawing.Point(258, 24);
             this.btnRequest.Margin = new System.Windows.Forms.Padding(4);
             this.btnRequest.Name = "btnRequest";
             this.btnRequest.Size = new System.Drawing.Size(204, 61);
@@ -502,14 +507,16 @@ namespace GestPipePowerPonit
             this.lblRequestStatus.AutoSize = true;
             this.lblRequestStatus.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblRequestStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.lblRequestStatus.Location = new System.Drawing.Point(244, 62);
+            this.lblRequestStatus.Location = new System.Drawing.Point(462, 62);
             this.lblRequestStatus.Name = "lblRequestStatus";
-            this.lblRequestStatus.Size = new System.Drawing.Size(0, 23);
+            this.lblRequestStatus.Size = new System.Drawing.Size(113, 23);
             this.lblRequestStatus.TabIndex = 7;
+            this.lblRequestStatus.Text = "Xin chao ban";
             // 
             // panelLoading
             // 
             this.panelLoading.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.panelLoading.Controls.Add(this.loadingSpinner);
             this.panelLoading.Controls.Add(this.lblLoading);
             this.panelLoading.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelLoading.Location = new System.Drawing.Point(0, 0);
@@ -517,6 +524,15 @@ namespace GestPipePowerPonit
             this.panelLoading.Size = new System.Drawing.Size(1366, 768);
             this.panelLoading.TabIndex = 4;
             this.panelLoading.Visible = false;
+            // 
+            // loadingSpinner
+            // 
+            this.loadingSpinner.BackColor = System.Drawing.Color.Transparent;
+            this.loadingSpinner.Location = new System.Drawing.Point(540, 150);
+            this.loadingSpinner.Name = "loadingSpinner";
+            this.loadingSpinner.Size = new System.Drawing.Size(80, 80);
+            this.loadingSpinner.TabIndex = 1;
+            this.loadingSpinner.TabStop = false;
             // 
             // lblLoading
             // 
@@ -529,11 +545,42 @@ namespace GestPipePowerPonit
             this.lblLoading.TabIndex = 0;
             this.lblLoading.Text = "Loading...";
             // 
+            // spinnerTimer
+            // 
+            this.spinnerTimer.Tick += new System.EventHandler(this.spinnerTimer_Tick);
+            // 
             // guna2DragControl1
             // 
             this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
             this.guna2DragControl1.TargetControl = this.guna2HeaderPanel;
             this.guna2DragControl1.UseTransparentDrag = true;
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnDownload.BorderRadius = 10;
+            this.btnDownload.BorderThickness = 2;
+            this.btnDownload.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnDownload.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnDownload.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnDownload.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnDownload.FillColor = System.Drawing.Color.Silver;
+            this.btnDownload.FillColor2 = System.Drawing.Color.Black;
+            this.btnDownload.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
+            this.btnDownload.ForeColor = System.Drawing.Color.White;
+            this.btnDownload.Image = global::GestPipePowerPonit.Properties.Resources.icon_download;
+            this.btnDownload.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDownload.ImageOffset = new System.Drawing.Point(5, 0);
+            this.btnDownload.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnDownload.Location = new System.Drawing.Point(40, 24);
+            this.btnDownload.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(204, 61);
+            this.btnDownload.TabIndex = 14;
+            this.btnDownload.Text = "DownLoad";
+            this.btnDownload.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDownload.TextOffset = new System.Drawing.Point(20, 0);
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // ListRequestGestureForm
             // 
@@ -561,6 +608,7 @@ namespace GestPipePowerPonit
             ((System.ComponentModel.ISupportInitialize)(this.guna2DataGridView1)).EndInit();
             this.panelLoading.ResumeLayout(false);
             this.panelLoading.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -597,5 +645,8 @@ namespace GestPipePowerPonit
         private Panel panelLoading;
         private Label lblLoading;
         private System.Windows.Forms.Label lblRequestStatus;
+        private System.Windows.Forms.Timer spinnerTimer;      // 👈 THÊM
+        private System.Windows.Forms.PictureBox loadingSpinner;
+        private Guna.UI2.WinForms.Guna2GradientButton btnDownload;
     }
 }

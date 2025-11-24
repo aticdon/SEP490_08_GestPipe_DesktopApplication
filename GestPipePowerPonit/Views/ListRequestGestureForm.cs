@@ -8,7 +8,10 @@ using GestPipePowerPonit.Views.Profile;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
@@ -33,16 +36,19 @@ namespace GestPipePowerPonit
         private AuthService _authService = new AuthService();
 
         private bool _canRequest;
+        private bool _canDownload;
 
         // ✅ THÊM: Flag để biết đang hiển thị loại nào
         private bool isShowingUserGestures = false;
+        private int _spinnerAngle = 0;
 
         public ListRequestGestureForm(HomeUser homeForm)
         {
             InitializeComponent();
             _homeForm = homeForm;
             _apiClient = new ApiClient("https://localhost:7219");
-
+            if (spinnerTimer != null)
+                spinnerTimer.Tick += spinnerTimer_Tick;
             // ✅ Đăng ký events SAU KHI InitializeComponent
             this.Load += ListRequestGestureForm_Load;
 
@@ -78,6 +84,7 @@ namespace GestPipePowerPonit
                 ApplyLanguage(GestPipePowerPonit.CultureManager.CurrentCultureCode);
 
                 _canRequest = await _userService.CheckCanRequestAsync(userId);
+                _canDownload = await _userService.CheckCanDownloadAsync(userId);
                 if (!_canRequest && lblRequestStatus != null)
                 {
                     lblRequestStatus.Text = I18nHelper.GetString(
@@ -97,6 +104,13 @@ namespace GestPipePowerPonit
                     btnRequest.Enabled = _canRequest;
                     btnRequest.ForeColor = _canRequest ? Color.White : Color.Black;
                 }
+                if (btnDownload != null)
+                {
+                    btnDownload.Enabled = _canDownload;
+                    btnDownload.Image = _canDownload
+                                        ? Properties.Resources.icon_download           // trạng thái cho phép tải
+                                        : Properties.Resources.icon_download_silver;
+                }
 
                 await LoadGesturesAsync(); // ✅ THAY ĐỔI: Gọi method mới
             }
@@ -106,7 +120,7 @@ namespace GestPipePowerPonit
                 Console.WriteLine($"Error loading form: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-            
+
         // ✅ METHOD MỚI: Tự động quyết định hiển thị loại gesture nào
         private async Task LoadGesturesAsync()
         {
@@ -741,6 +755,96 @@ namespace GestPipePowerPonit
                 Cursor = Cursors.Default;
             }
         }
+        private void spinnerTimer_Tick(object sender, EventArgs e)
+        {
+            _spinnerAngle += 15;
+            if (_spinnerAngle >= 360) _spinnerAngle = 0;
+            DrawSpinner();
+        }
+
+        private void DrawSpinner()
+        {
+            if (loadingSpinner == null)
+                return;
+
+            loadingSpinner.Image?.Dispose();
+
+            Bitmap spinnerBitmap = new Bitmap(loadingSpinner.Width, loadingSpinner.Height);
+            using (Graphics g = Graphics.FromImage(spinnerBitmap))
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.Clear(Color.Transparent);
+
+                int centerX = loadingSpinner.Width / 2;
+                int centerY = loadingSpinner.Height / 2;
+                int radius = 20;
+
+                for (int i = 0; i < 8; i++)
+                {
+                    double angle = (_spinnerAngle + i * 45) * Math.PI / 180;
+                    int x = centerX + (int)(Math.Cos(angle) * radius);
+                    int y = centerY + (int)(Math.Sin(angle) * radius);
+
+                    int alpha = 255 - (i * 30);
+                    if (alpha < 0) alpha = 0;
+
+                    using (SolidBrush brush = new SolidBrush(Color.FromArgb(alpha, Color.White)))
+                    {
+                        g.FillEllipse(brush, x - 3, y - 3, 6, 6);
+                    }
+                }
+            }
+
+            loadingSpinner.Image = spinnerBitmap;
+        }
+
+        // Helper song ngữ
+        private string GetLocalizedText(string en, string vi)
+        {
+            return I18nHelper.GetString(en, vi);
+        }
+
+        // Hiện overlay loading khi Download
+        private void ShowDownloadLoading()
+        {
+            if (panelLoading != null)
+            {
+                panelLoading.Visible = true;
+                panelLoading.BringToFront();
+            }
+
+            if (lblLoading != null)
+            {
+                lblLoading.Text = GetLocalizedText(
+                    "Downloading and importing gestures...\nPlease wait...",
+                    "        Đang tải và import cử chỉ...   \n        Vui lòng đợi...   "
+                );
+            }
+
+            _spinnerAngle = 0;
+            DrawSpinner();
+            spinnerTimer?.Start();
+
+            if (btnDownload != null) btnDownload.Enabled = false;
+            if (btnRequest != null) btnRequest.Enabled = false;
+
+            this.Cursor = Cursors.WaitCursor;
+            Application.DoEvents(); // cập nhật UI ngay
+        }
+
+        // Tắt overlay loading
+        private void HideDownloadLoading()
+        {
+            spinnerTimer?.Stop();
+
+            if (panelLoading != null)
+                panelLoading.Visible = false;
+
+            if (btnDownload != null) btnDownload.Enabled = _canDownload;
+            if (btnRequest != null) btnRequest.Enabled = _canRequest;
+
+            this.Cursor = Cursors.Default;
+        }
 
         private void btnProfile_Click(object sender, EventArgs e)
         {
@@ -780,6 +884,71 @@ namespace GestPipePowerPonit
             InstructionForm instructionForm = new InstructionForm(_homeForm);
             instructionForm.Show();
             this.Hide();
+        }
+        private async void btnDownload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ShowDownloadLoading();
+                btnLanguageEN.Enabled = false;
+                btnLanguageVN.Enabled = false;
+                btnPresentation.Enabled = false;
+                btnCustomGesture.Enabled = false;
+                btnGestureControl.Enabled = false;
+                btnHome.Enabled = false;
+                btnInstruction.Enabled = false;
+                btnProfile.Enabled = false;
+                btnLogout.Enabled = false;
+                using var http = new HttpClient();
+                http.BaseAddress = new Uri("https://localhost:7219/");
+
+                // 1. Sync file từ Google Drive về thư mục python
+                var syncResp = await http.PostAsync($"/api/drivesync/sync-user/{userId}", null);
+                if (!syncResp.IsSuccessStatusCode)
+                {
+                    CustomMessageBox.ShowError("Sync Google Drive failed", "Error");
+                    return;
+                }
+
+                // 2. Import CSV vào UserGestureConfig
+                string userPath = $"user_{userId}";
+                string csvPath = $@"D:\Semester9\codepython\hybrid_realtime_pipeline\code\{userPath}\training_results\gesture_data_compact.csv";
+                if (!File.Exists(csvPath))
+                {
+                    throw new FileNotFoundException("CSV file not found", csvPath);
+                }
+                string csvContent = File.ReadAllText(csvPath, Encoding.UTF8);
+                int inserted = await _uGestureService.ImportFromCsvAsync(userId, csvContent);
+                var enableSuccess = await _userService.UpdateGestureRequestStatusAsync(userId, "enabled");
+
+                CustomMessageBox.ShowSuccess(
+                    I18nHelper.GetString(
+                        $"Downloaded from Drive & imported {inserted} gestures.",
+                        $"Đã tải từ Drive và import {inserted} cử chỉ."
+                    ),
+                    I18nHelper.GetString("Download gesture", "Tải cử chỉ")
+                );
+
+                await RefreshGesturesAsync();
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.ShowError(ex.Message, "Download / Import error");
+            }
+            finally
+            {
+
+                HideDownloadLoading();
+                btnLanguageEN.Enabled = true;
+                btnLanguageVN.Enabled = true;
+                btnPresentation.Enabled = true;
+                btnCustomGesture.Enabled = true;
+                btnGestureControl.Enabled = true;
+                btnHome.Enabled = true;
+                btnInstruction.Enabled = true;
+                btnProfile.Enabled = true;
+                btnLogout.Enabled = true;
+            }
         }
     }
 }

@@ -270,6 +270,7 @@
     <Compile Include="Models\DTOs\ChangePasswordDto.cs" />
     <Compile Include="Models\DTOs\EmailRequestDto.cs" />
     <Compile Include="Models\DTOs\GoogleLoginDto.cs" />
+    <Compile Include="Models\DTOs\ImportGestureFromCsvRequest.cs" />
     <Compile Include="Models\DTOs\LoginDto.cs" />
     <Compile Include="Models\DTOs\ProfileDataDto.cs" />
     <Compile Include="Models\DTOs\ProfileResponseDto.cs" />

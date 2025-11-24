@@ -70,6 +70,34 @@ namespace GestPipePowerPonit.Services
                 return false;
             }
         }
+        public async Task<bool> CheckCanDownloadAsync(string userId)
+        {
+            try
+            {
+                var response = await client.GetAsync($"/api/User/{userId}");
+                if (!response.IsSuccessStatusCode)
+                    return false;
+
+                var userJson = await response.Content.ReadAsStringAsync();
+                var userDto = JsonConvert.DeserializeObject<UserRequestDto>(userJson);
+
+                if (userDto == null)
+                    return false;
+
+                // Chỉ cho phép download nếu trạng thái đang "pending"
+                bool isPending = string.Equals(
+                    userDto.GestureRequestStatus,
+                    "pending",
+                    StringComparison.OrdinalIgnoreCase
+                );
+
+                return isPending;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         // Tăng request_count_today
         public async Task<bool> IncrementRequestCountAsync(string userId)

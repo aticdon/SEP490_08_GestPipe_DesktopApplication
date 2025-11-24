@@ -89,6 +89,7 @@ namespace GestPipe.Backend
             builder.Services.AddScoped<IUserGestureRequestService, UserGestureRequestService>();
             // Add Services
             //builder.Services.AddSingleton<UserService>();
+            builder.Services.AddSingleton<GoogleDriveService>();
             builder.Services.AddSingleton<TopicService>();
             builder.Services.AddSingleton<SessionService>();
             builder.Services.AddSingleton<CategoryService>();
