@@ -12,6 +12,12 @@ namespace GestPipePowerPonit
 {
     public partial class PresentationForm : Form
     {
+        private List<int> slidesWith3D = new List<int>();
+        private int zoomSlideCount = 0;
+        private const int ZOOM_SLIDE_MIN = 0;
+        private const int ZOOM_SLIDE_MAX = 5;
+        private bool isSlideShow = false;
+        private Dictionary<string, int> gestureCounts = new Dictionary<string, int>();
         private void SetButtonsEnabled(bool fileLoaded, bool inSlideShow)
         {
             btnOpen.Enabled = !fileLoaded;

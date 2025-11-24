@@ -11,11 +11,43 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
 using Microsoft.Web.WebView2.WinForms;
 using WinFormControl = System.Windows.Forms.Control;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace GestPipePowerPonit
 {
     public partial class PresentationForm : Form
     {
+
+        // PowerPoint liên kết
+        PowerPoint.Application oPPT;
+        PowerPoint.Presentation oPres;
+
+        // Full screen và viewer
+        private bool isFullScreen = false;
+        private Form fullScreenForm = null;
+        private bool isFullScreenGLB = false;
+
+        // WebView2 viewer
+        private WebView2 webView2_3D;
+        private WebView2 webView2_3D_External;
+
+        // Vị trí, kích thước panel
+        private Size panelSlideOriginalSize;
+        private Point panelSlideOriginalLocation;
+
+        // Zoom và các hằng số zoom
+        private int zoomPercent = 100;
+        private const int ZOOM_STEP = 10;
+        private const int ZOOM_MIN = 100;
+        private const int ZOOM_MAX = 200;
+
+        // 3D View (trục quay, góc nhìn)
+        private double modelAzimuth = 0;
+        private double modelPolar = Math.PI / 2;
+        private const double ROTATE_STEP = Math.PI / 4;
+
+        // Danh sách file 3D mapping theo slide
+        private Dictionary<int, string> slide3DModelFiles = new Dictionary<int, string>();
         private void Extract3DModels(string pptxPath)
         {
             slide3DModelFiles.Clear();

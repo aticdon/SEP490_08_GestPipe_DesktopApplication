@@ -15,7 +15,10 @@ namespace GestPipePowerPonit
 {
     public partial class PresentationForm : Form
     {
-
+        private TcpListener cameraListener;
+        private Thread cameraThread;
+        private bool cameraRunning = false;
+        private bool firstCameraFrameReceived = false;
         private void StartCameraReceiver(int port = 6000)
         {
             try

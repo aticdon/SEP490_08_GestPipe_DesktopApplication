@@ -34,55 +34,17 @@ namespace GestPipePowerPonit
 {
     public partial class PresentationForm : Form
     {
-        PowerPoint.Application oPPT = null;
-        PowerPoint.Presentation oPres = null;
-        private bool isPaused = false;
         private System.Windows.Forms.Timer autoSlideTimer;
-        private int slideInterval = 2000;
-
-        private bool isFullScreen = false;
-        private Form fullScreenForm = null;
-        private bool isFullScreenGLB = false;
-        private List<int> slidesWith3D = new List<int>();
-        private List<string> slideTitles = new List<string>();
-        private string pptxFolderPath = "";
-
-        private WebView2 webView2_3D;
-
-        private double modelAzimuth = 0;
-        private double modelPolar = Math.PI / 2;
-        private const double ROTATE_STEP = Math.PI / 4;
-
-        private Size panelSlideOriginalSize;
-        private Point panelSlideOriginalLocation;
-        private int zoomPercent = 100;
-        private const int ZOOM_STEP = 10;
-        private const int ZOOM_MIN = 100;
-        private const int ZOOM_MAX = 200;
-
         private SocketServer server;
-        private TcpListener cameraListener;
-        private Thread cameraThread;
-        private bool cameraRunning = false;
-
-        private int zoomSlideCount = 0;
-        private const int ZOOM_SLIDE_MIN = 0;
-        private const int ZOOM_SLIDE_MAX = 5;
-        private bool isSlideShow = false;
-
         private Process pythonProcess = null;
         private HomeUser _homeForm;
         private SessionService sessionService = new SessionService();
         private CategoryService categoryService = new CategoryService();
         private TopicService topicService = new TopicService();
         private DateTime? _startTime = null;
-        private Dictionary<string, int> gestureCounts = new Dictionary<string, int>();
         private string userId = Properties.Settings.Default.UserId;
         private readonly ApiClient _apiClient;
-        private bool firstCameraFrameReceived = false;
         private bool _isInitializing = false;
-        private WebView2 webView2_3D_External;
-        private Dictionary<int, string> slide3DModelFiles = new Dictionary<int, string>();
 
 
         // ✅ THÊM AuthService
