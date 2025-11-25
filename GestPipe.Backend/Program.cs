@@ -24,8 +24,6 @@ namespace GestPipe.Backend
             builder.Services.Configure<MongoDbSettings>(
                 builder.Configuration.GetSection("MongoDB"));
 
-            //builder.Services.AddSingleton<IMongoClient>(_ =>
-            //    new MongoClient(builder.Configuration["MongoDB:ConnectionString"]));
             builder.Services.AddSingleton<IMongoClient>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;

@@ -12,15 +12,12 @@ namespace GestPipePowerPonit
 {
     public partial class TraingResultForm : Form
     {
-        //private FormUserGesture _userGestureForm;
         private ListDefaultGestureForm _dfgestureForm;
 
-        //public FormTrainingResult(string gestureName, string action, double accuracy, DateTime trainingDay, FormUserGesture userGestureForm)
         public TraingResultForm(string gestureName, string action, double accuracy, DateTime trainingDay, ListDefaultGestureForm dfgestureForm)
         {
             InitializeComponent();
             ApplyLanguage();
-            // Gán giá trị động vào các Labels chứa giá trị (lblValue...)
             this.lblValueName.Text = gestureName;
             this.lblValueAction.Text = action;
             this.lblValueAccuracy.Text = $"{accuracy:F1}%";

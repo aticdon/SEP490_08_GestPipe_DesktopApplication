@@ -4,8 +4,6 @@ using MongoDB.Driver;
 
 namespace GestPipe.Backend.Tools
 {
-    // Console tool để chạy 1 lần migration: gán default language cho user cũ nếu chưa có field language
-    // Build/run as a small console project or run via dotnet script.
     public class MongoMigration
     {
         public static void Main(string[] args)

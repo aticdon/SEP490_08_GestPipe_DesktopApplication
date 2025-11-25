@@ -25,8 +25,6 @@ namespace GestPipePowerPonit.Services
             var response = await _httpClient.PostAsync("api/TrainingGesture", content);
 
             return response.IsSuccessStatusCode;
-            //var response = await _httpClient.PostAsJsonAsync("api/TrainingGesture", result);
-            //return response.IsSuccessStatusCode;
         }
     }
 }

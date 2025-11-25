@@ -377,19 +377,5 @@ namespace GestPipePowerPonit.Views
                 return form.ShowDialog();
             }
         }
-
-        //private void InitializeComponent()
-        //{
-        //    System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomGestureInstructionForm));
-        //    this.SuspendLayout();
-        //    // 
-        //    // CustomGestureInstructionForm
-        //    // 
-        //    this.ClientSize = new System.Drawing.Size(600, 500);
-        //    this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-        //    this.Name = "CustomGestureInstructionForm";
-        //    this.Text = "Custom Gesture Instructions";
-        //    this.ResumeLayout(false);
-        //}
     }
 }

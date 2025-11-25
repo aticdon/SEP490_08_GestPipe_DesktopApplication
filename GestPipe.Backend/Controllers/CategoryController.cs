@@ -14,20 +14,5 @@ namespace GestPipe.Backend.Controllers
 
         [HttpGet]
         public ActionResult<List<Category>> Get() => _service.GetAll();
-
-        //[HttpGet("{id}")]
-        //public ActionResult<Category> Get(string id)
-        //{
-        //    var cat = _service.Get(id);
-        //    if (cat == null) return NotFound();
-        //    return cat;
-        //}
-
-        //[HttpPost]
-        //public ActionResult<Category> Create(Category cat)
-        //{
-        //    _service.Create(cat);
-        //    return CreatedAtAction(nameof(Get), new { id = cat.Id }, cat);
-        //}
     }
 }

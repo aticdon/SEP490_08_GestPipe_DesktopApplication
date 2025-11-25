@@ -61,9 +61,10 @@ namespace GestPipePowerPonit.Services
                     return false;
 
                 bool isDisabled = string.Equals(userDto.GestureRequestStatus, "disable", StringComparison.OrdinalIgnoreCase);
+                bool isPending = string.Equals(userDto.GestureRequestStatus, "pending", StringComparison.OrdinalIgnoreCase);
                 bool isExceededCount = userDto.RequestCountToday >= 3;
 
-                return !isDisabled && !isExceededCount;
+                return !isDisabled && !isExceededCount && !isPending;
             }
             catch
             {

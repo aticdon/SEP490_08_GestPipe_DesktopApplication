@@ -104,7 +104,6 @@ namespace GestPipePowerPonit
 
                 if (isUserGesture)
                 {
-                    // Nếu là UserGestureConfig
                     var userGestureService = new UserGestureConfigService();
                     var gestureDetail = await userGestureService.GetUserGestureByid(gestureId);
 
@@ -132,9 +131,6 @@ namespace GestPipePowerPonit
                         throw new Exception("Cannot load default gesture details - gesture not found");
                     }
                 }
-
-                //var gestureDetail = await new UserGestureConfigService().GetUserGestureByid(gestureId);
-                //gestureTypeId = gestureDetail.GestureTypeId;
             }
             catch (Exception ex)
             {
@@ -439,6 +435,7 @@ namespace GestPipePowerPonit
             try
             {
                 string pythonExePath = @"C:\Users\Admin\AppData\Local\Programs\Python\Python311\python.exe";
+                //string scriptFile = @"D:\Semester9\codepython\hybrid_realtime_pipeline\code\collect_update_gesture.py";
                 string scriptFile = @"D:\Semester9\codepython\hybrid_realtime_pipeline\code\collect_data_update.py";
 
                 if (!File.Exists(scriptFile))
@@ -667,10 +664,10 @@ namespace GestPipePowerPonit
 
                 if (success)
                 {
-                    string successMsg = GetLocalizedText("save_success",
-                        "Custom gesture request saved to database (pending status).",
-                        "Yêu cầu cử chỉ tùy chỉnh đã được lưu vào cơ sở dữ liệu (trạng thái đang chờ).");
-                    CustomMessageBox.ShowSuccess(successMsg, GetLocalizedText("success_title", "Success", "Thành công"));
+                    //string successMsg = GetLocalizedText("save_success",
+                    //    "Custom gesture request saved to database (pending status).",
+                    //    "Yêu cầu cử chỉ tùy chỉnh đã được lưu vào cơ sở dữ liệu (trạng thái đang chờ).");
+                    //CustomMessageBox.ShowSuccess(successMsg, GetLocalizedText("success_title", "Success", "Thành công"));
                     //MessageBox.Show(successMsg);
                 }
                 else

@@ -208,6 +208,15 @@ namespace GestPipePowerPonit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DownLoad.
+        /// </summary>
+        public static string btnDownload {
+            get {
+                return ResourceManager.GetString("btnDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🚀Start Recording.
         /// </summary>
         public static string BtnStartRecord {

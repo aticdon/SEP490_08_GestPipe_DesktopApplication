@@ -20,7 +20,7 @@ namespace GestPipe.Backend.Models
         public string AccountStatus { get; set; } = string.Empty; // "inactive","activeonline","activeoffline","pending","blocked"
 
         [BsonElement("gesture_request_status")]
-        public string GestureRequestStatus { get; set; } = string.Empty;
+        public string GestureRequestStatus { get; set; } = "enabled";
 
         [BsonElement("ui_language")]
         public string? UiLanguage { get; set; }

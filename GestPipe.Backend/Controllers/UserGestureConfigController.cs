@@ -18,22 +18,6 @@ namespace GestPipe.Backend.Controllers
             _service = service;
             _gestureTypeService = gestureTypeService;
         }
-
-        // GET: api/UserGestureConfig/user/{userId}
-        //[HttpGet("user/{userId}")]
-        //public ActionResult<List<UserGestureConfig>> GetAllByUser(string userId)
-        //{
-        //    var configs = _service.GetAllByUserId(userId);
-        //    if (configs == null || !configs.Any())
-        //        return NotFound();
-        //    return configs;
-        //}
-        //[HttpGet("user/{userId}")]
-        //public ActionResult<List<UserGestureConfig>> GetAllByUser(string userId)
-        //{
-        //    var configs = _service.GetAllByUserId(userId);
-        //    return Ok(configs ?? new List<UserGestureConfig>());
-        //}
         [HttpGet("user/{userId}")]
         public ActionResult<List<UserGestureConfigDto>> GetAllByUser(string userId)
         {

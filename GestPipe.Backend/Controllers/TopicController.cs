@@ -14,20 +14,5 @@ namespace GestPipe.Backend.Controllers
 
         [HttpGet]
         public ActionResult<List<Topic>> Get() => _service.GetAll();
-
-        //[HttpGet("{id}")]
-        //public ActionResult<Topic> Get(string id)
-        //{
-        //    var topic = _service.Get(id);
-        //    if (topic == null) return NotFound();
-        //    return topic;
-        //}
-
-        //[HttpPost]
-        //public ActionResult<Topic> Create(Topic topic)
-        //{
-        //    _service.Create(topic);
-        //    return CreatedAtAction(nameof(Get), new { id = topic.Id }, topic);
-        //}
     }
 }

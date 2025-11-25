@@ -13,7 +13,6 @@ namespace GestPipePowerPonit.Models
         public Dictionary<string, string> Type { get; set; }
 
         public string PoseLabel { get; set; }
-        //public string Type { get; set; }
         public double Accuracy { get; set; }
         public Dictionary<string, string> Status { get; set; }
         public DateTime LastUpdate { get; set; }

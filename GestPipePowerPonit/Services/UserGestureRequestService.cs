@@ -52,8 +52,6 @@ namespace GestPipePowerPonit.Services
                 return null;
             }
         }
-
-        // NEW: Đổi trạng thái request sang Training
         public async Task<bool> SetRequestStatusToTrainingAsync(string requestId)
         {
             try

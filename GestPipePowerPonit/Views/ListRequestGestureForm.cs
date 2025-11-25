@@ -81,6 +81,8 @@ namespace GestPipePowerPonit
         {
             try
             {
+                ResourceHelper.SetCulture(GestPipePowerPonit.CultureManager.CurrentCultureCode, this);
+
                 ApplyLanguage(GestPipePowerPonit.CultureManager.CurrentCultureCode);
 
                 _canRequest = await _userService.CheckCanRequestAsync(userId);
@@ -89,7 +91,7 @@ namespace GestPipePowerPonit
                 {
                     lblRequestStatus.Text = I18nHelper.GetString(
                         "Gesture is being trained. Please wait until it completes to continue!",
-                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục yêu cầu mới!"
+                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
                     );
                     lblRequestStatus.Visible = true;
                 }
@@ -177,21 +179,15 @@ namespace GestPipePowerPonit
 
                 var requestService = new UserGestureRequestService();
 
-                // Song song lấy requests cho tốc độ nhanh
-                //var requestTasks = defaultGestures.Select(config => requestService.GetLatestRequestByConfigAsync(config.Id, userId)).ToList();
-                //var requests = await Task.WhenAll(requestTasks);
 
                 var configIds = defaultGestures.Select(config => config.Id).ToList();
                 var requests = await requestService.GetLatestRequestsBatchAsync(userId, configIds);
-                // Map thành Dictionary cho dễ tra cứu:
                 var requestDict = requests?.ToDictionary(r => r.UserGestureConfigId, r => r) ?? new Dictionary<string, UserGestureRequestDto>();
 
                 var rowsToAdd = new List<object[]>();
                 for (int i = 0; i < defaultGestures.Count; i++)
                 {
                     var config = defaultGestures[i];
-                    //var request = requests[i];
-                    //var requestDictEntry = requestDict.TryGetValue(config.Id, out var request) ? request : null;
                     var request = requestDict.TryGetValue(config.Id, out var req) ? req : null;
                     string status;
                     string statusToShow = "", timeToShow, accuracToShow;
@@ -260,7 +256,6 @@ namespace GestPipePowerPonit
                     });
                 }
 
-                // Add tất cả dòng vào grid một lượt
                 if (guna2DataGridView1 != null)
                 {
                     foreach (var row in rowsToAdd)
@@ -601,9 +596,10 @@ namespace GestPipePowerPonit
                     btnPresentation.Text = Properties.Resources.Btn_Present;
                 if (btnRequest != null)
                     btnRequest.Text = Properties.Resources.Btn_RequestGesture;
+                btnDownload.Text = Properties.Resources.btnDownload;
                 lblRequestStatus.Text = I18nHelper.GetString(
                         "Gesture is being trained. Please wait until it completes to continue!",
-                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục yêu cầu mới!"
+                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
                     );
                 if (guna2DataGridView1?.Columns != null)
                 {
@@ -664,7 +660,7 @@ namespace GestPipePowerPonit
                 {
                     lblRequestStatus.Text = I18nHelper.GetString(
                         "Gesture is being trained. Please wait until it completes to continue!",
-                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục yêu cầu mới!"
+                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
                     );
                     lblRequestStatus.Visible = true;
                 }

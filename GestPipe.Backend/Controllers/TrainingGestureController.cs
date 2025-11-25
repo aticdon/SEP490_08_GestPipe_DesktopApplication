@@ -16,17 +16,6 @@ namespace GestPipe.Backend.Controllers
         {
             _service = service;
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> CreateTrainingGesture([FromBody] TrainingGesture trainingGesture)
-        //{
-        //    // Bạn có thể thêm các bước kiểm tra dữ liệu đầu vào tại đây nếu muốn
-        //    if (trainingGesture == null)
-        //        return BadRequest("TrainingGesture is null");
-
-        //    await _service.AddTrainingGestureAsync(trainingGesture);
-        //    return Ok(new { message = "Training gesture saved successfully." });
-        //}
         [HttpGet]
         public ActionResult<List<TrainingGesture>> Get() => _service.GetAll();
 

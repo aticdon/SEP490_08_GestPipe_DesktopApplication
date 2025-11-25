@@ -21,8 +21,6 @@ namespace GestPipePowerPonit.Services
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7219/");
         }
-
-        // Lấy danh sách gesture config của user (đã đăng nhập)
         public async Task<List<UserGestureConfigDto>> GetUserGesturesAsync(string userId)
         {
             return await _httpClient.GetFromJsonAsync<List<UserGestureConfigDto>>($"/api/usergestureconfig/user/{userId}");

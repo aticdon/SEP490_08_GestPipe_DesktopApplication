@@ -40,9 +40,6 @@ namespace GestPipePowerPonit
         private TrainingGestureService trainingGestureService = new TrainingGestureService();
         private int spinnerAngle = 0;
         private bool firstFrameReceived = false;
-
-
-        //public FormTrainingGesture(HomeUser homeForm, FormUserGesture userGestureForm, string actionName, VectorData vectorData, string gestureName)
         public TrainingDefaultGestureForm(HomeUser homeForm, ListDefaultGestureForm defaultGesture, string actionName, VectorData vectorData,  string gestureName)
         {
             InitializeComponent();
@@ -338,7 +335,6 @@ namespace GestPipePowerPonit
             {
                 string pythonExePath = @"C:\Users\Admin\AppData\Local\Programs\Python\Python311\python.exe";
                 string userFolder = $"user_{_currentUserId}";
-                // ✅ CHANGE: Use custom_training_session_socket.py
                 string scriptFile = $@"D:\Semester9\codepython\hybrid_realtime_pipeline\code\{userFolder}\training_session_ml.py";
                 if (!File.Exists(scriptFile))
                 {
