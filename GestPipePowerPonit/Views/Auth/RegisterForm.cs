@@ -355,12 +355,33 @@ namespace GestPipePowerPonit.Views.Auth
                             "Please complete your profile to continue.",
                             AppSettings.GetText("Title_Notification")
                         );
+                        CustomMessageBox.ShowInfo(
+                            "🚧 EditProfileForm chưa được tạo.\n\n" +
+                            "Bạn sẽ được chuyển đến form này để điền thông tin còn thiếu:\n" +
+                            "- Full Name\n" +
+                            "- Phone Number\n" +
+                            "- Gender\n" +
+                            "- Birth Date\n" +
+                            "- Address\n" +
+                            "- Education Level\n" +
+                            "- Company\n" +
+                            "- Occupation",
+                            "TODO: Complete Profile"
+                        );
+
+                        // ✅ SỬA: Vẫn chuyển vào HomeUser ngay cả khi cần complete profile
+                        HomeUser homeForm = new HomeUser(response.UserId);
+                        this.Hide();
+                        homeForm.Show();
                     }
                     else
                     {
                         CustomMessageBox.ShowSuccess(
                             AppSettings.GetText("Message_GoogleSuccess") ?? "Login successful!",
                             "Success");
+                        HomeUser homeForm = new HomeUser(response.UserId);
+                        this.Hide();
+                        homeForm.Show();
                     }
                 }
                 else

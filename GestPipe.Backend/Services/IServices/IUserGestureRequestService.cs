@@ -9,7 +9,7 @@ namespace GestPipe.Backend.Services.IServices
         Task<UserGestureRequest> GetByIdAsync(string id);
         Task<UserGestureRequest> GetLatestRequestByConfigIdAsync(string configId, string userId);
         Task<List<UserGestureRequest>> GetLatestRequestsByConfigIdsAsync(List<string> configIds, string userId);
-        bool SetTrainingToSuccessful(string requestId);
-        bool SetPendingToTraining(string requestId);
+        bool SetTrainingToSuccessful(string userGestureConfigId, string userId);
+        bool SetPendingToTraining(string userGestureConfigId, string userId);
     }
 }

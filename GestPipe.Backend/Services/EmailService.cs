@@ -19,6 +19,12 @@ namespace GestPipe.Backend.Services.Implementation
 
         public async Task SendVerificationEmailAsync(string email, string otp)
         {
+            // ✅ Validate parameters
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ArgumentException("Email is required.", nameof(email));
+
+            if (string.IsNullOrWhiteSpace(otp))
+                throw new ArgumentException("OTP is required.", nameof(otp));
             var subject = "Xác thực tài khoản GestPipe";
             var body = $@"
                 <html>
@@ -41,6 +47,9 @@ namespace GestPipe.Backend.Services.Implementation
 
         public async Task SendWelcomeEmailAsync(string email, string? name)
         {
+            // ✅ Validate email
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ArgumentException("Email is required.", nameof(email));
             var displayName = !string.IsNullOrEmpty(name) ? name : "bạn";
 
             var subject = "Chào mừng đến với GestPipe!";
@@ -63,6 +72,11 @@ namespace GestPipe.Backend.Services.Implementation
 
         public async Task SendPasswordResetEmailAsync(string email, string otp)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ArgumentException("Email is required.", nameof(email));
+
+            if (string.IsNullOrWhiteSpace(otp))
+                throw new ArgumentException("OTP is required.", nameof(otp));
             var subject = "Yêu cầu đặt lại mật khẩu GestPipe";
             var body = $@"
                 <html>
@@ -83,8 +97,58 @@ namespace GestPipe.Backend.Services.Implementation
             await SendEmailAsync(email, subject, body);
         }
 
+        //private async Task SendEmailAsync(string to, string subject, string htmlBody)
+        //{
+        //    try
+        //    {
+        //        var message = new MailMessage
+        //        {
+        //            From = new MailAddress(_smtpSettings.From),
+        //            Subject = subject,
+        //            Body = htmlBody,
+        //            IsBodyHtml = true
+        //        };
+
+        //        message.To.Add(to);
+
+        //        using var client = new SmtpClient(_smtpSettings.Host, _smtpSettings.Port)
+        //        {
+        //            Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password),
+        //            EnableSsl = _smtpSettings.EnableSsl
+        //        };
+
+        //        await client.SendMailAsync(message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the error
+        //        Console.WriteLine($"Error sending email: {ex.Message}");
+        //        throw; // Re-throw to be handled by the calling method
+        //    }
+        //}
         private async Task SendEmailAsync(string to, string subject, string htmlBody)
         {
+            // ✅ TC3, TC4: Validate email not null/empty
+            if (string.IsNullOrWhiteSpace(to))
+            {
+                throw new ArgumentException("Email address is required.", nameof(to));
+            }
+
+            // ✅ TC2: Validate email format
+            try
+            {
+                var addr = new MailAddress(to);
+                if (addr.Address != to.Trim())
+                {
+                    throw new ArgumentException("Invalid email format.", nameof(to));
+                }
+            }
+            catch (FormatException)
+            {
+                throw new ArgumentException("Invalid email format.", nameof(to));
+            }
+
+            // ✅ TC5: Send email with error handling
             try
             {
                 var message = new MailMessage
@@ -103,13 +167,20 @@ namespace GestPipe.Backend.Services.Implementation
                     EnableSsl = _smtpSettings.EnableSsl
                 };
 
+                // ✅ TC1: Send email successfully
                 await client.SendMailAsync(message);
+            }
+            catch (SmtpException ex)
+            {
+                // ✅ TC5: SMTP server error
+                Console.WriteLine($"SMTP error sending email to {to}: {ex.Message}");
+                throw new InvalidOperationException($"Failed to send email: {ex.Message}", ex);
             }
             catch (Exception ex)
             {
-                // Log the error
-                Console.WriteLine($"Error sending email: {ex.Message}");
-                throw; // Re-throw to be handled by the calling method
+                // ✅ TC5: Generic email error
+                Console.WriteLine($"Error sending email to {to}: {ex.Message}");
+                throw new InvalidOperationException($"Failed to send email: {ex.Message}", ex);
             }
         }
         public async Task SendPasswordResetConfirmationEmailAsync(string email)

@@ -664,7 +664,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblOccupationError.AutoSize = true;
             this.lblOccupationError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblOccupationError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblOccupationError.Location = new System.Drawing.Point(591, 590);
+            this.lblOccupationError.Location = new System.Drawing.Point(591, 548);
             this.lblOccupationError.Name = "lblOccupationError";
             this.lblOccupationError.Size = new System.Drawing.Size(0, 19);
             this.lblOccupationError.TabIndex = 22;

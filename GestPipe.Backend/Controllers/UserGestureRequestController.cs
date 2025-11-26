@@ -59,24 +59,40 @@ namespace GestPipe.Backend.Controllers
             return Ok(request);
         }
 
-        // POST /api/usergesturerequest/{id}/start-training
-        [HttpPost("{id}/start-training")]
-        public IActionResult StartTraining(string id)
+        // ✅ THAY ĐỔI: Route mới với userId
+        [HttpPost("user/{userId}/config/{configId}/start-training")]
+        public IActionResult StartTraining(string userId, string configId)
         {
-            var ok = _service.SetPendingToTraining(id);
-            if (!ok) return BadRequest("Update failed");
+            Console.WriteLine($"[API] StartTraining - userId: {userId}, configId: {configId}");
+
+            var ok = _service.SetPendingToTraining(configId, userId);
+
+            if (!ok)
+            {
+                Console.WriteLine($"[API] StartTraining - Failed");
+                return BadRequest("Update failed");
+            }
+
+            Console.WriteLine($"[API] StartTraining - Success");
             return NoContent();
         }
 
-        // POST /api/usergesturerequest/{id}/complete
-        [HttpPost("{id}/complete")]
-        public IActionResult CompleteTraining(string id)
+        [HttpPost("user/{userId}/config/{configId}/complete")]
+        public IActionResult CompleteTraining(string userId, string configId)
         {
-            var ok = _service.SetTrainingToSuccessful(id);
-            if (!ok) return BadRequest("Update failed");
+            Console.WriteLine($"[API] CompleteTraining - userId: {userId}, configId: {configId}");
+
+            var ok = _service.SetTrainingToSuccessful(configId, userId);
+
+            if (!ok)
+            {
+                Console.WriteLine($"[API] CompleteTraining - Failed");
+                return BadRequest("Update failed");
+            }
+
+            Console.WriteLine($"[API] CompleteTraining - Success");
             return NoContent();
         }
-
         [HttpPost("batch/latest-requests")]
         public async Task<ActionResult<List<UserGestureRequest>>> GetLatestRequestsBatch([FromBody] LatestRequestBatchDto dto)
         {

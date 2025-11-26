@@ -1043,7 +1043,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnChangePassword.Location = new System.Drawing.Point(70, 556);
             this.btnChangePassword.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnChangePassword.Name = "btnChangePassword";
-            this.btnChangePassword.Size = new System.Drawing.Size(178, 40);
+            this.btnChangePassword.Size = new System.Drawing.Size(198, 48);
             this.btnChangePassword.TabIndex = 31;
             this.btnChangePassword.Text = "Change Password";
             this.btnChangePassword.Click += new System.EventHandler(this.btnChangePassword_Click);
@@ -1053,10 +1053,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.panelButtons.Controls.Add(this.btnEdit);
             this.panelButtons.Controls.Add(this.btnSave);
             this.panelButtons.Controls.Add(this.btnCancel);
-            this.panelButtons.Location = new System.Drawing.Point(755, 556);
+            this.panelButtons.Location = new System.Drawing.Point(708, 556);
             this.panelButtons.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelButtons.Name = "panelButtons";
-            this.panelButtons.Size = new System.Drawing.Size(267, 48);
+            this.panelButtons.Size = new System.Drawing.Size(314, 58);
             this.panelButtons.TabIndex = 32;
             // 
             // btnEdit
@@ -1065,10 +1065,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnEdit.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(125)))), ((int)(((byte)(202)))));
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
-            this.btnEdit.Location = new System.Drawing.Point(133, 4);
+            this.btnEdit.Location = new System.Drawing.Point(168, 4);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(124, 40);
+            this.btnEdit.Size = new System.Drawing.Size(143, 52);
             this.btnEdit.TabIndex = 0;
             this.btnEdit.Text = "Edit";
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
@@ -1079,10 +1079,10 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnSave.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(133, 4);
+            this.btnSave.Location = new System.Drawing.Point(168, 4);
             this.btnSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(124, 40);
+            this.btnSave.Size = new System.Drawing.Size(143, 52);
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "Save";
             this.btnSave.Visible = false;
@@ -1097,7 +1097,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.btnCancel.Location = new System.Drawing.Point(4, 4);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(124, 40);
+            this.btnCancel.Size = new System.Drawing.Size(149, 52);
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.Visible = false;

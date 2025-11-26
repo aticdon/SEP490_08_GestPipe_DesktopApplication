@@ -173,12 +173,78 @@ namespace GestPipePowerPonit.Views
         }
 
         // Start Training (không còn upload ở đây nữa)
+        //private async void btnRequest_Click(object sender, EventArgs e)
+        //{
+        //    if (pendingRequests.Count == 0)
+        //    {
+        //        CustomMessageBox.ShowWarning(
+        //            "No pending gestures available for training!",
+        //            "No Training Available"
+        //        );
+        //        return;
+        //    }
+
+        //    try
+        //    {
+        //        var userService = new UserService();
+        //        var gestureRequestService = new UserGestureRequestService();
+        //        bool overallSuccess = true;
+
+        //        btnStartRequest.Enabled = false;
+        //        btnStartRequest.Text = "Processing...";
+        //        btnStartRequest.FillColor = System.Drawing.Color.Orange;
+
+        //        // Đổi trạng thái tất cả request sang Training
+        //        foreach (var request in pendingRequests)
+        //        {
+        //            var trainingSuccess = await gestureRequestService
+        //                .SetRequestStatusToTrainingAsync(request.UserGestureConfigId);
+
+        //            if (!trainingSuccess)
+        //            {
+        //                overallSuccess = false;
+        //            }
+        //        }
+
+        //        var countSuccess = await userService.IncrementRequestCountAsync(userId);
+        //        var statusSuccess = await userService.UpdateGestureRequestStatusAsync(userId, "disable");
+
+        //        if (overallSuccess && countSuccess && statusSuccess)
+        //        {
+        //            // Chỉ đánh dấu đã gửi request; upload do ListRequestGestureForm xử lý
+        //            RequestSentSuccessfully = true;
+        //            this.Close();
+        //        }
+        //        else
+        //        {
+        //            CustomMessageBox.ShowError(
+        //                Properties.Resources.RequestErrorDetail,
+        //                Properties.Resources.RequestErrorTitle
+        //            );
+
+        //            btnStartRequest.Enabled = true;
+        //            btnStartRequest.Text = "🚀 Start Training";
+        //            btnStartRequest.FillColor = System.Drawing.Color.FromArgb(0, 188, 212);
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        CustomMessageBox.ShowError(
+        //            $"Unexpected error occurred:\n\n{ex.Message}\n\n" +
+        //            "Please try again or contact technical support.",
+        //            "System Error"
+        //        );
+
+        //        btnStartRequest.Enabled = true;
+        //    }
+        //}
         private async void btnRequest_Click(object sender, EventArgs e)
         {
             if (pendingRequests.Count == 0)
             {
                 CustomMessageBox.ShowWarning(
-                    "No pending gestures available for training!",
+                    "No pending gestures available for training! ",
                     "No Training Available"
                 );
                 return;
@@ -197,26 +263,37 @@ namespace GestPipePowerPonit.Views
                 // Đổi trạng thái tất cả request sang Training
                 foreach (var request in pendingRequests)
                 {
+                    Console.WriteLine($"[btnRequest] Processing configId: {request.UserGestureConfigId}, userId: {userId}");
+
+                    // ✅ THAY ĐỔI: Truyền thêm userId
                     var trainingSuccess = await gestureRequestService
-                        .SetRequestStatusToTrainingAsync(request.UserGestureConfigId);
+                        .SetRequestStatusToTrainingAsync(request.UserGestureConfigId, userId); // ← THÊM userId
 
                     if (!trainingSuccess)
                     {
+                        Console.WriteLine($"[btnRequest] ❌ Failed");
                         overallSuccess = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[btnRequest] ✅ Success");
                     }
                 }
 
                 var countSuccess = await userService.IncrementRequestCountAsync(userId);
                 var statusSuccess = await userService.UpdateGestureRequestStatusAsync(userId, "disable");
 
+                Console.WriteLine($"[btnRequest] countSuccess={countSuccess}, statusSuccess={statusSuccess}, overallSuccess={overallSuccess}");
+
                 if (overallSuccess && countSuccess && statusSuccess)
                 {
-                    // Chỉ đánh dấu đã gửi request; upload do ListRequestGestureForm xử lý
                     RequestSentSuccessfully = true;
+                    Console.WriteLine($"[btnRequest] ✅ All success!  Closing form.. .");
                     this.Close();
                 }
                 else
                 {
+                    Console.WriteLine($"[btnRequest] ❌ Some operations failed");
                     CustomMessageBox.ShowError(
                         Properties.Resources.RequestErrorDetail,
                         Properties.Resources.RequestErrorTitle
@@ -226,10 +303,12 @@ namespace GestPipePowerPonit.Views
                     btnStartRequest.Text = "🚀 Start Training";
                     btnStartRequest.FillColor = System.Drawing.Color.FromArgb(0, 188, 212);
                 }
-
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"[btnRequest] ❌ Exception: {ex.Message}");
+                Console.WriteLine($"[btnRequest] StackTrace: {ex.StackTrace}");
+
                 CustomMessageBox.ShowError(
                     $"Unexpected error occurred:\n\n{ex.Message}\n\n" +
                     "Please try again or contact technical support.",
@@ -237,6 +316,8 @@ namespace GestPipePowerPonit.Views
                 );
 
                 btnStartRequest.Enabled = true;
+                btnStartRequest.Text = "🚀 Start Training";
+                btnStartRequest.FillColor = System.Drawing.Color.FromArgb(0, 188, 212);
             }
         }
 

@@ -119,7 +119,7 @@ namespace GestPipePowerPonit
                                         ? Properties.Resources.icon_download           // trạng thái cho phép tải
                                         : Properties.Resources.icon_download_silver;
                 }
-
+                CenterLoadingPanel();
                 await LoadGesturesAsync(); // ✅ THAY ĐỔI: Gọi method mới
             }
             catch (Exception ex)
@@ -173,8 +173,10 @@ namespace GestPipePowerPonit
                 }
 
                 if (lblLoading != null)
+                {
                     lblLoading.Text = Properties.Resources.List_Loading;
-
+                    AlignLoadingControls();
+                }
                 defaultGestures = await _gestureService.GetDefaultGesturesAsync();
 
                 if (guna2DataGridView1 != null)
@@ -294,8 +296,10 @@ namespace GestPipePowerPonit
                 }
 
                 if (lblLoading != null)
+                {
                     lblLoading.Text = Properties.Resources.List_Loading;
-
+                    AlignLoadingControls();  // 👈 THÊM
+                }
                 userGestures = await _uGestureService.GetUserGesturesAsync(userId);
 
                 if (guna2DataGridView1 != null)
@@ -714,6 +718,7 @@ namespace GestPipePowerPonit
             string textVi = $"Đang gửi dữ liệu cử chỉ lên Google Drive...\nFile: {uploaded}/{total} ({percent:0}%)";
 
             lblLoading.Text = I18nHelper.GetString(textEn, textVi);
+            AlignLoadingControls();
             lblLoading.Refresh();
         }
         private async Task<bool> UploadUserGesturesWithProgressAsync()
@@ -755,7 +760,6 @@ namespace GestPipePowerPonit
                         "Không có file cử chỉ nào để gửi."
                     );
                 }
-
                 return hasFiles;
             }
             catch (Exception ex)
@@ -796,15 +800,17 @@ namespace GestPipePowerPonit
                         ),
                         I18nHelper.GetString("Upload gesture", "Gửi cử chỉ")
                     );
+                    _canDownload = await _userService.CheckCanDownloadAsync(userId);
+                    _canRequest = await _userService.CheckCanRequestAsync(userId);
+
+                    Console.WriteLine($"[Upload] ✅ Updated status: canDownload={_canDownload}, canRequest={_canRequest}");
                 }
             }
             finally
             {
                 HideDownloadLoading();
+                await UpdateButtonStatesAsync();
 
-                // enable lại theo quyền
-                btnDownload.Enabled = _canDownload;
-                btnRequest.Enabled = _canRequest;
                 btnLanguageEN.Enabled = true;
                 btnLanguageVN.Enabled = true;
                 btnPresentation.Enabled = true;
@@ -814,6 +820,51 @@ namespace GestPipePowerPonit
                 btnInstruction.Enabled = true;
                 btnProfile.Enabled = true;
                 btnLogout.Enabled = true;
+            }
+        }
+        /// <summary>
+        /// Cập nhật trạng thái nút Download/Request từ server và hiển thị UI
+        /// </summary>
+        private async Task UpdateButtonStatesAsync()
+        {
+            // 1.  Lấy trạng thái mới từ server
+            _canDownload = await _userService.CheckCanDownloadAsync(userId);
+            _canRequest = await _userService.CheckCanRequestAsync(userId);
+
+            Console.WriteLine($"[UpdateButtonStates] canDownload={_canDownload}, canRequest={_canRequest}");
+
+            // 2. Cập nhật nút Download
+            if (btnDownload != null)
+            {
+                btnDownload.Enabled = _canDownload;
+                btnDownload.Image = _canDownload
+                    ? Properties.Resources.icon_download
+                    : Properties.Resources.icon_download_silver;
+            }
+
+            // 3. Cập nhật nút Request
+            if (btnRequest != null)
+            {
+                btnRequest.Enabled = _canRequest;
+                btnRequest.ForeColor = _canRequest ? Color.White : Color.Black;
+            }
+
+            // 4. Cập nhật label cảnh báo
+            if (lblRequestStatus != null)
+            {
+                if (!_canRequest)
+                {
+                    lblRequestStatus.Text = I18nHelper.GetString(
+                        "Gesture is being trained. Please wait until it completes to continue!",
+                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
+                    );
+                    lblRequestStatus.Visible = true;
+                }
+                else
+                {
+                    lblRequestStatus.Text = "";
+                    lblRequestStatus.Visible = false;
+                }
             }
         }
 
@@ -954,6 +1005,7 @@ namespace GestPipePowerPonit
                     "Downloading and importing gestures...\nPlease wait...",
                     "        Đang tải và import cử chỉ...   \n        Vui lòng đợi...   "
                 );
+                AlignLoadingControls();
             }
 
             _spinnerAngle = 0;
@@ -1026,6 +1078,7 @@ namespace GestPipePowerPonit
             if (lblLoading == null) return;
 
             lblLoading.Text = I18nHelper.GetString(messageEn, messageVi);
+            AlignLoadingControls();
             lblLoading.Refresh();
         }
 
@@ -1041,6 +1094,7 @@ namespace GestPipePowerPonit
             string textVi = $"Đang tải dữ liệu cử chỉ từ Google Drive...\nFile: {synced}/{total} ({percent:0}%)";
 
             lblLoading.Text = I18nHelper.GetString(textEn, textVi);
+            AlignLoadingControls();
             lblLoading.Refresh();
         }
 
@@ -1107,6 +1161,13 @@ namespace GestPipePowerPonit
                 );
 
                 int inserted = await _gestureDownloadService.ImportGesturesFromCsvAsync(userId);
+
+                UpdateDownloadMessage(
+                    "Updating request status.. .",
+                    "Đang cập nhật trạng thái yêu cầu..."
+                );
+
+                await UpdateAllRequestsToSuccessfulAsync();
                 await _gestureDownloadService.EnableGestureRequestAsync(userId);
 
                 UpdateDownloadMessage(
@@ -1122,6 +1183,9 @@ namespace GestPipePowerPonit
 
                 await RefreshGesturesAsync();
 
+
+                _canDownload = await _userService.CheckCanDownloadAsync(userId);
+                _canRequest = await _userService.CheckCanRequestAsync(userId);
                 // ===== 4. THÔNG BÁO =====
                 CustomMessageBox.ShowSuccess(
                     I18nHelper.GetString(
@@ -1139,7 +1203,7 @@ namespace GestPipePowerPonit
             {
                 HideDownloadLoading();
 
-                btnDownload.Enabled = _canDownload;
+                await UpdateButtonStatesAsync();
                 btnLanguageEN.Enabled = true;
                 btnLanguageVN.Enabled = true;
                 btnPresentation.Enabled = true;
@@ -1149,6 +1213,122 @@ namespace GestPipePowerPonit
                 btnInstruction.Enabled = true;
                 btnProfile.Enabled = true;
                 btnLogout.Enabled = true;
+            }
+        }
+        /// <summary>
+        /// Căn giữa panel loading và các phần tử bên trong
+        /// </summary>
+        private void CenterLoadingPanel()
+        {
+            if (panelLoading == null) return;
+
+            panelLoading.Dock = DockStyle.Fill;
+            panelLoading.BringToFront();
+
+            // Căn lần đầu
+            AlignLoadingControls();
+
+            // Khi form resize thì căn lại
+            panelLoading.Resize += (s, e) =>
+            {
+                AlignLoadingControls();
+            };
+        }
+        private void AlignLoadingControls()
+        {
+            if (panelLoading == null || lblLoading == null || loadingSpinner == null)
+                return;
+
+            // Cho label tự co giãn theo text
+            lblLoading.AutoSize = true;
+            lblLoading.MaximumSize = new Size(panelLoading.Width - 80, 0); // chừa mép 2 bên 40px
+            lblLoading.TextAlign = ContentAlignment.MiddleCenter;
+
+            // Sau khi AutoSize, Width/Height sẽ đúng với text hiện tại
+            lblLoading.Left = (panelLoading.Width - lblLoading.Width) / 2;
+            lblLoading.Top = (panelLoading.Height - lblLoading.Height) / 2;
+
+            // Spinner nằm phía trên label 20px
+            loadingSpinner.Left = (panelLoading.Width - loadingSpinner.Width) / 2;
+            loadingSpinner.Top = lblLoading.Top - loadingSpinner.Height - 20;
+        }
+
+        /// <summary>
+        /// Update tất cả request đang ở trạng thái "Submit" sang "Successful"
+        /// </summary>
+        private async Task UpdateAllRequestsToSuccessfulAsync()
+        {
+            try
+            {
+                var requestService = new UserGestureRequestService();
+
+                // Lấy tất cả config IDs
+                List<string> configIds = new List<string>();
+
+                if (isShowingUserGestures && userGestures != null)
+                {
+                    configIds = userGestures.Select(g => g.Id).ToList();
+                }
+                else if (defaultGestures != null)
+                {
+                    configIds = defaultGestures.Select(g => g.Id).ToList();
+                }
+
+                if (configIds.Count == 0)
+                {
+                    Console.WriteLine("[UpdateAllRequests] No configs found");
+                    return;
+                }
+
+                // Lấy tất cả requests
+                var requests = await requestService.GetLatestRequestsBatchAsync(userId, configIds);
+
+                if (requests == null || requests.Count == 0)
+                {
+                    Console.WriteLine("[UpdateAllRequests] No requests found");
+                    return;
+                }
+
+                int updatedCount = 0;
+
+                // Update từng request sang Successful
+                foreach (var request in requests)
+                {
+                    // Chỉ update nếu status là "Submit" (đang training)
+                    if (request.Status != null)
+                    {
+                        string statusEn = request.Status.ContainsKey("en") ? request.Status["en"] : "";
+                        string statusVi = request.Status.ContainsKey("vi") ? request.Status["vi"] : "";
+
+                        if (statusEn == "Submit" || statusVi == "Gửi")
+                        {
+                            Console.WriteLine($"[UpdateAllRequests] Updating configId: {request.UserGestureConfigId}");
+
+                            // ✅ GỌI METHOD ĐÃ CÓ SẴN
+                            var success = await requestService.SetTrainingToSuccessfulAsync(
+                                request.UserGestureConfigId,
+                                userId
+                            );
+
+                            if (success)
+                            {
+                                updatedCount++;
+                                Console.WriteLine($"[UpdateAllRequests] ✅ Updated: {request.UserGestureConfigId}");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"[UpdateAllRequests] ❌ Failed: {request.UserGestureConfigId}");
+                            }
+                        }
+                    }
+                }
+
+                Console.WriteLine($"[UpdateAllRequests] ✅ Updated {updatedCount}/{requests.Count} requests to Successful");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[UpdateAllRequests] ❌ Error: {ex.Message}");
+                // Không throw exception - download vẫn thành công
             }
         }
     }

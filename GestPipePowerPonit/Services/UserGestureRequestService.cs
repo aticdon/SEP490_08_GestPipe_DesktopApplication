@@ -17,18 +17,56 @@ namespace GestPipePowerPonit.Services
             client = new HttpClient();
             client.BaseAddress = new Uri("https://localhost:7219/");
         }
+        //public async Task<bool> CreateRequestAsync(UserGestureRequestDto dto)
+        //{
+        //    try
+        //    {
+        //        var json = JsonConvert.SerializeObject(dto);
+        //        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        //        var response = await client.PostAsync("/api/UserGestureRequest", content);
+        //        return response.IsSuccessStatusCode;
+        //    }
+        //    catch
+        //    {
+        //        return false;
+        //    }
+        //}
+        // File: GestPipePowerPonit/Services/UserGestureRequestService. cs
         public async Task<bool> CreateRequestAsync(UserGestureRequestDto dto)
         {
             try
             {
+                // ✅ LOG request data
+                Console.WriteLine($"[CreateRequest] Request data:");
+                Console.WriteLine($"  - UserId: {dto.UserId}");
+                Console.WriteLine($"  - GestureTypeId: {dto.GestureTypeId}");
+                Console.WriteLine($"  - UserGestureConfigId: {dto.UserGestureConfigId}");
+                Console.WriteLine($"  - PoseLabel: {dto.PoseLabel}");
+                Console.WriteLine($"  - Status: {JsonConvert.SerializeObject(dto.Status)}");
+
                 var json = JsonConvert.SerializeObject(dto);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync("/api/UserGestureRequest", content);
-                return response.IsSuccessStatusCode;
+
+                // ✅ LOG response
+                Console.WriteLine($"[CreateRequest] Response: {response.StatusCode}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"[CreateRequest] Error body: {errorBody}");
+
+                    // ✅ Show error to user
+                    throw new Exception($"Server error ({response.StatusCode}): {errorBody}");
+                }
+
+                return true;
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                Console.WriteLine($"[CreateRequest] Exception: {ex.Message}");
+                Console.WriteLine($"[CreateRequest] StackTrace: {ex.StackTrace}");
+                throw; // ✅ Propagate exception
             }
         }
 
@@ -52,29 +90,52 @@ namespace GestPipePowerPonit.Services
                 return null;
             }
         }
-        public async Task<bool> SetRequestStatusToTrainingAsync(string requestId)
+        // ✅ THAY ĐỔI: Thêm parameter userId
+        public async Task<bool> SetRequestStatusToTrainingAsync(string configId, string userId)
         {
             try
             {
-                var response = await client.PostAsync($"/api/UserGestureRequest/{requestId}/start-training", null);
+                Console.WriteLine($"[Frontend] SetRequestStatusToTraining - configId: {configId}, userId: {userId}");
+
+                // ✅ URL mới với userId
+                var url = $"/api/UserGestureRequest/user/{userId}/config/{configId}/start-training";
+
+                var response = await client.PostAsync(url, null);
+
+                Console.WriteLine($"[Frontend] Response: {response.StatusCode}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"[Frontend] Error: {errorBody}");
+                }
+
                 return response.IsSuccessStatusCode;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"[Frontend] Exception: {ex.Message}");
                 return false;
             }
         }
 
-        // NEW: Đổi trạng thái request sang Successful
-        public async Task<bool> SetTrainingToSuccessfulAsync(string requestId)
+        public async Task<bool> SetTrainingToSuccessfulAsync(string configId, string userId)
         {
             try
             {
-                var response = await client.PostAsync($"/api/UserGestureRequest/{requestId}/complete", null);
+                Console.WriteLine($"[Frontend] SetTrainingToSuccessful - configId: {configId}, userId: {userId}");
+
+                var url = $"/api/UserGestureRequest/user/{userId}/config/{configId}/complete";
+
+                var response = await client.PostAsync(url, null);
+
+                Console.WriteLine($"[Frontend] Response: {response.StatusCode}");
+
                 return response.IsSuccessStatusCode;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"[Frontend] Exception: {ex.Message}");
                 return false;
             }
         }
