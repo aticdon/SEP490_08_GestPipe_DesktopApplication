@@ -14,10 +14,11 @@ namespace GestPipe.Backend.Services
         private readonly IMongoCollection<User> _users;
         private readonly I18nConfig _i18nConfig;
 
-        public UserService(IOptions<MongoDbSettings> mongoSettings, IOptions<I18nConfig> i18nOptions = null)
+        public UserService(IMongoDatabase database, IOptions<I18nConfig> i18nOptions = null)
+        //public UserService(IOptions<MongoDbSettings> mongoSettings, IOptions<I18nConfig> i18nOptions = null)
         {
-            var client = new MongoClient(mongoSettings.Value.ConnectionString);
-            var database = client.GetDatabase(mongoSettings.Value.DatabaseName);
+            //var client = new MongoClient(mongoSettings.Value.ConnectionString);
+            //var database = client.GetDatabase(mongoSettings.Value.DatabaseName);
             _users = database.GetCollection<User>("Users");
 
             _i18nConfig = i18nOptions?.Value ?? new I18nConfig { SupportedCultures = new List<string> { "en-US" }, DefaultCulture = "en-US" };

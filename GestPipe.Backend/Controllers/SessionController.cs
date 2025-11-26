@@ -1,5 +1,6 @@
 ﻿using GestPipe.Backend.Models;
 using GestPipe.Backend.Services;
+using GestPipe.Backend.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -9,8 +10,8 @@ namespace GestPipe.Backend.Controllers
     [Route("api/[controller]")]
     public class SessionController : ControllerBase
     {
-        private readonly SessionService _service;
-        public SessionController(SessionService service) => _service = service;
+        private readonly ISessionService _service;
+        public SessionController(ISessionService service) => _service = service;
 
         [HttpGet]
         public ActionResult<List<Session>> Get() => _service.GetAll();

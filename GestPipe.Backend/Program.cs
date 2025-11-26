@@ -88,9 +88,9 @@ namespace GestPipe.Backend
             // Add Services
             //builder.Services.AddSingleton<UserService>();
             builder.Services.AddSingleton<GoogleDriveService>();
-            builder.Services.AddSingleton<TopicService>();
-            builder.Services.AddSingleton<SessionService>();
-            builder.Services.AddSingleton<CategoryService>();
+            builder.Services.AddScoped<ITopicService,TopicService>();
+            builder.Services.AddScoped<ISessionService,SessionService>();
+            builder.Services.AddScoped<ICategoryService,CategoryService>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();

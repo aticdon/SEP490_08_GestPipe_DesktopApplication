@@ -12,3 +12,4 @@ obj/
 *.user
 .vs/
 GestPipe.Backend/credentials/
+GestPipe.Backend/appsettings.Development.json

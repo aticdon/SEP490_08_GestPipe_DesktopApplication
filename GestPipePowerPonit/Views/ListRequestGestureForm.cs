@@ -1,10 +1,12 @@
-﻿using GestPipePowerPonit.I18n;
+﻿using GestPipe.GestPipePowerPoint.Models.DTOs;
+using GestPipePowerPonit.I18n;
 using GestPipePowerPonit.Models;
 using GestPipePowerPonit.Models.DTOs;
 using GestPipePowerPonit.Services;
 using GestPipePowerPonit.Views;
 using GestPipePowerPonit.Views.Auth;
 using GestPipePowerPonit.Views.Profile;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,6 +25,8 @@ namespace GestPipePowerPonit
     {
         private DefaultGestureService _gestureService = new DefaultGestureService();
         private UserGestureConfigService _uGestureService = new UserGestureConfigService();
+        private GestureDownloadService _gestureDownloadService;
+        private GestureUploadService _gestureUploadService;
         private HomeUser _homeForm;
 
         // ✅ THAY ĐỔI: Có 2 danh sách riêng biệt
@@ -47,6 +51,8 @@ namespace GestPipePowerPonit
             InitializeComponent();
             _homeForm = homeForm;
             _apiClient = new ApiClient("https://localhost:7219");
+            _gestureDownloadService = new GestureDownloadService(_uGestureService, _userService);
+            _gestureUploadService = new GestureUploadService("https://localhost:7219");
             if (spinnerTimer != null)
                 spinnerTimer.Tick += spinnerTimer_Tick;
             // ✅ Đăng ký events SAU KHI InitializeComponent
@@ -648,14 +654,23 @@ namespace GestPipePowerPonit
             form1.Show();
             this.Hide();
         }
-
         private void btnRequest_Click(object sender, EventArgs e)
         {
             var requestForm = new RequestGestureForm(userId, isShowingUserGestures);
+
             requestForm.FormClosed += async (s, args) =>
             {
+                // Nếu user đã bấm Request thành công
+                if (requestForm.RequestSentSuccessfully)
+                {
+                    // 👉 Hiện màn hình chờ + upload + hiện % file
+                    await HandleUploadAfterRequestAsync();
+                }
+
                 // CẬP NHẬT TRẠNG THÁI request mới sau khi form request đóng
                 _canRequest = await _userService.CheckCanRequestAsync(userId);
+                _canDownload = await _userService.CheckCanDownloadAsync(userId);
+
                 if (!_canRequest && lblRequestStatus != null)
                 {
                     lblRequestStatus.Text = I18nHelper.GetString(
@@ -669,15 +684,139 @@ namespace GestPipePowerPonit
                     lblRequestStatus.Text = "";
                     lblRequestStatus.Visible = false;
                 }
+
                 if (btnRequest != null)
                 {
                     btnRequest.Enabled = _canRequest;
                     btnRequest.ForeColor = _canRequest ? Color.White : Color.Black;
                 }
+                if (btnDownload != null)
+                {
+                    btnDownload.Enabled = _canDownload;
+                    btnDownload.Image = _canDownload
+                        ? Properties.Resources.icon_download
+                        : Properties.Resources.icon_download_silver;
+                }
+
                 await RefreshGesturesAsync();
             };
+
             requestForm.ShowDialog();
         }
+
+        private void UpdateUploadProgress(int uploaded, int total)
+        {
+            if (lblLoading == null) return;
+
+            double percent = total > 0 ? uploaded * 100.0 / total : 0;
+
+            string textEn = $"Uploading gesture data to Google Drive...\nFiles: {uploaded}/{total} ({percent:0}%)";
+            string textVi = $"Đang gửi dữ liệu cử chỉ lên Google Drive...\nFile: {uploaded}/{total} ({percent:0}%)";
+
+            lblLoading.Text = I18nHelper.GetString(textEn, textVi);
+            lblLoading.Refresh();
+        }
+        private async Task<bool> UploadUserGesturesWithProgressAsync()
+        {
+            try
+            {
+                // Message đầu tiên cho overlay
+                UpdateDownloadMessage(
+                    "Uploading gesture data to Google Drive...",
+                    "Đang gửi dữ liệu cử chỉ lên Google Drive..."
+                );
+
+                // Gọi service: start upload + poll tiến độ giống download
+                var hasFiles = await _gestureUploadService.UploadUserGesturesWithProgressAsync(
+                    userId,
+                    (uploaded, total) =>
+                    {
+                        // callback chạy trên thread nền ⇒ cần Invoke sang UI thread
+                        if (this.IsHandleCreated && !this.IsDisposed)
+                        {
+                            try
+                            {
+                                this.Invoke(new Action(() =>
+                                {
+                                    UpdateUploadProgress(uploaded, total);
+                                }));
+                            }
+                            catch
+                            {
+                                // Form có thể đã dispose khi đang upload, cứ bỏ qua
+                            }
+                        }
+                    });
+
+                if (!hasFiles)
+                {
+                    UpdateDownloadMessage(
+                        "No gesture files to upload.",
+                        "Không có file cử chỉ nào để gửi."
+                    );
+                }
+
+                return hasFiles;
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.ShowError(ex.Message, "Upload error");
+                return false;
+            }
+        }
+
+        private async Task HandleUploadAfterRequestAsync()
+        {
+            try
+            {
+                // Dùng lại overlay download
+                ShowDownloadLoading();
+
+                // Disable toàn bộ nút giống lúc download
+                btnLanguageEN.Enabled = false;
+                btnLanguageVN.Enabled = false;
+                btnPresentation.Enabled = false;
+                btnCustomGesture.Enabled = false;
+                btnGestureControl.Enabled = false;
+                btnHome.Enabled = false;
+                btnInstruction.Enabled = false;
+                btnProfile.Enabled = false;
+                btnLogout.Enabled = false;
+                btnDownload.Enabled = false;
+                btnRequest.Enabled = false;
+
+                var uploadOk = await UploadUserGesturesWithProgressAsync();
+
+                if (uploadOk)
+                {
+                    CustomMessageBox.ShowSuccess(
+                        I18nHelper.GetString(
+                            "Uploaded gesture files to server successfully.",
+                            "Đã gửi file cử chỉ lên máy chủ thành công."
+                        ),
+                        I18nHelper.GetString("Upload gesture", "Gửi cử chỉ")
+                    );
+                }
+            }
+            finally
+            {
+                HideDownloadLoading();
+
+                // enable lại theo quyền
+                btnDownload.Enabled = _canDownload;
+                btnRequest.Enabled = _canRequest;
+                btnLanguageEN.Enabled = true;
+                btnLanguageVN.Enabled = true;
+                btnPresentation.Enabled = true;
+                btnCustomGesture.Enabled = true;
+                btnGestureControl.Enabled = true;
+                btnHome.Enabled = true;
+                btnInstruction.Enabled = true;
+                btnProfile.Enabled = true;
+                btnLogout.Enabled = true;
+            }
+        }
+
 
         private async void btnLogout_Click(object sender, EventArgs e)
         {
@@ -881,11 +1020,36 @@ namespace GestPipePowerPonit
             instructionForm.Show();
             this.Hide();
         }
+        // Hiển thị message đơn giản
+        private void UpdateDownloadMessage(string messageEn, string messageVi)
+        {
+            if (lblLoading == null) return;
+
+            lblLoading.Text = I18nHelper.GetString(messageEn, messageVi);
+            lblLoading.Refresh();
+        }
+
+        // Hiển thị tiến độ file: X/Y (%)
+        private void UpdateFileDownloadProgress(int synced, int total)
+        {
+            Console.WriteLine($"[UpdateFileDownloadProgress] synced={synced}, total={total}");
+            if (lblLoading == null) return;
+
+            double percent = total > 0 ? synced * 100.0 / total : 0;
+
+            string textEn = $"Downloading gesture data from Google Drive...\nFiles: {synced}/{total} ({percent:0}%)";
+            string textVi = $"Đang tải dữ liệu cử chỉ từ Google Drive...\nFile: {synced}/{total} ({percent:0}%)";
+
+            lblLoading.Text = I18nHelper.GetString(textEn, textVi);
+            lblLoading.Refresh();
+        }
+
         private async void btnDownload_Click(object sender, EventArgs e)
         {
             try
             {
                 ShowDownloadLoading();
+
                 btnLanguageEN.Enabled = false;
                 btnLanguageVN.Enabled = false;
                 btnPresentation.Enabled = false;
@@ -895,28 +1059,70 @@ namespace GestPipePowerPonit
                 btnInstruction.Enabled = false;
                 btnProfile.Enabled = false;
                 btnLogout.Enabled = false;
-                using var http = new HttpClient();
-                http.BaseAddress = new Uri("https://localhost:7219/");
 
-                // 1. Sync file từ Google Drive về thư mục python
-                var syncResp = await http.PostAsync($"/api/drivesync/sync-user/{userId}", null);
-                if (!syncResp.IsSuccessStatusCode)
-                {
-                    CustomMessageBox.ShowError("Sync Google Drive failed", "Error");
-                    return;
-                }
+                // ===== 1. SYNC FILE TỪ GOOGLE DRIVE =====
+                UpdateDownloadMessage(
+                    "Syncing files from Google Drive...",
+                    "Đang đồng bộ file từ Google Drive..."
+                );
 
-                // 2. Import CSV vào UserGestureConfig
-                string userPath = $"user_{userId}";
-                string csvPath = $@"D:\Semester9\codepython\hybrid_realtime_pipeline\code\{userPath}\training_results\gesture_data_compact.csv";
-                if (!File.Exists(csvPath))
-                {
-                    throw new FileNotFoundException("CSV file not found", csvPath);
-                }
-                string csvContent = File.ReadAllText(csvPath, Encoding.UTF8);
-                int inserted = await _uGestureService.ImportFromCsvAsync(userId, csvContent);
-                var enableSuccess = await _userService.UpdateGestureRequestStatusAsync(userId, "enabled");
+                // Gọi sync và truyền callback để cập nhật realtime
+                await _gestureDownloadService.SyncFromDriveAsync(
+                    userId,
+                    (synced, total) =>
+                    {
+                        // ⚠️ Callback chạy trên thread nền, phải Invoke sang UI thread
+                        if (this.IsHandleCreated && !this.IsDisposed)
+                        {
+                            try
+                            {
+                                this.Invoke(new Action(() =>
+                                {
+                                    if (total > 0)
+                                    {
+                                        UpdateFileDownloadProgress(synced, total);
+                                    }
+                                    else
+                                    {
+                                        // Trường hợp không có file nào
+                                        UpdateDownloadMessage(
+                                            "No files found to download from Google Drive.",
+                                            "Không tìm thấy file nào để tải từ Google Drive."
+                                        );
+                                    }
+                                }));
+                            }
+                            catch
+                            {
+                                // Form có thể đã bị dispose lúc đang download, thì bỏ qua
+                            }
+                        }
+                    }
+                );
 
+                // ===== 2. IMPORT CSV =====
+                UpdateDownloadMessage(
+                    "Importing gestures from CSV...",
+                    "Đang import cử chỉ từ file CSV..."
+                );
+
+                int inserted = await _gestureDownloadService.ImportGesturesFromCsvAsync(userId);
+                await _gestureDownloadService.EnableGestureRequestAsync(userId);
+
+                UpdateDownloadMessage(
+                    $"Imported {inserted} gestures from CSV...",
+                    $"Đã import {inserted} cử chỉ từ CSV..."
+                );
+
+                // ===== 3. REFRESH UI =====
+                UpdateDownloadMessage(
+                    "Refreshing gesture list...",
+                    "Đang tải lại danh sách cử chỉ..."
+                );
+
+                await RefreshGesturesAsync();
+
+                // ===== 4. THÔNG BÁO =====
                 CustomMessageBox.ShowSuccess(
                     I18nHelper.GetString(
                         $"Downloaded from Drive & imported {inserted} gestures.",
@@ -924,8 +1130,6 @@ namespace GestPipePowerPonit
                     ),
                     I18nHelper.GetString("Download gesture", "Tải cử chỉ")
                 );
-
-                await RefreshGesturesAsync();
             }
             catch (Exception ex)
             {
@@ -933,8 +1137,9 @@ namespace GestPipePowerPonit
             }
             finally
             {
-
                 HideDownloadLoading();
+
+                btnDownload.Enabled = _canDownload;
                 btnLanguageEN.Enabled = true;
                 btnLanguageVN.Enabled = true;
                 btnPresentation.Enabled = true;

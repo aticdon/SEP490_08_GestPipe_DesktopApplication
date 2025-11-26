@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
+﻿using GestPipePowerPonit.I18n;
 using GestPipePowerPonit.Models;
 using GestPipePowerPonit.Models.DTOs;
 using GestPipePowerPonit.Services;
-using GestPipePowerPonit.I18n;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using SharpDX.Direct2D1;
+using System.Windows.Forms;
 
 namespace GestPipePowerPonit.Views
 {
@@ -16,6 +15,7 @@ namespace GestPipePowerPonit.Views
         private string userId;
         private List<UserGestureRequestDto> pendingRequests = new List<UserGestureRequestDto>();
         private bool isShowingUserGesture;
+        public bool RequestSentSuccessfully { get; private set; } = false;
 
         public RequestGestureForm(string userId, bool isShowingUserGesture = false)
         {
@@ -33,7 +33,6 @@ namespace GestPipePowerPonit.Views
         {
             pendingRequests.Clear();
 
-            //var configService = new UserGestureConfigService();
             var defaultGestureService = new DefaultGestureService();
             var userGestureService = new UserGestureConfigService();
             var requestService = new UserGestureRequestService();
@@ -62,7 +61,6 @@ namespace GestPipePowerPonit.Views
                     Console.WriteLine($"⚠️ [FormRequestGestures] Failed to load profile: {profileResponse.Message}");
                     username = $"User {userId.Substring(0, Math.Min(8, userId.Length))}";
                 }
-
 
                 List<string> gestureNames = new List<string>();
                 if (isShowingUserGesture)
@@ -95,29 +93,26 @@ namespace GestPipePowerPonit.Views
                         }
                     }
                 }
-                    
+
                 int actualRequestCount = pendingRequests.Count;
 
                 if (pendingRequests.Count > 0)
                 {
                     var firstRequest = pendingRequests[0];
-                    string currentLang = GestPipePowerPonit.CultureManager.CurrentCultureCode;
                     string descriptionPrefix = Properties.Resources.lblDescriptionRequestPrefix;
                     var gestures = gestureNames; // List<string> các tên cử chỉ
 
                     int gesturesPerLine = 3;
-                    int maxGesturesShow = 9; // Ví dụ muốn tối đa 9 cử chỉ, nếu dài hơn sẽ thêm dấu "..."
+                    int maxGesturesShow = 9; // tối đa 9 cử chỉ, dài hơn thì "..."
 
                     var toShow = gestures.Take(maxGesturesShow).ToList();
                     List<string> lines = new List<string>();
                     for (int i = 0; i < toShow.Count; i += gesturesPerLine)
                     {
-                        // Lấy 3 phần tử một dòng
                         var part = toShow.Skip(i).Take(gesturesPerLine);
                         lines.Add(string.Join(", ", part));
                     }
 
-                    // Nếu tổng gesture nhiều hơn, nối “...”
                     if (gestures.Count > maxGesturesShow)
                         lines.Add("...");
 
@@ -137,7 +132,10 @@ namespace GestPipePowerPonit.Views
                 else
                 {
                     lblUserValue.Text = username;
-                    lblDescriptionValue.Text = I18nHelper.GetString("No custom gesture request found.", "Không tìm thấy cử chỉ tùy chỉnh");
+                    lblDescriptionValue.Text = I18nHelper.GetString(
+                        "No custom gesture request found.",
+                        "Không tìm thấy cử chỉ tùy chỉnh"
+                    );
                     lblRequestDateValue.Text = DateTime.Now.ToString("dd-MM-yyyy");
                     lblRequestNumberValue.Text = actualRequestCount.ToString();
                     lblStatusValue.Text = "N/A";
@@ -148,7 +146,6 @@ namespace GestPipePowerPonit.Views
             }
             catch (Exception ex)
             {
-                // Sử dụng CustomMessageBox cho error
                 CustomMessageBox.ShowError($"Error loading data: {ex.Message}", "Loading Error");
                 this.Close();
             }
@@ -159,35 +156,27 @@ namespace GestPipePowerPonit.Views
             if (statusDict == null || statusDict.Count == 0)
                 return "N/A";
 
-            // Chỉ lấy phần mã ngôn ngữ (vd: "vi" từ "vi-VN")
             string currentLang = GestPipePowerPonit.CultureManager.CurrentCultureCode.Split('-')[0];
 
-            // Ưu tiên ngôn ngữ hiện tại
             if (statusDict.ContainsKey(currentLang))
-            {
                 return statusDict[currentLang];
-            }
 
-            // Fallback sang tiếng Anh
             if (statusDict.ContainsKey("en"))
-            {
                 return statusDict["en"];
-            }
 
-            // Fallback cuối cùng
             return statusDict.Values.FirstOrDefault() ?? "N/A";
         }
+
         private void btnBack_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        // Xử lý khi bấm nút Start Training - BỎ INSTRUCTION DIALOG
+        // Start Training (không còn upload ở đây nữa)
         private async void btnRequest_Click(object sender, EventArgs e)
         {
             if (pendingRequests.Count == 0)
             {
-                // Sử dụng CustomMessageBox thay vì MessageBox thông thường
                 CustomMessageBox.ShowWarning(
                     "No pending gestures available for training!",
                     "No Training Available"
@@ -201,15 +190,16 @@ namespace GestPipePowerPonit.Views
                 var gestureRequestService = new UserGestureRequestService();
                 bool overallSuccess = true;
 
-                // Disable button để tránh click nhiều lần
                 btnStartRequest.Enabled = false;
                 btnStartRequest.Text = "Processing...";
                 btnStartRequest.FillColor = System.Drawing.Color.Orange;
 
-                // Đổi trạng thái tất cả các request có trạng thái pending sang Training
+                // Đổi trạng thái tất cả request sang Training
                 foreach (var request in pendingRequests)
                 {
-                    var trainingSuccess = await gestureRequestService.SetRequestStatusToTrainingAsync(request.UserGestureConfigId);
+                    var trainingSuccess = await gestureRequestService
+                        .SetRequestStatusToTrainingAsync(request.UserGestureConfigId);
+
                     if (!trainingSuccess)
                     {
                         overallSuccess = false;
@@ -221,42 +211,35 @@ namespace GestPipePowerPonit.Views
 
                 if (overallSuccess && countSuccess && statusSuccess)
                 {
-                    // 🎉 SỬ DỤNG CustomMessageBox.ShowSuccess
-                    CustomMessageBox.ShowSuccess(
-                        Properties.Resources.RequestSuccessDetail,
-                        Properties.Resources.RequestSuccessTitle
-                    );
-
-                    // Đóng form hiện tại
+                    // Chỉ đánh dấu đã gửi request; upload do ListRequestGestureForm xử lý
+                    RequestSentSuccessfully = true;
                     this.Close();
                 }
                 else
                 {
-                    // 🚨 SỬ DỤNG CustomMessageBox.ShowError
                     CustomMessageBox.ShowError(
                         Properties.Resources.RequestErrorDetail,
                         Properties.Resources.RequestErrorTitle
                     );
 
-                    // Reset button state
                     btnStartRequest.Enabled = true;
                     btnStartRequest.Text = "🚀 Start Training";
                     btnStartRequest.FillColor = System.Drawing.Color.FromArgb(0, 188, 212);
                 }
+
             }
             catch (Exception ex)
             {
-                // 🚨 SỬ DỤNG CustomMessageBox.ShowError cho exception
                 CustomMessageBox.ShowError(
                     $"Unexpected error occurred:\n\n{ex.Message}\n\n" +
                     "Please try again or contact technical support.",
                     "System Error"
                 );
 
-                // Reset button state
                 btnStartRequest.Enabled = true;
             }
         }
+
         private void ApplyLanguage()
         {
             ResourceHelper.SetCulture(CultureManager.CurrentCultureCode, this);
@@ -268,11 +251,6 @@ namespace GestPipePowerPonit.Views
             this.btnBack.Text = Properties.Resources.Btn_Back;
             this.btnStartRequest.Text = Properties.Resources.BtnStartRequest;
             this.lblRequestNumberTitle.Text = Properties.Resources.lblRequestNumber;
-
         }
-        //private async Task ReloadRequests()
-        //{
-        //    FormRequestGestures_Load(this, EventArgs.Empty);
-        //}
     }
 }
