@@ -18,6 +18,8 @@ namespace GestPipe.Backend.Services.IServices
         Task<AuthResponseDto> ForgotPasswordAsync(string email);
         Task<AuthResponseDto> ResetPasswordAsync(ResetPasswordDto resetDto);
         Task<AuthResponseDto> LogoutAsync(string userId);
+
+        Task<AuthResponseDto> CancelPendingRegistrationAsync(string email);
     }
 }
 

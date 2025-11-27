@@ -1,14 +1,16 @@
-﻿using System;
+﻿using GestPipePowerPonit.I18n;
+using GestPipePowerPonit.Models;
+using GestPipePowerPonit.Models.DTOs;
+using GestPipePowerPonit.Services;
+using GestPipePowerPonit.Views.Auth;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using GestPipePowerPonit.Models.DTOs;
-using GestPipePowerPonit.Services;
-using GestPipePowerPonit.I18n;
-using GestPipePowerPonit.Views.Auth;
+using System.Globalization;
 
 namespace GestPipePowerPonit.Views.Profile
 {
@@ -184,6 +186,11 @@ namespace GestPipePowerPonit.Views.Profile
                     Properties.Resources.Gender_Female,
                     Properties.Resources.Gender_Other
                 });
+                RebindLocalizedCombos();
+                if (_currentProfile != null && _currentUser != null)
+                {
+                    PopulateFormFields();
+                }
             }
             catch (Exception ex)
             {
@@ -282,12 +289,97 @@ namespace GestPipePowerPonit.Views.Profile
             string notProvided = I18nHelper.GetString("Not provided", "Chưa cung cấp");
             // ✅ Optional fields with gray color
             SetFieldValue(lblPhoneValue, txtPhone, _currentProfile.PhoneNumber, notAdded);
-            SetFieldValue(lblGenderValue, null, _currentProfile.Gender, notSpecified);
-            SetFieldValue(lblBirthDateValue, null, _currentProfile.BirthDate?.ToString("MMMM d, yyyy"), notSet);
-            SetFieldValue(lblAddressValue, null, _currentProfile.Address, notProvided);
-            SetFieldValue(lblEducationValue, null, _currentProfile.EducationLevel, notAdded);
+            //SetFieldValue(lblGenderValue, null, _currentProfile.Gender, notSpecified);
+            if (string.IsNullOrWhiteSpace(_currentProfile.Gender))
+            {
+                lblGenderValue.Text = notSpecified;
+                lblGenderValue.ForeColor = Color.FromArgb(120, 120, 120);
+            }
+            else
+            {
+                lblGenderValue.Text = GetGenderDisplay(_currentProfile.Gender);
+                lblGenderValue.ForeColor = Color.White;
+
+                // Đồng bộ combobox theo key trong DB
+                switch (_currentProfile.Gender.ToLower())
+                {
+                    case "male":
+                        cmbGender.SelectedItem = Properties.Resources.Gender_Male;
+                        break;
+                    case "female":
+                        cmbGender.SelectedItem = Properties.Resources.Gender_Female;
+                        break;
+                    case "other":
+                        cmbGender.SelectedItem = Properties.Resources.Gender_Other;
+                        break;
+                }
+            }
+            //SetFieldValue(lblBirthDateValue, null, _currentProfile.BirthDate?.ToString("MMMM d, yyyy"), notSet);
+            string birthDateDisplay = null;
+            if (_currentProfile.BirthDate.HasValue)
+            {
+                var date = _currentProfile.BirthDate.Value;
+
+                if (_currentCultureCode == "vi-VN")
+                {
+                    // Bạn có thể đổi "dd/MM/yyyy" nếu thích dạng số
+                    birthDateDisplay = date.ToString("dd MMMM, yyyy", CultureInfo.GetCultureInfo("vi-VN"));
+                    // ví dụ: "06 Tháng một, 2025"
+                }
+                else
+                {
+                    birthDateDisplay = date.ToString("MMMM d, yyyy", CultureInfo.GetCultureInfo("en-US"));
+                    // ví dụ: "January 6, 2025"
+                }
+            }
+
+            SetFieldValue(lblBirthDateValue, null, birthDateDisplay, notSet);
+
             SetFieldValue(lblCompanyValue, txtCompany, _currentProfile.Company, notSpecified);
-            SetFieldValue(lblOccupationValue, null, _currentProfile.Occupation, notAdded);
+            // ✅ Address
+            if (string.IsNullOrWhiteSpace(_currentProfile.Address))
+            {
+                lblAddressValue.Text = notProvided;
+                lblAddressValue.ForeColor = Color.FromArgb(120, 120, 120);
+            }
+            else
+            {
+                lblAddressValue.Text = GetDisplayText(_addressOptions, _currentProfile.Address);
+                lblAddressValue.ForeColor = Color.White;
+            }
+
+            // ✅ Education
+            if (string.IsNullOrWhiteSpace(_currentProfile.EducationLevel))
+            {
+                lblEducationValue.Text = notAdded;
+                lblEducationValue.ForeColor = Color.FromArgb(120, 120, 120);
+            }
+            else
+            {
+                lblEducationValue.Text = GetDisplayText(_educationOptions, _currentProfile.EducationLevel);
+                lblEducationValue.ForeColor = Color.White;
+            }
+
+            // ✅ Occupation: nếu là option có sẵn thì dùng display, nếu là custom text thì giữ nguyên
+            if (string.IsNullOrWhiteSpace(_currentProfile.Occupation))
+            {
+                lblOccupationValue.Text = notAdded;
+                lblOccupationValue.ForeColor = Color.FromArgb(120, 120, 120);
+            }
+            else
+            {
+                var optOcc = _occupationOptions.FirstOrDefault(o => o.Key == _currentProfile.Occupation);
+                if (optOcc != null)
+                {
+                    lblOccupationValue.Text = GetDisplayText(optOcc);
+                }
+                else
+                {
+                    // custom occupation (tự gõ khi chọn Other)
+                    lblOccupationValue.Text = _currentProfile.Occupation;
+                }
+                lblOccupationValue.ForeColor = Color.White;
+            }
 
             // ✅ Gender ComboBox
             if (!string.IsNullOrEmpty(_currentProfile.Gender))
@@ -318,61 +410,7 @@ namespace GestPipePowerPonit.Views.Profile
             {
                 dtpBirthDate.Value = _currentProfile.BirthDate.Value;
             }
-
-            // ✅ Address ComboBox
-            if (!string.IsNullOrEmpty(_currentProfile.Address))
-            {
-                // Try to find exact match
-                int index = cmbAddress.Items.IndexOf(_currentProfile.Address);
-                if (index >= 0)
-                {
-                    cmbAddress.SelectedIndex = index;
-                }
-                else
-                {
-                    cmbAddress.SelectedIndex = 0; // Default
-                }
-            }
-
-            // ✅ Education ComboBox
-            if (!string.IsNullOrEmpty(_currentProfile.EducationLevel))
-            {
-                int index = cmbEducation.Items.IndexOf(_currentProfile.EducationLevel);
-                if (index >= 0)
-                {
-                    cmbEducation.SelectedIndex = index;
-                }
-                else
-                {
-                    cmbEducation.SelectedIndex = 0;
-                }
-            }
-
-            // ✅ Occupation ComboBox
-            if (!string.IsNullOrEmpty(_currentProfile.Occupation))
-            {
-                int index = cmbOccupation.Items.IndexOf(_currentProfile.Occupation);
-                if (index >= 0)
-                {
-                    // Found exact match in list
-                    cmbOccupation.SelectedIndex = index;
-                    txtOccupationOther.Visible = false; // ✅ Hide "Other" textbox
-                    txtOccupationOther.Text = "";
-                }
-                else
-                {
-                    // Custom occupation - select "Other"
-                    cmbOccupation.SelectedIndex = cmbOccupation.Items.Count - 1; // "Other (specify below)"
-                    txtOccupationOther.Text = _currentProfile.Occupation;
-                    txtOccupationOther.Visible = false; // ✅ Hide initially, will show in edit mode
-                }
-            }
-            else
-            {
-                cmbOccupation.SelectedIndex = 0; // Default "Select occupation"
-                txtOccupationOther.Visible = false; // ✅ Hide
-                txtOccupationOther.Text = "";
-            }
+            RebindLocalizedCombos();
         }
 
         /// <summary>
@@ -665,45 +703,95 @@ namespace GestPipePowerPonit.Views.Profile
             try
             {
                 // ✅ Get Gender value
+                //string genderValue = null;
+                Console.WriteLine($"[DEBUG] Gender SelectedIndex = {cmbGender.SelectedIndex}");
+                Console.WriteLine($"[DEBUG] Gender SelectedItem = {cmbGender.SelectedItem}");
+                //if (cmbGender.SelectedItem != null)
+                //{
+                //    string selectedGender = cmbGender.SelectedItem.ToString();
+                //    if (selectedGender == Properties.Resources.Gender_Male)
+                //        genderValue = "Male";
+                //    else if (selectedGender == Properties.Resources.Gender_Female)
+                //        genderValue = "Female";
+                //    else if (selectedGender == Properties.Resources.Gender_Other)
+                //        genderValue = "Other";
+                //}
                 string genderValue = null;
-                if (cmbGender.SelectedItem != null)
+                if (cmbGender.SelectedIndex >= 0)
                 {
-                    string selectedGender = cmbGender.SelectedItem.ToString();
-                    if (selectedGender == Properties.Resources.Gender_Male)
-                        genderValue = "Male";
-                    else if (selectedGender == Properties.Resources.Gender_Female)
-                        genderValue = "Female";
-                    else if (selectedGender == Properties.Resources.Gender_Other)
-                        genderValue = "Other";
+                    if (cmbGender.SelectedIndex == 0) genderValue = "Male";
+                    else if (cmbGender.SelectedIndex == 1) genderValue = "Female";
+                    else if (cmbGender.SelectedIndex == 2) genderValue = "Other";
                 }
-
+                Console.WriteLine($"[DEBUG] genderValue before send = {genderValue}");
                 // ✅ Get Address value
+                //string addressValue = "";
+                //if (cmbAddress.SelectedIndex > 0)
+                //{
+                //    addressValue = cmbAddress.SelectedItem.ToString();
+                //}
+
+                //// ✅ Get Education value
+                //string educationValue = "";
+                //if (cmbEducation.SelectedIndex > 0)
+                //{
+                //    educationValue = cmbEducation.SelectedItem.ToString();
+                //}
+
+                //// ✅ Get Occupation value
+                //string occupationValue = "";
+                //if (cmbOccupation.SelectedIndex > 0)
+                //{
+                //    if (cmbOccupation.SelectedIndex == cmbOccupation.Items.Count - 1) // "Other"
+                //    {
+                //        occupationValue = txtOccupationOther.Text?.Trim() ?? "";
+                //    }
+                //    else
+                //    {
+                //        occupationValue = cmbOccupation.SelectedItem.ToString();
+                //    }
+                //}
+                // ✅ Address: lưu Key vào DB
                 string addressValue = "";
                 if (cmbAddress.SelectedIndex > 0)
                 {
-                    addressValue = cmbAddress.SelectedItem.ToString();
+                    var idx = cmbAddress.SelectedIndex - 1; // trừ 1 vì có item placeholder ở đầu
+                    if (idx >= 0 && idx < _addressOptions.Count)
+                    {
+                        addressValue = _addressOptions[idx].Key;
+                    }
                 }
 
-                // ✅ Get Education value
+                // ✅ Education: lưu Key
                 string educationValue = "";
                 if (cmbEducation.SelectedIndex > 0)
                 {
-                    educationValue = cmbEducation.SelectedItem.ToString();
+                    var idx = cmbEducation.SelectedIndex - 1;
+                    if (idx >= 0 && idx < _educationOptions.Count)
+                    {
+                        educationValue = _educationOptions[idx].Key;
+                    }
                 }
 
-                // ✅ Get Occupation value
+                // ✅ Occupation: lưu Key nếu là option có sẵn, còn "Other" thì lưu text tự do
                 string occupationValue = "";
                 if (cmbOccupation.SelectedIndex > 0)
                 {
-                    if (cmbOccupation.SelectedIndex == cmbOccupation.Items.Count - 1) // "Other"
+                    // Nếu chọn dòng cuối cùng = "Other (specify below)" → lưu text người dùng nhập
+                    if (cmbOccupation.SelectedIndex == cmbOccupation.Items.Count - 1)
                     {
                         occupationValue = txtOccupationOther.Text?.Trim() ?? "";
                     }
                     else
                     {
-                        occupationValue = cmbOccupation.SelectedItem.ToString();
+                        var idx = cmbOccupation.SelectedIndex - 1;
+                        if (idx >= 0 && idx < _occupationOptions.Count)
+                        {
+                            occupationValue = _occupationOptions[idx].Key;
+                        }
                     }
                 }
+
 
                 var updateDto = new UpdateProfileDto
                 {
@@ -1001,25 +1089,25 @@ namespace GestPipePowerPonit.Views.Profile
                         {
                             Console.WriteLine("[ProfileForm] ✅ Avatar updated successfully in database!");
                             _currentUser.AvatarUrl = avatarUrl; // Cập nhật local
-                            CustomMessageBox.ShowSuccess("Cập nhật ảnh đại diện thành công!", "Thành công");
+                            CustomMessageBox.ShowSuccess(I18nHelper.GetString("Profile photo updated successfully!", "Cập nhật ảnh đại diện thành công!"), I18nHelper.GetString("Success","Thành công"));
                             await LoadAvatar(); // Load lại avatar từ URL mới
                         }
                         else
                         {
                             Console.WriteLine($"[ProfileForm] ❌ Failed to update avatar: {response?.Message}");
-                            CustomMessageBox.ShowError("Cập nhật ảnh đại diện thất bại!", "Lỗi");
+                            CustomMessageBox.ShowError(I18nHelper.GetString("Profile picture update failed!", "Cập nhật ảnh đại diện thất bại!"), I18nHelper.GetString("Fail", "Lỗi"));
                         }
                     }
                     else
                     {
                         Console.WriteLine("[ProfileForm] ❌ Upload failed, no URL returned");
-                        CustomMessageBox.ShowError("Không upload được ảnh đại diện!", "Lỗi");
+                        CustomMessageBox.ShowError(I18nHelper.GetString("Cannot upload avatar!", "Không upload được ảnh đại diện!"), I18nHelper.GetString("Fail", "Lỗi"));
                     }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"[ProfileForm] ❌ Exception: {ex.Message}");
-                    CustomMessageBox.ShowError($"Lỗi: {ex.Message}", "Lỗi");
+                    //CustomMessageBox.ShowError($"Lỗi: {ex.Message}", "Lỗi");
                 }
             }
         }
@@ -1038,6 +1126,216 @@ namespace GestPipePowerPonit.Views.Profile
         private void guna2ControlBox1_Click(object sender, EventArgs e)
         {
             AppSettings.ExitAll();
+        }
+
+        private readonly List<LocalizedOption> _addressOptions = new()
+{
+    new LocalizedOption("Thành phố Hà Nội", "Ha Noi City", "Thành phố Hà Nội"),
+    new LocalizedOption("Thành phố Huế", "Hue City", "Thành phố Huế"),
+    new LocalizedOption("Tỉnh Lai Châu", "Lai Chau Province", "Tỉnh Lai Châu"),
+    new LocalizedOption("Tỉnh Điện Biên", "Dien Bien Province", "Tỉnh Điện Biên"),
+    new LocalizedOption("Tỉnh Sơn La", "Son La Province", "Tỉnh Sơn La"),
+    new LocalizedOption("Tỉnh Lạng Sơn", "Lang Son Province", "Tỉnh Lạng Sơn"),
+    new LocalizedOption("Tỉnh Quảng Ninh", "Quang Ninh Province", "Tỉnh Quảng Ninh"),
+    new LocalizedOption("Tỉnh Thanh Hóa", "Thanh Hoa Province", "Tỉnh Thanh Hóa"),
+    new LocalizedOption("Tỉnh Nghệ An", "Nghe An Province", "Tỉnh Nghệ An"),
+    new LocalizedOption("Tỉnh Hà Tĩnh", "Ha Tinh Province", "Tỉnh Hà Tĩnh"),
+    new LocalizedOption("Tỉnh Cao Bàng", "Cao Bang Province", "Tỉnh Cao Bằng"),
+    new LocalizedOption("Tỉnh Tuyên Quang", "Tuyen Quang Province", "Tỉnh Tuyên Quang"),
+    new LocalizedOption("Tỉnh Lào Cai", "Lao Cai Province", "Tỉnh Lào Cai"),
+    new LocalizedOption("Tỉnh Thái Nguyên", "Thai Nguyen Province", "Tỉnh Thái Nguyên"),
+    new LocalizedOption("Tỉnh Phú Thọ", "Phu Tho Province", "Tỉnh Phú Thọ"),
+    new LocalizedOption("Tỉnh Bắc Ninh", "Bac Ninh Province", "Tỉnh Bắc Ninh"),
+    new LocalizedOption("Tỉnh Hưng Yên", "Hung Yen Province", "Tỉnh Hưng Yên"),
+    new LocalizedOption("Thành Phố Hải Phòng", "Hai Phong City", "Thành Phố Hải Phòng"),
+    new LocalizedOption("Tỉnh Ninh Bình", "Ninh Binh Province", "Tỉnh Ninh Bình"),
+    new LocalizedOption("Tỉnh Quảng Trị", "Quang Tri Province", "Tỉnh Quảng Trị"),
+    new LocalizedOption("Thành Phố Đà Nẵng", "Da Nang City", "Thành Phố Đà Nẵng"),
+    new LocalizedOption("Tỉnh Bình Định", "Binh Dinh Province", "Tỉnh Bình Định"),
+    new LocalizedOption("Tỉnh Khánh Hòa", "Khanh Hoa Province", "Tỉnh Khanh Hoa"),
+    new LocalizedOption("Tỉnh Đắk Lắk", "Dien Bien Province", "Tỉnh Đắk Lắk"),
+    new LocalizedOption("Tỉnh Gia Lai", "Gia LaiProvince", "Tỉnh Gia Lai"),
+    new LocalizedOption("Tỉnh Lâm Đồng", "Lam Dong Province", "Tỉnh Lâm Đồng"),
+    new LocalizedOption("Tỉnh Đồng Nai", "Dong Nai Province", "Tỉnh Đồng Nai"),
+    new LocalizedOption("Thành phố Hồ Chí Minh", "Ho Chi Minh City", "Thành phố Hồ Chí Minh"),
+    new LocalizedOption("Tỉnh Tây Ninh", "Thanh Hoa Province", "Tỉnh Thanh Hóa"),
+    new LocalizedOption("Tỉnh Tiền Giang", "Tien Giang Province", "Tỉnh Tien Giang"),
+    new LocalizedOption("Tỉnh Vĩnh Long", "Vinh Long Province", "Tỉnh Vĩnh Long"),
+    new LocalizedOption("Thành phố Cần Thơ", "Can Tho City", "Thành phố Cần Thơ"),
+    new LocalizedOption("Tỉnh An Giang", "An Giang Province", "Tỉnh An Giang"),
+    new LocalizedOption("Tỉnh Cà Mau", "Ca Mau Province", "Tỉnh Cà Mau")
+};
+        private readonly List<LocalizedOption> _educationOptions = new()
+{
+    // Key = chuỗi bạn muốn lưu trong DB (có thể giữ luôn EN cũ)
+    new LocalizedOption("High School", "High school", "Trung học phổ thông"),
+    new LocalizedOption("College", "College", "Cao đẳng"),
+    new LocalizedOption("Bachelor", "Bachelor", "Đại học"),
+    new LocalizedOption("Master", "Master", "Thạc sĩ"),
+    new LocalizedOption("PhD", "PhD", "Tiến sĩ")
+};
+        private readonly List<LocalizedOption> _occupationOptions = new()
+{
+    new LocalizedOption("IT/Software/Technology",     "IT",    "CNTT"),
+    new LocalizedOption("Teacher/Education",          "Teacher",           "Giáo viên"),
+    new LocalizedOption("Marketing/PR/Advertising",   "Marketing",  "Quảng cáo"),
+    new LocalizedOption("Sales/Business/Trade",       "Business",      "Bán hàng"),
+    new LocalizedOption("Finance/Banking",            "Finance",             "Tài chính"),
+    new LocalizedOption("Designer/Creative",          "Designer",           "Thiết kế"),
+    new LocalizedOption("Healthcare/Medical",         "Healthcare",          "Y tế"),
+    new LocalizedOption("Engineering/Technical",      "Engineering",       "Kỹ sư"),
+    new LocalizedOption("Construction/Architecture",  "Construction",   "Xây dựng"),
+    new LocalizedOption("Legal/Law",                  "Law",                   "Luật"),
+    new LocalizedOption("Hospitality/Tourism",        "Tourism",         "Du lịch"),
+    new LocalizedOption("Science/Research",           "Science",            "Khoa học"),
+    new LocalizedOption("Administrative/Clerical",    "Administrative",     "Hành chính"),
+    new LocalizedOption("Student",                    "Student",                       "Sinh viên"),
+    new LocalizedOption("Other",                      "Other (specify below)",         "Khác (ghi bên dưới)")
+};
+        private string GetDisplayText(LocalizedOption opt)
+        {
+            if (opt == null) return string.Empty;
+
+            // vi-VN: tiếng Việt trước
+            if (_currentCultureCode == "vi-VN")
+                return $"{opt.TextVi} ({opt.TextEn})";
+
+            // en-US: tiếng Anh trước
+            return $"{opt.TextEn} ({opt.TextVi})";
+        }
+
+        private string GetGenderDisplay(string genderKey)
+        {
+            if (string.IsNullOrWhiteSpace(genderKey))
+                return I18nHelper.GetString("Not specified", "Chưa xác định");
+
+            genderKey = genderKey.ToLowerInvariant();
+
+            string en = genderKey switch
+            {
+                "male" => "Male",
+                "female" => "Female",
+                "other" => "Other",
+                _ => genderKey
+            };
+
+            string vi = genderKey switch
+            {
+                "male" => "Nam",
+                "female" => "Nữ",
+                "other" => "Khác",
+                _ => genderKey
+            };
+
+            // vi-VN: tiếng Việt trước, en-US: tiếng Anh trước
+            return _currentCultureCode == "vi-VN"
+                ? $"{vi} ({en})"
+                : $"{en} ({vi})";
+        }
+
+        // Lấy display text theo key
+        private string GetDisplayText(List<LocalizedOption> list, string key)
+        {
+            if (string.IsNullOrWhiteSpace(key)) return null;
+
+            var opt = list.FirstOrDefault(o => o.Key == key);
+            return opt != null ? GetDisplayText(opt) : key; // fallback hiển thị key nếu không map được
+        }
+        private void BindAddressCombo()
+        {
+            cmbAddress.Items.Clear();
+
+            // placeholder song ngữ
+            cmbAddress.Items.Add(
+                I18nHelper.GetString("Select Province/City", "Chọn Tỉnh/Thành phố"));
+
+            foreach (var opt in _addressOptions)
+            {
+                cmbAddress.Items.Add(GetDisplayText(opt));
+            }
+
+            // set SelectedIndex theo _currentProfile.Address (key)
+            if (_currentProfile != null && !string.IsNullOrWhiteSpace(_currentProfile.Address))
+            {
+                int idx = _addressOptions.FindIndex(o => o.Key == _currentProfile.Address);
+                cmbAddress.SelectedIndex = idx >= 0 ? idx + 1 : 0;
+            }
+            else
+            {
+                cmbAddress.SelectedIndex = 0;
+            }
+        }
+        private void BindEducationCombo()
+        {
+            cmbEducation.Items.Clear();
+
+            cmbEducation.Items.Add(
+                I18nHelper.GetString("Select educational level", "Chọn trình độ học vấn"));
+
+            foreach (var opt in _educationOptions)
+            {
+                cmbEducation.Items.Add(GetDisplayText(opt));
+            }
+
+            if (_currentProfile != null && !string.IsNullOrWhiteSpace(_currentProfile.EducationLevel))
+            {
+                int idx = _educationOptions.FindIndex(o => o.Key == _currentProfile.EducationLevel);
+                cmbEducation.SelectedIndex = idx >= 0 ? idx + 1 : 0;
+            }
+            else
+            {
+                cmbEducation.SelectedIndex = 0;
+            }
+        }
+        private void BindOccupationCombo()
+        {
+            cmbOccupation.Items.Clear();
+
+            cmbOccupation.Items.Add(
+                I18nHelper.GetString("Select occupation", "Chọn nghề nghiệp"));
+
+            foreach (var opt in _occupationOptions)
+            {
+                cmbOccupation.Items.Add(GetDisplayText(opt));
+            }
+
+            if (_currentProfile != null && !string.IsNullOrWhiteSpace(_currentProfile.Occupation))
+            {
+                int idx = _occupationOptions.FindIndex(o => o.Key == _currentProfile.Occupation);
+                if (idx >= 0)
+                {
+                    // Occupation nằm trong list chuẩn
+                    cmbOccupation.SelectedIndex = idx + 1;
+                    txtOccupationOther.Visible = false;
+                }
+                else
+                {
+                    // Custom text → chọn luôn "Other"
+                    cmbOccupation.SelectedIndex = cmbOccupation.Items.Count - 1;
+
+                    if (_isEditMode)
+                    {
+                        txtOccupationOther.Visible = true;
+                        txtOccupationOther.Text = _currentProfile.Occupation;
+                    }
+                    else
+                    {
+                        txtOccupationOther.Visible = false;
+                    }
+                }
+            }
+            else
+            {
+                cmbOccupation.SelectedIndex = 0;
+                txtOccupationOther.Visible = false;
+            }
+        }
+
+        private void RebindLocalizedCombos()
+        {
+            BindAddressCombo();
+            BindEducationCombo();
+            BindOccupationCombo();
         }
     }
 }

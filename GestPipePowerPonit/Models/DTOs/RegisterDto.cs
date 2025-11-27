@@ -25,7 +25,8 @@ namespace GestPipePowerPonit.Models.DTOs
 
         [Required]
         [Phone]
-        [RegularExpression(@"^\d{10,11}$")]
+        [RegularExpression(@"^0\d{9,10}$",
+        ErrorMessage = "PhoneInvalidFormat")]
         public string PhoneNumber { get; set; } = string.Empty;
 
         [Required]

@@ -61,67 +61,6 @@ namespace GestPipe.Backend.Services.Implementation
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-
-        //#region Helpers
-
-
-        //private static string NormalizeEmail(string email)
-        //{
-        //    //return email?.Trim().ToLowerInvariant();
-        //    try
-        //    {
-        //        if (string.IsNullOrWhiteSpace(email))
-        //            return string.Empty;
-
-        //        // ✅ TC9: Validate email format
-        //        var addr = new System.Net.Mail.MailAddress(email);
-        //        if (addr.Address != email.Trim())
-        //            return string.Empty;
-
-        //        return email.Trim().ToLowerInvariant();
-        //    }
-        //    catch
-        //    {
-        //        return string.Empty;
-        //    }
-        //}
-
-
-        //private string GenerateJwtToken(User user)
-        //{
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-
-
-        //    var claims = new List<Claim>
-        //    {
-        //        new Claim(ClaimTypes.NameIdentifier, user.Id),
-        //        new Claim(ClaimTypes.Email, user.Email),
-        //        new Claim("verified", user.EmailVerified.ToString()),
-        //        new Claim("status", user.AccountStatus ?? string.Empty),
-        //    };
-
-
-        //    var tokenDescriptor = new SecurityTokenDescriptor
-        //    {
-        //        Subject = new ClaimsIdentity(claims),
-        //        Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
-        //        SigningCredentials = new SigningCredentials(
-        //            new SymmetricSecurityKey(key),
-        //            SecurityAlgorithms.HmacSha256Signature
-        //        ),
-        //        Issuer = _jwtSettings.Issuer,
-        //        Audience = _jwtSettings.Audience
-        //    };
-
-
-        //    var token = tokenHandler.CreateToken(tokenDescriptor);
-        //    return tokenHandler.WriteToken(token);
-        //}
-
-
-        //#endregion
-
         #region Helpers
 
         // ✅ Cập nhật NormalizeEmail để validate format
@@ -212,68 +151,6 @@ namespace GestPipe.Backend.Services.Implementation
         }
 
         #endregion
-        //public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
-        //{
-
-        //    var normalizedEmail = NormalizeEmail(registerDto.Email);
-
-
-        //    if (!await IsEmailUniqueAsync(normalizedEmail))
-        //    {
-        //        return new AuthResponseDto
-        //        {
-        //            Success = false,
-        //            Message = "This email is already registered."
-        //        };
-        //    }
-
-
-        //    var user = _mapper.Map<User>(registerDto);
-        //    user.Email = normalizedEmail;
-        //    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password);
-
-
-        //    // ✅ Default trạng thái sau khi đăng ký
-        //    user.EmailVerified = false;
-        //    user.AccountStatus = STATUS_PENDING_VERIFICATION;
-        //    user.AvatarUrl = DEFAULT_AVATAR_URL;
-
-
-        //    await _usersCollection.InsertOneAsync(user);
-
-
-        //    var profile = _mapper.Map<UserProfile>(registerDto);
-        //    profile.UserId = user.Id;
-        //    await _profilesCollection.InsertOneAsync(profile);
-
-
-        //    try
-        //    {
-        //        var otp = await _otpService.GenerateOtpAsync(user.Id, user.Email, "registration");
-        //        await _emailService.SendVerificationEmailAsync(user.Email, otp);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Unable to send verification email: {ex.Message}");
-        //        return new AuthResponseDto
-        //        {
-        //            Success = true,
-        //            Message = "Account created, but we couldn't send the verification code. Please request a new OTP.",
-        //            UserId = user.Id,
-        //            RequiresVerification = true
-        //        };
-        //    }
-
-
-        //    return new AuthResponseDto
-        //    {
-        //        Success = true,
-        //        Message = "Registration successful. Please check your email for the verification code.",
-        //        UserId = user.Id,
-        //        RequiresVerification = true
-        //    };
-        //}
-        // File: GestPipe.Backend/Services/AuthService.cs
         public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
         {
             // ✅ TC4, TC5: Validate email
@@ -563,17 +440,6 @@ namespace GestPipe.Backend.Services.Implementation
                     RequiresVerification = true
                 };
             }
-
-
-            //if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash))
-            //{
-            //    return new AuthResponseDto
-            //    {
-            //        Success = false,
-            //        Message = "Invalid email or password."
-            //    };
-            //}
-            // ✅ TC13: Handle hash password exception
             try
             {
                 if (!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash))
@@ -594,19 +460,6 @@ namespace GestPipe.Backend.Services.Implementation
                     Message = "Authentication error. Please try again or reset your password."
                 };
             }
-
-
-            //var update = Builders<User>.Update
-            //    .Set(u => u.LastLogin, DateTime.UtcNow)
-            //    .Set(u => u.AccountStatus, STATUS_ACTIVE_ONLINE);
-
-
-            //await _usersCollection.UpdateOneAsync(u => u.Id == user.Id, update);
-
-
-            //user.AccountStatus = STATUS_ACTIVE_ONLINE;
-            //user.LastLogin = DateTime.UtcNow;
-            // ✅ TC14: Handle database update exception
             try
             {
                 var update = Builders<User>.Update
@@ -627,19 +480,6 @@ namespace GestPipe.Backend.Services.Implementation
                     Message = "Login processed but unable to update session.  Please try again."
                 };
             }
-
-
-            //var token = GenerateJwtToken(user);
-
-
-            //return new AuthResponseDto
-            //{
-            //    Success = true,
-            //    Message = "Login successful.",
-            //    Token = token,
-            //    UserId = user.Id
-            //};
-            // ✅ TC15: Handle token generation exception
             string token;
             try
             {
@@ -663,72 +503,6 @@ namespace GestPipe.Backend.Services.Implementation
                 UserId = user.Id
             };
         }
-
-
-        ///// <summary>
-        ///// OTP đã validate ở Controller. Hàm này chỉ cập nhật user & gửi mail.
-        ///// </summary>
-        //public async Task<AuthResponseDto> VerifyOtpAsync(VerifyOtpDto verifyOtpDto)
-        //{
-        //    var normalizedEmail = NormalizeEmail(verifyOtpDto.Email);
-
-
-        //    var user = await GetUserByEmailAsync(normalizedEmail);
-        //    if (user == null)
-        //    {
-        //        return new AuthResponseDto
-        //        {
-        //            Success = false,
-        //            Message = "User not found."
-        //        };
-        //    }
-
-
-        //    var update = Builders<User>.Update
-        //        .Set(u => u.EmailVerified, true)
-        //        .Set(u => u.AccountStatus, STATUS_ACTIVE_ONLINE);
-
-
-        //    await _usersCollection.UpdateOneAsync(u => u.Id == user.Id, update);
-
-
-        //    // Xóa OTP sau khi xác thực thành công
-        //    try
-        //    {
-        //        await _otpService.DeleteOtpAsync(normalizedEmail);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Warning: failed to delete OTP: {ex.Message}");
-        //    }
-
-
-        //    try
-        //    {
-        //        var profile = await _profilesCollection.Find(p => p.UserId == user.Id).FirstOrDefaultAsync();
-        //        await _emailService.SendWelcomeEmailAsync(user.Email, profile?.FullName);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Failed to send welcome email: {ex.Message}");
-        //    }
-
-
-        //    user.EmailVerified = true;
-        //    user.AccountStatus = STATUS_ACTIVE_ONLINE;
-
-
-        //    var token = GenerateJwtToken(user);
-
-
-        //    return new AuthResponseDto
-        //    {
-        //        Success = true,
-        //        Message = "Email verified successfully.",
-        //        Token = token,
-        //        UserId = user.Id
-        //    };
-        //}
         /// <summary>
         /// Verify OTP và update user status
         /// </summary>
@@ -883,114 +657,6 @@ namespace GestPipe.Backend.Services.Implementation
                 };
             }
         }
-
-
-        //public async Task<AuthResponseDto> GoogleLoginAsync(string idToken)
-        //{
-        //    try
-        //    {
-        //        var settings = new GoogleJsonWebSignature.ValidationSettings
-        //        {
-        //            Audience = new[] { _googleSettings.ClientId }
-        //        };
-
-
-        //        var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
-        //        var normalizedEmail = NormalizeEmail(payload.Email);
-
-
-        //        var user = await _usersCollection
-        //            .Find(u => u.Email == normalizedEmail)
-        //            .FirstOrDefaultAsync();
-
-
-        //        if (user == null)
-        //        {
-        //            user = _mapper.Map<User>(payload);
-        //            user.Email = normalizedEmail;
-        //            user.EmailVerified = true;
-        //            user.AccountStatus = STATUS_ACTIVE_ONLINE;
-        //            user.AuthProvider = "Google";
-        //            user.ProviderId = payload.Subject;
-
-
-        //            user.AvatarUrl = !string.IsNullOrEmpty(payload.Picture)
-        //                ? payload.Picture
-        //                : DEFAULT_AVATAR_URL;
-
-
-        //            await _usersCollection.InsertOneAsync(user);
-
-
-        //            var profile = _mapper.Map<UserProfile>(payload);
-        //            profile.UserId = user.Id;
-        //            await _profilesCollection.InsertOneAsync(profile);
-
-
-        //            try
-        //            {
-        //                await _emailService.SendWelcomeEmailAsync(user.Email, payload.Name);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Console.WriteLine($"Failed to send welcome email: {ex.Message}");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            var update = Builders<User>.Update
-        //                .Set(u => u.LastLogin, DateTime.UtcNow)
-        //                .Set(u => u.AccountStatus, STATUS_ACTIVE_ONLINE);
-
-
-        //            if (string.IsNullOrEmpty(user.AuthProvider))
-        //            {
-        //                update = update
-        //                    .Set(u => u.AuthProvider, "Google")
-        //                    .Set(u => u.ProviderId, payload.Subject)
-        //                    .Set(u => u.EmailVerified, true);
-
-
-        //                if (string.IsNullOrEmpty(user.AvatarUrl) || user.AvatarUrl == DEFAULT_AVATAR_URL)
-        //                {
-        //                    if (!string.IsNullOrEmpty(payload.Picture))
-        //                    {
-        //                        update = update.Set(u => u.AvatarUrl, payload.Picture);
-        //                    }
-        //                }
-        //            }
-
-
-        //            await _usersCollection.UpdateOneAsync(u => u.Id == user.Id, update);
-
-
-        //            user.LastLogin = DateTime.UtcNow;
-        //            user.AccountStatus = STATUS_ACTIVE_ONLINE;
-        //            user.EmailVerified = true;
-        //        }
-
-
-        //        var token = GenerateJwtToken(user);
-
-
-        //        return new AuthResponseDto
-        //        {
-        //            Success = true,
-        //            Message = "Google login successful.",
-        //            Token = token,
-        //            UserId = user.Id
-        //        };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Google login failed: {ex.Message}");
-        //        return new AuthResponseDto
-        //        {
-        //            Success = false,
-        //            Message = $"Google authentication failed: {ex.Message}"
-        //        };
-        //    }
-        //}
         public async Task<AuthResponseDto> GoogleLoginAsync(string idToken)
         {
             // ✅ TC12, TC13: Kiểm tra token không null/rỗng
@@ -1258,57 +924,6 @@ namespace GestPipe.Backend.Services.Implementation
                 };
             }
         }
-
-        //public async Task<AuthResponseDto> ForgotPasswordAsync(string email)
-        //{
-        //    var normalizedEmail = NormalizeEmail(email);
-
-
-        //    var user = await GetUserByEmailAsync(normalizedEmail);
-        //    if (user == null)
-        //    {
-        //        return new AuthResponseDto
-        //        {
-        //            Success = false,
-        //            Message = "No account found with this email."
-        //        };
-        //    }
-
-
-        //    if (await _otpService.IsOtpLimitExceededAsync(normalizedEmail))
-        //    {
-        //        return new AuthResponseDto
-        //        {
-        //            Success = false,
-        //            Message = "You have requested codes too many times. Please try again later."
-        //        };
-        //    }
-
-
-        //    try
-        //    {
-        //        var otp = await _otpService.GenerateOtpAsync(user.Id, user.Email, "resetpassword");
-        //        await _emailService.SendPasswordResetEmailAsync(user.Email, otp);
-
-
-        //        return new AuthResponseDto
-        //        {
-        //            Success = true,
-        //            Message = "A password reset code has been sent to your email.",
-        //            UserId = user.Id,
-        //            RequiresVerification = true
-        //        };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Failed to generate/send password reset OTP: {ex.Message}");
-        //        return new AuthResponseDto
-        //        {
-        //            Success = false,
-        //            Message = "Unable to send the reset code. Please try again later."
-        //        };
-        //    }
-        //}
         public async Task<AuthResponseDto> ForgotPasswordAsync(string email)
         {
             // ✅ TC4, TC5: Validate email không null/rỗng
@@ -1555,5 +1170,85 @@ namespace GestPipe.Backend.Services.Implementation
                 };
             }
         }
+        public async Task<AuthResponseDto> CancelPendingRegistrationAsync(string email)
+        {
+            // Chuẩn hóa email
+            var normalizedEmail = NormalizeEmail(email);
+            if (string.IsNullOrEmpty(normalizedEmail))
+            {
+                // Email không valid thì coi như không có gì để xóa
+                return new AuthResponseDto
+                {
+                    Success = true,
+                    Message = "No pending registration for this email."
+                };
+            }
+
+            try
+            {
+                var user = await GetUserByEmailAsync(normalizedEmail);
+                if (user == null)
+                {
+                    // Không có user -> coi như đã sạch
+                    return new AuthResponseDto
+                    {
+                        Success = true,
+                        Message = "User not found or already removed."
+                    };
+                }
+
+                // ĐÃ VERIFY / KHÔNG CÒN pending thì KHÔNG xóa nữa cho an toàn
+                if (user.EmailVerified || user.AccountStatus != STATUS_PENDING_VERIFICATION)
+                {
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "User is not in pending verification state. Cannot cancel registration."
+                    };
+                }
+
+                // Xóa user
+                await _usersCollection.DeleteOneAsync(u => u.Id == user.Id);
+
+                // Xóa profile nếu có
+                await _profilesCollection.DeleteOneAsync(p => p.UserId == user.Id);
+
+                // Xóa OTP (nếu có) – dùng email
+                try
+                {
+                    await _otpService.DeleteOtpAsync(normalizedEmail);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to delete OTP when cancel registration: {ex.Message}");
+                    // Không fail request vì lỗi OTP
+                }
+
+                return new AuthResponseDto
+                {
+                    Success = true,
+                    Message = "Pending registration has been cancelled and user data removed."
+                };
+            }
+            catch (MongoException ex)
+            {
+                Console.WriteLine($"Database error in CancelPendingRegistrationAsync: {ex.Message}");
+                return new AuthResponseDto
+                {
+                    Success = false,
+                    Message = "A server error occurred while cancelling registration. Please try again later."
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error in CancelPendingRegistrationAsync: {ex.Message}");
+                return new AuthResponseDto
+                {
+                    Success = false,
+                    Message = "An unexpected error occurred. Please try again later."
+                };
+            }
+        }
+
     }
 }

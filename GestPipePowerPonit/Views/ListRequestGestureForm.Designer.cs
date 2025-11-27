@@ -42,6 +42,7 @@ namespace GestPipePowerPonit
             this.btnLogout = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.btnProfile = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.panelMain = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnDownload = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnRequest = new Guna.UI2.WinForms.Guna2GradientButton();
             this.guna2DataGridView1 = new Guna.UI2.WinForms.Guna2DataGridView();
             this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,7 +58,6 @@ namespace GestPipePowerPonit
             this.lblLoading = new System.Windows.Forms.Label();
             this.spinnerTimer = new System.Windows.Forms.Timer(this.components);
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
-            this.btnDownload = new Guna.UI2.WinForms.Guna2GradientButton();
             this.guna2Panel1.SuspendLayout();
             this.guna2Panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
@@ -216,7 +216,7 @@ namespace GestPipePowerPonit
             this.btnGestureControl.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnGestureControl.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.btnGestureControl.FillColor2 = System.Drawing.Color.Gray;
-            this.btnGestureControl.Font = new System.Drawing.Font("Segoe UI Light", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGestureControl.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.btnGestureControl.ForeColor = System.Drawing.Color.White;
             this.btnGestureControl.Image = global::GestPipePowerPonit.Properties.Resources.icon_gesture;
             this.btnGestureControl.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -349,6 +349,33 @@ namespace GestPipePowerPonit
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(1049, 601);
             this.panelMain.TabIndex = 3;
+            // 
+            // btnDownload
+            // 
+            this.btnDownload.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnDownload.BorderRadius = 10;
+            this.btnDownload.BorderThickness = 2;
+            this.btnDownload.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnDownload.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnDownload.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnDownload.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnDownload.FillColor = System.Drawing.Color.Silver;
+            this.btnDownload.FillColor2 = System.Drawing.Color.Black;
+            this.btnDownload.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
+            this.btnDownload.ForeColor = System.Drawing.Color.White;
+            this.btnDownload.Image = global::GestPipePowerPonit.Properties.Resources.icon_download;
+            this.btnDownload.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDownload.ImageOffset = new System.Drawing.Point(5, 0);
+            this.btnDownload.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnDownload.Location = new System.Drawing.Point(40, 24);
+            this.btnDownload.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDownload.Name = "btnDownload";
+            this.btnDownload.Size = new System.Drawing.Size(204, 61);
+            this.btnDownload.TabIndex = 14;
+            this.btnDownload.Text = "DownLoad";
+            this.btnDownload.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDownload.TextOffset = new System.Drawing.Point(20, 0);
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // btnRequest
             // 
@@ -554,33 +581,6 @@ namespace GestPipePowerPonit
             this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
             this.guna2DragControl1.TargetControl = this.guna2HeaderPanel;
             this.guna2DragControl1.UseTransparentDrag = true;
-            // 
-            // btnDownload
-            // 
-            this.btnDownload.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnDownload.BorderRadius = 10;
-            this.btnDownload.BorderThickness = 2;
-            this.btnDownload.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnDownload.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnDownload.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnDownload.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnDownload.FillColor = System.Drawing.Color.Silver;
-            this.btnDownload.FillColor2 = System.Drawing.Color.Black;
-            this.btnDownload.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
-            this.btnDownload.ForeColor = System.Drawing.Color.White;
-            this.btnDownload.Image = global::GestPipePowerPonit.Properties.Resources.icon_download;
-            this.btnDownload.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnDownload.ImageOffset = new System.Drawing.Point(5, 0);
-            this.btnDownload.ImageSize = new System.Drawing.Size(24, 24);
-            this.btnDownload.Location = new System.Drawing.Point(40, 24);
-            this.btnDownload.Margin = new System.Windows.Forms.Padding(4);
-            this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(204, 61);
-            this.btnDownload.TabIndex = 14;
-            this.btnDownload.Text = "DownLoad";
-            this.btnDownload.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnDownload.TextOffset = new System.Drawing.Point(20, 0);
-            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // ListRequestGestureForm
             // 

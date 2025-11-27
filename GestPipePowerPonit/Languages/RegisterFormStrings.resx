@@ -351,4 +351,13 @@
   <data name="Title_Success_VI" xml:space="preserve">
     <value>Thành công</value>
   </data>
+  <data name="Validation_OccupationRequired_EN" xml:space="preserve">
+    <value>Please select an Occupation</value>
+  </data>
+  <data name="Validation_OccupationRequired_VN" xml:space="preserve">
+    <value>Vui lòng chọn nghề nghiệp</value>
+  </data>
+  <data name="Validation_EmailAlreadyExists_EN" xml:space="preserve">
+    <value>This email is already registered</value>
+  </data>
 </root>

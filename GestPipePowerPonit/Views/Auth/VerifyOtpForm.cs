@@ -26,7 +26,7 @@ namespace GestPipePowerPonit.Views.Auth
         // Countdown timer / expiry
         private Timer _otpTimer;
         private DateTime _otpExpiresAt;
-
+        private bool _otpVerifiedSuccessfully = false;
         public VerifyOtpForm(LoginForm loginForm = null, string email = "", bool isRegistration = false)
         {
             InitializeComponent();
@@ -39,6 +39,7 @@ namespace GestPipePowerPonit.Views.Auth
             // Timer used for the OTP countdown (UI timer)
             _otpTimer = new Timer { Interval = 1000 }; // 1 second
             _otpTimer.Tick += OtpTimer_Tick;
+            this.FormClosing += VerifyOtpForm_FormClosing;
         }
 
         private void VerifyOtpForm_Load(object sender, EventArgs e)
@@ -65,6 +66,28 @@ namespace GestPipePowerPonit.Views.Auth
 
             CenterControls();
         }
+        private async void VerifyOtpForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Chỉ xử lý case ĐANG REGISTER & CHƯA VERIFY
+            if (_isRegistration && !_otpVerifiedSuccessfully)
+            {
+                try
+                {
+                    // Gọi API xóa account chưa verify
+                    // (tên hàm và endpoint bạn tự chọn cho phù hợp backend)
+                    await _authService.CancelPendingRegistrationAsync(_email);
+
+                    // Không show message ở đây cũng được, vì user đang đóng form
+                    Console.WriteLine($"[VerifyOtpForm] Canceled pending registration for email: {_email}");
+                }
+                catch (Exception ex)
+                {
+                    // Đừng chặn đóng form, chỉ log
+                    Console.WriteLine($"[VerifyOtpForm] Error when cancel registration: {ex.Message}");
+                }
+            }
+        }
+
 
         private void VerifyOtpForm_Resize(object sender, EventArgs e)
         {
@@ -159,7 +182,6 @@ namespace GestPipePowerPonit.Views.Auth
                 OtpCode = txtOtp.Text.Trim()
             };
 
-            // ✅ Validate theo Data Annotations
             var context = new ValidationContext(otpDto);
             var validationResults = new List<ValidationResult>();
             bool isValid = Validator.TryValidateObject(otpDto, context, validationResults, true);
@@ -232,6 +254,8 @@ namespace GestPipePowerPonit.Views.Auth
                 {
                     // stop countdown on success
                     StopOtpCountdown();
+
+                    _otpVerifiedSuccessfully = true;
 
                     if (_isRegistration)
                     {
@@ -361,12 +385,6 @@ namespace GestPipePowerPonit.Views.Auth
         private void guna2ControlBoxClose_Click(object sender, EventArgs e)
         {
             AppSettings.ExitAll();
-        }
-
-        private void lnkLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            _loginForm?.Show();
-            this.Close();
         }
     }
 }

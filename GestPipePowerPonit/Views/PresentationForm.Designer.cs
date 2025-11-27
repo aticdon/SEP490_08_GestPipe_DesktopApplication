@@ -141,6 +141,7 @@ namespace GestPipePowerPonit
             this.loadingLabel = new System.Windows.Forms.Label();
             this.spinnerTimer = new System.Windows.Forms.Timer(this.components);
             this.overlayTimer = new System.Windows.Forms.Timer(this.components);
+            this.lblTimeSession = new System.Windows.Forms.Label();
             this.pnlHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnProfile)).BeginInit();
@@ -458,6 +459,7 @@ namespace GestPipePowerPonit
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPreview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(70)))), ((int)(((byte)(100)))));
+            this.panelPreview.Controls.Add(this.lblTimeSession);
             this.panelPreview.Controls.Add(this.lblPresentationPreview);
             this.panelPreview.Controls.Add(this.pictureBoxCamera);
             this.panelPreview.Location = new System.Drawing.Point(400, 24);
@@ -480,7 +482,7 @@ namespace GestPipePowerPonit
             this.pictureBoxCamera.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxCamera.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(40)))));
+            this.pictureBoxCamera.BackColor = System.Drawing.Color.Black;
             this.pictureBoxCamera.Location = new System.Drawing.Point(20, 32);
             this.pictureBoxCamera.Name = "pictureBoxCamera";
             this.pictureBoxCamera.Size = new System.Drawing.Size(616, 490);
@@ -775,6 +777,17 @@ namespace GestPipePowerPonit
             this.spinnerTimer.Interval = 50;
             this.spinnerTimer.Tick += new System.EventHandler(this.SpinnerTimer_Tick);
             // 
+            // lblTimeSession
+            // 
+            this.lblTimeSession.AutoSize = true;
+            this.lblTimeSession.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTimeSession.ForeColor = System.Drawing.Color.White;
+            this.lblTimeSession.Location = new System.Drawing.Point(522, 5);
+            this.lblTimeSession.Name = "lblTimeSession";
+            this.lblTimeSession.Size = new System.Drawing.Size(88, 25);
+            this.lblTimeSession.TabIndex = 2;
+            this.lblTimeSession.Text = "00:00:00";
+            // 
             // PresentationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -800,6 +813,7 @@ namespace GestPipePowerPonit
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.pnlMain.ResumeLayout(false);
             this.panelPreview.ResumeLayout(false);
+            this.panelPreview.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCamera)).EndInit();
             this.loadingPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.loadingSpinner)).EndInit();
@@ -811,5 +825,6 @@ namespace GestPipePowerPonit
         private Label lblCategory;
         private Guna2GradientButton btnPresentation;
         private Guna2GradientButton btnCustomGesture;
+        private Label lblTimeSession;
     }
 }

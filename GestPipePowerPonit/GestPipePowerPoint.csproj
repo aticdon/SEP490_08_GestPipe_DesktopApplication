@@ -272,6 +272,7 @@
     <Compile Include="Models\DTOs\DriveSyncResult.cs" />
     <Compile Include="Models\DTOs\DriveUploadProgress.cs" />
     <Compile Include="Models\DTOs\DriveUploadResult.cs" />
+    <Compile Include="Models\DTOs\EmailCheckDto.cs" />
     <Compile Include="Models\DTOs\EmailRequestDto.cs" />
     <Compile Include="Models\DTOs\GoogleLoginDto.cs" />
     <Compile Include="Models\DTOs\ImportGestureFromCsvRequest.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="Models\DTOs\UserResponseDto.cs" />
     <Compile Include="Models\DTOs\UserProfileDto.cs" />
     <Compile Include="Models\DTOs\UserRequestDto.cs" />
+    <Compile Include="Models\LocalizedOption.cs" />
     <Compile Include="Models\UploadResult.cs" />
     <Compile Include="Models\UserGestureConfig.cs" />
     <Compile Include="Models\DTOs\UserGestureRequestDto.cs" />

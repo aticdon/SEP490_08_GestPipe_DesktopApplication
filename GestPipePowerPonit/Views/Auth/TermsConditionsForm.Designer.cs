@@ -51,7 +51,7 @@
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(940, 68);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Terms & Conditions";
+            this.lblTitle.Text = "Terms  &&  Conditions";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtTerms
@@ -178,7 +178,6 @@
             this.Controls.Add(this.guna2ControlBoxMinimize);
             this.Controls.Add(this.pnlCard);
             this.DoubleBuffered = true;
-            //this.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

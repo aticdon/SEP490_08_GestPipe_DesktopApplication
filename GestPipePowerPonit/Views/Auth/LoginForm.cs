@@ -19,9 +19,6 @@ namespace GestPipePowerPonit.Views.Auth
             this.DoubleBuffered = true;
 
             _authService = new AuthService();
-            //this.Size = new Size(1366, 786);
-            //this.MinimumSize = new Size(1366, 786);
-            //this.MaximumSize = new Size(1366, 786);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             AppSettings.CurrentLanguage = "EN";

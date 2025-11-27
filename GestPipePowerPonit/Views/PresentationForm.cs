@@ -83,6 +83,7 @@ namespace GestPipePowerPonit
         private bool _isInitializing = false;
         private WebView2 webView2_3D_External;
         private Dictionary<int, string> slide3DModelFiles = new Dictionary<int, string>();
+        private System.Windows.Forms.Timer sessionTimer;
 
 
         // ✅ THÊM AuthService
@@ -127,6 +128,10 @@ namespace GestPipePowerPonit
             webView2_3D.Visible = false;
             webView2_3D.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelSlide.Controls.Add(webView2_3D);
+
+            sessionTimer = new System.Windows.Forms.Timer();
+            sessionTimer.Interval = 1000; // Update mỗi 1 giây
+            sessionTimer.Tick += SessionTimer_Tick;
 
             _homeForm = homeForm;
 
@@ -349,6 +354,20 @@ namespace GestPipePowerPonit
             return ".glb";
         }
 
+        private void SessionTimer_Tick(object sender, EventArgs e)
+        {
+            if (_startTime.HasValue)
+            {
+                // ✅ Tính duration từ _startTime đã có
+                TimeSpan duration = DateTime.UtcNow - _startTime.Value;
+
+                // Format: HH:MM:SS
+                lblTimeSession.Text = string.Format("{0:00}:{1:00}:{2:00}",
+                    (int)duration.TotalHours,
+                    duration.Minutes,
+                    duration.Seconds);
+            }
+        }
         private void StartCameraReceiver(int port = 6000)
         {
             try
@@ -794,6 +813,8 @@ namespace GestPipePowerPonit
             isSlideShow = true;
             _startTime = DateTime.UtcNow;
 
+            lblTimeSession.Text = "00:00:00";
+            sessionTimer.Start();
             if (oPres != null)
             {
                 oPres.SlideShowSettings.ShowWithNarration = MsoTriState.msoFalse;
@@ -882,6 +903,7 @@ namespace GestPipePowerPonit
         {
             if (isSlideShow)
             {
+                sessionTimer.Stop();
                 HideLoading();
                 DateTime endTime = DateTime.UtcNow;
                 double duration = 0;
@@ -925,6 +947,8 @@ namespace GestPipePowerPonit
                 }
                 catch { }
                 CleanupResources(keepPython: false);
+                lblTimeSession.Text = "00:00:00";
+                _startTime = null;
             }
             else { return; }
         }
@@ -961,6 +985,8 @@ namespace GestPipePowerPonit
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            sessionTimer?.Stop();
+            sessionTimer?.Dispose();
             CleanupResources(keepPython: false);
             base.OnFormClosing(e);
         }
@@ -1446,6 +1472,8 @@ namespace GestPipePowerPonit
 
         private void btnGestureControl_Click(object sender, EventArgs e)
         {
+            try { sessionTimer?.Stop(); } catch { }
+            try { spinnerTimer?.Stop(); } catch { }
             CleanupResources(keepPython: false);
             ListDefaultGestureForm dGestureForm = new ListDefaultGestureForm(_homeForm);
             dGestureForm.Show();
@@ -1660,6 +1688,9 @@ namespace GestPipePowerPonit
         }
         private void btnClear_Click(object sender, EventArgs e)
         {
+            // ✅ Dừng và reset timer
+            sessionTimer.Stop();
+            lblTimeSession.Text = "00:00:00";
             // 1. Dọn tài nguyên giống đóng form
             CleanupResources(keepPython: true);
 

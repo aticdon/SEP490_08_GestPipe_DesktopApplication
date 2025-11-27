@@ -385,6 +385,18 @@ namespace GestPipePowerPonit.Services
                 Console.WriteLine($"[ClearToken] ⚠️ Error: {ex.Message}");
             }
         }
+        public async Task<AuthResponseDto> CancelPendingRegistrationAsync(string email)
+        {
+            var request = new
+            {
+                Email = email
+            };
+
+            return await _apiService.PostAsync<AuthResponseDto>(
+                "/api/auth/cancel-pending-registration",   // endpoint bạn định nghĩa ở backend
+                request
+            );
+        }
 
         public bool IsLoggedIn()
         {
@@ -404,6 +416,24 @@ namespace GestPipePowerPonit.Services
         public string GetUserEmail()
         {
             return Properties.Settings.Default.UserEmail ?? string.Empty;
+        }
+        /// <summary>
+        /// ✅ Check email đã tồn tại chưa
+        /// </summary>
+        public async Task<bool> CheckEmailExistsAsync(string email)
+        {
+            try
+            {
+                // ✅ Đổi sang EmailCheckDto thay vì bool
+                var result = await _apiService.GetAsync<EmailCheckDto>($"auth/check-email?email={Uri.EscapeDataString(email)}");
+
+                return result?.Exists ?? false; // Trả về bool
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[CheckEmailExistsAsync] Error: {ex.Message}");
+                throw;
+            }
         }
     }
 }

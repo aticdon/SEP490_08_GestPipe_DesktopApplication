@@ -123,190 +123,6 @@ namespace GestPipe.Backend.Controllers
                 });
             }
         }
-
-
-        /// <summary>
-        /// Endpoint chung: validate OTP cho cả registration & reset password
-        /// Query parameter: purpose = "registration" | "resetpassword"
-        /// </summary>
-        //[HttpPost("validate-otp")]
-        //public async Task<IActionResult> ValidateOtp([FromBody] VerifyOtpDto verifyDto, [FromQuery] string purpose = "registration")
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //            return BadRequest(ModelState);
-
-
-        //        _logger.LogInformation("Xác thực OTP: Email={Email}, Purpose={Purpose}", verifyDto.Email, purpose);
-        //        var normalizedEmail = verifyDto.Email?.Trim().ToLowerInvariant();
-
-        //        // 1️⃣ Validate OTP
-        //        var isValid = await _otpService.ValidateOtpAsync(normalizedEmail, verifyDto.OtpCode, purpose);
-        //        if (!isValid)
-        //        {
-        //            return BadRequest(new AuthResponseDto
-        //            {
-        //                Success = false,
-        //                Message = "Mã OTP không hợp lệ hoặc đã hết hạn."
-        //            });
-        //        }
-
-        //        // 2️⃣ Get user với normalized email  
-        //        var user = await _authService.GetUserByEmailAsync(normalizedEmail);
-        //        if (user == null)
-        //        {
-        //            return BadRequest(new AuthResponseDto
-        //            {
-        //                Success = false,
-        //                Message = "Không tìm thấy tài khoản."
-        //            });
-        //        }
-
-
-        //        // 2️⃣ Nếu là registration: update trạng thái user + xóa OTP trong AuthService
-        //        if (purpose == "registration")
-        //        {
-        //            var updateRes = await _authService.VerifyOtpAsync(new VerifyOtpDto
-        //            {
-        //                Email = verifyDto.Email,
-        //                OtpCode = verifyDto.OtpCode
-        //            });
-
-
-        //            if (updateRes?.Success == true)
-        //            {
-        //                _logger.LogInformation("Đăng ký thành công sau OTP: Email={Email}", verifyDto.Email);
-        //                return Ok(new AuthResponseDto
-        //                {
-        //                    Success = true,
-        //                    Message = "OTP hợp lệ. Email đã được xác thực.",
-        //                    Token = updateRes.Token,
-        //                    UserId = user.Id,
-        //                    Email = user.Email,
-        //                    RequiresVerification = false
-        //                });
-        //            }
-
-
-        //            return BadRequest(updateRes);
-        //        }
-
-
-        //        // 3️⃣ Nếu là reset password: chỉ confirm OTP hợp lệ + xóa OTP luôn
-        //        _logger.LogInformation("OTP valid cho reset password: Email={Email}", verifyDto.Email);
-
-
-        //        try
-        //        {
-        //            await _otpService.DeleteOtpAsync(verifyDto.Email);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            _logger.LogWarning(ex, "Không xóa được OTP sau khi verify reset password: Email={Email}", verifyDto.Email);
-        //        }
-
-
-        //        return Ok(new AuthResponseDto
-        //        {
-        //            Success = true,
-        //            Message = "OTP hợp lệ. Bạn có thể tiếp tục đặt lại mật khẩu.",
-        //            Token = verifyDto.OtpCode,
-        //            UserId = user.Id,
-        //            Email = user.Email,
-        //            RequiresVerification = false
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Lỗi khi xác thực OTP: {Message}", ex.Message);
-        //        return StatusCode(500, new AuthResponseDto
-        //        {
-        //            Success = false,
-        //            Message = "Đã xảy ra lỗi khi xác thực OTP."
-        //        });
-        //    }
-        //}
-        //[HttpPost("validate-otp/{purpose}")]
-        //public async Task<IActionResult> ValidateOtp([FromBody] VerifyOtpDto verifyDto, string purpose)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //            return BadRequest(ModelState);
-        //        _logger.LogInformation("Xác thực OTP: Email={Email}, Purpose={Purpose}", verifyDto.Email, purpose);
-        //        // 1️⃣ Validate OTP
-        //        var isValid = await _otpService.ValidateOtpAsync(verifyDto.Email, verifyDto.OtpCode, purpose);
-        //        if (!isValid)
-        //        {
-        //            return BadRequest(new AuthResponseDto
-        //            {
-        //                Success = false,
-        //                Message = "Mã OTP không hợp lệ hoặc đã hết hạn."
-        //            });
-        //        }
-        //        var user = await _authService.GetUserByEmailAsync(verifyDto.Email);
-        //        if (user == null)
-        //        {
-        //            return BadRequest(new AuthResponseDto
-        //            {
-        //                Success = false,
-        //                Message = "Không tìm thấy tài khoản."
-        //            });
-        //        }
-        //        // 2️⃣ Nếu là registration: update trạng thái user + xóa OTP trong AuthService
-        //        if (purpose == "registration")
-        //        {
-        //            var updateRes = await _authService.VerifyOtpAsync(new VerifyOtpDto
-        //            {
-        //                Email = verifyDto.Email,
-        //                OtpCode = verifyDto.OtpCode
-        //            });
-        //            if (updateRes?.Success == true)
-        //            {
-        //                _logger.LogInformation("Đăng ký thành công sau OTP: Email={Email}", verifyDto.Email);
-        //                return Ok(new AuthResponseDto
-        //                {
-        //                    Success = true,
-        //                    Message = "OTP hợp lệ. Email đã được xác thực.",
-        //                    Token = updateRes.Token,
-        //                    UserId = user.Id,
-        //                    Email = user.Email,
-        //                    RequiresVerification = false
-        //                });
-        //            }
-        //            return BadRequest(updateRes);
-        //        }
-        //        // 3️⃣ Nếu là reset password: chỉ confirm OTP hợp lệ + xóa OTP luôn
-        //        _logger.LogInformation("OTP valid cho reset password: Email={Email}", verifyDto.Email);
-        //        try
-        //        {
-        //            await _otpService.DeleteOtpAsync(verifyDto.Email);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            _logger.LogWarning(ex, "Không xóa được OTP sau khi verify reset password: Email={Email}", verifyDto.Email);
-        //        }
-        //        return Ok(new AuthResponseDto
-        //        {
-        //            Success = true,
-        //            Message = "OTP hợp lệ. Bạn có thể tiếp tục đặt lại mật khẩu.",
-        //            Token = verifyDto.OtpCode,
-        //            UserId = user.Id,
-        //            Email = user.Email,
-        //            RequiresVerification = false
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Lỗi khi xác thực OTP: {Message}", ex.Message);
-        //        return StatusCode(500, new AuthResponseDto
-        //        {
-        //            Success = false,
-        //            Message = "Đã xảy ra lỗi khi xác thực OTP."
-        //        });
-        //    }
-        //}
         [HttpPost("validate-otp/{purpose}")]
         public async Task<IActionResult> ValidateOtp([FromBody] VerifyOtpDto verifyDto, string purpose)
         {
@@ -714,10 +530,66 @@ namespace GestPipe.Backend.Controllers
                 });
             }
         }
+
+        /// <summary>
+        /// ✅ CHECK EMAIL UNIQUENESS
+        /// </summary>
+        [HttpGet("check-email")]
+        public async Task<IActionResult> CheckEmailExists([FromQuery] string email)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(email))
+                {
+                    return BadRequest(new { exists = false });
+                }
+
+                bool isUnique = await _authService.IsEmailUniqueAsync(email);
+
+                // ✅ Trả về object thay vì bool trực tiếp
+                return Ok(new { exists = !isUnique });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking email");
+                return StatusCode(500, new { exists = false });
+            }
+        }
+        /// <summary>
+        /// Hủy đăng ký khi user không xác nhận OTP (xóa user pending_verification)
+        /// </summary>
+        [HttpPost("cancel-pending-registration")]
+        public async Task<IActionResult> CancelPendingRegistration([FromBody] EmailRequestDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                if (string.IsNullOrWhiteSpace(dto.Email))
+                {
+                    return BadRequest(new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Email is required."
+                    });
+                }
+
+                var result = await _authService.CancelPendingRegistrationAsync(dto.Email);
+                if (!result.Success)
+                    return BadRequest(result);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error cancelling pending registration for email {Email}", dto.Email);
+                return StatusCode(500, new AuthResponseDto
+                {
+                    Success = false,
+                    Message = "An error occurred while cancelling registration."
+                });
+            }
+        }
     }
 }
-
-
-
-
-

@@ -385,7 +385,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblGenderError.AutoSize = true;
             this.lblGenderError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblGenderError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblGenderError.Location = new System.Drawing.Point(71, 629);
+            this.lblGenderError.Location = new System.Drawing.Point(71, 633);
             this.lblGenderError.Name = "lblGenderError";
             this.lblGenderError.Size = new System.Drawing.Size(0, 19);
             this.lblGenderError.TabIndex = 12;
@@ -664,7 +664,7 @@ namespace GestPipePowerPonit.Views.Auth
             this.lblOccupationError.AutoSize = true;
             this.lblOccupationError.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblOccupationError.ForeColor = System.Drawing.Color.Wheat;
-            this.lblOccupationError.Location = new System.Drawing.Point(591, 548);
+            this.lblOccupationError.Location = new System.Drawing.Point(591, 552);
             this.lblOccupationError.Name = "lblOccupationError";
             this.lblOccupationError.Size = new System.Drawing.Size(0, 19);
             this.lblOccupationError.TabIndex = 22;

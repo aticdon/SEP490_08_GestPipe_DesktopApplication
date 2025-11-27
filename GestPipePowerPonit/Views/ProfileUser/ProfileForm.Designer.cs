@@ -1024,7 +1024,7 @@ namespace GestPipePowerPonit.Views.Profile
             this.txtOccupationOther.DefaultText = "";
             this.txtOccupationOther.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
             this.txtOccupationOther.ForeColor = System.Drawing.Color.Black;
-            this.txtOccupationOther.Location = new System.Drawing.Point(622, 422);
+            this.txtOccupationOther.Location = new System.Drawing.Point(622, 432);
             this.txtOccupationOther.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtOccupationOther.Name = "txtOccupationOther";
             this.txtOccupationOther.PlaceholderText = "Please specify your occupation...";

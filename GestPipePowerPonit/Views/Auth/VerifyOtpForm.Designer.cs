@@ -28,7 +28,6 @@ namespace GestPipePowerPonit.Views.Auth
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VerifyOtpForm));
             this.pnlCard = new Guna.UI2.WinForms.Guna2Panel();
-            this.lnkLogin = new System.Windows.Forms.LinkLabel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.txtOtp = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblOtpError = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -46,7 +45,6 @@ namespace GestPipePowerPonit.Views.Auth
             // 
             this.pnlCard.BackColor = System.Drawing.Color.Transparent;
             this.pnlCard.BorderRadius = 20;
-            this.pnlCard.Controls.Add(this.lnkLogin);
             this.pnlCard.Controls.Add(this.lblTitle);
             this.pnlCard.Controls.Add(this.txtOtp);
             this.pnlCard.Controls.Add(this.lblOtpError);
@@ -58,21 +56,6 @@ namespace GestPipePowerPonit.Views.Auth
             this.pnlCard.Name = "pnlCard";
             this.pnlCard.Size = new System.Drawing.Size(450, 350);
             this.pnlCard.TabIndex = 1;
-            // 
-            // lnkLogin
-            // 
-            this.lnkLogin.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.lnkLogin.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lnkLogin.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(180)))), ((int)(((byte)(218)))));
-            this.lnkLogin.Location = new System.Drawing.Point(0, 274);
-            this.lnkLogin.Name = "lnkLogin";
-            this.lnkLogin.Size = new System.Drawing.Size(450, 25);
-            this.lnkLogin.TabIndex = 13;
-            this.lnkLogin.TabStop = true;
-            this.lnkLogin.Text = "Login?";
-            this.lnkLogin.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lnkLogin.VisitedLinkColor = System.Drawing.Color.White;
-            this.lnkLogin.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkLogin_LinkClicked);
             // 
             // lblTitle
             // 
@@ -216,7 +199,6 @@ namespace GestPipePowerPonit.Views.Auth
             this.Controls.Add(this.picLogo);
             this.Controls.Add(this.pnlCard);
             this.DoubleBuffered = true;
-            //this.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -235,6 +217,5 @@ namespace GestPipePowerPonit.Views.Auth
 
         private Guna2ControlBox guna2ControlBoxClose;
         private Guna2ControlBox guna2ControlBoxMinimize;
-        private LinkLabel lnkLogin;
     }
 }

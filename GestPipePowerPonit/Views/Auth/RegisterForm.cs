@@ -1,13 +1,14 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using GestPipePowerPonit;
 using GestPipePowerPonit.Models.DTOs;
-using System.Drawing;
 using GestPipePowerPonit.Services;
-using GestPipePowerPonit;
 using Guna.UI2.WinForms;
-using System.ComponentModel.DataAnnotations;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace GestPipePowerPonit.Views.Auth
 {
@@ -174,20 +175,67 @@ namespace GestPipePowerPonit.Views.Auth
                             errors.Add(lblConfirmPasswordError.Text);
                             break;
 
-                        case nameof(RegisterDto.PhoneNumber):
-                            if (result.ErrorMessage.Contains("digits"))
-                                lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneOnlyDigits");
-                            else if (result.ErrorMessage.Contains("10"))
-                                lblPhoneNumberError.Text = AppSettings.GetText("Validation_Phone10Digits");
-                            else if (result.ErrorMessage.Contains("0"))
-                                lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneStartWith0");
-                            else
-                                lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneOnlyDigits");
+                        //case nameof(RegisterDto.PhoneNumber):
+                        //    if (result.ErrorMessage.Contains("digits"))
+                        //        lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneOnlyDigits");
+                        //    else if (result.ErrorMessage.Contains("10"))
+                        //        lblPhoneNumberError.Text = AppSettings.GetText("Validation_Phone10Digits");
+                        //    else if (result.ErrorMessage.Contains("0"))
+                        //        lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneStartWith0");
+                        //    else
+                        //        lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneOnlyDigits");
 
-                            lblPhoneNumberError.Visible = true;
-                            txtPhoneNumber.BorderColor = Color.OrangeRed;
-                            errors.Add(lblPhoneNumberError.Text);
-                            break;
+                        //    lblPhoneNumberError.Visible = true;
+                        //    txtPhoneNumber.BorderColor = Color.OrangeRed;
+                        //    errors.Add(lblPhoneNumberError.Text);
+                        //    break;
+                        //case nameof(RegisterDto.PhoneNumber):
+                        //    // nếu muốn tách Required riêng thì check thêm:
+                        //    if (string.IsNullOrWhiteSpace(registerDto.PhoneNumber))
+                        //        lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneRequired");
+                        //    else
+                        //        lblPhoneNumberError.Text = AppSettings.GetText("Validation_PhoneInvalidFormat");
+
+                        //    lblPhoneNumberError.Visible = true;
+                        //    txtPhoneNumber.BorderColor = Color.OrangeRed;
+                        //    errors.Add(lblPhoneNumberError.Text);
+                        //    break;
+                        case nameof(RegisterDto.PhoneNumber):
+                            {
+                                var phone = registerDto.PhoneNumber?.Trim() ?? "";
+
+                                if (string.IsNullOrWhiteSpace(phone))
+                                {
+                                    // Bắt buộc nhập
+                                    lblPhoneNumberError.Text ="Phone number is required";
+                                }
+                                else if (!System.Text.RegularExpressions.Regex.IsMatch(phone, @"^\d+$"))
+                                {
+                                    // Chỉ cho phép số
+                                    lblPhoneNumberError.Text = "Phone must contain only digits";
+                                }
+                                else if (phone.Length < 10 || phone.Length > 11)
+                                {
+                                    // Độ dài 10–11 ký tự
+                                    lblPhoneNumberError.Text ="Phone must be 10–11 digits";
+                                }
+                                else if (!phone.StartsWith("0"))
+                                {
+                                    // Bắt đầu bằng 0
+                                    lblPhoneNumberError.Text ="Phone must start with 0";
+                                }
+                                else
+                                {
+                                    // fallback nếu format sai kiểu khác
+                                    lblPhoneNumberError.Text ="Invalid phone number format";
+                                }
+
+                                lblPhoneNumberError.Visible = true;
+                                txtPhoneNumber.BorderColor = Color.OrangeRed;
+                                errors.Add(lblPhoneNumberError.Text);
+                                break;
+                            }
+
 
                         case nameof(RegisterDto.Gender):
                             lblGenderError.Text = AppSettings.GetText("Validation_SelectGender");
@@ -277,14 +325,57 @@ namespace GestPipePowerPonit.Views.Auth
         }
 
         // ✅ CORRECT FLOW: Validate → Terms → Agree → Create Account + Send OTP → VerifyOtp
-        private void btnRegister_Click(object sender, EventArgs e)
+        private async void btnRegister_Click(object sender, EventArgs e)
         {
             // ✅ Step 1: Validate form
             if (!ValidateInputs(out var validationErrors))
             {
                 return;
             }
+            string email = txtEmail.Text.Trim();
 
+            // ✅ Step 2: CHECK EMAIL UNIQUENESS (MỚI THÊM)
+            btnRegister.Enabled = false;
+            btnRegister.Text = "Checking...";
+
+            try
+            {
+                bool isAvailable = await IsEmailAvailableAsync(email);
+
+                if (!isAvailable)
+                {
+                    // ❌ Email đã tồn tại - DỪNG NGAY, KHÔNG SHOW TERMS
+                    //lblEmailError.Text = "This email is already registered. Please use another email or login.";
+                    //lblEmailError.Visible = true;
+                    //txtEmail.BorderColor = Color.OrangeRed;
+                    //txtEmail.Focus();
+                    //return; // ← DỪNG TẠI ĐÂY
+
+                    lblEmailError.Text =
+                AppSettings.GetText("Validation_EmailAlreadyExists")
+                ?? "This email is already registered. Please use another email or login.";
+
+                    lblEmailError.Visible = true;
+                    txtEmail.BorderColor = Color.OrangeRed;
+                    txtEmail.Focus();
+                    return; // DỪNG HẲN
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[btnRegister_Click] Email check error: {ex.Message}");
+                CustomMessageBox.ShowError(
+            AppSettings.GetText("Message_EmailCheckError")
+            ?? "Cannot verify your email at the moment. Please check your network connection and try again.",
+            AppSettings.GetText("Title_Error") ?? "Error"
+        );
+                return; // DỪNG HẲN
+            }
+            finally
+            {
+                btnRegister.Enabled = true;
+                btnRegister.Text = AppSettings.GetText("RegisterForm_BtnRegister");
+            }
             // ✅ Step 2: Prepare DTO (chưa gọi API)
             var dto = new RegisterDto
             {
@@ -298,11 +389,9 @@ namespace GestPipePowerPonit.Views.Auth
                 Address = cmbAddress.SelectedItem?.ToString() ?? "",
                 EducationLevel = cmbEdu.SelectedItem?.ToString() ?? "",
                 Company = txtCompany.Text?.Trim(),
-                //Occupation = txtOccupation.Text?.Trim()
                 Occupation = GetOccupationValue()
             };
 
-            // ✅ Step 3: Show Terms (pass DTO and AuthService to Terms)
             this.Hide();
 
             var termsForm = new TermsConditionsForm(dto, _authService, this, _loginForm);
@@ -465,7 +554,24 @@ namespace GestPipePowerPonit.Views.Auth
 
             return cmbOccupation.SelectedItem?.ToString() ?? "";
         }
-
+        /// <summary>
+        /// ✅ Check email uniqueness trước khi show Terms
+        /// </summary>
+        private async Task<bool> IsEmailAvailableAsync(string email)
+        {
+            try
+            {
+                // true = email đã tồn tại trong hệ thống
+                bool exists = await _authService.CheckEmailExistsAsync(email);
+                return !exists; // true = available, false = đã tồn tại
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[IsEmailAvailableAsync] Error: {ex.Message}");
+                // ✅ Không nuốt lỗi nữa, để btnRegister_Click quyết định
+                throw;
+            }
+        }
         // ===== TextChanged Events =====
         private void txtEmail_TextChanged(object sender, EventArgs e) => ClearErrors();
         private void txtFullName_TextChanged(object sender, EventArgs e) => ClearErrors();
