@@ -88,6 +88,9 @@ namespace GestPipePowerPonit
 
             btnSubtab3.FillColor = (tab == 3) ? fillActive1 : fillNormal1;
             btnSubtab3.FillColor2 = (tab == 3) ? fillActive2 : fillNormal2;
+
+            //btnSubtab4.FillColor = (tab == 4) ? fillActive1 : fillNormal1;
+            //btnSubtab4.FillColor2 = (tab == 4) ? fillActive2 : fillNormal2;
         }
         // ✅ Chỉ đọc từ CultureManager, không fallback về en-US nếu API fail
         private void InstructionForm_Load(object sender, EventArgs e)
@@ -141,19 +144,6 @@ namespace GestPipePowerPonit
             SetActiveSubtab(3);
             ShowSubtabImage();
         }
-
-
-        //private void ShowSubtabImage()
-        //{
-        //    Image img = null;
-        //    switch (_currentSubtab)
-        //    {
-        //        case 1: img = Properties.Resources.Instruction_Tab1; break;
-        //        case 2: img = Properties.Resources.Instruction_Tab2; break;
-        //        case 3: img = Properties.Resources.Instruction_Tab3; break;
-        //    }
-        //    guna2PictureBox1.Image = img;
-        //}
         private void ShowSubtabImage()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(_currentCultureCode); // <-- Luôn cưỡng chế lại trước khi lấy ảnh!
@@ -162,6 +152,7 @@ namespace GestPipePowerPonit
                 1 => "Instruction_Tab1",
                 2 => "Instruction_Tab2",
                 3 => "Instruction_Tab3",
+                4 => "Instruction_Tab4",
                 _ => "Instruction_Tab1"
             };
 
@@ -211,6 +202,9 @@ namespace GestPipePowerPonit
             btnSubtab3.Text = I18nHelper.GetString(
                 "Gesture Recording Guide",
                 "Hướng dẫn ghi nhận động tác"
+            ); btnSubtab4.Text = I18nHelper.GetString(
+                "Term & Condition",
+                "Điều khoản ứng dụng"
             );
         }
 
@@ -348,6 +342,13 @@ namespace GestPipePowerPonit
         {
             _homeForm.Show();
             this.Hide();
+        }
+
+        private void btnSubtab4_Click(object sender, EventArgs e)
+        {
+            _currentSubtab = 4;
+            SetActiveSubtab(4);
+            ShowSubtabImage();
         }
     }
 }

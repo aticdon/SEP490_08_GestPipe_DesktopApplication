@@ -44,6 +44,7 @@ namespace GestPipePowerPonit
             this.btnSubtab2 = new Guna.UI2.WinForms.Guna2GradientButton();
             this.btnSubtab1 = new Guna.UI2.WinForms.Guna2GradientButton();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
+            this.btnSubtab4 = new Guna.UI2.WinForms.Guna2GradientButton();
             this.pnlSidebar.SuspendLayout();
             this.pnlFooter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
@@ -318,6 +319,7 @@ namespace GestPipePowerPonit
             // pnlMain
             // 
             this.pnlMain.BorderRadius = 20;
+            this.pnlMain.Controls.Add(this.btnSubtab4);
             this.pnlMain.Controls.Add(this.guna2PictureBox1);
             this.pnlMain.Controls.Add(this.btnSubtab3);
             this.pnlMain.Controls.Add(this.btnSubtab2);
@@ -358,7 +360,7 @@ namespace GestPipePowerPonit
             this.btnSubtab3.Name = "btnSubtab3";
             this.btnSubtab3.Size = new System.Drawing.Size(180, 80);
             this.btnSubtab3.TabIndex = 3;
-            this.btnSubtab3.Text = "Environment & Practice Tips";
+            this.btnSubtab3.Text = "Environment && Practice Tips";
             // 
             // btnSubtab2
             // 
@@ -393,6 +395,21 @@ namespace GestPipePowerPonit
             this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
             this.guna2DragControl1.TargetControl = this.pnlHeader;
             this.guna2DragControl1.UseTransparentDrag = true;
+            // 
+            // btnSubtab4
+            // 
+            this.btnSubtab4.BackColor = System.Drawing.Color.Transparent;
+            this.btnSubtab4.BorderRadius = 10;
+            this.btnSubtab4.FillColor = System.Drawing.Color.Black;
+            this.btnSubtab4.FillColor2 = System.Drawing.Color.Navy;
+            this.btnSubtab4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSubtab4.ForeColor = System.Drawing.Color.White;
+            this.btnSubtab4.Location = new System.Drawing.Point(590, 20);
+            this.btnSubtab4.Name = "btnSubtab4";
+            this.btnSubtab4.Size = new System.Drawing.Size(180, 80);
+            this.btnSubtab4.TabIndex = 6;
+            this.btnSubtab4.Text = "Term && Condition";
+            this.btnSubtab4.Click += new System.EventHandler(this.btnSubtab4_Click);
             // 
             // InstructionForm
             // 
@@ -445,5 +462,6 @@ namespace GestPipePowerPonit
         private Guna.UI2.WinForms.Guna2GradientButton btnSubtab2;
         private Guna.UI2.WinForms.Guna2GradientButton btnSubtab3;
         private Guna2PictureBox guna2PictureBox1;
+        private Guna2GradientButton btnSubtab4;
     }
 }

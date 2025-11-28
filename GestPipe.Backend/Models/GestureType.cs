@@ -8,7 +8,7 @@ public class GestureType
     public string Id { get; set; }
 
     [BsonElement("type_name")]
-    public Dictionary<string, string> TypeName { get; set; } // {"en": "...", "vi": "..."}
+    public Dictionary<string, string> TypeName { get; set; }
     
     [BsonElement("code")]
     public Dictionary<string, string> Code { get; set; } 
