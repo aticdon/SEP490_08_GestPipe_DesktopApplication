@@ -21,10 +21,10 @@ namespace GestPipePowerPonit
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListRequestGestureForm));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ListRequestGestureForm));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.btnCustomGesture = new Guna.UI2.WinForms.Guna2GradientButton();
@@ -363,7 +363,7 @@ namespace GestPipePowerPonit
             this.btnReset.FillColor2 = System.Drawing.Color.Black;
             this.btnReset.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
             this.btnReset.ForeColor = System.Drawing.Color.White;
-            this.btnReset.Image = global::GestPipePowerPonit.Properties.Resources.icon_traininggesture;
+            this.btnReset.Image = ((System.Drawing.Image)(resources.GetObject("btnReset.Image")));
             this.btnReset.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnReset.ImageOffset = new System.Drawing.Point(5, 0);
             this.btnReset.ImageSize = new System.Drawing.Size(24, 24);
@@ -620,7 +620,6 @@ namespace GestPipePowerPonit
             ((System.ComponentModel.ISupportInitialize)(this.btnLogout)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnProfile)).EndInit();
             this.panelMain.ResumeLayout(false);
-            this.panelMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2DataGridView1)).EndInit();
             this.panelLoading.ResumeLayout(false);
             this.panelLoading.PerformLayout();

@@ -96,7 +96,7 @@ namespace GestPipePowerPonit
                 // ✅ Nếu không được request thì popup thông báo 1 lần khi mở form
                 if (!_canRequest)
                 {
-                    CustomMessageBox.ShowError(
+                    CustomMessageBox.ShowInfo(
                         I18nHelper.GetString(
                             "Gesture is being trained. Please wait until it completes to continue!",
                             "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
@@ -175,7 +175,7 @@ namespace GestPipePowerPonit
                 if (btnReset != null)
                 {
                     btnReset.Enabled = canReset;
-                    btnReset.ForeColor = canReset ? Color.White : Color.Black;
+                    btnReset.ForeColor = canReset ? Color.White : Color.White;
                 }
                 var rowsToAdd = new List<object[]>();
                 for (int i = 0; i < defaultGestures.Count; i++)
@@ -380,10 +380,6 @@ namespace GestPipePowerPonit
             }
             catch (Exception ex)
             {
-                //CustomMessageBox.ShowError(
-                //    Properties.Resources.Message_ChangeLanguageFailed,
-                //    Properties.Resources.Title_Error
-                //);
             }
         }
 
@@ -472,7 +468,7 @@ namespace GestPipePowerPonit
 
                 if (!_canRequest)
                 {
-                    CustomMessageBox.ShowError(
+                    CustomMessageBox.ShowInfo(
                         I18nHelper.GetString(
                             "Gesture is being trained. Please wait until it completes to continue!",
                             "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
@@ -644,7 +640,7 @@ namespace GestPipePowerPonit
             // 4. Cập nhật label cảnh báo
             if (!_canRequest)
             {
-                CustomMessageBox.ShowError(
+                CustomMessageBox.ShowInfo(
                     I18nHelper.GetString(
                         "Gesture is being trained. Please wait until it completes to continue!",
                         "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"

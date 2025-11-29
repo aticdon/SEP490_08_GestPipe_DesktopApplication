@@ -340,8 +340,6 @@ namespace GestPipe.Backend.Controllers
                 });
             }
         }
-
-
         // ✅ Thống kê gesture (đã có sẵn)
         [HttpGet("gestures/stats")]
         [Authorize]

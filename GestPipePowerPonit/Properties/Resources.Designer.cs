@@ -622,6 +622,16 @@ namespace GestPipePowerPonit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap icon_reset {
+            get {
+                object obj = ResourceManager.GetObject("icon_reset", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap icon_search {
             get {
                 object obj = ResourceManager.GetObject("icon_search", resourceCulture);

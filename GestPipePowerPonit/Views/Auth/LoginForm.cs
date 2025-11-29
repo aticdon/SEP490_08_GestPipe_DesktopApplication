@@ -281,7 +281,6 @@ namespace GestPipePowerPonit.Views.Auth
                     );
 
 
-                    // Nếu là thông báo Google thì coi như info, không ghi "Sai mật khẩu"
                     if (errorMsg.Contains("Google"))
                     {
                         //lblPwdError.Text = errorMsg;

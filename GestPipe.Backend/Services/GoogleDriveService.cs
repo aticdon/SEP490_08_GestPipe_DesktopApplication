@@ -116,55 +116,18 @@ namespace GestPipe.Backend.Services
                 p.UploadedFiles++;
             }
         }
-        //public async Task SyncUserFolderAsync(string userId)
-        //{
-        //    string folderName = $"user_{userId}";
-
-        //    // ⭐ NEW: khởi tạo progress
-        //    var progress = new DriveSyncProgress
-        //    {
-        //        TotalFiles = 0,
-        //        SyncedFiles = 0,
-        //        IsCompleted = false
-        //    };
-        //    _progressDict[userId] = progress;
-
-        //    var listReq = _drive.Files.List();
-        //    listReq.Q =
-        //        "mimeType = 'application/vnd.google-apps.folder' " +
-        //        $"and name = '{folderName}' " +
-        //        $"and '{_rootFolderId}' in parents " +
-        //        "and trashed = false";
-        //    listReq.Fields = "files(id, name)";
-        //    var folderResult = await listReq.ExecuteAsync();
-
-        //    var folder = folderResult.Files.FirstOrDefault();
-        //    if (folder == null)
-        //    {
-        //        Console.WriteLine($"[SyncUser] Folder '{folderName}' not found in root '{_rootFolderId}'.");
-        //        progress.IsCompleted = true;
-        //        return;
-        //    }
-
-        //    string localUserDir = Path.Combine(_pythonBasePath, folderName);
-        //    Directory.CreateDirectory(localUserDir);
-
-        //    // Đếm tổng số file (không tính folder)
-        //    int totalFiles = await CountFilesInDriveFolderAsync(folder.Id);
-        //    progress.TotalFiles = totalFiles;   // ⭐ NEW: ghi tổng số file
-
-        //    // Tải file về local
-        //    int synced = await SyncDriveFolderToLocalAsync(folder.Id, localUserDir, userId);
-
-        //    progress.SyncedFiles = synced;
-        //    progress.IsCompleted = true;
-
-        //    Console.WriteLine($"[SyncUser] Downloaded {synced}/{totalFiles} files to '{localUserDir}'.");
-        //}
         public async Task SyncUserFolderAsync(string userId)
         {
             string folderName = $"user_{userId}";
+
+            // folder đang dùng hiện tại (model cũ vẫn chạy bằng folder này)
             string localUserDir = Path.Combine(_pythonBasePath, folderName);
+
+            // folder tạm để tải dữ liệu mới
+            string tempDir = localUserDir + "_tmp";
+
+            // folder backup để giữ bản cũ trong lúc swap
+            string backupDir = localUserDir + "_backup";
 
             // ⭐ Khởi tạo progress
             var progress = new DriveSyncProgress
@@ -177,6 +140,7 @@ namespace GestPipe.Backend.Services
 
             try
             {
+                // 1. Tìm folder user_{userId} trên Drive
                 var listReq = _drive.Files.List();
                 listReq.Q =
                     "mimeType = 'application/vnd.google-apps.folder' " +
@@ -194,29 +158,66 @@ namespace GestPipe.Backend.Services
                     return;
                 }
 
-                // ⭐ TẠO FOLDER NẾU CHƯA TỒN TẠI (nhưng KHÔNG xóa nếu đã có)
-                Directory.CreateDirectory(localUserDir);
+                // 2. Dọn thư mục tạm của lần sync trước (nếu có)
+                if (Directory.Exists(tempDir))
+                {
+                    Directory.Delete(tempDir, true);
+                }
+                Directory.CreateDirectory(tempDir);
 
-                // Đếm tổng số file
+                // 3. Đếm tổng số file trên Drive
                 int totalFiles = await CountFilesInDriveFolderAsync(folder.Id);
                 progress.TotalFiles = totalFiles;
 
-                // ⭐ Tải file về (CHỈ ghi đè file dữ liệu, GIỮ NGUYÊN file . py)
-                int synced = await SyncDriveFolderToLocalAsync(folder.Id, localUserDir, userId);
-
+                // 4. TẢI TẤT CẢ FILE VỀ THƯ MỤC TẠM (KHÔNG ĐỤNG THƯ MỤC CŨ)
+                int synced = await SyncDriveFolderToLocalAsync(folder.Id, tempDir, userId);
                 progress.SyncedFiles = synced;
-                progress.IsCompleted = true;
 
-                Console.WriteLine($"[SyncUser] ✅ Downloaded {synced}/{totalFiles} files to '{localUserDir}'.");
+                Console.WriteLine($"[SyncUser] ✅ Downloaded {synced}/{totalFiles} files to TEMP '{tempDir}'.");
+
+                // (tuỳ bạn: có thể yêu cầu synced == totalFiles mới cho swap)
+
+                // 5. SWAP THƯ MỤC – đoạn này giống “commit transaction”
+                // Xoá backup cũ nếu có
+                if (Directory.Exists(backupDir))
+                {
+                    Directory.Delete(backupDir, true);
+                }
+
+                // Đổi thư mục đang dùng thành backup
+                if (Directory.Exists(localUserDir))
+                {
+                    Directory.Move(localUserDir, backupDir);
+                }
+
+                // Đổi temp thành thư mục chính thức
+                Directory.Move(tempDir, localUserDir);
+
+                // Xoá backup sau khi mọi thứ ok
+                if (Directory.Exists(backupDir))
+                {
+                    Directory.Delete(backupDir, true);
+                }
+
+                progress.IsCompleted = true;
+                Console.WriteLine($"[SyncUser] ✅ Swapped folder. New data in '{localUserDir}'.");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[SyncUser] ❌ ERROR: {ex.Message}");
+
+                // Nếu lỗi trong quá trình sync/swap:
+                // - Xóa temp (nó chỉ là dữ liệu dở dang)
+                // - KHÔNG đụng localUserDir => vẫn là dữ liệu cũ, an toàn
+                if (Directory.Exists(tempDir))
+                {
+                    Directory.Delete(tempDir, true);
+                }
+
                 progress.IsCompleted = true;
                 throw;
             }
         }
-
 
         /// <summary>
         /// Đệ quy đếm số file (không bao gồm folder) trong 1 folder trên Drive.
@@ -244,49 +245,10 @@ namespace GestPipe.Backend.Services
 
             return total;
         }
-        //    private async Task<int> SyncDriveFolderToLocalAsync(
-        //string driveFolderId,
-        //string localFolderPath,
-        //string userId)
-        //    {
-        //        int count = 0;
-        //        Directory.CreateDirectory(localFolderPath);
-
-        //        var fileListReq = _drive.Files.List();
-        //        fileListReq.Q = $"'{driveFolderId}' in parents and trashed = false";
-        //        fileListReq.Fields = "files(id, name, mimeType)";
-        //        var filesResult = await fileListReq.ExecuteAsync();
-
-        //        foreach (var file in filesResult.Files)
-        //        {
-        //            if (file.MimeType == "application/vnd.google-apps.folder")
-        //            {
-        //                var subLocalPath = Path.Combine(localFolderPath, file.Name);
-        //                count += await SyncDriveFolderToLocalAsync(file.Id, subLocalPath, userId);
-        //            }
-        //            else
-        //            {
-        //                var getReq = _drive.Files.Get(file.Id);
-        //                string localPath = Path.Combine(localFolderPath, file.Name);
-
-        //                using var fs = new FileStream(localPath, FileMode.Create, FileAccess.Write);
-        //                await getReq.DownloadAsync(fs);
-        //                count++;
-
-        //                // ⭐ NEW: báo đã sync thêm 1 file
-        //                IncreaseSyncedFiles(userId);
-
-        //                Console.WriteLine($"[SyncLocal] Downloaded file: {localPath}");
-        //            }
-        //        }
-
-        //        return count;
-        //    }
-
         private async Task<int> SyncDriveFolderToLocalAsync(
-    string driveFolderId,
-    string localFolderPath,
-    string userId)
+                string driveFolderId,
+                string localFolderPath,
+                string userId)
         {
             int count = 0;
             Directory.CreateDirectory(localFolderPath);
@@ -307,35 +269,14 @@ namespace GestPipe.Backend.Services
                 else
                 {
                     string localPath = Path.Combine(localFolderPath, file.Name);
-                    string backupPath = localPath + ".backup";
 
                     try
                     {
-                        // ⭐ BACKUP FILE CŨ (nếu tồn tại)
-                        if (File.Exists(localPath))
-                        {
-                            // Xóa backup cũ nếu có
-                            if (File.Exists(backupPath))
-                                File.Delete(backupPath);
-
-                            // Đổi tên file hiện tại thành . backup
-                            File.Move(localPath, backupPath);
-                            Console.WriteLine($"[SyncLocal] Backed up: {backupPath}");
-                        }
-
-                        // ⭐ TẢI FILE MỚI TỪ DRIVE
                         var getReq = _drive.Files.Get(file.Id);
                         using var fs = new FileStream(localPath, FileMode.Create, FileAccess.Write);
                         await getReq.DownloadAsync(fs);
 
                         Console.WriteLine($"[SyncLocal] ✅ Downloaded: {localPath}");
-
-                        // ⭐ XÓA BACKUP SAU KHI TẢI THÀNH CÔNG
-                        if (File.Exists(backupPath))
-                        {
-                            File.Delete(backupPath);
-                            Console.WriteLine($"[SyncLocal] Deleted backup: {backupPath}");
-                        }
 
                         count++;
                         IncreaseSyncedFiles(userId);
@@ -343,26 +284,14 @@ namespace GestPipe.Backend.Services
                     catch (Exception ex)
                     {
                         Console.WriteLine($"[SyncLocal] ❌ ERROR downloading {file.Name}: {ex.Message}");
-
-                        // ⭐ KHÔI PHỤC FILE TỪ BACKUP NẾU LỖI
-                        if (File.Exists(backupPath))
-                        {
-                            // Xóa file lỗi (nếu có)
-                            if (File.Exists(localPath))
-                                File.Delete(localPath);
-
-                            // Khôi phục từ backup
-                            File.Move(backupPath, localPath);
-                            Console.WriteLine($"[SyncLocal] ✅ Restored from backup: {localPath}");
-                        }
-
-                        // Không throw exception → tiếp tục sync file khác
+                        // Không throw để tiếp tục các file khác
                     }
                 }
             }
 
             return count;
         }
+
         // ===================== UPLOAD (ĐẨY LÊN) =====================
 
         /// <summary>
