@@ -11,5 +11,6 @@ namespace GestPipe.Backend.Services.IServices
         Task<List<UserGestureRequest>> GetLatestRequestsByConfigIdsAsync(List<string> configIds, string userId);
         bool SetTrainingToSuccessful(string userGestureConfigId, string userId);
         bool SetPendingToTraining(string userGestureConfigId, string userId);
+        bool SetTrainingToCanceled(string userGestureConfigId, string userId);
     }
 }

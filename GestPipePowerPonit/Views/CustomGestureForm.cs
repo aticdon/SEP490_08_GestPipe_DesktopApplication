@@ -44,9 +44,8 @@ namespace GestPipePowerPonit
         // ✅ Loading components fields
         private int spinnerAngle = 0;
         private bool firstFrameReceived = false;
-        private bool isUserGesture = false;
 
-        public CustomGestureForm(HomeUser homeForm, string gestureId, string userName, string poseLabel, string gestureName, bool isUserGesture  = false)
+        public CustomGestureForm(HomeUser homeForm, string gestureId, string userName, string poseLabel, string gestureName)
         {
             InitializeComponent();
             _homeForm = homeForm;
@@ -54,7 +53,6 @@ namespace GestPipePowerPonit
             this.poseLabel = poseLabel;
             this.gestureName = gestureName;
             this.gestureId = gestureId;
-            this.isUserGesture = isUserGesture;
 
             this.Load += CustomGestureForm_Load;
             lblName.Text = gestureName;
@@ -101,24 +99,6 @@ namespace GestPipePowerPonit
                 // ✅ Apply language to initial status
                 UpdateInitialStatus();
                 CreateInstructionIcon();
-
-                if (isUserGesture)
-                {
-                    var userGestureService = new UserGestureConfigService();
-                    var gestureDetail = await userGestureService.GetUserGestureByid(gestureId);
-
-                    if (gestureDetail != null)
-                    {
-                        gestureTypeId = gestureDetail.GestureTypeId;
-                    }
-                    else
-                    {
-                        throw new Exception("Cannot load user gesture details - gesture not found");
-                    }
-                }
-                else
-                {
-                    // Nếu là DefaultGesture
                     var defaultGestureService = new DefaultGestureService();
                     var gestureDetail = await defaultGestureService.GetDefaultGestureByid(gestureId);
 
@@ -130,7 +110,6 @@ namespace GestPipePowerPonit
                     {
                         throw new Exception("Cannot load default gesture details - gesture not found");
                     }
-                }
             }
             catch (Exception ex)
             {
@@ -759,7 +738,6 @@ namespace GestPipePowerPonit
                                     // ✅ Handle completion
                                     if (eventName == "FINISH")
                                     {
-                                        // Prepare success message
                                         string successMessage = GetLocalizedText("training_success",
                                             $"Training completed successfully!",
                                             $"Huấn luyện hoàn thành thành công!");
@@ -787,6 +765,23 @@ namespace GestPipePowerPonit
                                                 _homeForm.Show();
                                                 this.Close();
                                             }
+                                        }
+                                    }
+                                    else if (eventName == "QUALITY_FAILED"
+                                         || (eventName == "ERROR" && statusMessage.Contains("Quality validation failed")))
+                                    {
+                                        string errorMessage = GetLocalizedText("training_failed",
+                                            $"Quality validation failed!",
+                                            $"Xác thực chất lượng thất bại!");
+                                        string errorTitle = GetLocalizedText("error_title", "Training Failed", "Huấn luyện thất bại");
+
+                                        var result = CustomMessageBox.ShowError(errorMessage, errorTitle);
+                                        if (result == DialogResult.OK)
+                                        {
+                                            this.Hide();
+                                            var customGestureForm = new ListRequestGestureForm(_homeForm);
+                                            customGestureForm.Show();
+                                            this.Close();
                                         }
                                     }
                                 }));

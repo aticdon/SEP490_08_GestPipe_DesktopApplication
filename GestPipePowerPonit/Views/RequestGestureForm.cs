@@ -14,21 +14,16 @@ namespace GestPipePowerPonit.Views
     {
         private string userId;
         private List<UserGestureRequestDto> pendingRequests = new List<UserGestureRequestDto>();
-        private bool isShowingUserGesture;
         public bool RequestSentSuccessfully { get; private set; } = false;
 
-        public RequestGestureForm(string userId, bool isShowingUserGesture = false)
+        public RequestGestureForm(string userId)
         {
             InitializeComponent();
             this.userId = userId;
-            this.isShowingUserGesture = isShowingUserGesture;
             this.Load += RequestGestureForm_Load;
             ApplyLanguage();
-
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
-            this.isShowingUserGesture = isShowingUserGesture;
         }
-
         private async void RequestGestureForm_Load(object sender, EventArgs e)
         {
             pendingRequests.Clear();
@@ -63,23 +58,7 @@ namespace GestPipePowerPonit.Views
                 }
 
                 List<string> gestureNames = new List<string>();
-                if (isShowingUserGesture)
-                {
-                    var userGesture = await userGestureService.GetUserGesturesAsync(userId);
-                    foreach (var config in userGesture)
-                    {
-                        var request = await requestService.GetLatestRequestByConfigAsync(config.Id, userId);
-                        if (request != null && request.Status != null &&
-                           (request.Status.ContainsKey("en") && request.Status["en"] == "Customed" ||
-                            request.Status.ContainsKey("vi") && request.Status["vi"].Contains("Đã chỉnh")))
-                        {
-                            gestureNames.Add(I18nHelper.GetLocalized(config.Name));
-                            pendingRequests.Add(request);
-                        }
-                    }
-                }
-                else
-                {
+
                     var configs = await defaultGestureService.GetDefaultGesturesAsync();
                     foreach (var config in configs)
                     {
@@ -92,7 +71,6 @@ namespace GestPipePowerPonit.Views
                             pendingRequests.Add(request);
                         }
                     }
-                }
 
                 int actualRequestCount = pendingRequests.Count;
 
@@ -171,74 +149,6 @@ namespace GestPipePowerPonit.Views
         {
             this.Close();
         }
-
-        // Start Training (không còn upload ở đây nữa)
-        //private async void btnRequest_Click(object sender, EventArgs e)
-        //{
-        //    if (pendingRequests.Count == 0)
-        //    {
-        //        CustomMessageBox.ShowWarning(
-        //            "No pending gestures available for training!",
-        //            "No Training Available"
-        //        );
-        //        return;
-        //    }
-
-        //    try
-        //    {
-        //        var userService = new UserService();
-        //        var gestureRequestService = new UserGestureRequestService();
-        //        bool overallSuccess = true;
-
-        //        btnStartRequest.Enabled = false;
-        //        btnStartRequest.Text = "Processing...";
-        //        btnStartRequest.FillColor = System.Drawing.Color.Orange;
-
-        //        // Đổi trạng thái tất cả request sang Training
-        //        foreach (var request in pendingRequests)
-        //        {
-        //            var trainingSuccess = await gestureRequestService
-        //                .SetRequestStatusToTrainingAsync(request.UserGestureConfigId);
-
-        //            if (!trainingSuccess)
-        //            {
-        //                overallSuccess = false;
-        //            }
-        //        }
-
-        //        var countSuccess = await userService.IncrementRequestCountAsync(userId);
-        //        var statusSuccess = await userService.UpdateGestureRequestStatusAsync(userId, "disable");
-
-        //        if (overallSuccess && countSuccess && statusSuccess)
-        //        {
-        //            // Chỉ đánh dấu đã gửi request; upload do ListRequestGestureForm xử lý
-        //            RequestSentSuccessfully = true;
-        //            this.Close();
-        //        }
-        //        else
-        //        {
-        //            CustomMessageBox.ShowError(
-        //                Properties.Resources.RequestErrorDetail,
-        //                Properties.Resources.RequestErrorTitle
-        //            );
-
-        //            btnStartRequest.Enabled = true;
-        //            btnStartRequest.Text = "🚀 Start Training";
-        //            btnStartRequest.FillColor = System.Drawing.Color.FromArgb(0, 188, 212);
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        CustomMessageBox.ShowError(
-        //            $"Unexpected error occurred:\n\n{ex.Message}\n\n" +
-        //            "Please try again or contact technical support.",
-        //            "System Error"
-        //        );
-
-        //        btnStartRequest.Enabled = true;
-        //    }
-        //}
         private async void btnRequest_Click(object sender, EventArgs e)
         {
             if (pendingRequests.Count == 0)

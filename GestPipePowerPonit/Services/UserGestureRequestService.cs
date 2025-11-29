@@ -139,6 +139,26 @@ namespace GestPipePowerPonit.Services
                 return false;
             }
         }
+        public async Task<bool> SetTrainingToCanceledAsync(string configId, string userId)
+        {
+            try
+            {
+                Console.WriteLine($"[Frontend] SetTrainingToCanceled - configId: {configId}, userId: {userId}");
+
+                var url = $"/api/UserGestureRequest/user/{userId}/config/{configId}/cancel";
+
+                var response = await client.PostAsync(url, null);
+
+                Console.WriteLine($"[Frontend] Response: {response.StatusCode}");
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Frontend] Exception: {ex.Message}");
+                return false;
+            }
+        }
         public async Task<List<UserGestureRequestDto>> GetLatestRequestsBatchAsync(string userId, List<string> gestureConfigIds)
         {
             try

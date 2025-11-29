@@ -9,6 +9,7 @@ using GestPipePowerPonit.Views.Profile;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -42,8 +43,6 @@ namespace GestPipePowerPonit
         private bool _canRequest;
         private bool _canDownload;
 
-        // ✅ THÊM: Flag để biết đang hiển thị loại nào
-        private bool isShowingUserGestures = false;
         private int _spinnerAngle = 0;
 
         public ListRequestGestureForm(HomeUser homeForm)
@@ -93,18 +92,17 @@ namespace GestPipePowerPonit
 
                 _canRequest = await _userService.CheckCanRequestAsync(userId);
                 _canDownload = await _userService.CheckCanDownloadAsync(userId);
-                if (!_canRequest && lblRequestStatus != null)
+
+                // ✅ Nếu không được request thì popup thông báo 1 lần khi mở form
+                if (!_canRequest)
                 {
-                    lblRequestStatus.Text = I18nHelper.GetString(
-                        "Gesture is being trained. Please wait until it completes to continue!",
-                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
+                    CustomMessageBox.ShowError(
+                        I18nHelper.GetString(
+                            "Gesture is being trained. Please wait until it completes to continue!",
+                            "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
+                        ),
+                        I18nHelper.GetString("Gesture training", "Huấn luyện cử chỉ")
                     );
-                    lblRequestStatus.Visible = true;
-                }
-                else if (lblRequestStatus != null)
-                {
-                    lblRequestStatus.Text = "";
-                    lblRequestStatus.Visible = false;
                 }
 
                 if (btnRequest != null)
@@ -134,34 +132,15 @@ namespace GestPipePowerPonit
         {
             try
             {
-                // Kiểm tra xem user có gesture config không
-                userGestures = await _uGestureService.GetUserGesturesAsync(userId);
-
-                if (userGestures != null && userGestures.Count > 0)
-                {
-                    // Có user gestures -> chỉ hiển thị user gestures
-                    isShowingUserGestures = true;
-                    await LoadUserGesturesAsync();
-                    Console.WriteLine($"[LoadGestures] ✅ Hiển thị CHÍNH UserGestureConfig ({userGestures.Count} items)");
-                }
-                else
-                {
-                    // Không có user gestures -> chỉ hiển thị default gestures
-                    isShowingUserGestures = false;
                     await LoadDefaultGesturesAsync();
                     Console.WriteLine("[LoadGestures] ✅ Hiển thị DefaultGesture (fallback)");
-                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[LoadGestures] ❌ Lỗi: {ex.Message}");
-                // Nếu có lỗi, fallback về default gestures
-                isShowingUserGestures = false;
-                await LoadDefaultGesturesAsync();
             }
         }
 
-        // ✅ Load default gestures (chỉ khi không có UserGestureConfig)
         private async Task LoadDefaultGesturesAsync()
         {
             try
@@ -191,7 +170,13 @@ namespace GestPipePowerPonit
                 var configIds = defaultGestures.Select(config => config.Id).ToList();
                 var requests = await requestService.GetLatestRequestsBatchAsync(userId, configIds);
                 var requestDict = requests?.ToDictionary(r => r.UserGestureConfigId, r => r) ?? new Dictionary<string, UserGestureRequestDto>();
-
+                bool hasCustomed = requests != null && requests.Any(r => IsCustomedOnly(r));
+                bool canReset = hasCustomed && _canRequest;
+                if (btnReset != null)
+                {
+                    btnReset.Enabled = canReset;
+                    btnReset.ForeColor = canReset ? Color.White : Color.Black;
+                }
                 var rowsToAdd = new List<object[]>();
                 for (int i = 0; i < defaultGestures.Count; i++)
                 {
@@ -218,9 +203,9 @@ namespace GestPipePowerPonit
                         viewIcon = Properties.Resources.eye_gray;
                         customIcon = Properties.Resources.CustomCameraGray;
                     }
-                    else if (request != null)
+                    else if (IsLockedRequest(request))
                     {
-                        //status = I18nHelper.GetLocalized(request.Status);
+                        // 🔒 Chỉ khi Submit / Customed mới hiển thị theo request và khóa nút
                         status = I18nHelper.GetLocalized(request.Status);
                         if (status.Contains("Active"))
                         {
@@ -237,6 +222,7 @@ namespace GestPipePowerPonit
                     }
                     else
                     {
+                        // ✅ Các trạng thái khác (kể cả Successful) dùng lại data từ DefaultGesture
                         status = I18nHelper.GetLocalized(config.Status);
                         if (status.Contains("Active"))
                         {
@@ -285,125 +271,6 @@ namespace GestPipePowerPonit
             }
         }
 
-        private async Task LoadUserGesturesAsync()
-        {
-            try
-            {
-                if (panelLoading != null)
-                {
-                    panelLoading.Visible = true;
-                    panelLoading.BringToFront();
-                }
-
-                if (lblLoading != null)
-                {
-                    lblLoading.Text = Properties.Resources.List_Loading;
-                    AlignLoadingControls();  // 👈 THÊM
-                }
-                userGestures = await _uGestureService.GetUserGesturesAsync(userId);
-
-                if (guna2DataGridView1 != null)
-                {
-                    guna2DataGridView1.Rows.Clear();
-                    guna2DataGridView1.AllowUserToAddRows = false;
-                }
-
-                var requestService = new UserGestureRequestService();
-
-                // **Sửa ở đây: dùng batch thay cho từng request**
-                var configIds = userGestures.Select(config => config.Id).ToList();
-                var requests = await requestService.GetLatestRequestsBatchAsync(userId, configIds);
-                var requestDict = requests?.ToDictionary(r => r.UserGestureConfigId, r => r) ?? new Dictionary<string, UserGestureRequestDto>();
-
-                var rowsToAdd = new List<object[]>();
-                for (int i = 0; i < userGestures.Count; i++)
-                {
-                    var config = userGestures[i];
-                    var request = requestDict.TryGetValue(config.Id, out var req) ? req : null;
-                    string status;
-                    string statusToShow = "", timeToShow, accuracToShow;
-                    object viewIcon, customIcon;
-
-                    if (!_canRequest)
-                    {
-                        status = I18nHelper.GetLocalized(config.Status);
-
-                        if (status.Contains("Active"))
-                        {
-                            statusToShow = I18nHelper.GetString("Ready", "Sẵn sàng");
-                        }
-                        else
-                        {
-                            statusToShow = status;
-                        }
-                        timeToShow = config.LastUpdate.ToString("dd-MM-yyyy HH:mm");
-                        accuracToShow = $"{config.Accuracy * 100:F1}%";
-                        viewIcon = Properties.Resources.eye_gray;
-                        customIcon = Properties.Resources.CustomCameraGray;
-                    }
-                    else if (request != null)
-                    {
-                        status = I18nHelper.GetLocalized(request.Status);
-                        if (status.Contains("Active"))
-                        {
-                            statusToShow = I18nHelper.GetString("Ready", "Sẵn sàng");
-                        }
-                        else
-                        {
-                            statusToShow = status;
-                        }
-                        timeToShow = request.CreatedAt.ToString("dd-MM-yyyy HH:mm");
-                        accuracToShow = "N/A";
-                        viewIcon = Properties.Resources.eye_gray;
-                        customIcon = Properties.Resources.CustomCameraGray;
-                    }
-                    else
-                    {
-                        status = I18nHelper.GetLocalized(config.Status);
-                        if (status.Contains("Active"))
-                        {
-                            statusToShow = I18nHelper.GetString("Ready", "Sẵn sàng");
-                        }
-                        else
-                        {
-                            statusToShow = status;
-                        }
-                        timeToShow = config.LastUpdate.ToString("dd-MM-yyyy HH:mm");
-                        accuracToShow = $"{config.Accuracy * 100:F1}%";
-                        viewIcon = Properties.Resources.eye;
-                        customIcon = Properties.Resources.CustomCamera;
-                    }
-
-                    rowsToAdd.Add(new object[]
-                    {
-                I18nHelper.GetLocalized(config.Name),
-                I18nHelper.GetLocalized(config.Type),
-                accuracToShow,
-                statusToShow,
-                timeToShow,
-                viewIcon,
-                customIcon
-                    });
-                }
-
-                if (guna2DataGridView1 != null)
-                {
-                    foreach (var row in rowsToAdd)
-                    {
-                        guna2DataGridView1.Rows.Add(row);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Không thể tải danh sách user gesture!\n" + ex.Message);
-            }
-            finally
-            {
-                if (panelLoading != null)
-                    panelLoading.Visible = false;
-            }
-        }
         // ✅ THAY ĐỔI: Xử lý click dựa trên loại gesture đang hiển thị
         private async void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -411,82 +278,15 @@ namespace GestPipePowerPonit
 
             var columnView = guna2DataGridView1?.Columns["ColumnView"];
             var columnCustom = guna2DataGridView1?.Columns["ColumnCustom"];
-
-            if (isShowingUserGestures)
-            {
-                // ✅ XỬ LÝ UserGestureConfig - luôn cho phép tương tác
-                await HandleUserGestureClick(e.RowIndex, e.ColumnIndex, columnView, columnCustom);
-            }
-            else
-            {
-                // ✅ XỬ LÝ DefaultGesture - kiểm tra request như cũ
-                await HandleDefaultGestureClick(e.RowIndex, e.ColumnIndex, columnView, columnCustom);
-            }
+            await HandleDefaultGestureClick(e.RowIndex, e.ColumnIndex, columnView, columnCustom);
         }
-
-        // ✅ METHOD MỚI: Xử lý UserGesture click
-        private async Task HandleUserGestureClick(int rowIndex, int columnIndex, DataGridViewColumn columnView, DataGridViewColumn columnCustom)
-        {
-            var basic = userGestures[rowIndex];
-            var requestService = new UserGestureRequestService();
-            var request = await requestService.GetLatestRequestByConfigAsync(basic.Id, userId);
-
-            // Nếu là dòng có request thì KHÔNG xử lý View/Custom
-            if (request != null &&
-                ((columnView != null && columnIndex == columnView.Index) ||
-                 (columnCustom != null && columnIndex == columnCustom.Index)))
-            {
-                return;
-            }
-
-            // Xử lý View
-            if (columnView != null && columnIndex == columnView.Index)
-            {
-                var detail = await _uGestureService.GetGestureDetailAsync(basic.Id);
-                if (detail == null) return;
-
-                string description = _uGestureService.GetGestureDescription(detail);
-                string instruction = _uGestureService.GetInstructionTable(detail);
-
-                var detailForm = new DetailGestureForm(
-                    I18nHelper.GetLocalized(detail.Name),
-                    I18nHelper.GetLocalized(detail.Type),
-                    $"{detail.Accuracy * 100:F1}%",
-                    I18nHelper.GetLocalized(detail.Status),
-                    detail.LastUpdate.ToString("dd-MM-yyyy"),
-                    description,
-                    instruction
-                );
-                detailForm.ShowDialog();
-            }
-            // Xử lý Custom
-            else if (columnCustom != null && columnIndex == columnCustom.Index)
-            {
-                var detail = await _uGestureService.GetGestureDetailAsync(basic.Id);
-                if (detail == null) return;
-
-                string poseLabel = detail.PoseLabel;
-                string userGesture = I18nHelper.GetLocalized(detail.Name);
-                string userName = await GetUserNameAsync();
-                string gestureId = basic.Id;
-
-                var customForm = new CustomGestureForm(_homeForm, gestureId, userName, poseLabel, userGesture, true);
-                customForm.Show();
-                this.Hide();
-            }
-        }
-
-        // ✅ METHOD MỚI: Xử lý DefaultGesture click (logic cũ)
         private async Task HandleDefaultGestureClick(int rowIndex, int columnIndex, DataGridViewColumn columnView, DataGridViewColumn columnCustom)
         {
             var basic = defaultGestures[rowIndex];
 
-            // LẤY request cho row hiện tại
             var requestService = new UserGestureRequestService();
             var request = await requestService.GetLatestRequestByConfigAsync(basic.Id, userId);
-
-            // Nếu là dòng có request thì KHÔNG xử lý View/Custom
-            if (request != null &&
+            if (IsLockedRequest(request) &&
                 ((columnView != null && columnIndex == columnView.Index) ||
                  (columnCustom != null && columnIndex == columnCustom.Index)))
             {
@@ -523,13 +323,12 @@ namespace GestPipePowerPonit
                 string userName = await GetUserNameAsync();
                 string gestureId = basic.Id;
 
-                var customForm = new CustomGestureForm(_homeForm, gestureId, userName, poseLabel, userGesture, false);
+                var customForm = new CustomGestureForm(_homeForm, gestureId, userName, poseLabel, userGesture);
                 customForm.Show();
                 this.Hide();
             }
         }
 
-        // ✅ METHOD MỚI: Lấy tên user (tách riêng để tránh lặp code)
         private async Task<string> GetUserNameAsync()
         {
             string userName = "unknown";
@@ -607,10 +406,6 @@ namespace GestPipePowerPonit
                 if (btnRequest != null)
                     btnRequest.Text = Properties.Resources.Btn_RequestGesture;
                 btnDownload.Text = Properties.Resources.btnDownload;
-                lblRequestStatus.Text = I18nHelper.GetString(
-                        "Gesture is being trained. Please wait until it completes to continue!",
-                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
-                    );
                 if (guna2DataGridView1?.Columns != null)
                 {
                     var colName = guna2DataGridView1.Columns["ColumnName"];
@@ -660,7 +455,7 @@ namespace GestPipePowerPonit
         }
         private void btnRequest_Click(object sender, EventArgs e)
         {
-            var requestForm = new RequestGestureForm(userId, isShowingUserGestures);
+            var requestForm = new RequestGestureForm(userId);
 
             requestForm.FormClosed += async (s, args) =>
             {
@@ -675,18 +470,15 @@ namespace GestPipePowerPonit
                 _canRequest = await _userService.CheckCanRequestAsync(userId);
                 _canDownload = await _userService.CheckCanDownloadAsync(userId);
 
-                if (!_canRequest && lblRequestStatus != null)
+                if (!_canRequest)
                 {
-                    lblRequestStatus.Text = I18nHelper.GetString(
-                        "Gesture is being trained. Please wait until it completes to continue!",
-                        "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
+                    CustomMessageBox.ShowError(
+                        I18nHelper.GetString(
+                            "Gesture is being trained. Please wait until it completes to continue!",
+                            "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
+                        ),
+                        I18nHelper.GetString("Gesture training", "Huấn luyện cử chỉ")
                     );
-                    lblRequestStatus.Visible = true;
-                }
-                else if (lblRequestStatus != null)
-                {
-                    lblRequestStatus.Text = "";
-                    lblRequestStatus.Visible = false;
                 }
 
                 if (btnRequest != null)
@@ -850,24 +642,17 @@ namespace GestPipePowerPonit
             }
 
             // 4. Cập nhật label cảnh báo
-            if (lblRequestStatus != null)
+            if (!_canRequest)
             {
-                if (!_canRequest)
-                {
-                    lblRequestStatus.Text = I18nHelper.GetString(
+                CustomMessageBox.ShowError(
+                    I18nHelper.GetString(
                         "Gesture is being trained. Please wait until it completes to continue!",
                         "Cử chỉ đang được huấn luyện. Vui lòng đợi hoàn thành để tiếp tục!"
-                    );
-                    lblRequestStatus.Visible = true;
-                }
-                else
-                {
-                    lblRequestStatus.Text = "";
-                    lblRequestStatus.Visible = false;
-                }
+                    ),
+                    I18nHelper.GetString("Gesture training", "Huấn luyện cử chỉ")
+                );
             }
         }
-
 
         private async void btnLogout_Click(object sender, EventArgs e)
         {
@@ -1265,11 +1050,7 @@ namespace GestPipePowerPonit
                 // Lấy tất cả config IDs
                 List<string> configIds = new List<string>();
 
-                if (isShowingUserGestures && userGestures != null)
-                {
-                    configIds = userGestures.Select(g => g.Id).ToList();
-                }
-                else if (defaultGestures != null)
+               if (defaultGestures != null)
                 {
                     configIds = defaultGestures.Select(g => g.Id).ToList();
                 }
@@ -1329,6 +1110,266 @@ namespace GestPipePowerPonit
             {
                 Console.WriteLine($"[UpdateAllRequests] ❌ Error: {ex.Message}");
                 // Không throw exception - download vẫn thành công
+            }
+        }
+
+        private bool IsLockedRequest(UserGestureRequestDto request)
+        {
+            if (request?.Status == null) return false;
+
+            string statusEn = request.Status.ContainsKey("en") ? request.Status["en"] : "";
+            string statusVi = request.Status.ContainsKey("vi") ? request.Status["vi"] : "";
+
+            statusEn = statusEn?.Trim();
+            statusVi = statusVi?.Trim();
+
+            // Tùy đúng string bên backend, em chỉnh lại cho khớp
+            bool isSubmit =
+                string.Equals(statusEn, "Submit", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(statusVi, "Gửi", StringComparison.OrdinalIgnoreCase);
+
+            bool isCustomed =
+                string.Equals(statusEn, "Customed", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(statusVi, "Đã tùy chỉnh", StringComparison.OrdinalIgnoreCase);
+
+            return isSubmit || isCustomed;
+        }
+        private bool IsCustomedOnly(UserGestureRequestDto request)
+        {
+            if (request?.Status == null) return false;
+
+            string statusEn = request.Status.ContainsKey("en") ? request.Status["en"] : "";
+            string statusVi = request.Status.ContainsKey("vi") ? request.Status["vi"] : "";
+
+            statusEn = statusEn?.Trim();
+            statusVi = statusVi?.Trim();
+
+            bool isCustomed =
+                string.Equals(statusEn, "Customed", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(statusVi, "Đã tùy chỉnh", StringComparison.OrdinalIgnoreCase);
+
+            return  isCustomed;
+        }
+        // =========================
+        // NÚT RESET CUSTOM GESTURE
+        // =========================
+        private async void btnReset_Click(object sender, EventArgs e)
+        {
+            var canReset = await CanResetCustomGesturesAsync();
+            if (!canReset)
+            {
+                CustomMessageBox.ShowInfo(
+                    I18nHelper.GetString(
+                        "There is no custom gesture to reset.",
+                        "Không có cử chỉ custom nào để reset."
+                    ),
+                    I18nHelper.GetString("Reset custom gesture", "Reset cử chỉ custom")
+                );
+                return;
+            }
+            var result = CustomMessageBox.ShowQuestion(
+                I18nHelper.GetString(
+                    "Do you want to reset all custom gesture data for this account?",
+                    "Bạn có chắc muốn reset toàn bộ dữ liệu cử chỉ custom của tài khoản này không?"
+                ),
+                I18nHelper.GetString("Reset custom gesture", "Reset cử chỉ custom")
+            );
+
+            if (result != DialogResult.Yes)
+                return;
+
+            // Tùy chọn: khóa nút, đổi cursor
+            btnReset.Enabled = false;
+            Cursor = Cursors.WaitCursor;
+
+            try
+            {
+                // ====== CẤU HÌNH ĐƯỜNG DẪN PYTHON & SCRIPT ======
+                // TODO: chỉnh lại cho đúng path môi trường của bạn
+                string pythonExe = "python";
+                string codeFolder = @"D:\Semester9\codepython\hybrid_realtime_pipeline\code";
+                string scriptPath = Path.Combine(codeFolder, "reset_custom_gestures.py");
+
+                if (!File.Exists(scriptPath))
+                {
+                    CustomMessageBox.ShowError(
+                        I18nHelper.GetString(
+                            $"reset_custom_gestures.py not found at: {scriptPath}",
+                            $"Không tìm thấy file reset_custom_gestures.py tại: {scriptPath}"
+                        ),
+                        Properties.Resources.Title_Error
+                    );
+                    return;
+                }
+
+                // Tham số cho script:
+                //   --user-id <id>
+                //   --base-dir <codeFolder>
+                string arguments =
+                    $"\"{scriptPath}\" --user-id \"{userId}\" --base-dir \"{codeFolder}\"";
+
+                var psi = new ProcessStartInfo
+                {
+                    FileName = pythonExe,
+                    Arguments = arguments,
+                    WorkingDirectory = codeFolder,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+
+                string stdOut = "";
+                string stdErr = "";
+                int exitCode = -1;
+
+                await Task.Run(() =>
+                {
+                    using (var proc = new Process())
+                    {
+                        proc.StartInfo = psi;
+                        proc.OutputDataReceived += (s2, e2) =>
+                        {
+                            if (!string.IsNullOrEmpty(e2.Data))
+                                stdOut += e2.Data + Environment.NewLine;
+                        };
+                        proc.ErrorDataReceived += (s3, e3) =>
+                        {
+                            if (!string.IsNullOrEmpty(e3.Data))
+                                stdErr += e3.Data + Environment.NewLine;
+                        };
+
+                        proc.Start();
+                        proc.BeginOutputReadLine();
+                        proc.BeginErrorReadLine();
+                        proc.WaitForExit();
+                        exitCode = proc.ExitCode;
+                    }
+                });
+
+                Console.WriteLine("[ResetCustom] STDOUT:\n" + stdOut);
+                Console.WriteLine("[ResetCustom] STDERR:\n" + stdErr);
+
+                if (exitCode == 0)
+                {
+                    // 1️⃣ Sau khi reset file xong -> đổi trạng thái các request Customed -> Canceled
+                    try
+                    {
+                        var requestService = new UserGestureRequestService();
+
+                        // Lấy danh sách configId hiện có
+                        var configIds = defaultGestures?
+                            .Select(g => g.Id)
+                            .ToList() ?? new List<string>();
+
+                        if (configIds.Count > 0)
+                        {
+                            var requests = await requestService.GetLatestRequestsBatchAsync(userId, configIds);
+
+                            if (requests != null && requests.Count > 0)
+                            {
+                                foreach (var req in requests)
+                                {
+                                    // Dùng lại helper IsCustomedOnly mà bạn đã viết
+                                    if (IsCustomedOnly(req))
+                                    {
+                                        bool ok = await requestService.SetTrainingToCanceledAsync(
+                                            req.UserGestureConfigId,
+                                            userId
+                                        );
+                                        Console.WriteLine($"[ResetCustom] Cancel {req.UserGestureConfigId} => {ok}");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[ResetCustom] Error when canceling requests: {ex.Message}");
+                        // không throw để không chặn UI
+                    }
+
+                    // 2️⃣ Thông báo và reload UI
+                    CustomMessageBox.ShowSuccess(
+                        I18nHelper.GetString(
+                            "Custom gesture data has been reset successfully.",
+                            "Đã reset dữ liệu cử chỉ custom thành công."
+                        ),
+                        I18nHelper.GetString("Reset custom gesture", "Reset cử chỉ custom")
+                    );
+
+                    await RefreshGesturesAsync();
+                }
+                else
+                {
+                    CustomMessageBox.ShowError(
+                        I18nHelper.GetString(
+                            $"Python reset script exited with code {exitCode}.\n{stdErr}",
+                            $"Script Python reset kết thúc với mã {exitCode}.\n{stdErr}"
+                        ),
+                        Properties.Resources.Title_Error
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.ShowError(
+                    I18nHelper.GetString(
+                        $"Error while resetting custom gestures: {ex.Message}",
+                        $"Lỗi khi reset cử chỉ custom: {ex.Message}"
+                    ),
+                    Properties.Resources.Title_Error
+                );
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                btnReset.Enabled = true;
+            }
+        }
+        /// <summary>
+        /// Kiểm tra xem user hiện tại có cử chỉ Customed nào để reset hay không
+        /// </summary>
+        private async Task<bool> CanResetCustomGesturesAsync()
+        {
+            try
+            {
+                var requestService = new UserGestureRequestService();
+
+                // Nếu chưa có defaultGestures thì load lại 1 lần cho chắc
+                if (defaultGestures == null || defaultGestures.Count == 0)
+                {
+                    defaultGestures = await _gestureService.GetDefaultGesturesAsync();
+                }
+
+                var configIds = defaultGestures?
+                    .Select(g => g.Id)
+                    .ToList() ?? new List<string>();
+
+                if (configIds.Count == 0)
+                {
+                    Console.WriteLine("[CanResetCustomGestures] No configs found");
+                    return false;
+                }
+
+                var requests = await requestService.GetLatestRequestsBatchAsync(userId, configIds);
+
+                if (requests == null || requests.Count == 0)
+                {
+                    Console.WriteLine("[CanResetCustomGestures] No requests found");
+                    return false;
+                }
+
+                // Chỉ quan tâm các request đang Customed
+                bool hasCustomed = requests.Any(r => IsCustomedOnly(r));
+                Console.WriteLine($"[CanResetCustomGestures] hasCustomed={hasCustomed}");
+
+                return hasCustomed;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[CanResetCustomGestures] Error: {ex.Message}");
+                return false;
             }
         }
     }

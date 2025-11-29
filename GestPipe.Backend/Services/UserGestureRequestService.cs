@@ -109,7 +109,7 @@ namespace GestPipe.Backend.Services
                 .Find(x => x.UserId == userId
                     && x.Status != null
                     && x.Status.ContainsKey("main")
-                    && x.Status["main"] == "customed")
+                    && x.Status["main"] == "Customed")
                 .ToListAsync();
         }
 
@@ -156,7 +156,11 @@ namespace GestPipe.Backend.Services
                 // ✅ Filter cả UserGestureConfigId VÀ UserId
                 var filter = Builders<UserGestureRequest>.Filter.And(
                     Builders<UserGestureRequest>.Filter.Eq(r => r.UserGestureConfigId, userGestureConfigId),
-                    Builders<UserGestureRequest>.Filter.Eq(r => r.UserId, userId)
+                    Builders<UserGestureRequest>.Filter.Eq(r => r.UserId, userId),
+                    Builders<UserGestureRequest>.Filter.Or(
+                    Builders<UserGestureRequest>.Filter.Eq("status.en", "Customed"),
+                    Builders<UserGestureRequest>.Filter.Eq("status.vi", "Đã tùy chỉnh")
+                    )
                 );
 
                 // Tìm request mới nhất của user này với config này
@@ -200,7 +204,11 @@ namespace GestPipe.Backend.Services
                 // ✅ Filter cả UserGestureConfigId VÀ UserId
                 var filter = Builders<UserGestureRequest>.Filter.And(
                     Builders<UserGestureRequest>.Filter.Eq(r => r.UserGestureConfigId, userGestureConfigId),
-                    Builders<UserGestureRequest>.Filter.Eq(r => r.UserId, userId)
+                    Builders<UserGestureRequest>.Filter.Eq(r => r.UserId, userId),
+                    Builders<UserGestureRequest>.Filter.Or(
+                    Builders<UserGestureRequest>.Filter.Eq("status.en", "Submit"),
+                    Builders<UserGestureRequest>.Filter.Eq("status.vi", "Gửi")
+                    )
                 );
 
                 var latestRequest = _collection
@@ -220,6 +228,49 @@ namespace GestPipe.Backend.Services
                 var update = Builders<UserGestureRequest>.Update
                     .Set("status.en", "Successful")
                     .Set("status.vi", "Thành công");
+
+                var res = _collection.UpdateOne(updateFilter, update);
+
+                Console.WriteLine($"[SetTrainingToSuccessful] ModifiedCount: {res.ModifiedCount}");
+
+                return res.ModifiedCount > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[SetTrainingToSuccessful] ❌ Exception: {ex.Message}");
+                return false;
+            }
+        }
+        public bool SetTrainingToCanceled(string userGestureConfigId, string userId)
+        {
+            try
+            {
+                var filter = Builders<UserGestureRequest>.Filter.And(
+                    Builders<UserGestureRequest>.Filter.Eq(r => r.UserGestureConfigId, userGestureConfigId),
+                    Builders<UserGestureRequest>.Filter.Eq(r => r.UserId, userId),
+                    Builders<UserGestureRequest>.Filter.Or(
+                    Builders<UserGestureRequest>.Filter.Eq("status.en", "Customed"),
+                    Builders<UserGestureRequest>.Filter.Eq("status.vi", "Đã tùy chỉnh")
+                    )
+                );
+
+                var latestRequest = _collection
+                    .Find(filter)
+                    .SortByDescending(r => r.CreatedAt)
+                    .FirstOrDefault();
+
+                if (latestRequest == null)
+                {
+                    Console.WriteLine($"[SetTrainingToSuccessful] ❌ No request found");
+                    return false;
+                }
+
+                Console.WriteLine($"[SetTrainingToSuccessful] ✅ Found request: {latestRequest.Id}");
+
+                var updateFilter = Builders<UserGestureRequest>.Filter.Eq(r => r.Id, latestRequest.Id);
+                var update = Builders<UserGestureRequest>.Update
+                    .Set("status.en", "Canceled")
+                    .Set("status.vi", "Đã hủy");
 
                 var res = _collection.UpdateOne(updateFilter, update);
 
