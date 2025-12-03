@@ -1236,13 +1236,13 @@ namespace GestPipePowerPonit
                 case "zoom_out": btnZoomOutTop_Click(null, null); Console.WriteLine("Zoom out"); break;
                 case "next_slide": btnNext_Click(null, null); Console.WriteLine("Next Slide"); break;
                 case "previous_slide": btnPrev_Click(null, null); Console.WriteLine("Previous Slide"); break;
-                case "home": btnFirst_Click(null, null); Console.WriteLine("Home"); break;
-                case "end": btnLast_Click(null, null); Console.WriteLine("End"); break;
+                //case "home": btnFirst_Click(null, null); Console.WriteLine("Home"); break;
+                //case "end": btnLast_Click(null, null); Console.WriteLine("End"); break;
                 case "rotate_left": btnViewRight_Click(null, null); Console.WriteLine("Rotate Left"); break;
                 case "rotate_right": btnViewLeft_Click(null, null); Console.WriteLine("Rotate Right"); break;
                 case "rotate_up": btnViewBottom_Click(null, null); Console.WriteLine("Rotate Up"); break;
                 case "start_present": btnSlideShow_Click(null, null); Console.WriteLine("Slide Show"); break;
-                case "end_present": btnClose_Click(null, null); Console.WriteLine("Close Slide"); break;
+                //case "end_present": btnClose_Click(null, null); Console.WriteLine("Close Slide"); break;
                 case "rotate_down": btnViewTop_Click(null, null); Console.WriteLine("Rotate Down"); break;
                 case "zoom_in_slide": btnZoomInSlide_Click(null, null); Console.WriteLine("Zoom In Slide"); break;
                 case "zoom_out_slide": btnZoomOutSlide_Click(null, null); Console.WriteLine("Zoom Out Slide"); break;

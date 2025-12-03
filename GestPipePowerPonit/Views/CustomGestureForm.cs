@@ -739,10 +739,10 @@ namespace GestPipePowerPonit
                                     if (eventName == "FINISH")
                                     {
                                         string successMessage = GetLocalizedText("training_success",
-                                            $"Training completed successfully!",
-                                            $"Huấn luyện hoàn thành thành công!");
+                                            $"Custom gesture successfully!",
+                                            $"Tùy chỉnh cử chỉ thành công!");
 
-                                        string successTitle = GetLocalizedText("success_title", "Training Completed", "Hoàn thành huấn luyện");
+                                        string successTitle = GetLocalizedText("success_title", "Custom Completed", "Hoàn thành");
 
                                         // Show custom success message
                                         var result = CustomMessageBox.ShowSuccess(successMessage, successTitle);
@@ -773,7 +773,7 @@ namespace GestPipePowerPonit
                                         string errorMessage = GetLocalizedText("training_failed",
                                             $"Quality validation failed!",
                                             $"Xác thực chất lượng thất bại!");
-                                        string errorTitle = GetLocalizedText("error_title", "Training Failed", "Huấn luyện thất bại");
+                                        string errorTitle = GetLocalizedText("error_title", "Custom Failed", "Tùy chỉnh thất bại");
 
                                         var result = CustomMessageBox.ShowError(errorMessage, errorTitle);
                                         if (result == DialogResult.OK)
