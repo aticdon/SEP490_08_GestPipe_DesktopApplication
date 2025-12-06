@@ -19,6 +19,7 @@ namespace GestPipe.Backend.Services
         private readonly string _pythonBasePath;
         private readonly string _rootFolderId;
         private readonly string _uploadRootFolderId;
+        private readonly string _defaultsFolderId;
 
         private static readonly ConcurrentDictionary<string, DriveSyncProgress> _progressDict
     = new ConcurrentDictionary<string, DriveSyncProgress>();
@@ -30,6 +31,7 @@ namespace GestPipe.Backend.Services
             _pythonBasePath = config["GoogleDrive:PythonBasePath"];
             _rootFolderId = config["GoogleDrive:RootFolderId"];
             _uploadRootFolderId = config["GoogleDrive:UploadRootFolderId"];
+            _defaultsFolderId = config["GoogleDrive:DefaultsFolderId"];   //
 
             var clientId = config["GoogleDrive:ClientId"];
             var clientSecret = config["GoogleDrive:ClientSecret"];
@@ -41,6 +43,8 @@ namespace GestPipe.Backend.Services
                 throw new InvalidOperationException("GoogleDrive:RootFolderId is not configured.");
             if (string.IsNullOrWhiteSpace(_uploadRootFolderId))
                 throw new InvalidOperationException("GoogleDrive:UploadRootFolderId is not configured.");
+            if (string.IsNullOrWhiteSpace(_defaultsFolderId))
+                throw new InvalidOperationException("GoogleDrive:DefaultsFolderId is not configured.");
             if (string.IsNullOrWhiteSpace(clientId) ||
                 string.IsNullOrWhiteSpace(clientSecret) ||
                 string.IsNullOrWhiteSpace(refreshToken))
@@ -501,6 +505,81 @@ namespace GestPipe.Backend.Services
             }
 
             return count;
+        }
+
+        public async Task SyncUserFolderFromDefaultsAsync(string userId)
+        {
+            string folderName = $"user_{userId}";
+
+            // folder đang dùng hiện tại
+            string localUserDir = Path.Combine(_pythonBasePath, folderName);
+
+            // folder tạm để tải dữ liệu mới
+            string tempDir = localUserDir + "_tmp";
+
+            // folder backup để giữ bản cũ trong lúc swap
+            string backupDir = localUserDir + "_backup";
+
+            var progress = new DriveSyncProgress
+            {
+                TotalFiles = 0,
+                SyncedFiles = 0,
+                IsCompleted = false
+            };
+            _progressDict[userId] = progress;
+
+            try
+            {
+                // 1. Dọn thư mục tạm cũ
+                if (Directory.Exists(tempDir))
+                {
+                    Directory.Delete(tempDir, true);
+                }
+                Directory.CreateDirectory(tempDir);
+
+                // 2. Đếm số file trong defaults folder trên Drive
+                int totalFiles = await CountFilesInDriveFolderAsync(_defaultsFolderId);
+                progress.TotalFiles = totalFiles;
+
+                // 3. Download tất cả file từ defaults vào tempDir
+                int synced = await SyncDriveFolderToLocalAsync(_defaultsFolderId, tempDir, userId);
+                progress.SyncedFiles = synced;
+
+                Console.WriteLine($"[SyncDefaults] ✅ Downloaded {synced}/{totalFiles} files to TEMP '{tempDir}'.");
+
+                // 4. Swap giống logic cũ
+                if (Directory.Exists(backupDir))
+                {
+                    Directory.Delete(backupDir, true);
+                }
+
+                if (Directory.Exists(localUserDir))
+                {
+                    Directory.Move(localUserDir, backupDir);
+                }
+
+                Directory.Move(tempDir, localUserDir);
+
+                if (Directory.Exists(backupDir))
+                {
+                    Directory.Delete(backupDir, true);
+                }
+
+                progress.IsCompleted = true;
+                Console.WriteLine($"[SyncDefaults] ✅ Swapped folder. New data in '{localUserDir}'.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[SyncDefaults] ❌ ERROR: {ex.Message}");
+
+                if (Directory.Exists(tempDir))
+                {
+                    Directory.Delete(tempDir, true);
+                }
+
+                progress.IsCompleted = true;
+                throw;
+            }
         }
     }
 }

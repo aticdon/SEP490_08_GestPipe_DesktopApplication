@@ -20,7 +20,7 @@ namespace GestPipe.Backend
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
             builder.Services.Configure<GestPipe.Backend.Config.I18nConfig>(builder.Configuration.GetSection("I18n"));
-
+            builder.WebHost.UseUrls("http://localhost:5083", "https://localhost:7219");
             builder.Services.Configure<MongoDbSettings>(
                 builder.Configuration.GetSection("MongoDB"));
 
@@ -145,12 +145,33 @@ namespace GestPipe.Backend
             app.UseStaticFiles();
 
             //// ✅ THÊM (Optional): Custom static file serving cho avatars
-            app.UseStaticFiles(new StaticFileOptions
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+            //    Path.Combine(app.Environment.WebRootPath, "avatars")),
+            //    RequestPath = "/avatars"
+            //});
+            if (!string.IsNullOrEmpty(app.Environment.WebRootPath))
             {
-                FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
-                Path.Combine(app.Environment.WebRootPath, "avatars")),
-                RequestPath = "/avatars"
-            });
+                var avatarPath = Path.Combine(app.Environment.WebRootPath, "avatars");
+
+                if (Directory.Exists(avatarPath))
+                {
+                    app.UseStaticFiles(new StaticFileOptions
+                    {
+                        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(avatarPath),
+                        RequestPath = "/avatars"
+                    });
+                }
+                else
+                {
+                    Console.WriteLine($"Warning: Avatar path not found: {avatarPath}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Warning: WebRootPath is null, skipping avatar static files.");
+            }
             app.UseHttpsRedirection();
 
             // ✅ CORS PHẢI ĐẶT SỚM TRƯỚC Authentication
