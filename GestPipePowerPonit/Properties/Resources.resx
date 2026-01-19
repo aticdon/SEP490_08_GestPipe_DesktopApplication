@@ -1,0 +1,588 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\background.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Banner" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Introduce.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Bottom_to_top" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\top1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Btn_Browse" xml:space="preserve">
+    <value>Browse File...</value>
+  </data>
+  <data name="Btn_CustomGesture" xml:space="preserve">
+    <value>Custom Gesture</value>
+  </data>
+  <data name="Btn_GestureControl" xml:space="preserve">
+    <value>Gesture Control</value>
+  </data>
+  <data name="Btn_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Btn_Instruction" xml:space="preserve">
+    <value>Instruction</value>
+  </data>
+  <data name="Btn_Present" xml:space="preserve">
+    <value>Presentation</value>
+  </data>
+  <data name="Btn_SlideShow" xml:space="preserve">
+    <value>Slide Show</value>
+  </data>
+  <data name="Btn_Training" xml:space="preserve">
+    <value>Training</value>
+  </data>
+  <data name="Btn_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="clenchedImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\clench.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="clenchLeftImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\clechLeft.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Col_Accuracy" xml:space="preserve">
+    <value>Accuracy</value>
+  </data>
+  <data name="Col_LastUpdate" xml:space="preserve">
+    <value>Last Update</value>
+  </data>
+  <data name="Col_Name" xml:space="preserve">
+    <value>Gesture Name</value>
+  </data>
+  <data name="Col_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Col_Type" xml:space="preserve">
+    <value>Gesture Type</value>
+  </data>
+  <data name="CustomCamera" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Switch Camera.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="English" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\image 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eye" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Eye.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="google" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\google.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="handlestaticImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Home_Welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="icon_add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Vector.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_bell" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_bell.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_down_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_down_arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_gesture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_gesture.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_home" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Home Page.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_home_fake" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_home.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_instruction" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_instruction.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_logout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_logout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_present" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_present.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_search" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Button Search.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_training" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon Gesture Control.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_traininggesture" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Vector (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_user" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_user.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_version" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_version.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_view" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Eye.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="indexImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\index.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LblClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="LblDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="LblDirection" xml:space="preserve">
+    <value>Direction</value>
+  </data>
+  <data name="LblInstruction" xml:space="preserve">
+    <value>Instruction</value>
+  </data>
+  <data name="LblLeftHand" xml:space="preserve">
+    <value>Left hand</value>
+  </data>
+  <data name="LblNote" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="LblOpenFile" xml:space="preserve">
+    <value>Open File:</value>
+  </data>
+  <data name="LblRightHand" xml:space="preserve">
+    <value>Right hand</value>
+  </data>
+  <data name="LblSubtitle" xml:space="preserve">
+    <value>Do you want to present now?</value>
+  </data>
+  <data name="Lbl_Accuracy" xml:space="preserve">
+    <value>Accuracy</value>
+  </data>
+  <data name="Lbl_Category" xml:space="preserve">
+    <value>Select Presentation Category:</value>
+  </data>
+  <data name="Lbl_LastResult" xml:space="preserve">
+    <value>Last Result</value>
+  </data>
+  <data name="Lbl_PoseTarget" xml:space="preserve">
+    <value>Pose Target</value>
+  </data>
+  <data name="Lbl_PresentationPreview" xml:space="preserve">
+    <value>Presentation Camera</value>
+  </data>
+  <data name="Lbl_PresentiontationFile" xml:space="preserve">
+    <value>Presentation File</value>
+  </data>
+  <data name="Lbl_Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="Lbl_Result_Correct" xml:space="preserve">
+    <value>Correct</value>
+  </data>
+  <data name="Lbl_Result_Wrong" xml:space="preserve">
+    <value>Wrong</value>
+  </data>
+  <data name="Lbl_Topic" xml:space="preserve">
+    <value>Choose Presentation Type:</value>
+  </data>
+  <data name="Lbl_TrainingDay" xml:space="preserve">
+    <value>Training time</value>
+  </data>
+  <data name="Lbl_TrainingResult" xml:space="preserve">
+    <value>Training Result</value>
+  </data>
+  <data name="Left_to_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\right1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="middleImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\middle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pinkyImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pinky.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Reason_InsufficientData" xml:space="preserve">
+    <value>Insufficient data</value>
+  </data>
+  <data name="Reason_LowConfidence" xml:space="preserve">
+    <value>Low confidence</value>
+  </data>
+  <data name="Reason_MLError" xml:space="preserve">
+    <value>ML error</value>
+  </data>
+  <data name="Reason_MotionProcessingFailed" xml:space="preserve">
+    <value>Motion processing failed</value>
+  </data>
+  <data name="Reason_MotionSmall" xml:space="preserve">
+    <value>Movement too small</value>
+  </data>
+  <data name="Reason_StaticDuration" xml:space="preserve">
+    <value>Duration too short</value>
+  </data>
+  <data name="Reason_StaticMotion" xml:space="preserve">
+    <value>Still moving (not static enough)</value>
+  </data>
+  <data name="Reason_TooFast" xml:space="preserve">
+    <value>Too fast</value>
+  </data>
+  <data name="Reason_WrongAxis" xml:space="preserve">
+    <value>Wrong axis of movement</value>
+  </data>
+  <data name="Reason_WrongDirection" xml:space="preserve">
+    <value>Wrong movement direction</value>
+  </data>
+  <data name="Right_to_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\left1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ringImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ring.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="thumbImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\thumb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Top_to_bottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bottom1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Vietnamese" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\image 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Message_LogoutConfirm" xml:space="preserve">
+    <value>Are you sure you want to logout?</value>
+  </data>
+  <data name="Message_LogoutSuccess" xml:space="preserve">
+    <value>Logged out successfully!</value>
+  </data>
+  <data name="Message_LogoutFailed" xml:space="preserve">
+    <value>Failed to logout.</value>
+  </data>
+  <data name="Message_LogoutError" xml:space="preserve">
+    <value>Error during logout</value>
+  </data>
+  <data name="Title_Confirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="Title_Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Title_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Title_ConnectionError" xml:space="preserve">
+    <value>Connection Error</value>
+  </data>
+  <data name="ProfileForm_Title" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+  <data name="ProfileForm_BtnEdit" xml:space="preserve">
+    <value>Edit Profile</value>
+  </data>
+  <data name="ProfileForm_BtnSave" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="ProfileForm_BtnCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ProfileForm_BtnChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="ProfileForm_BtnBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="ProfileForm_FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="ProfileForm_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="ProfileForm_Phone" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="ProfileForm_Gender" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="ProfileForm_BirthDate" xml:space="preserve">
+    <value>Birth Date</value>
+  </data>
+  <data name="ProfileForm_Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="ProfileForm_Education" xml:space="preserve">
+    <value>Education Level</value>
+  </data>
+  <data name="ProfileForm_Company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="ProfileForm_Occupation" xml:space="preserve">
+    <value>Occupation</value>
+  </data>
+  <data name="ProfileForm_Loading" xml:space="preserve">
+    <value>Loading profile...</value>
+  </data>
+  <data name="ProfileForm_Saving" xml:space="preserve">
+    <value>Saving...</value>
+  </data>
+  <data name="Gender_Male" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="Gender_Female" xml:space="preserve">
+    <value>Female</value>
+  </data>
+  <data name="Gender_Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Message_LoadProfileFailed" xml:space="preserve">
+    <value>Failed to load profile.</value>
+  </data>
+  <data name="Message_ProfileUpdateSuccess" xml:space="preserve">
+    <value>Profile updated successfully!</value>
+  </data>
+  <data name="Message_ProfileUpdateFailed" xml:space="preserve">
+    <value>Failed to update profile.</value>
+  </data>
+  <data name="Message_ChangeLanguageSuccess" xml:space="preserve">
+    <value>Language changed successfully!</value>
+  </data>
+  <data name="Message_ChangeLanguageFailed" xml:space="preserve">
+    <value>Failed to change language</value>
+  </data>
+  <data name="CustomGesture_Title" xml:space="preserve">
+    <value>📋 Custom Gesture Instructions</value>
+  </data>
+  <data name="CustomGesture_Instruction_01" xml:space="preserve">
+    <value>🎯 Keep hands within frame, 40–60 cm 
+from camera</value>
+  </data>
+  <data name="CustomGesture_Instruction_02" xml:space="preserve">
+    <value>✋ Don't let hands go outside frame edges</value>
+  </data>
+  <data name="CustomGesture_Instruction_03" xml:space="preserve">
+    <value>💡 Ensure sufficient lighting</value>
+  </data>
+  <data name="CustomGesture_Instruction_04" xml:space="preserve">
+    <value>📵 Don't let other objects cover hands</value>
+  </data>
+  <data name="CustomGesture_Instruction_05" xml:space="preserve">
+    <value>⏱ Hold pose for 0.8–1.0 seconds for sample
+recording</value>
+  </data>
+  <data name="CustomGesture_Instruction_06" xml:space="preserve">
+    <value>🔄 Repeat 5 times to ensure sample quality</value>
+  </data>
+  <data name="CustomCameraGray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Camera_Gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eye_gray" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eye_Gray.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Btn_RequestGesture" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Btn_Back" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="lblRequest" xml:space="preserve">
+    <value>Request Gesture</value>
+  </data>
+  <data name="lblDesRequest" xml:space="preserve">
+    <value>Description Request</value>
+  </data>
+  <data name="lblRequestDate" xml:space="preserve">
+    <value>Request Date</value>
+  </data>
+  <data name="lblStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="BtnStartRequest" xml:space="preserve">
+    <value>🚀 Start Request</value>
+  </data>
+  <data name="lblRequestNumber" xml:space="preserve">
+    <value>Number Gesture</value>
+  </data>
+  <data name="lblDescriptionRequestPrefix" xml:space="preserve">
+    <value>This request to update gestures:</value>
+  </data>
+  <data name="RequestSuccessDetail" xml:space="preserve">
+    <value>Request will send to Admin</value>
+  </data>
+  <data name="RequestSuccessTitle" xml:space="preserve">
+    <value>Request Successful!</value>
+  </data>
+  <data name="RequestErrorDetail" xml:space="preserve">
+    <value>An error occurred while making the request.</value>
+  </data>
+  <data name="RequestErrorTitle" xml:space="preserve">
+    <value>Request failed!</value>
+  </data>
+  <data name="BtnUserGesture" xml:space="preserve">
+    <value>    User Gesture</value>
+  </data>
+  <data name="BtnDefaultGesture" xml:space="preserve">
+    <value>   Default Gesture</value>
+  </data>
+  <data name="List_Loading" xml:space="preserve">
+    <value>Loading list gesture...</value>
+  </data>
+  <data name="BtnStartRecord" xml:space="preserve">
+    <value>🚀Start Recording</value>
+  </data>
+  <data name="BtnBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="icon_cameraUpload" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_cameraUpload.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="staticImg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\static.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_check" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_check.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IntructionTest_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IntructionTest_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Instruction_Tab1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Instruction_Tab1_EN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Instruction_Tab2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Instruction_Tab2_EN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Instruction_Tab3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Instruction_Tab3_EN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProfileForm_BtnBannerAdd" xml:space="preserve">
+    <value>Update Info</value>
+  </data>
+  <data name="icon_download_silver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_download_silver.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_download" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_download.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="btnDownload" xml:space="preserve">
+    <value>DownLoad</value>
+  </data>
+  <data name="Instruction_Tab4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Instruction_Tab4_EN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_reset" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_reset.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

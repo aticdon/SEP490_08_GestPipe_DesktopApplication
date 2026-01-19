@@ -1,0 +1,65 @@
+﻿using GestPipe.Backend.Models;
+using GestPipe.Backend.Services;
+using GestPipe.Backend.Services.IServices;
+using Microsoft.AspNetCore.Mvc;
+
+namespace GestPipe.Backend.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        // GET /api/user/{id}
+        [HttpGet("{id}")]
+        public IActionResult Get(string id)
+        {
+            var user = _userService.GetById(id);
+            if (user == null) return NotFound();
+            return Ok(user);
+        }
+
+        // POST /api/user/{id}/language
+        // Body: raw string JSON e.g. "vi-VN"
+        [HttpPost("{id}/language")]
+        public IActionResult SetLanguage(string id, [FromBody] string language)
+        {
+            if (string.IsNullOrWhiteSpace(language))
+                return BadRequest("language required");
+
+            var ok = _userService.SetLanguage(id, language);
+            if (!ok) return BadRequest("Invalid language or user not found");
+            return NoContent();
+        }
+
+        [HttpPost("{id}/increment-request-count")]
+        public IActionResult IncrementRequestCount(string id)
+        {
+            var ok = _userService.IncrementRequestCount(id);
+            if (!ok) return BadRequest("Update count failed");
+            return NoContent();
+        }
+
+        [HttpPost("{id}/update-request-status")]
+        public IActionResult UpdateRequestStatus(string id, [FromBody] string status)
+        {
+            if (string.IsNullOrWhiteSpace(status))
+                return BadRequest("Missing status");
+            var ok = _userService.UpdateGestureRequestStatus(id, status);
+            if (!ok) return BadRequest("Update status failed");
+            return NoContent();
+        }
+        [HttpPost("{id}/use-custom-model")]
+        public IActionResult SetUseCustomModel(string id, [FromBody] bool useCustomModel)
+        {
+            var ok = _userService.SetUseCustomModel(id, useCustomModel);
+            if (!ok) return BadRequest("Update use_custom_model failed");
+            return NoContent();
+        }
+    }
+}

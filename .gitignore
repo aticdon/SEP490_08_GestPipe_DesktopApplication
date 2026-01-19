@@ -1,0 +1,15 @@
+.vs/
+bin/
+obj/
+packages/
+*.user
+*.suo
+*.db
+*.log
+*.pma
+*.vsidxbin/
+obj/
+*.user
+.vs/
+GestPipe.Backend/credentials/
+GestPipe.Backend/appsettings.Development.json
