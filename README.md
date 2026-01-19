@@ -100,7 +100,7 @@
 
 ```
 GestPipe/
-├── GestPipePowerPoint/          # Desktop WinForms Application
+├── GestPipePowerPonit/          # Desktop WinForms Application
 │   ├── Views/                   # UI Forms (Login, Presentation, Training)
 │   ├── Services/                # Business logic and gesture processing
 │   ├── PythonProcessManager.cs  # Python subprocess orchestration
@@ -113,11 +113,11 @@ GestPipe/
 │   ├── Models/                  # MongoDB data models
 │   └── Validators/              # Request validation logic
 │
-└── Python Scripts/              # (External dependency)
-    ├── hybrid_realtime_pipeline/
-    ├── collect_data_update.py   # Gesture data collection
-    ├── training_session_ml.py   # ML model training
-    └── test_gesture_recognition.py  # Live recognition engine
+└── [Python ML Pipeline]         # External dependency (not in this repo)
+    ├── hybrid_realtime_pipeline/   # MediaPipe + OpenCV integration
+    ├── collect_data_update.py      # Gesture data collection script
+    ├── training_session_ml.py      # ML model training script
+    └── test_gesture_recognition.py # Live recognition engine
 ```
 
 ---
