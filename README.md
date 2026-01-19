@@ -1,6 +1,6 @@
-# 🖐️ GestPipe: AI-Powered Hand Gesture Control System
+# GestPipe: AI-Powered Hand Gesture Control System
 
-> **Transform presentations into immersive experiences** — Control PowerPoint slides and manipulate 3D objects using real-time hand gestures, no hardware required.
+> Transform presentations into immersive experiences — Control PowerPoint slides and manipulate 3D objects using real-time hand gestures, no hardware required.
 
 [![.NET](https://img.shields.io/badge/.NET-8.0%20%7C%204.7.2-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)](https://www.python.org/)
@@ -9,37 +9,44 @@
 
 ---
 
-## 🎯 Impact
+## Demo
 
-**GestPipe** is a full-stack desktop application that revolutionizes presentation delivery by enabling touchless interaction through computer vision. Perfect for:
-- 🎓 Educational presentations where instructors need hands-free control
-- 🏢 Professional demos showcasing 3D models and product prototypes
-- ♿ Accessibility scenarios requiring non-traditional input methods
-- 🚀 Tech showcases demonstrating AI/ML capabilities
+<!-- Add your app screenshots here -->
+*Screenshots coming soon*
 
 ---
 
-## ✨ Key Features
+## Impact
 
-### 🎮 Real-Time Gesture Recognition
+**GestPipe** is a full-stack desktop application that revolutionizes presentation delivery by enabling touchless interaction through computer vision. Perfect for:
+- Educational presentations where instructors need hands-free control
+- Professional demos showcasing 3D models and product prototypes
+- Accessibility scenarios requiring non-traditional input methods
+- Tech showcases demonstrating AI/ML capabilities
+
+---
+
+## Key Features
+
+### Real-Time Gesture Recognition
 - **10-finger hand tracking** using MediaPipe pose estimation
 - **Custom gesture training** — Create personalized gestures tailored to your style
 - **Static & dynamic gestures** — Detect both hand poses and motion patterns
 - **Sub-100ms latency** for responsive presentation control
 
-### 📊 PowerPoint Integration
+### PowerPoint Integration
 - **Navigate slides** (next/previous) with intuitive hand swipes
 - **Zoom control** using pinch gestures
 - **3D model manipulation** — Rotate and inspect embedded 3D objects with hand movements
 - **Seamless interop** with Microsoft Office via COM automation
 
-### 👤 Multi-User Support
+### Multi-User Support
 - **User profiles** with authentication and personalized gesture configurations
 - **Training sessions** with accuracy metrics and progress tracking
 - **Cloud sync** via Google Drive for gesture data portability
 - **Multi-language UI** (English/Vietnamese)
 
-### 📈 ML Training Pipeline
+### ML Training Pipeline
 - **Gesture data collection** with real-time camera feedback
 - **Vector-based feature extraction** (finger states + movement deltas)
 - **Model training** with performance analytics
@@ -47,7 +54,7 @@
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Frontend (Desktop Application)
 - **C# WinForms** (.NET Framework 4.7.2) — Rich desktop UI
@@ -80,14 +87,14 @@
 
 ---
 
-## 🚀 Demo Highlights
+## Usage Examples
 
 ### Gesture Control in Action
-1. **👆 Point** → Select slide or 3D object
-2. **👋 Swipe Left/Right** → Navigate slides
-3. **✊ Fist** → Pause/resume
-4. **🤏 Pinch & Spread** → Zoom in/out on content
-5. **🔄 Circular Motion** → Rotate 3D models
+1. **Point** → Select slide or 3D object
+2. **Swipe Left/Right** → Navigate slides
+3. **Fist** → Pause/resume
+4. **Pinch & Spread** → Zoom in/out on content
+5. **Circular Motion** → Rotate 3D models
 
 ### Custom Gesture Training
 - Record 30+ samples per gesture for robust recognition
@@ -96,7 +103,7 @@
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 GestPipe/
@@ -122,21 +129,21 @@ GestPipe/
 
 ---
 
-## 🎓 Learning Outcomes
+## Learning Outcomes
 
 This project demonstrates expertise in:
-- ✅ **Full-stack development** (C# desktop + REST API + Python ML)
-- ✅ **Computer vision pipelines** (MediaPipe integration, pose estimation)
-- ✅ **Inter-process communication** (TCP sockets, async messaging)
-- ✅ **3D graphics programming** (SharpDX, WebView2)
-- ✅ **Office automation** (PowerPoint COM interop)
-- ✅ **Cloud integration** (Google Drive API, OAuth)
-- ✅ **Database design** (MongoDB schema, user management)
-- ✅ **Real-time systems** (low-latency gesture recognition)
+- **Full-stack development** (C# desktop + REST API + Python ML)
+- **Computer vision pipelines** (MediaPipe integration, pose estimation)
+- **Inter-process communication** (TCP sockets, async messaging)
+- **3D graphics programming** (SharpDX, WebView2)
+- **Office automation** (PowerPoint COM interop)
+- **Cloud integration** (Google Drive API, OAuth)
+- **Database design** (MongoDB schema, user management)
+- **Real-time systems** (low-latency gesture recognition)
 
 ---
 
-## 💡 Technical Challenges Solved
+## Technical Challenges Solved
 
 - **Cross-language integration** — Seamless C#/Python communication via socket protocol
 - **Real-time performance** — Optimized pipeline for <100ms gesture-to-action latency
@@ -146,7 +153,7 @@ This project demonstrates expertise in:
 
 ---
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - [ ] Support for additional presentation software (Google Slides, Keynote)
 - [ ] Multi-hand gesture recognition for collaborative presentations
@@ -156,7 +163,7 @@ This project demonstrates expertise in:
 
 ---
 
-## 👨‍💻 About
+## About
 
 **GestPipe** was developed as a capstone project (SEP490) showcasing the intersection of computer vision, desktop application development, and machine learning. It demonstrates production-ready software engineering practices including:
 - Modular architecture with clear separation of concerns
@@ -166,14 +173,14 @@ This project demonstrates expertise in:
 
 ---
 
-## 📄 License
+## License
 
 This project is part of an academic portfolio. Please contact the repository owner for usage permissions.
 
 ---
 
 <div align="center">
-  <strong>⭐ Star this repo if you find it interesting!</strong>
+  <strong>Star this repo if you find it interesting!</strong>
   <br>
   <em>Built with passion for innovation in human-computer interaction</em>
 </div>
