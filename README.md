@@ -11,7 +11,18 @@
 
 ## Demo
 
-<!-- Add your app screenshots here -->
+<!-- 
+Add your app screenshots here. Suggested screenshots:
+- Main application interface
+- Gesture recognition in action
+- PowerPoint slide control demo
+- 3D model manipulation
+- Training session interface
+
+Example format:
+![App Screenshot](path/to/screenshot.png)
+-->
+
 *Screenshots coming soon*
 
 ---
