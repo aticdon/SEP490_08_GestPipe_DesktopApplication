@@ -23,7 +23,8 @@ Example format:
 ![App Screenshot](path/to/screenshot.png)
 -->
 
-*Screenshots coming soon*
+<img width="1538" height="957" alt="image" src="https://github.com/user-attachments/assets/986f7cbf-d080-4bc7-968b-54d1fe05fc92" />
+
 
 ---
 
